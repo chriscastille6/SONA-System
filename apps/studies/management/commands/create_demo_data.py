@@ -19,6 +19,9 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write(self.style.SUCCESS('Creating demo data for SONA System...'))
         
+        # Create admin user
+        admin = self.create_admin()
+        
         # Create users
         researcher = self.create_researcher()
         instructor = self.create_instructor()
@@ -49,6 +52,7 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS('✓ Demo data created successfully!'))
         self.stdout.write(self.style.SUCCESS('='*60))
         self.stdout.write(f'\n📊 Summary:')
+        self.stdout.write(f'  • Administrator: {admin.email} (password: admin123)')
         self.stdout.write(f'  • Researcher: {researcher.email} (password: demo123)')
         self.stdout.write(f'  • Instructor: {instructor.email} (password: demo123)')
         self.stdout.write(f'  • Participants: {len(participants)} students')
@@ -58,7 +62,26 @@ class Command(BaseCommand):
         self.stdout.write(f'  • Signups: {len(signups)} total')
         self.stdout.write(f'  • Protocol Responses: 12')
         self.stdout.write('\n🌐 Access the system at http://localhost:8000')
+        self.stdout.write(f'🔐 Admin panel at http://localhost:8000/admin/')
         self.stdout.write(self.style.SUCCESS('='*60 + '\n'))
+
+    def create_admin(self):
+        """Create administrator/superuser account."""
+        email = 'admin@nicholls.edu'
+        
+        # Delete if exists
+        User.objects.filter(email=email).delete()
+        
+        user = User.objects.create_superuser(
+            email=email,
+            password='admin123',
+            first_name='System',
+            last_name='Administrator',
+            role='admin'
+        )
+        
+        self.stdout.write(f'  ✓ Created administrator: {user.get_full_name()}')
+        return user
 
     def create_researcher(self):
         """Create a researcher user."""
