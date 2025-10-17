@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ study.title }} - Status - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>{{ study.title }} - Status Dashboard</h2>
+            <div>
+                <a href="{% url 'studies:run_protocol' study.slug %}" class="btn btn-primary">Run Protocol</a>
+                <a href="{% url 'studies:researcher_dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
+            </div>
+        </div>
+        
+        <!-- IRB & OSF Status -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>IRB Status</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            <strong>Status:</strong> 
+                            <span class="badge 
+                                {% if study.irb_status == 'approved' %}bg-success
+                                {% elif study.irb_status == 'exempt' %}bg-info
+                                {% elif study.irb_status == 'pending' %}bg-warning
+                                {% elif study.irb_status == 'expired' %}bg-danger
+                                {% else %}bg-secondary{% endif %}">
+                                {{ study.get_irb_status_display }}
+                            </span>
+                        </p>
+                        {% if study.irb_number %}
+                        <p><strong>IRB Number:</strong> {{ study.irb_number }}</p>
+                        {% endif %}
+                        {% if study.irb_expiration %}
+                        <p><strong>Expires:</strong> {{ study.irb_expiration|date:"F d, Y" }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>Open Science Framework</h5>
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            <strong>OSF Enabled:</strong> 
+                            {% if study.osf_enabled %}
+                                <span class="badge bg-success">Yes</span>
+                            {% else %}
+                                <span class="badge bg-secondary">No</span>
+                            {% endif %}
+                        </p>
+                        {% if study.osf_project_id %}
+                        <p><strong>Project ID:</strong> {{ study.osf_project_id }}</p>
+                        {% endif %}
+                        {% if study.osf_link %}
+                        <p><strong>Link:</strong> <a href="{{ study.osf_link }}" target="_blank">{{ study.osf_link }}</a></p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Data Collection Stats -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>Data Collection</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <h3 class="text-primary">{{ study.response_count }}</h3>
+                            <p class="text-muted">Total Responses</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <h3 class="text-info">{{ study.min_sample_size }}</h3>
+                            <p class="text-muted">Minimum N</p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <h3>
+                                {% if study.response_count >= study.min_sample_size %}
+                                    <span class="text-success">✓</span>
+                                {% else %}
+                                    <span class="text-warning">{{ study.min_sample_size|add:"-"|add:study.response_count }}</span>
+                                {% endif %}
+                            </h3>
+                            <p class="text-muted">
+                                {% if study.response_count >= study.min_sample_size %}
+                                    Ready for Analysis
+                                {% else %}
+                                    Responses Needed
+                                {% endif %}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="text-center">
+                            <h3>
+                                {% if study.monitoring_enabled %}
+                                    <span class="badge bg-success">Enabled</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">Disabled</span>
+                                {% endif %}
+                            </h3>
+                            <p class="text-muted">Monitoring</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bayesian Monitoring -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5>Bayesian Sequential Monitoring</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <p><strong>Current BF:</strong> 
+                            {% if study.current_bf %}
+                                <span class="badge 
+                                    {% if study.current_bf >= study.bf_threshold %}bg-success
+                                    {% elif study.current_bf >= 3 %}bg-info
+                                    {% elif study.current_bf >= 1 %}bg-warning
+                                    {% else %}bg-secondary{% endif %}">
+                                    {{ study.current_bf|floatformat:2 }}
+                                </span>
+                            {% else %}
+                                <span class="text-muted">Not computed yet</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Threshold:</strong> {{ study.bf_threshold|floatformat:1 }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Notification:</strong> 
+                            {% if study.monitoring_notified %}
+                                <span class="badge bg-success">Sent ✓</span>
+                            {% else %}
+                                <span class="text-muted">Not yet sent</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+                
+                {% if study.current_bf and study.current_bf >= study.bf_threshold %}
+                <div class="alert alert-success mt-3">
+                    <strong>Hypothesis Supported!</strong> 
+                    The Bayes Factor ({{ study.current_bf|floatformat:2 }}) has reached the threshold ({{ study.bf_threshold|floatformat:1 }}). 
+                    This provides strong evidence for the hypothesis.
+                </div>
+                {% endif %}
+                
+                <hr>
+                
+                <p class="text-muted small">
+                    <strong>Analysis Plugin:</strong> <code>{{ study.analysis_plugin }}</code>
+                </p>
+            </div>
+        </div>
+        
+        <!-- Recent Responses -->
+        <div class="card">
+            <div class="card-header">
+                <h5>Recent Responses</h5>
+            </div>
+            <div class="card-body">
+                {% if recent_responses %}
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Session ID</th>
+                                <th>Submitted</th>
+                                <th>Preview</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for response in recent_responses %}
+                            <tr>
+                                <td><code>{{ response.session_id|truncatechars:12 }}</code></td>
+                                <td>{{ response.created_at|date:"M d, Y H:i" }}</td>
+                                <td><code>{{ response.payload|truncatechars:80 }}</code></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted">No responses yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+

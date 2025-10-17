@@ -1,0 +1,63 @@
+{
+  "project": {
+    "name": "Your Project Name",
+    "pi_name": "Dr. Your Name",
+    "pi_phone": "985-448-XXXX",
+    "pi_email": "your.email@nicholls.edu"
+  },
+  "server": {
+    "url": "http://localhost:8080",
+    "directory": "./your_app",
+    "port": 8080
+  },
+  "screenshots": [
+    {
+      "name": "01_welcome_page",
+      "description": "Welcome page with consent information",
+      "path": "/index.html",
+      "viewport": {
+        "width": 1400,
+        "height": 900
+      },
+      "scroll": 0,
+      "wait_seconds": 3,
+      "javascript_before": null
+    },
+    {
+      "name": "02_instructions",
+      "description": "Instructions and anonymity notice",
+      "path": "/index.html",
+      "viewport": {
+        "width": 1400,
+        "height": 900
+      },
+      "scroll": 300,
+      "wait_seconds": 2,
+      "javascript_before": null
+    },
+    {
+      "name": "03_main_interface",
+      "description": "Main data collection interface",
+      "path": "/survey.html",
+      "viewport": {
+        "width": 1400,
+        "height": 1100
+      },
+      "scroll": 0,
+      "wait_seconds": 2,
+      "javascript_before": "document.getElementById('startBtn')?.click();"
+    }
+  ],
+  "output": {
+    "screenshot_dir": "screenshots",
+    "irb_output_dir": "output",
+    "format": "png",
+    "quality": 90
+  },
+  "browser": {
+    "headless": true,
+    "window_size": "1400,1100",
+    "browser": "chrome"
+  }
+}
+

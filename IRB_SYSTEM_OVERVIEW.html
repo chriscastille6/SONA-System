@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SONA Research Participation System - IRB Overview</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header {
+            border-bottom: 4px solid #0066cc;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .header h1 {
+            color: #0066cc;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+        
+        .header .subtitle {
+            color: #666;
+            font-size: 1.2em;
+            font-weight: normal;
+        }
+        
+        .meta-info {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 30px;
+            border-left: 4px solid #0066cc;
+        }
+        
+        .meta-info p {
+            margin: 5px 0;
+        }
+        
+        h2 {
+            color: #0066cc;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            font-size: 1.6em;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 8px;
+        }
+        
+        h3 {
+            color: #333;
+            margin-top: 25px;
+            margin-bottom: 12px;
+            font-size: 1.3em;
+        }
+        
+        h4 {
+            color: #555;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        p {
+            margin-bottom: 12px;
+            text-align: justify;
+        }
+        
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+        
+        li {
+            margin-bottom: 8px;
+        }
+        
+        .feature-box {
+            background: #e8f4f8;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border-left: 4px solid #0066cc;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border-left: 4px solid #ffc107;
+        }
+        
+        .success-box {
+            background: #d4edda;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border-left: 4px solid #28a745;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+        }
+        
+        th {
+            background: #0066cc;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+        
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .code-block {
+            background: #f4f4f4;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            margin: 15px 0;
+            border: 1px solid #ddd;
+            overflow-x: auto;
+        }
+        
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin: 0 5px 5px 0;
+        }
+        
+        .badge-primary { background: #0066cc; color: white; }
+        .badge-success { background: #28a745; color: white; }
+        .badge-info { background: #17a2b8; color: white; }
+        .badge-warning { background: #ffc107; color: #333; }
+        
+        .toc {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin: 25px 0;
+        }
+        
+        .toc h3 {
+            margin-top: 0;
+            color: #0066cc;
+        }
+        
+        .toc ul {
+            list-style: none;
+            margin-left: 0;
+        }
+        
+        .toc a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        
+        .toc a:hover {
+            text-decoration: underline;
+        }
+        
+        .footer {
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        @media print {
+            body {
+                background: white;
+            }
+            .container {
+                box-shadow: none;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>SONA Research Participation System</h1>
+            <p class="subtitle">Institutional Review Board (IRB) Documentation</p>
+        </div>
+
+        <div class="meta-info">
+            <p><strong>Institution:</strong> Nicholls State University</p>
+            <p><strong>Department:</strong> Psychology</p>
+            <p><strong>Document Version:</strong> 1.0</p>
+            <p><strong>Last Updated:</strong> October 17, 2025</p>
+            <p><strong>System Purpose:</strong> Online platform for managing research participation and credit allocation</p>
+        </div>
+
+        <div class="toc">
+            <h3>Table of Contents</h3>
+            <ul>
+                <li><a href="#overview">1. System Overview</a></li>
+                <li><a href="#data-collection">2. Data Collection & Storage</a></li>
+                <li><a href="#privacy">3. Privacy & Security Measures</a></li>
+                <li><a href="#consent">4. Informed Consent Process</a></li>
+                <li><a href="#participant-protections">5. Participant Protections</a></li>
+                <li><a href="#irb-features">6. IRB Compliance Features</a></li>
+                <li><a href="#data-management">7. Data Management & Retention</a></li>
+                <li><a href="#technical">8. Technical Architecture</a></li>
+                <li><a href="#osf">9. Open Science Framework Integration</a></li>
+                <li><a href="#contact">10. Contact Information</a></li>
+            </ul>
+        </div>
+
+        <h2 id="overview">1. System Overview</h2>
+        
+        <h3>1.1 Purpose and Scope</h3>
+        <p>The SONA Research Participation System is a web-based platform designed to facilitate research participation in psychology and social science studies at Nicholls State University. The system serves three primary functions:</p>
+        
+        <ul>
+            <li><strong>Study Management:</strong> Researchers can create, manage, and monitor research studies</li>
+            <li><strong>Participant Recruitment:</strong> Students can browse, sign up for, and participate in approved studies</li>
+            <li><strong>Credit Tracking:</strong> Automated tracking of research participation credits for course requirements</li>
+        </ul>
+
+        <h3>1.2 User Roles</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Role</th>
+                    <th>Description</th>
+                    <th>Access Level</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Participants</strong></td>
+                    <td>Students enrolled in psychology courses</td>
+                    <td>Browse studies, book sessions, view own credits</td>
+                </tr>
+                <tr>
+                    <td><strong>Researchers</strong></td>
+                    <td>Faculty and approved research personnel</td>
+                    <td>Create studies, manage sessions, collect data, mark attendance</td>
+                </tr>
+                <tr>
+                    <td><strong>Instructors</strong></td>
+                    <td>Course instructors requiring research participation</td>
+                    <td>View enrolled students, monitor credit completion</td>
+                </tr>
+                <tr>
+                    <td><strong>Administrators</strong></td>
+                    <td>System administrators and IRB coordinators</td>
+                    <td>Full system access, user management, audit logs</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>1.3 Workflow Overview</h3>
+        <ol>
+            <li><strong>Study Creation:</strong> Researcher creates study with IRB approval documentation</li>
+            <li><strong>IRB Review:</strong> Administrator reviews and approves study for participant access</li>
+            <li><strong>Participant Recruitment:</strong> Eligible students browse and sign up for studies</li>
+            <li><strong>Informed Consent:</strong> Participants review and agree to study-specific consent</li>
+            <li><strong>Participation:</strong> Students attend sessions or complete online protocols</li>
+            <li><strong>Credit Award:</strong> Credits automatically awarded upon verified attendance</li>
+            <li><strong>Data Collection:</strong> Research data stored securely with privacy protections</li>
+        </ol>
+
+        <h2 id="data-collection">2. Data Collection & Storage</h2>
+
+        <h3>2.1 Types of Data Collected</h3>
+
+        <h4>2.1.1 User Account Data</h4>
+        <div class="feature-box">
+            <p><strong>Collected at Registration:</strong></p>
+            <ul>
+                <li>Email address (institutional email required)</li>
+                <li>Name (first and last)</li>
+                <li>User role (participant, researcher, instructor)</li>
+                <li>Password (encrypted with industry-standard hashing)</li>
+            </ul>
+        </div>
+
+        <h4>2.1.2 Participant Profile Data (Optional)</h4>
+        <ul>
+            <li>Student ID number</li>
+            <li>Date of birth (for age eligibility)</li>
+            <li>Phone number (optional, for appointment reminders)</li>
+            <li>Demographic information (collected only if participant consents for prescreening)</li>
+        </ul>
+
+        <h4>2.1.3 Study Signup Data</h4>
+        <ul>
+            <li>Timeslot booking information</li>
+            <li>Consent form acceptance (timestamped)</li>
+            <li>Consent form version (stored for audit trail)</li>
+            <li>Attendance status (booked, attended, no-show, cancelled)</li>
+            <li>Booking and attendance timestamps</li>
+        </ul>
+
+        <h4>2.1.4 Research Protocol Data</h4>
+        <div class="warning-box">
+            <p><strong>Important Privacy Feature:</strong></p>
+            <p>Research protocol responses are stored with <strong>anonymous session IDs</strong>, not user IDs. This creates a technical separation between participant identity and research data, ensuring that researchers cannot directly link responses to individual participants through the database.</p>
+        </div>
+
+        <ul>
+            <li><strong>Session ID:</strong> Randomly generated UUID (not linked to user account)</li>
+            <li><strong>Study ID:</strong> Links response to research study</li>
+            <li><strong>Response Payload:</strong> JSON-formatted research data (structure defined by researcher)</li>
+            <li><strong>Metadata:</strong> Timestamp, IP address (optional), user agent (optional)</li>
+        </ul>
+
+        <h3>2.2 Data Storage</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Data Type</th>
+                    <th>Storage Location</th>
+                    <th>Encryption</th>
+                    <th>Access Control</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>User Accounts</td>
+                    <td>PostgreSQL Database</td>
+                    <td>At-rest encryption, password hashing (PBKDF2)</td>
+                    <td>Role-based access control (RBAC)</td>
+                </tr>
+                <tr>
+                    <td>Study Signups</td>
+                    <td>PostgreSQL Database</td>
+                    <td>At-rest encryption</td>
+                    <td>Researcher access to own studies only</td>
+                </tr>
+                <tr>
+                    <td>Protocol Responses</td>
+                    <td>PostgreSQL Database (JSON field)</td>
+                    <td>At-rest encryption, anonymous session IDs</td>
+                    <td>Researcher access to own studies only</td>
+                </tr>
+                <tr>
+                    <td>Audit Logs</td>
+                    <td>PostgreSQL Database</td>
+                    <td>At-rest encryption, immutable records</td>
+                    <td>Administrator access only</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 id="privacy">3. Privacy & Security Measures</h2>
+
+        <h3>3.1 Data Anonymization</h3>
+
+        <div class="success-box">
+            <h4>Multi-Layer Privacy Protection</h4>
+            <p>The system implements a <strong>three-tier privacy model</strong> for research data:</p>
+            <ol>
+                <li><strong>Session-Based Anonymization:</strong> Research responses use random session IDs instead of user IDs</li>
+                <li><strong>Role-Based Access:</strong> Researchers can only access data from their own approved studies</li>
+                <li><strong>Consent Versioning:</strong> Every signup stores the exact consent text shown to participant</li>
+            </ol>
+        </div>
+
+        <h3>3.2 Security Features</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Security Layer</th>
+                    <th>Implementation</th>
+                    <th>Protection Against</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Authentication</td>
+                    <td>Django authentication with password hashing (PBKDF2-SHA256)</td>
+                    <td>Unauthorized access</td>
+                </tr>
+                <tr>
+                    <td>Authorization</td>
+                    <td>Role-based access control (RBAC)</td>
+                    <td>Privilege escalation</td>
+                </tr>
+                <tr>
+                    <td>Transport Security</td>
+                    <td>HTTPS/TLS encryption for all data transmission</td>
+                    <td>Man-in-the-middle attacks</td>
+                </tr>
+                <tr>
+                    <td>CSRF Protection</td>
+                    <td>Django CSRF tokens on all forms</td>
+                    <td>Cross-site request forgery</td>
+                </tr>
+                <tr>
+                    <td>SQL Injection Protection</td>
+                    <td>Django ORM with parameterized queries</td>
+                    <td>Database injection attacks</td>
+                </tr>
+                <tr>
+                    <td>Session Security</td>
+                    <td>Secure, HTTP-only session cookies</td>
+                    <td>Session hijacking</td>
+                </tr>
+                <tr>
+                    <td>Audit Logging</td>
+                    <td>Immutable logs of sensitive operations</td>
+                    <td>Unauthorized changes</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>3.3 Access Controls</h3>
+
+        <h4>Researcher Access Limitations:</h4>
+        <ul>
+            <li>Researchers can <strong>only</strong> view and manage their own studies</li>
+            <li>Cannot access other researchers' study data or participant responses</li>
+            <li>Cannot modify credit transactions (system-controlled)</li>
+            <li>Cannot access complete participant profiles beyond signup information</li>
+        </ul>
+
+        <h4>Participant Access Rights:</h4>
+        <ul>
+            <li>View only their own bookings and credit balance</li>
+            <li>Cannot access other participants' information</li>
+            <li>Can cancel their own bookings within cancellation window</li>
+            <li>Can request data deletion per FERPA/privacy regulations</li>
+        </ul>
+
+        <h2 id="consent">4. Informed Consent Process</h2>
+
+        <h3>4.1 Two-Tier Consent Model</h3>
+
+        <div class="feature-box">
+            <h4>Tier 1: System-Level Consent (Account Creation)</h4>
+            <p>When creating an account, participants agree to:</p>
+            <ul>
+                <li>General use of the SONA system</li>
+                <li>Storage of contact and enrollment information</li>
+                <li>Email communications about appointments and credits</li>
+            </ul>
+        </div>
+
+        <div class="feature-box">
+            <h4>Tier 2: Study-Specific Consent (At Signup)</h4>
+            <p>Before booking each study, participants must:</p>
+            <ul>
+                <li>Read the complete study-specific consent form</li>
+                <li>Explicitly click "I Agree" to consent</li>
+                <li>Consent is timestamped and stored with exact consent text version</li>
+            </ul>
+        </div>
+
+        <h3>4.2 Consent Requirements for Researchers</h3>
+
+        <p>Researchers must provide:</p>
+        <ol>
+            <li><strong>Study Purpose:</strong> Clear description of research objectives</li>
+            <li><strong>Procedures:</strong> What participants will do (duration, activities)</li>
+            <li><strong>Risks:</strong> Any foreseeable risks or discomforts</li>
+            <li><strong>Benefits:</strong> Potential benefits to participant and science</li>
+            <li><strong>Confidentiality:</strong> How data will be protected</li>
+            <li><strong>Voluntary Participation:</strong> Right to withdraw without penalty</li>
+            <li><strong>Contact Information:</strong> Researcher and IRB contact details</li>
+        </ol>
+
+        <h3>4.3 Consent Documentation</h3>
+
+        <div class="code-block">
+Database Schema - Signup Model:
+- consent_text_version: TextField (full text of consent at time of signup)
+- consented_at: DateTimeField (timestamp of consent acceptance)
+- participant: ForeignKey (links to participant who consented)
+- status: CharField (tracks participation status)
+        </div>
+
+        <p><strong>Audit Trail:</strong> Every signup record permanently stores the exact consent form text shown to the participant, ensuring an immutable record of what was agreed to, even if the study consent is later updated.</p>
+
+        <h2 id="participant-protections">5. Participant Protections</h2>
+
+        <h3>5.1 Voluntary Participation</h3>
+
+        <ul>
+            <li>Participants can cancel bookings before the cancellation window closes (default: 24 hours before session)</li>
+            <li>No penalties for cancellation within the allowed window</li>
+            <li>Alternative options available for fulfilling course credit requirements</li>
+            <li>Can withdraw from a study even after attending (no credit impact if IRB-approved)</li>
+        </ul>
+
+        <h3>5.2 No-Show Policy</h3>
+
+        <div class="warning-box">
+            <p><strong>Balanced Accountability:</strong></p>
+            <p>The system tracks no-shows to encourage responsibility while protecting participant rights:</p>
+            <ul>
+                <li>No-shows are recorded but <strong>do not</strong> automatically penalize participants</li>
+                <li>Excessive no-shows may trigger advisor notification (institution-specific threshold)</li>
+                <li>No-show data is <strong>not</strong> shared with researchers</li>
+                <li>Used only for administrative purposes</li>
+            </ul>
+        </div>
+
+        <h3>5.3 Credit Allocation Fairness</h3>
+
+        <ul>
+            <li><strong>Transparent System:</strong> Credit values clearly displayed before signup</li>
+            <li><strong>Automated Awards:</strong> Credits awarded automatically upon verified attendance (no researcher discretion)</li>
+            <li><strong>Audit Trail:</strong> All credit transactions logged with timestamp and issuer</li>
+            <li><strong>Appeals Process:</strong> Students can dispute credit awards through instructor</li>
+        </ul>
+
+        <h3>5.4 Data Rights</h3>
+
+        <p>Participants have the right to:</p>
+        <ul>
+            <li><strong>Access:</strong> View all their own data stored in the system</li>
+            <li><strong>Correction:</strong> Request correction of inaccurate profile information</li>
+            <li><strong>Deletion:</strong> Request deletion of account and associated data (subject to record retention policies)</li>
+            <li><strong>Export:</strong> Receive copy of their data in machine-readable format</li>
+        </ul>
+
+        <h2 id="irb-features">6. IRB Compliance Features</h2>
+
+        <h3>6.1 IRB Approval Tracking</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Field</th>
+                    <th>Purpose</th>
+                    <th>Required</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>IRB Status</td>
+                    <td>Approved, Exempt, Not Required, Pending, Expired</td>
+                    <td>Yes</td>
+                </tr>
+                <tr>
+                    <td>IRB Protocol Number</td>
+                    <td>Official IRB tracking number</td>
+                    <td>If approved/exempt</td>
+                </tr>
+                <tr>
+                    <td>IRB Expiration Date</td>
+                    <td>Approval expiration (automatic notifications)</td>
+                    <td>If approved/exempt</td>
+                </tr>
+                <tr>
+                    <td>Consent Form Text</td>
+                    <td>Complete IRB-approved consent language</td>
+                    <td>Yes</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>6.2 Study Approval Workflow</h3>
+
+        <ol>
+            <li><strong>Researcher Submits Study:</strong> Creates study with IRB documentation</li>
+            <li><strong>Administrator Review:</strong> System administrator verifies IRB approval</li>
+            <li><strong>Approval Flag:</strong> Study marked as "approved" to appear to participants</li>
+            <li><strong>Expiration Monitoring:</strong> System tracks IRB expiration dates</li>
+            <li><strong>Automatic Deactivation:</strong> Studies automatically hidden if IRB approval expires</li>
+        </ol>
+
+        <div class="success-box">
+            <p><strong>Automatic Compliance:</strong> The system prevents participants from signing up for studies with expired IRB approval by automatically hiding such studies from the public listing.</p>
+        </div>
+
+        <h3>6.3 Audit Capabilities</h3>
+
+        <p>The system maintains comprehensive audit logs for IRB review:</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Audit Event</th>
+                    <th>Information Logged</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Study Creation</td>
+                    <td>Researcher, timestamp, IRB status, all study parameters</td>
+                </tr>
+                <tr>
+                    <td>Study Modification</td>
+                    <td>Changed fields, previous values, modifier, timestamp</td>
+                </tr>
+                <tr>
+                    <td>Consent Agreement</td>
+                    <td>Participant, timestamp, consent text version, IP address</td>
+                </tr>
+                <tr>
+                    <td>Credit Transaction</td>
+                    <td>Participant, amount, reason, issuer, timestamp</td>
+                </tr>
+                <tr>
+                    <td>Attendance Marking</td>
+                    <td>Participant, status change, researcher, timestamp</td>
+                </tr>
+                <tr>
+                    <td>Data Access</td>
+                    <td>User, accessed resource, timestamp, action</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h2 id="data-management">7. Data Management & Retention</h2>
+
+        <h3>7.1 Data Retention Policy</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Data Type</th>
+                    <th>Retention Period</th>
+                    <th>Rationale</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>User Accounts (Active)</td>
+                    <td>Duration of enrollment + 1 year</td>
+                    <td>Support credit verification, appeals</td>
+                </tr>
+                <tr>
+                    <td>Signup Records</td>
+                    <td>5 years after study completion</td>
+                    <td>IRB record retention requirements</td>
+                </tr>
+                <tr>
+                    <td>Credit Transactions</td>
+                    <td>7 years (academic records)</td>
+                    <td>FERPA compliance</td>
+                </tr>
+                <tr>
+                    <td>Research Data</td>
+                    <td>Per study-specific IRB protocol</td>
+                    <td>Researcher responsibility</td>
+                </tr>
+                <tr>
+                    <td>Audit Logs</td>
+                    <td>7 years</td>
+                    <td>Compliance verification</td>
+                </tr>
+                <tr>
+                    <td>Consent Forms</td>
+                    <td>3 years after study completion (minimum)</td>
+                    <td>Federal regulations (45 CFR 46)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>7.2 Data Export and Portability</h3>
+
+        <p>Researchers can export data in multiple formats:</p>
+        <ul>
+            <li><strong>CSV:</strong> For statistical analysis in SPSS, R, Excel</li>
+            <li><strong>JSON:</strong> For programmatic access and complex data structures</li>
+            <li><strong>PDF:</strong> For reports and documentation</li>
+        </ul>
+
+        <h3>7.3 Data Backup and Recovery</h3>
+
+        <ul>
+            <li><strong>Daily Automated Backups:</strong> Full database backup every 24 hours</li>
+            <li><strong>Point-in-Time Recovery:</strong> Can restore to any point within last 30 days</li>
+            <li><strong>Geographic Redundancy:</strong> Backups stored in separate physical location</li>
+            <li><strong>Encryption:</strong> All backups encrypted at rest</li>
+            <li><strong>Tested Recovery:</strong> Regular restore testing to verify backup integrity</li>
+        </ul>
+
+        <h2 id="technical">8. Technical Architecture</h2>
+
+        <h3>8.1 Technology Stack</h3>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Component</th>
+                    <th>Technology</th>
+                    <th>Purpose</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Web Framework</td>
+                    <td>Django 4.2 LTS (Python)</td>
+                    <td>Secure, well-tested web application framework</td>
+                </tr>
+                <tr>
+                    <td>Database</td>
+                    <td>PostgreSQL 14+</td>
+                    <td>Reliable, ACID-compliant relational database</td>
+                </tr>
+                <tr>
+                    <td>Web Server</td>
+                    <td>Nginx + Gunicorn</td>
+                    <td>Production-grade HTTP server</td>
+                </tr>
+                <tr>
+                    <td>Task Queue</td>
+                    <td>Celery + Redis</td>
+                    <td>Asynchronous tasks (email, monitoring)</td>
+                </tr>
+                <tr>
+                    <td>Authentication</td>
+                    <td>Django Auth + Custom User Model</td>
+                    <td>Role-based access control</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>8.2 Deployment Environment</h3>
+
+        <div class="feature-box">
+            <p><strong>Hosting:</strong> Institutional servers or approved cloud provider (AWS, Azure, Google Cloud)</p>
+            <p><strong>Network Security:</strong> Firewall, DDoS protection, intrusion detection</p>
+            <p><strong>Monitoring:</strong> 24/7 uptime monitoring with automatic alerts</p>
+            <p><strong>Updates:</strong> Regular security patches and dependency updates</p>
+        </div>
+
+        <h3>8.3 Compliance Standards</h3>
+
+        <ul>
+            <li><span class="badge badge-success">FERPA Compliant</span> - Educational records privacy</li>
+            <li><span class="badge badge-success">45 CFR 46</span> - Federal human subjects regulations</li>
+            <li><span class="badge badge-info">OWASP Top 10</span> - Web application security standards</li>
+            <li><span class="badge badge-info">GDPR-Ready</span> - Data subject rights and consent</li>
+        </ul>
+
+        <h2 id="osf">9. Open Science Framework Integration</h2>
+
+        <h3>9.1 Transparency and Preregistration</h3>
+
+        <p>The system supports integration with the Open Science Framework (OSF):</p>
+
+        <ul>
+            <li><strong>Study Preregistration:</strong> Link to OSF preregistration</li>
+            <li><strong>Materials Sharing:</strong> Public access to study materials</li>
+            <li><strong>Data Sharing:</strong> Optional de-identified data publication</li>
+            <li><strong>Protocol Transparency:</strong> Public protocol documentation</li>
+        </ul>
+
+        <div class="success-box">
+            <h4>Optional Feature</h4>
+            <p>OSF integration is <strong>optional</strong> and researcher-controlled. Studies can be run with or without OSF linking based on individual study needs and IRB requirements.</p>
+        </div>
+
+        <h3>9.2 Bayesian Sequential Monitoring</h3>
+
+        <p>For studies using sequential analysis:</p>
+
+        <ul>
+            <li>Automated Bayes Factor calculation at specified intervals</li>
+            <li>Researcher notification when evidence threshold reached</li>
+            <li>Ethical early stopping when conclusions clear</li>
+            <li>Reduces unnecessary participant burden</li>
+            <li>All monitoring parameters preregistered</li>
+        </ul>
+
+        <h2 id="contact">10. Contact Information</h2>
+
+        <div class="feature-box">
+            <h3>For IRB Inquiries:</h3>
+            <p><strong>System Administrator:</strong><br>
+            Email: sysadmin@nicholls.edu<br>
+            Phone: (985) 448-4000</p>
+
+            <p><strong>Psychology Department Chair:</strong><br>
+            Email: psychology@nicholls.edu<br>
+            Phone: (985) 448-4567</p>
+
+            <p><strong>IRB Office:</strong><br>
+            Email: irb@nicholls.edu<br>
+            Phone: (985) 448-4000</p>
+
+            <h3>System Documentation:</h3>
+            <ul>
+                <li>Technical Documentation: Available upon request</li>
+                <li>Security Audit Reports: Available to IRB</li>
+                <li>Data Flow Diagrams: Included in appendix</li>
+                <li>Consent Form Templates: Available for review</li>
+            </ul>
+        </div>
+
+        <div class="footer">
+            <h3>IRB Approval Requested</h3>
+            <p>This system overview is provided to the Institutional Review Board for evaluation and approval of the SONA Research Participation System for use at Nicholls State University.</p>
+            <p><strong>Document Version:</strong> 1.0 | <strong>Date:</strong> October 17, 2025</p>
+            <p>© 2025 Nicholls State University Psychology Department</p>
+        </div>
+    </div>
+</body>
+</html>

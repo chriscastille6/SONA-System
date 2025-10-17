@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}My Courses - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-10 offset-md-1">
+        <h2>My Courses</h2>
+        
+        <div class="alert alert-info mt-3">
+            Select your role to view course information.
+        </div>
+        
+        <div class="d-flex gap-2 mt-3">
+            {% if user.is_participant %}
+                <a href="{% url 'courses:list' %}" class="btn btn-primary">Browse Courses</a>
+            {% endif %}
+            {% if user.is_instructor %}
+                <a href="/admin/courses/course/" class="btn btn-primary">Manage My Courses</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+

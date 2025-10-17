@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}My Bookings - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-10 offset-md-1">
+        <h2>My Bookings</h2>
+        
+        {% if signups %}
+            <div class="mt-3">
+                {% for signup in signups %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ signup.timeslot.study.title }}</h5>
+                            <p class="card-text">
+                                <strong>Date:</strong> {{ signup.timeslot.starts_at|date:"l, F d, Y" }}<br>
+                                <strong>Time:</strong> {{ signup.timeslot.starts_at|time:"g:i A" }} - {{ signup.timeslot.ends_at|time:"g:i A" }}<br>
+                                {% if signup.timeslot.location %}
+                                    <strong>Location:</strong> {{ signup.timeslot.location }}<br>
+                                {% endif %}
+                                <strong>Credits:</strong> {{ signup.timeslot.study.credit_value }}<br>
+                                <strong>Status:</strong> 
+                                <span class="badge status-{{ signup.status }}">{{ signup.get_status_display }}</span>
+                            </p>
+                            
+                            {% if signup.status == 'booked' %}
+                                {% if signup.timeslot.can_cancel %}
+                                    <a href="{% url 'studies:cancel_signup' signup.id %}" class="btn btn-warning btn-sm">Cancel Booking</a>
+                                {% else %}
+                                    <span class="text-muted">Cancellation window closed</span>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info mt-3">
+                You have no bookings. <a href="{% url 'studies:list' %}">Browse studies</a> to get started.
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+
+
+

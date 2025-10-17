@@ -1,0 +1,70 @@
+{
+  "institution": {
+    "name": "Nicholls State University",
+    "irb_office": "Human Subjects Institutional Review Board",
+    "irb_email": "irb@nicholls.edu",
+    "irb_phone": "(985) 448-4171"
+  },
+  "formatting": {
+    "font_family": "Times New Roman",
+    "font_size": "12pt",
+    "line_spacing": "single",
+    "paragraph_spacing": "6pt",
+    "paragraph_indent": "0pt",
+    "margins": {
+      "top": "1in",
+      "bottom": "1in",
+      "left": "1in",
+      "right": "1in"
+    },
+    "page_markers": {
+      "format": "HSIRB",
+      "position": "center",
+      "location": "footer"
+    }
+  },
+  "irb_types": {
+    "exempt": {
+      "template": "IRB_Exempt_Template.Rmd",
+      "requires": ["consent_form", "instruments"]
+    },
+    "expedited": {
+      "template": "IRB_Application_Template.Rmd",
+      "requires": ["consent_form", "instruments", "technical_specs", "screenshots"]
+    },
+    "full_review": {
+      "template": "IRB_Application_Template.Rmd",
+      "requires": ["consent_form", "instruments", "technical_specs", "screenshots", "additional_docs"]
+    }
+  },
+  "review_categories": {
+    "1": "Clinical studies of drugs and medical devices",
+    "2": "Collection of blood samples by finger stick, heel stick, ear stick, or venipuncture",
+    "3": "Prospective collection of biological specimens for research purposes by noninvasive means",
+    "4": "Collection of data through noninvasive procedures",
+    "5": "Research involving materials that have been collected for nonresearch purposes",
+    "6": "Collection of data from voice, video, digital, or image recordings",
+    "7": "Research on individual or group characteristics or behavior",
+    "8": "Continuing review of research previously approved",
+    "9": "Continuing review where categories two through eight do not apply"
+  },
+  "required_sections": [
+    "project_description",
+    "population",
+    "procedures",
+    "recruitment",
+    "benefits",
+    "costs",
+    "risks",
+    "consent",
+    "confidentiality"
+  ],
+  "appendix_requirements": {
+    "A": "Informed Consent Form",
+    "B": "Data Collection Instruments",
+    "C": "Technical Implementation Details",
+    "D": "Assessment Items (if applicable)",
+    "E": "Application Screenshots (if web-based)"
+  }
+}
+

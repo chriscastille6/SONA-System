@@ -1,0 +1,64 @@
+IRB AUTOMATION TOOLKIT - QUICK START
+====================================
+
+COMPLETE IRB APPLICATION IN 5 STEPS
+------------------------------------
+
+STEP 1: Install Dependencies (5 minutes)
+```
+pip3 install selenium
+R -e "install.packages(c('rmarkdown', 'knitr'))"
+```
+
+STEP 2: Test with Example (2 minutes)
+```
+cd examples/conjoint_analysis_example/
+python3 -m http.server 8080 &
+cd ../..
+python3 scripts/capture_screenshots.py --url http://localhost:8080
+pkill -f "python3 -m http.server 8080"
+```
+
+STEP 3: Configure Your Project (5 minutes)
+```
+cp configs/example_config.json my_project.json
+# Edit my_project.json with your details
+```
+
+STEP 4: Generate IRB Package (1 minute)
+```
+./scripts/generate_irb_package.sh \
+  --config my_project.json \
+  --app-dir /path/to/your/app
+```
+
+STEP 5: Review Output (2 minutes)
+```
+open irb_output/IRB_Application_Template.pdf
+```
+
+DONE! You have a complete IRB application package.
+
+WHAT YOU GET
+------------
+- IRB_Application_Template.pdf (complete application)
+- IRB_Application_Template.docx (editable Word version)
+- screenshots/ (all captured images)
+- PACKAGE_CONTENTS.md (summary)
+
+TOTAL TIME: ~15 minutes (including setup)
+TIME SAVED: ~2 hours per IRB application
+
+NEED HELP?
+----------
+1. Read README.md for detailed documentation
+2. Check SETUP.md for installation issues
+3. Review example: examples/conjoint_analysis_example/
+4. See TOOLKIT_SUMMARY.md for comprehensive guide
+
+SUPPORT
+-------
+IRB Office: irb@nicholls.edu, (985) 448-4171
+Documentation: docs/ directory
+Examples: examples/ directory
+

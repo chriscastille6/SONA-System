@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Preference Assessment - Student Survey</title>
+    <link rel="icon" href="data:,">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .header {
+            background-color: #3B82F6;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .page {
+            display: none;
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .page.active {
+            display: block;
+        }
+        .instruction-box {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        .context-box {
+            background-color: #f0f8ff;
+            border: 2px solid #3B82F6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .choice-container {
+            display: flex;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .option {
+            flex: 1;
+            background-color: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .option:hover {
+            border-color: #3B82F6;
+            background-color: #e3f2fd;
+        }
+        .option.selected {
+            border-color: #10B981;
+            background-color: #e8f5e8;
+        }
+        .btn {
+            padding: 12px 24px;
+            margin: 10px 5px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .btn-primary {
+            background-color: #3B82F6;
+            color: white;
+        }
+        .btn-success {
+            background-color: #10B981;
+            color: white;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        .btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background-color: #e9ecef;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        .progress-fill {
+            height: 100%;
+            background-color: #3B82F6;
+            border-radius: 10px;
+            transition: width 0.3s;
+        }
+        .package-box {
+            background-color: #f0f8ff;
+            border: 2px solid #3B82F6;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .retention-question {
+            background-color: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 15px 0;
+        }
+        .slider-container {
+            margin: 15px 0;
+        }
+        .slider {
+            width: 100%;
+            height: 25px;
+            border-radius: 5px;
+            background: #d3d3d3;
+            outline: none;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+        .slider:hover {
+            opacity: 1;
+        }
+        .slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: #3B82F6;
+            cursor: pointer;
+        }
+        .assessment-question {
+            margin: 25px 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+        .radio-group {
+            margin: 10px 0;
+        }
+        .radio-group input[type="radio"] {
+            margin-right: 8px;
+        }
+        .radio-group label {
+            margin-right: 20px;
+            cursor: pointer;
+        }
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+        }
+        .thank-you {
+            text-align: center;
+            padding: 40px;
+        }
+        
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            body { 
+                padding: 10px; 
+                max-width: 100%; 
+            }
+            .page { 
+                padding: 15px; 
+            }
+            .choice-container { 
+                flex-direction: column; 
+                gap: 15px; 
+            }
+            .btn { 
+                width: 100%; 
+                padding: 15px 20px; 
+                font-size: 16px; 
+                margin: 5px 0; 
+            }
+            .option { 
+                padding: 15px; 
+            }
+            .header { 
+                padding: 15px; 
+            }
+            h3 { 
+                font-size: 1.3em; 
+            }
+            h4 { 
+                font-size: 1.1em; 
+            }
+        }
+        
+        .anonymity-notice {
+            background-color: #e8f5e8;
+            border: 2px solid #10B981;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script>
+        // Verify Chart.js loaded
+        if (typeof Chart === 'undefined') {
+            console.error('Chart.js failed to load from CDN');
+        } else {
+            console.log('Chart.js loaded successfully, version:', Chart.version);
+        }
+    </script>
+</head>
+<body>
+    <div class="header">
+        <h1>📋 Employee Preference Assessment</h1>
+        <p>Classroom Exercise: Understanding Workplace Preferences</p>
+    </div>
+
+    <!-- Page 1: Instructions -->
+    <div class="page active" id="page1">
+        <div class="instruction-box">
+            <h3>📋 Welcome to the Employee Preference Study!</h3>
+            <p><strong>Your Role:</strong> You're a college junior considering job offers from different companies.</p>
+            <p><strong>Your Task:</strong> You'll see 8 pairs of job scenarios and choose which one you'd prefer.</p>
+            <p><strong>Time Required:</strong> About 5-7 minutes</p>
+        </div>
+        
+        <div class="anonymity-notice">
+            <h4>🔒 Privacy & Anonymity</h4>
+            <p><strong>This exercise is completely anonymous.</strong> No personal information is collected. Your responses will not be used against you in any way. This data is for educational purposes only to help understand workplace preferences.</p>
+        </div>
+
+        <div class="context-box">
+            <h4>🏢 Company Context & Cost Reality</h4>
+            <p><strong>Company Size:</strong> Mid-size company with 500 employees</p>
+            <p><strong>Current Challenge:</strong> 25% of employees leave each year (125 people)</p>
+            <p><strong>Cost Impact:</strong> Each departure costs $25,000 to replace (50% of $50,000 avg salary) = $3.125 million annually in turnover costs!</p>
+            <p><strong>⚠️ Current Total Compensation:</strong> ~$64,000 per employee (original baseline)</p>
+            <p><strong>🎯 Management's Challenge:</strong> The company has no profits and must cut $5,000 from total rewards. They want to work with employees to decide <strong>where to make these cuts</strong> while maintaining retention. You'll help decide how to restructure compensation within the reduced $59K budget.</p>
+        </div>
+
+        <div class="package-box">
+            <h4>📊 Your Current Baseline Package ($64K Total Compensation - Original)</h4>
+            <p><strong>💵 Base Salary:</strong> $45,000 annually (70.3% of total compensation)</p>
+            <p><strong>📈 Annual Raises:</strong> $2,000 expected annual raises (performance-based)</p>
+            <p><strong>🩺 Health:</strong> $5,000 comprehensive medical, dental, vision coverage</p>
+            <p><strong>🏦 Retirement:</strong> $3,500 401(k) match + pension contribution</p>
+            <p><strong>🏖️ PTO:</strong> $2,500 value (15 vacation + 10 sick + 12 holidays)</p>
+            <p><strong>🎓 Development:</strong> $2,500 total (tuition reimbursement + certifications)</p>
+            <p><strong>🏠 Flexibility:</strong> $1,500 value (2 WFH days/week + learning time)</p>
+            <p><strong>⚠️ Current Risk:</strong> You have a <strong>50% chance of leaving</strong> your employer by the end of the year if things don't change.</p>
+            <p><em>💡 <strong>Financial Pressure Challenge:</strong> The company has no profits and must cut $5,000 from total rewards. You'll see options that make different cuts to stay within the $59K budget while trying to maintain employee satisfaction!</em></p>
+        </div>
+
+        <div class="instruction-box">
+            <h4>🧩 Total Rewards (Your Baseline Allocation)</h4>
+            <p style="margin-top: -6px; color:#555;">This chart shows the $ value of each part of your total rewards at baseline.</p>
+            <canvas id="baselineRewardsChart" height="220"></canvas>
+        </div>
+
+
+        <div class="instruction-box">
+            <h4>🎯 What You'll Do:</h4>
+            <ol>
+                <li><strong>Choice Tasks:</strong> Choose between 8 pairs of job scenarios</li>
+                <li><strong>Retention Questions:</strong> Indicate how likely you'd be to stay with specific packages</li>
+                <li><strong>Assessment:</strong> Share your thoughts about this exercise</li>
+            </ol>
+            <p><em>Your choices will help determine which workplace investments provide the best return!</em></p>
+        </div>
+
+        <button class="btn btn-primary" onclick="startSurvey()">Start Survey →</button>
+    </div>
+
+    <!-- Pages 2-9: Choice Tasks -->
+    <div class="page" id="page2">
+        <h3>Choice Task <span id="taskNumber">1</span> of 8</h3>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill" style="width: 12.5%"></div>
+        </div>
+        
+        <p><strong>Which job offer would you prefer?</strong></p>
+        <p><em>Imagine these are real offers from companies you're considering.</em></p>
+
+        <div class="choice-container">
+            <div class="option" id="optionA" onclick="selectOption('A')">
+                <h4>💼 Option A</h4>
+                <div id="optionAContent"></div>
+                <div class="option-visuals">
+                    <h5 style="margin:10px 0 4px 0;">Total Rewards (Absolute $)</h5>
+                    <canvas id="optionAAbsChart" height="160"></canvas>
+                    <h5 style="margin:12px 0 4px 0;">Change vs Baseline (% difference)</h5>
+                    <canvas id="optionAPctChart" height="160"></canvas>
+                </div>
+            </div>
+            <div class="option" id="optionB" onclick="selectOption('B')">
+                <h4>💼 Option B</h4>
+                <div id="optionBContent"></div>
+                <div class="option-visuals">
+                    <h5 style="margin:10px 0 4px 0;">Total Rewards (Absolute $)</h5>
+                    <canvas id="optionBAbsChart" height="160"></canvas>
+                    <h5 style="margin:12px 0 4px 0;">Change vs Baseline (% difference)</h5>
+                    <canvas id="optionBPctChart" height="160"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn btn-primary" id="nextTaskBtn" onclick="nextTask()" disabled>Next Task →</button>
+    </div>
+
+    <!-- Page 10: Retention Questions -->
+    <div class="page" id="page10">
+        <h3>🎯 Your Preferred Package & Retention Questions</h3>
+        
+        <div class="package-box">
+            <h4>Your Preferred Package (Based on Your Choices):</h4>
+            <div id="preferredPackage">
+                <p>💵 $120K annually</p>
+                <p>📚 $5K training budget - covers conferences, workshops, certifications, and advanced courses</p>
+                <p>👥 Good manager - provides regular feedback, career mentoring, helps with development goals, supportive leadership</p>
+                <p>🏢 Hybrid - 2-3 days in office, 2-3 days work from home</p>
+            </div>
+        </div>
+
+        <p><strong>Now, imagine you're offered each of these specific packages. What's the probability (0-100%) you'd stay with the company for the next year?</strong></p>
+
+        <div class="retention-question">
+            <h5>📊 Baseline Package (Your Current Experience)</h5>
+            <p><strong>💵 Salary:</strong> $45,000 annually (your current baseline)</p>
+            <p><strong>📚 Training:</strong> $1,000 budget for training and personal development</p>
+            <p><strong>👥 Manager:</strong> Average manager - provides basic supervision</p>
+            <p><strong>🏢 Work:</strong> Full-time in office</p>
+            <div class="slider-container">
+                <input type="range" min="0" max="100" value="50" class="slider" id="baselineSlider" oninput="updateSliderValue('baseline', this.value)">
+                <p>Probability I'd stay: <strong><span id="baselineValue">50</span>%</strong></p>
+            </div>
+        </div>
+
+        <div class="retention-question">
+            <h5>🎯 Your Preferred Package (Based on Your Choices)</h5>
+            <p><strong>💵 Salary:</strong> $47,000 annually (above your baseline)</p>
+            <p><strong>📚 Training:</strong> $1,000 budget for training and personal development</p>
+            <p><strong>👥 Manager:</strong> Good manager - provides coaching and development</p>
+            <p><strong>🏢 Work:</strong> Hybrid - 2-3 days home, 2-3 days office</p>
+            <div class="slider-container">
+                <input type="range" min="0" max="100" value="75" class="slider" id="preferredSlider" oninput="updateSliderValue('preferred', this.value)">
+                <p>Probability I'd stay: <strong><span id="preferredValue">75</span>%</strong></p>
+            </div>
+        </div>
+
+        <div class="retention-question">
+            <h5>💼 Training-Focused Package</h5>
+            <p><strong>💵 Salary:</strong> $45,000 annually (same as baseline)</p>
+            <p><strong>📚 Training:</strong> $1,000 budget for training and personal development</p>
+            <p><strong>👥 Manager:</strong> Average manager - provides basic supervision</p>
+            <p><strong>🏢 Work:</strong> Full-time in office</p>
+            <div class="slider-container">
+                <input type="range" min="0" max="100" value="55" class="slider" id="trainingSlider" oninput="updateSliderValue('training', this.value)">
+                <p>Probability I'd stay: <strong><span id="trainingValue">55</span>%</strong></p>
+            </div>
+        </div>
+
+        <div class="retention-question">
+            <h5>👥 Manager-Focused Package</h5>
+            <p><strong>💵 Salary:</strong> $45,000 annually (same as baseline)</p>
+            <p><strong>📚 Training:</strong> $1,000 budget for training and personal development</p>
+            <p><strong>👥 Manager:</strong> Good manager - provides coaching and development</p>
+            <p><strong>🏢 Work:</strong> Full-time in office</p>
+            <div class="slider-container">
+                <input type="range" min="0" max="100" value="65" class="slider" id="managerSlider" oninput="updateSliderValue('manager', this.value)">
+                <p>Probability I'd stay: <strong><span id="managerValue">65</span>%</strong></p>
+            </div>
+        </div>
+
+        <button class="btn btn-primary" onclick="goToWaitPage()">Continue →</button>
+    </div>
+
+    <!-- Page 11: Wait Page -->
+    <div class="page" id="page11">
+        <div class="instruction-box">
+            <h3>⏳ Please Wait for Further Instructions</h3>
+            <p>Thank you for completing the retention probability questions!</p>
+            <p><strong>Please wait</strong> while your instructor prepares the next phase of the exercise.</p>
+            <p>Do not close this page or navigate away. You'll receive instructions shortly.</p>
+        </div>
+        
+        <div style="text-align: center; margin: 40px 0;">
+            <div style="font-size: 48px; color: #3B82F6;">⏳</div>
+            <p style="color: #666; font-style: italic;">Waiting for instructor...</p>
+        </div>
+        
+        <div id="waitButtonContainer" style="display: none;">
+            <button class="btn btn-primary" onclick="goToGroupWork()">Continue to Group Work →</button>
+        </div>
+    </div>
+
+    <!-- Page 12: Group Work Instructions -->
+    <div class="page" id="page12">
+        <div class="instruction-box">
+            <h3>👥 Focus Group Activity</h3>
+            <p><strong>Your instructor will now break the class into small groups.</strong></p>
+            <p>Once in your group, work together to create <strong>one new benefit package</strong> that you think would be acceptable to most students in the class.</p>
+        </div>
+
+        <div class="context-box">
+            <h4>🎯 Group Task: Design a "Class-Friendly" Package</h4>
+            <p><strong>Remember the $59K per-employee budget:</strong> Every dollar spent in one area reduces what's available for others. The company must work within this reduced budget while maximizing employee retention.</p>
+            
+            <div style="background-color: #f8f9fa; padding: 15px; border-radius: 6px; margin: 15px 0;">
+                <h5>📋 Your Group Should Discuss:</h5>
+                <ul>
+                    <li>What salary level would most students find acceptable?</li>
+                    <li>How much should be invested in training and development?</li>
+                    <li>What level of management support is most valued?</li>
+                    <li>How important is work flexibility vs. other benefits?</li>
+                </ul>
+            </div>
+
+            <p><strong>Goal:</strong> Create a package that balances all areas in a way that maximizes retention for the whole class.</p>
+        </div>
+
+        <div id="groupWorkInstructions" style="display: none;">
+            <div class="instruction-box">
+                <h4>📝 Group Work Instructions</h4>
+                <p>Your instructor will provide you with the specific details for creating your group's package.</p>
+                <p>Once your group has agreed on a package, your instructor will enter it into the system.</p>
+                <p>Then we'll do one final round of choices!</p>
+            </div>
+        </div>
+        
+        <button class="btn btn-primary" onclick="showGroupInstructions()">I'm Ready for Group Work</button>
+    </div>
+
+    <!-- Page 13: Final Choice Round -->
+    <div class="page" id="page13">
+        <div class="instruction-box">
+            <h3>🎯 Final Choice Round</h3>
+            <p>Now you'll see all available packages: your baseline, your preferred choice, and the focus group packages.</p>
+            <p><strong>Choose the package you'd most prefer, then answer the final retention questions.</strong></p>
+        </div>
+
+        <div id="finalChoiceContainer">
+            <!-- This will be populated with all available packages -->
+        </div>
+
+        <button class="btn btn-primary" onclick="goToFinalAssessment()" style="display: none;" id="finalChoiceButton">Continue to Final Assessment →</button>
+    </div>
+
+    <!-- Page 14: Assessment Questions -->
+    <div class="page" id="page14">
+        <h3>📝 Assessment Questions</h3>
+        <p><em>Please share your thoughts about this exercise:</em></p>
+
+        <div class="assessment-question">
+            <h4>1. How interesting did you find this exercise?</h4>
+            <div class="radio-group">
+                <label><input type="radio" name="interesting" value="5"> Very interesting</label><br>
+                <label><input type="radio" name="interesting" value="4"> Somewhat interesting</label><br>
+                <label><input type="radio" name="interesting" value="3"> Neutral</label><br>
+                <label><input type="radio" name="interesting" value="2"> Somewhat boring</label><br>
+                <label><input type="radio" name="interesting" value="1"> Very boring</label>
+            </div>
+        </div>
+
+        <div class="assessment-question">
+            <h4>2. How useful was this exercise for understanding measuring employee preferences?</h4>
+            <div class="radio-group">
+                <label><input type="radio" name="useful" value="5"> Very useful</label><br>
+                <label><input type="radio" name="useful" value="4"> Somewhat useful</label><br>
+                <label><input type="radio" name="useful" value="3"> Neutral</label><br>
+                <label><input type="radio" name="useful" value="2"> Somewhat useless</label><br>
+                <label><input type="radio" name="useful" value="1"> Very useless</label>
+            </div>
+        </div>
+
+        <div class="assessment-question">
+            <h4>3. Would you recommend this type of analysis to your current/future employer?</h4>
+            <div class="radio-group">
+                <label><input type="radio" name="recommend" value="5"> Definitely yes</label><br>
+                <label><input type="radio" name="recommend" value="4"> Probably yes</label><br>
+                <label><input type="radio" name="recommend" value="3"> Not sure</label><br>
+                <label><input type="radio" name="recommend" value="2"> Probably no</label><br>
+                <label><input type="radio" name="recommend" value="1"> Definitely no</label>
+            </div>
+        </div>
+
+        <div class="assessment-question">
+            <h4>4. This exercise helped me understand economic concepts.</h4>
+            <div class="radio-group">
+                <label><input type="radio" name="economic_concepts" value="5"> Strongly agree</label><br>
+                <label><input type="radio" name="economic_concepts" value="4"> Agree</label><br>
+                <label><input type="radio" name="economic_concepts" value="3"> Neutral</label><br>
+                <label><input type="radio" name="economic_concepts" value="2"> Disagree</label><br>
+                <label><input type="radio" name="economic_concepts" value="1"> Strongly disagree</label>
+            </div>
+        </div>
+
+        <div class="assessment-question">
+            <h4>5. This exercise helped me understand how labor economics is relevant to business applications.</h4>
+            <div class="radio-group">
+                <label><input type="radio" name="labor_economics_business" value="5"> Strongly agree</label><br>
+                <label><input type="radio" name="labor_economics_business" value="4"> Agree</label><br>
+                <label><input type="radio" name="labor_economics_business" value="3"> Neutral</label><br>
+                <label><input type="radio" name="labor_economics_business" value="2"> Disagree</label><br>
+                <label><input type="radio" name="labor_economics_business" value="1"> Strongly disagree</label>
+            </div>
+        </div>
+
+        <div class="assessment-question">
+            <h4>6. The discussion on this exercise helped me understand economic concepts.</h4>
+            <div class="radio-group">
+                <label><input type="radio" name="discussion_economic" value="5"> Strongly agree</label><br>
+                <label><input type="radio" name="discussion_economic" value="4"> Agree</label><br>
+                <label><input type="radio" name="discussion_economic" value="3"> Neutral</label><br>
+                <label><input type="radio" name="discussion_economic" value="2"> Disagree</label><br>
+                <label><input type="radio" name="discussion_economic" value="1"> Strongly disagree</label>
+            </div>
+        </div>
+
+        <div class="assessment-question">
+            <h4>7. The discussion on this exercise helped me understand how labor economics is relevant to business applications.</h4>
+            <div class="radio-group">
+                <label><input type="radio" name="discussion_labor_business" value="5"> Strongly agree</label><br>
+                <label><input type="radio" name="discussion_labor_business" value="4"> Agree</label><br>
+                <label><input type="radio" name="discussion_labor_business" value="3"> Neutral</label><br>
+                <label><input type="radio" name="discussion_labor_business" value="2"> Disagree</label><br>
+                <label><input type="radio" name="discussion_labor_business" value="1"> Strongly disagree</label>
+            </div>
+        </div>
+
+        <div class="assessment-question">
+            <h4>8. Cross-teaching (the participation of a Management professor in this activity) helped me understand how labor economics is integrated into my business education.</h4>
+            <div class="radio-group">
+                <label><input type="radio" name="cross_teaching" value="5"> Strongly agree</label><br>
+                <label><input type="radio" name="cross_teaching" value="4"> Agree</label><br>
+                <label><input type="radio" name="cross_teaching" value="3"> Neutral</label><br>
+                <label><input type="radio" name="cross_teaching" value="2"> Disagree</label><br>
+                <label><input type="radio" name="cross_teaching" value="1"> Strongly disagree</label>
+            </div>
+        </div>
+
+        <div class="assessment-question">
+            <h4>9. Any additional comments about this exercise?</h4>
+            <textarea id="comments" rows="4" placeholder="Optional feedback..."></textarea>
+        </div>
+
+        <button class="btn btn-success" onclick="submitSurvey()">Submit Assessment</button>
+    </div>
+
+    <!-- Page 15: Thank You -->
+    <div class="page" id="page15">
+        <div class="thank-you">
+            <h3>🎉 Thank you for completing the assessment!</h3>
+            <p>Your responses have been recorded and will be included in the class analysis.</p>
+            
+            <div class="context-box">
+                <h4>🔍 What happens next?</h4>
+                <p>• Your responses will be combined with other students' data</p>
+                <p>• The class will see which workplace programs are most valued</p>
+                <p>• We'll calculate the potential cost savings from reducing turnover</p>
+                <p>• The instructor will show the top 3 employee preference profiles and their business impact</p>
+            </div>
+
+            <div class="instruction-box">
+                <h4>💡 Key Insight:</h4>
+                <p><strong>Every 1% reduction in turnover saves the company $2 million annually!</strong></p>
+                <p>Your preferences will help identify which investments provide the best return on investment.</p>
+            </div>
+
+            <p><em>Please wait for the instructor to show the aggregate results and cost analysis.</em></p>
+        </div>
+    </div>
+
+    <script>
+        let currentPage = 1;
+        let currentTask = 1;
+        let choices = [];
+        let selectedOption = null;
+
+        // Sample choice sets (values: salary in $K; training = total development budget in $K)
+        // Encodes three themed profiles across tasks: Salary-First, Development-Heavy, Flex/Lifestyle
+        const choiceSets = [
+            // Salary-First vs Development-Heavy (all within $59K budget)
+            { A: {salary: 42.0, training: 1.0, manager: "average", flexibility: "onsite"},
+              B: {salary: 38.0, training: 3.5, manager: "good", flexibility: "hybrid"} },
+            // Salary-First vs Flex/Lifestyle  
+            { A: {salary: 41.5, training: 2.5, manager: "average", flexibility: "onsite"},
+              B: {salary: 39.0, training: 2.5, manager: "average", flexibility: "remote"} },
+            // Development-Heavy vs Flex/Lifestyle
+            { A: {salary: 37.0, training: 4.5, manager: "good", flexibility: "onsite"},
+              B: {salary: 38.5, training: 2.8, manager: "average", flexibility: "remote"} },
+            // Balanced variants around baseline
+            { A: {salary: 40.5, training: 2.8, manager: "good", flexibility: "hybrid"},
+              B: {salary: 39.5, training: 3.2, manager: "average", flexibility: "remote"} },
+            { A: {salary: 41.0, training: 2.5, manager: "average", flexibility: "hybrid"},
+              B: {salary: 38.0, training: 3.8, manager: "good", flexibility: "onsite"} },
+            { A: {salary: 39.0, training: 4.0, manager: "average", flexibility: "remote"},
+              B: {salary: 41.5, training: 1.8, manager: "good", flexibility: "hybrid"} },
+            { A: {salary: 40.0, training: 3.2, manager: "good", flexibility: "remote"},
+              B: {salary: 42.5, training: 1.2, manager: "average", flexibility: "onsite"} },
+            { A: {salary: 37.5, training: 5.0, manager: "good", flexibility: "hybrid"},
+              B: {salary: 40.5, training: 2.8, manager: "average", flexibility: "onsite"} }
+        ];
+
+        function formatAttribute(attr, value, option) {
+            const baseline = {
+                salary: 45,  // Original baseline before $5K cuts
+                training: 2.5,
+                manager: "average",
+                flexibility: "onsite"
+            };
+            
+            // Only show attributes that are different from baseline
+            switch(attr) {
+                case 'salary':
+                    const salaryChange = value - baseline.salary;
+                    if (salaryChange === 0) return null; // Don't show if no change
+                    const changeColor = salaryChange > 0 ? '#27ae60' : '#e74c3c'; // Green for gains, red for losses
+                    const changeText = salaryChange > 0 ? `+$${salaryChange.toFixed(1)}K` : `$${salaryChange.toFixed(1)}K`;
+                    return `<strong>💵 Salary:</strong> <span style="color: ${changeColor}; font-weight: bold;">${changeText} from baseline</span><br><em>New total: $${value.toFixed(1)}K annually</em>`;
+                    
+                case 'training':
+                    const trainingChange = value - baseline.training;
+                    if (trainingChange === 0) return null; // Don't show if no change
+                    const trainingChangeColor = trainingChange > 0 ? '#27ae60' : '#e74c3c'; // Green for gains, red for losses
+                    const trainingChangeText = trainingChange > 0 ? `+$${trainingChange.toFixed(1)}K` : `$${trainingChange.toFixed(1)}K`;
+                    
+                    const trainingDesc = value === 0 
+                        ? "No formal training budget"
+                        : value <= 1.5 
+                        ? "Basic development - minimal budget"
+                        : value <= 3.0
+                        ? "Standard development - regular training"
+                        : value <= 5.0
+                        ? "Enhanced development - comprehensive program"
+                        : "Premium development - extensive training";
+                    
+                    return `<strong>📚 Development:</strong> <span style="color: ${trainingChangeColor}; font-weight: bold;">${trainingChangeText} from baseline</span><br><em>${trainingDesc}</em>`;
+                    
+                case 'manager':
+                    if (value === baseline.manager) return null; // Don't show if no change
+                    if (value === "good") {
+                        return `<strong>👥 Manager Quality:</strong> <span style="color: #27ae60; font-weight: bold;">+$3K investment</span><br><em>Excellent manager - intensive coaching & career mentoring</em>`;
+                    }
+                    break;
+                    
+                case 'flexibility':
+                    if (value === baseline.flexibility) return null; // Don't show if no change
+                    if (value === "hybrid") {
+                        return `<strong>🏢 Work Location:</strong> <span style="color: #27ae60; font-weight: bold;">+$500 investment</span><br><em>Hybrid - 2-3 days home, 2-3 office</em>`;
+                    } else if (value === "remote") {
+                        return `<strong>🏢 Work Location:</strong> <span style="color: #27ae60; font-weight: bold;">+$1.5K investment</span><br><em>Fully remote - work from anywhere</em>`;
+                    }
+                    break;
+            }
+            return null; // Don't show unchanged attributes
+        }
+
+        function startSurvey() {
+            console.log('Start survey clicked');
+            try {
+                showPage(2);
+                loadChoiceTask(1);
+                console.log('Survey started successfully');
+            } catch (error) {
+                console.error('Error starting survey:', error);
+                alert('Error starting survey. Please refresh the page and try again.');
+            }
+        }
+
+        function showPage(pageNum) {
+            console.log('Showing page:', pageNum);
+            try {
+                document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+                const targetPage = document.getElementById(`page${pageNum}`);
+                if (targetPage) {
+                    targetPage.classList.add('active');
+                    currentPage = pageNum;
+                    console.log('Page', pageNum, 'shown successfully');
+                } else {
+                    console.error('Page element not found:', `page${pageNum}`);
+                }
+            } catch (error) {
+                console.error('Error showing page:', error);
+            }
+        }
+
+        function loadChoiceTask(taskNum) {
+            console.log('Loading choice task:', taskNum);
+            try {
+                if (taskNum > 8) {
+                    showPage(10);
+                    return;
+                }
+
+                const task = choiceSets[taskNum - 1];
+                if (!task) {
+                    console.error('Task not found:', taskNum);
+                    return;
+                }
+
+                document.getElementById('taskNumber').textContent = taskNum;
+                document.getElementById('progressFill').style.width = `${(taskNum / 8) * 100}%`;
+
+                // Load Option A
+                const optionAContent = document.getElementById('optionAContent');
+                if (optionAContent) {
+                    const optionAChanges = [
+                        formatAttribute('salary', task.A.salary, task.A),
+                        formatAttribute('training', task.A.training, task.A),
+                        formatAttribute('manager', task.A.manager, task.A),
+                        formatAttribute('flexibility', task.A.flexibility, task.A)
+                    ].filter(change => change !== null);
+                    
+                    if (optionAChanges.length === 0) {
+                        optionAContent.innerHTML = '<p><em>No changes from baseline package</em></p>';
+                    } else {
+                        optionAContent.innerHTML = optionAChanges.map(change => `<p>${change}</p>`).join('');
+                    }
+                }
+
+                // Load Option B
+                const optionBContent = document.getElementById('optionBContent');
+                if (optionBContent) {
+                    const optionBChanges = [
+                        formatAttribute('salary', task.B.salary, task.B),
+                        formatAttribute('training', task.B.training, task.B),
+                        formatAttribute('manager', task.B.manager, task.B),
+                        formatAttribute('flexibility', task.B.flexibility, task.B)
+                    ].filter(change => change !== null);
+                    
+                    if (optionBChanges.length === 0) {
+                        optionBContent.innerHTML = '<p><em>No changes from baseline package</em></p>';
+                    } else {
+                        optionBContent.innerHTML = optionBChanges.map(change => `<p>${change}</p>`).join('');
+                    }
+                }
+
+                // Reset selection
+                document.getElementById('optionA').classList.remove('selected');
+                document.getElementById('optionB').classList.remove('selected');
+                document.getElementById('nextTaskBtn').disabled = true;
+                selectedOption = null;
+
+                // Render visuals for both options
+                renderOptionCharts('A', task.A);
+                renderOptionCharts('B', task.B);
+                
+                // Equalize content heights so charts align horizontally
+                requestAnimationFrame(() => {
+                    equalizeOptionContentHeights();
+                });
+                
+                console.log('Choice task loaded successfully');
+            } catch (error) {
+                console.error('Error loading choice task:', error);
+            }
+        }
+        
+        function equalizeOptionContentHeights() {
+            const contentA = document.getElementById('optionAContent');
+            const contentB = document.getElementById('optionBContent');
+            
+            if (!contentA || !contentB) return;
+            
+            // Reset heights to auto to get natural heights
+            contentA.style.minHeight = 'auto';
+            contentB.style.minHeight = 'auto';
+            
+            // Get the natural heights
+            const heightA = contentA.offsetHeight;
+            const heightB = contentB.offsetHeight;
+            const maxHeight = Math.max(heightA, heightB);
+            
+            // Set both to the max height so charts start at same Y position
+            contentA.style.minHeight = maxHeight + 'px';
+            contentB.style.minHeight = maxHeight + 'px';
+        }
+
+        function selectOption(option) {
+            document.getElementById('optionA').classList.remove('selected');
+            document.getElementById('optionB').classList.remove('selected');
+            document.getElementById(`option${option}`).classList.add('selected');
+            document.getElementById('nextTaskBtn').disabled = false;
+            selectedOption = option;
+        }
+
+        // ===== Total Rewards Visuals (Chart.js) =====
+        let baselineRewardsChartRef, optionAAbsRef, optionAPctRef, optionBAbsRef, optionBPctRef;
+
+        const baselineComponents = ['Flexibility', 'Certifications', 'Tuition', 'PTO', 'Retirement', 'Health', 'Annual Raises', 'Base Salary', 'Managerial Training'];
+        const baselineValuesUSD = {
+            Flexibility: 1500,                    // 2 WFH + learning half-day
+            Certifications: 1000,                 // Professional development
+            Tuition: 1500,                        // Tuition reimbursement
+            PTO: 2500,                           // Paid time off value
+            Retirement: 3500,                    // 401k match + pension
+            Health: 5000,                        // Health insurance
+            'Annual Raises': 2000,               // Expected annual raises
+            'Base Salary': 45000,                // Original base salary (before $5K cuts)
+            'Managerial Training': 2000          // Managerial training to reach $64K total
+        };
+
+        function valuesFromOption(option) {
+            const totalBudget = 59000;
+            const salaryUSD = Math.round(option.salary * 1000);
+            const totalDevUSD = Math.round(option.training * 1000);
+            
+            // Start with baseline values for fixed components
+            let values = {
+                'Annual Raises': 2000,    // Fixed
+                Health: 5000,             // Fixed
+                Retirement: 3500,         // Fixed
+                PTO: 2500,               // Fixed
+                Flexibility: 1500,       // Fixed baseline
+                'Base Salary': salaryUSD
+            };
+            
+            // Adjust development based on option
+            if (totalDevUSD > 2500) {
+                // Enhanced development - split between tuition and certifications
+                values.Tuition = Math.min(3000, totalDevUSD - 500);
+                values.Certifications = Math.max(500, totalDevUSD - values.Tuition);
+            } else if (totalDevUSD > 0) {
+                // Reduced development
+                values.Tuition = Math.max(500, totalDevUSD * 0.6);
+                values.Certifications = Math.max(0, totalDevUSD - values.Tuition);
+            } else {
+                // No development
+                values.Tuition = 0;
+                values.Certifications = 0;
+            }
+            
+            // Adjust flexibility based on option
+            if (option.flexibility === 'remote') {
+                values.Flexibility = 3000;  // Higher cost for remote work
+            } else if (option.flexibility === 'hybrid') {
+                values.Flexibility = 2000;  // Moderate cost for hybrid
+            } else {
+                values.Flexibility = 1500;  // Baseline for onsite
+            }
+            
+            // Add manager quality cost if applicable
+            if (option.manager === 'good') {
+                values['Managerial Training'] = 3000;  // Additional cost for good manager
+            } else {
+                values['Managerial Training'] = 0;  // No additional managerial training cost
+            }
+            
+            // Calculate total and adjust if needed to stay within budget
+            let currentTotal = Object.values(values).reduce((sum, val) => sum + val, 0);
+            
+            if (currentTotal > totalBudget) {
+                // Scale down proportionally to fit budget
+                const scaleFactor = totalBudget / currentTotal;
+                Object.keys(values).forEach(key => {
+                    values[key] = Math.round(values[key] * scaleFactor);
+                });
+                // Recalculate and fine-tune to exact budget
+                currentTotal = Object.values(values).reduce((sum, val) => sum + val, 0);
+                const difference = totalBudget - currentTotal;
+                values['Base Salary'] += difference;
+            } else if (currentTotal < totalBudget) {
+                // Add remaining to base salary to maintain exact budget
+                values['Base Salary'] += (totalBudget - currentTotal);
+            }
+            
+            // Final verification
+            const finalTotal = Object.values(values).reduce((sum, val) => sum + val, 0);
+            if (finalTotal !== totalBudget) {
+                console.warn(`Budget verification failed: ${finalTotal} vs ${totalBudget}`);
+            }
+            
+            return values;
+        }
+
+        function renderBaselineRewardsChart() {
+            console.log('Rendering baseline rewards chart...');
+            try {
+                const ctx = document.getElementById('baselineRewardsChart');
+                if (!ctx) {
+                    console.error('Baseline chart canvas not found');
+                    return;
+                }
+                
+                if (baselineRewardsChartRef) baselineRewardsChartRef.destroy();
+                
+                const data = baselineComponents.map(k => baselineValuesUSD[k]);
+                console.log('Chart data:', { labels: baselineComponents, data });
+                
+                baselineRewardsChartRef = new Chart(ctx, {
+                    type: 'bar',
+                    data: { 
+                        labels: baselineComponents, 
+                        datasets: [{ 
+                            data, 
+                            backgroundColor: 'rgba(107,114,128,0.85)' 
+                        }] 
+                    },
+                    options: { 
+                        indexAxis: 'y', 
+                        animation: { duration: 700, easing: 'easeOutQuart' }, 
+                        plugins: { legend: { display: false } }, 
+                        scales: { 
+                            x: { 
+                                title: { display: true, text: 'Dollar Equivalent ($)' },
+                                grid: { display: true },
+                                ticks: { 
+                                    callback: function(value) { return '$' + (value/1000).toFixed(0) + 'K'; }
+                                }
+                            },
+                            y: {
+                                title: { display: true, text: 'Compensation Components' },
+                                grid: { display: false }
+                            }
+                        } 
+                    }
+                });
+                console.log('Baseline chart rendered successfully');
+            } catch (error) {
+                console.error('Error rendering baseline chart:', error);
+            }
+        }
+
+
+        function renderOptionCharts(prefix, option) {
+            console.log(`Rendering charts for option ${prefix}`);
+            const absCanvas = document.getElementById(`option${prefix}AbsChart`);
+            const pctCanvas = document.getElementById(`option${prefix}PctChart`);
+            if (!absCanvas || !pctCanvas) {
+                console.error(`Canvas elements not found for option ${prefix}:`, { absCanvas, pctCanvas });
+                return;
+            }
+
+            if (prefix === 'A') { if (optionAAbsRef) optionAAbsRef.destroy(); if (optionAPctRef) optionAPctRef.destroy(); }
+            if (prefix === 'B') { if (optionBAbsRef) optionBAbsRef.destroy(); if (optionBPctRef) optionBPctRef.destroy(); }
+
+            const optVals = valuesFromOption(option);
+            const labels = baselineComponents;
+            const absData = labels.map(k => optVals[k]);
+            const baseData = labels.map(k => baselineValuesUSD[k]);
+            const pctData = labels.map((k, i) => {
+                const base = baseData[i];
+                const val = absData[i];
+                if (base === 0) return val > 0 ? 100 : 0;
+                return Math.round(((val - base) / base) * 100);
+            });
+
+            const pctColors = pctData.map(v => v >= 0 ? 'rgba(16,185,129,0.85)' : 'rgba(239,68,68,0.85)');
+            
+            // Color code: blue for changed components, grey for unchanged
+            const absColors = labels.map((k, i) => {
+                return absData[i] === baseData[i] 
+                    ? 'rgba(107,114,128,0.4)'      // Grey for unchanged
+                    : 'rgba(59,130,246,0.85)';     // Blue for changed
+            });
+
+            const absConfig = {
+                type: 'bar',
+                data: { labels, datasets: [{ data: absData, backgroundColor: absColors }] },
+                options: { 
+                    indexAxis: 'y', 
+                    animation: { duration: 700, easing: 'easeOutQuart' }, 
+                    plugins: { legend: { display: false } }, 
+                    scales: { 
+                        x: { 
+                            title: { display: true, text: 'Dollar Equivalent ($)' },
+                            grid: { display: true },
+                            ticks: { 
+                                callback: function(value) { return '$' + (value/1000).toFixed(0) + 'K'; }
+                            }
+                        },
+                        y: {
+                            title: { display: true, text: 'Compensation Components' },
+                            grid: { display: false }
+                        }
+                    } 
+                }
+            };
+            const pctConfig = {
+                type: 'bar',
+                data: { labels, datasets: [{ data: pctData, backgroundColor: pctColors }] },
+                options: { 
+                    indexAxis: 'y', 
+                    animation: { duration: 700, easing: 'easeOutQuart' }, 
+                    plugins: { legend: { display: false } }, 
+                    scales: { 
+                        x: { 
+                            min: -100, 
+                            max: 100, 
+                            title: { display: true, text: 'Percent Difference (%)' },
+                            grid: { display: true },
+                            ticks: { callback: v => v + '%' }
+                        },
+                        y: {
+                            title: { display: true, text: 'Compensation Components' },
+                            grid: { display: false }
+                        }
+                    } 
+                }
+            };
+
+
+            try {
+                if (prefix === 'A') {
+                    optionAAbsRef = new Chart(absCanvas, absConfig);
+                    optionAPctRef = new Chart(pctCanvas, pctConfig);
+                    console.log('Option A charts created successfully');
+                } else {
+                    optionBAbsRef = new Chart(absCanvas, absConfig);
+                    optionBPctRef = new Chart(pctCanvas, pctConfig);
+                    console.log('Option B charts created successfully');
+                }
+            } catch (error) {
+                console.error(`Error creating charts for option ${prefix}:`, error);
+            }
+        }
+
+        window.addEventListener('load', function() {
+            console.log('Page loaded, checking Chart.js...');
+            // Check if Chart.js is loaded
+            if (typeof Chart === 'undefined') {
+                console.error('Chart.js is not loaded!');
+                alert('Chart.js library failed to load. Please refresh the page.');
+                return;
+            }
+            
+            console.log('Chart.js is loaded, rendering baseline chart...');
+            renderBaselineRewardsChart();
+        });
+
+        function nextTask() {
+            if (selectedOption) {
+                choices.push({
+                    task: currentTask,
+                    choice: selectedOption,
+                    choiceSet: choiceSets[currentTask - 1]
+                });
+                
+                currentTask++;
+                if (currentTask <= 8) {
+                    loadChoiceTask(currentTask);
+                } else {
+                    showPage(10);
+                }
+            }
+        }
+
+        function updateSliderValue(type, value) {
+            document.getElementById(`${type}Value`).textContent = value;
+        }
+
+        function goToWaitPage() {
+            showPage(11);
+        }
+
+        function goToGroupWork() {
+            showPage(12);
+        }
+
+        function showGroupInstructions() {
+            document.getElementById('groupWorkInstructions').style.display = 'block';
+        }
+
+        function goToFinalChoice() {
+            showPage(13);
+            loadFinalChoicePage();
+        }
+
+        function goToFinalAssessment() {
+            showPage(14);
+        }
+
+        function goToAssessment() {
+            showPage(14);
+        }
+
+        function loadFinalChoicePage() {
+            // This will be populated with focus group bundles by instructor
+            const container = document.getElementById('finalChoiceContainer');
+            
+            // Get the student's preferred choice from their earlier selections
+            const preferredChoice = getPreferredChoice();
+            
+            container.innerHTML = `
+                <div class="instruction-box">
+                    <h4>🎯 Final Choice Round</h4>
+                    <p>Choose from all available packages: your baseline, your preferred choice, and the focus group packages.</p>
+                </div>
+                
+                <div class="choice-container">
+                    <div class="option" onclick="selectFinalChoice('baseline')" id="final-baseline">
+                        <h5>📊 Baseline Package</h5>
+                        <p><strong>💵 Salary:</strong> $53,000 annually</p>
+                        <p><strong>📚 Training:</strong> $1,000 budget</p>
+                        <p><strong>👥 Manager:</strong> Average manager</p>
+                        <p><strong>🏢 Work Location:</strong> Full-time in office</p>
+                        <p><strong>📈 Your Previous Choice:</strong> This was your baseline experience</p>
+                    </div>
+                    
+                    <div class="option" onclick="selectFinalChoice('preferred')" id="final-preferred">
+                        <h5>🎯 Your Preferred Package</h5>
+                        <p><strong>💵 Salary:</strong> $55,500 annually (+4.7%)</p>
+                        <p><strong>📚 Training:</strong> $1,500 budget (+50%)</p>
+                        <p><strong>👥 Manager:</strong> Good manager</p>
+                        <p><strong>🏢 Work Location:</strong> Hybrid (2-3 days remote)</p>
+                        <p><strong>📈 Your Previous Choice:</strong> This was your preferred choice from earlier</p>
+                    </div>
+                </div>
+                
+                <div id="focusGroupChoices">
+                    <h4>👥 Focus Group Packages</h4>
+                    <p><em>These will appear once your instructor enters them.</em></p>
+                </div>
+                
+                <div id="finalRetentionQuestions" style="display: none;">
+                    <h4>📊 Final Retention Questions</h4>
+                    <p>For your chosen package, what's the probability you'd stay with the company for the next year?</p>
+                    
+                    <div class="retention-question">
+                        <label for="finalRetentionSlider">Probability I'd stay: <span id="finalRetentionValue">75</span>%</label>
+                        <input type="range" min="0" max="100" value="75" class="slider" id="finalRetentionSlider" oninput="updateFinalRetentionValue(this.value)">
+                    </div>
+                    
+                    <div class="retention-question">
+                        <h5>Would you actually quit or stay?</h5>
+                        <div class="radio-group">
+                            <label><input type="radio" name="finalDecision" value="stay"> I would stay</label><br>
+                            <label><input type="radio" name="finalDecision" value="quit"> I would quit</label>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function selectFinalChoice(choice) {
+            // Remove previous selections
+            document.querySelectorAll('#finalChoiceContainer .option').forEach(opt => opt.classList.remove('selected'));
+            
+            // Select the clicked option
+            document.getElementById(`final-${choice}`).classList.add('selected');
+            
+            // Show retention questions
+            document.getElementById('finalRetentionQuestions').style.display = 'block';
+            document.getElementById('finalChoiceButton').style.display = 'block';
+            
+            // Store the choice
+            window.finalChoice = choice;
+        }
+
+        function updateFinalRetentionValue(value) {
+            document.getElementById('finalRetentionValue').textContent = value;
+        }
+
+        function getPreferredChoice() {
+            // This would be determined from the student's earlier choice pattern
+            // For now, return a default preferred choice
+            return {
+                salary: 55500,
+                training: 1500,
+                manager: 'Good',
+                flexibility: 'Hybrid'
+            };
+        }
+
+        function submitSurvey() {
+            // Check if all assessment questions are answered
+            const interesting = document.querySelector('input[name="interesting"]:checked');
+            const useful = document.querySelector('input[name="useful"]:checked');
+            const recommend = document.querySelector('input[name="recommend"]:checked');
+            const economicConcepts = document.querySelector('input[name="economic_concepts"]:checked');
+            const laborEconomicsBusiness = document.querySelector('input[name="labor_economics_business"]:checked');
+            const discussionEconomic = document.querySelector('input[name="discussion_economic"]:checked');
+            const discussionLaborBusiness = document.querySelector('input[name="discussion_labor_business"]:checked');
+            const crossTeaching = document.querySelector('input[name="cross_teaching"]:checked');
+            
+            if (!interesting || !useful || !recommend || !economicConcepts || !laborEconomicsBusiness || 
+                !discussionEconomic || !discussionLaborBusiness || !crossTeaching) {
+                alert('Please answer all assessment questions.');
+                return;
+            }
+
+            // Collect all data (in a real app, this would be sent to a server)
+            const surveyData = {
+                choices: choices,
+                retention: {
+                    baseline: document.getElementById('baselineSlider').value,
+                    preferred: document.getElementById('preferredSlider').value,
+                    training: document.getElementById('trainingSlider').value,
+                    manager: document.getElementById('managerSlider').value
+                },
+                assessment: {
+                    interesting: interesting.value,
+                    useful: useful.value,
+                    recommend: recommend.value,
+                    economic_concepts: economicConcepts.value,
+                    labor_economics_business: laborEconomicsBusiness.value,
+                    discussion_economic: discussionEconomic.value,
+                    discussion_labor_business: discussionLaborBusiness.value,
+                    cross_teaching: crossTeaching.value,
+                    comments: document.getElementById('comments').value
+                }
+            };
+
+            console.log('Survey Data:', surveyData);
+            showPage(12);
+        }
+    </script>
+</body>
+</html>

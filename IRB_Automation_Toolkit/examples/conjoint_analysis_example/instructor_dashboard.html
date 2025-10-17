@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conjoint Analysis - Instructor Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .header {
+            background-color: #3B82F6;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        .controls {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .btn {
+            padding: 12px 24px;
+            margin: 10px 5px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .btn-primary {
+            background-color: #3B82F6;
+            color: white;
+        }
+        .btn-success {
+            background-color: #10B981;
+            color: white;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        .status {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        .results {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .chart-container {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        .bar {
+            width: 60px;
+            background-color: #3B82F6;
+            margin: 0 10px;
+            border-radius: 4px 4px 0 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .bar-label {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .bar-value {
+            color: white;
+            font-weight: bold;
+            padding: 5px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        .hidden {
+            display: none;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 500px;
+            text-align: center;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close:hover {
+            color: black;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+    <div class="header">
+        <h1>📊 Conjoint Analysis - Instructor Dashboard</h1>
+        <p>Classroom Exercise: Employee Preference Analysis</p>
+    </div>
+
+    <div class="controls">
+        <h3>🎮 Controls</h3>
+        <button class="btn btn-primary" onclick="loadData()">Load Sample Data</button>
+        <button class="btn btn-success" onclick="showResults()">Show Results</button>
+        
+        <div style="margin: 20px 0; padding: 15px; background-color: #f8f9fa; border-radius: 6px;">
+            <h4>👥 Focus Group Management</h4>
+            <button class="btn btn-primary" onclick="enableGroupWork()">Enable Group Work Phase</button>
+            <button class="btn btn-success" onclick="addFocusGroupBundle()">Add Focus Group Bundle</button>
+            <button class="btn btn-primary" onclick="startFinalRound()">Start Final Choice Round</button>
+        </div>
+        
+        <div class="status" id="status">
+            <strong>Status:</strong> Click 'Load Sample Data' to begin
+        </div>
+    </div>
+
+    <div class="results" id="results" style="display: none;">
+        <h3>📈 Retention by Package Type</h3>
+        <div class="chart-container">
+            <div class="bar">
+                <div class="bar-value" style="height: 130px; display: flex; align-items: end;">65%</div>
+                <div class="bar-label">Baseline</div>
+            </div>
+            <div class="bar">
+                <div class="bar-value" style="height: 156px; display: flex; align-items: end;">78%</div>
+                <div class="bar-label">Preferred</div>
+            </div>
+            <div class="bar">
+                <div class="bar-value" style="height: 144px; display: flex; align-items: end;">72%</div>
+                <div class="bar-label">Training</div>
+            </div>
+            <div class="bar">
+                <div class="bar-value" style="height: 140px; display: flex; align-items: end;">70%</div>
+                <div class="bar-label">Manager</div>
+            </div>
+        </div>
+
+        <h3>💰 Cost Allocation Analysis ($59K per employee budget, down from $64K)</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Profile</th>
+                    <th>Salary</th>
+                    <th>Training</th>
+                    <th>Manager</th>
+                    <th>Work Setup</th>
+                    <th>Retention %</th>
+                    <th>Turnover Savings</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Baseline</strong></td>
+                    <td>$53K</td>
+                    <td>$0K</td>
+                    <td>$25K</td>
+                    <td>$25K</td>
+                    <td>65%</td>
+                    <td>$0M</td>
+                </tr>
+                <tr style="background-color: #e8f5e8;">
+                    <td><strong>Preferred</strong></td>
+                    <td>$55.5K</td>
+                    <td>$5K</td>
+                    <td>$40K</td>
+                    <td>$30K</td>
+                    <td>78%</td>
+                    <td><strong>$26M</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Training-Focused</strong></td>
+                    <td>$52K</td>
+                    <td>$5K</td>
+                    <td>$25K</td>
+                    <td>$25K</td>
+                    <td>72%</td>
+                    <td>$14M</td>
+                </tr>
+                <tr>
+                    <td><strong>Manager-Focused</strong></td>
+                    <td>$50K</td>
+                    <td>$0K</td>
+                    <td>$40K</td>
+                    <td>$25K</td>
+                    <td>70%</td>
+                    <td>$10M</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <h3>📊 Three-Panel Comparison</h3>
+        <p>Baseline shows absolute dollar values. Alternatives show percent differences relative to the baseline (green = gain, red = loss).</p>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: start;">
+            <div>
+                <h4 style="text-align:center; margin: 8px 0;">Baseline (Absolute $ Values)</h4>
+                <canvas id="baselineChart" height="280"></canvas>
+            </div>
+            <div>
+                <h4 style="text-align:center; margin: 8px 0;">Salary-First vs Baseline (% diff)</h4>
+                <canvas id="salaryFirstChart" height="280"></canvas>
+            </div>
+            <div>
+                <h4 style="text-align:center; margin: 8px 0;">Flexibility/Lifestyle vs Baseline (% diff)</h4>
+                <canvas id="flexLifestyleChart" height="280"></canvas>
+            </div>
+        </div>
+
+        <div class="status">
+            <h4>⚖️ Key Cost Trade-off Insights:</h4>
+            <p><strong>Fixed $59K per-employee budget:</strong> After a $5K cut from the original $64K baseline, every dollar spent in one area reduces what's available for others</p>
+            <p><strong>Student Preferences:</strong> Willing to accept modest salary increases with good management and training</p>
+            <p><strong>Biggest Trade-off:</strong> Students prefer balanced improvements across all areas rather than maximizing any single benefit</p>
+            <p><strong>ROI Winner:</strong> Preferred Package balances all four areas for maximum retention ($26M savings)</p>
+        </div>
+
+        <div class="status">
+            <strong>Key Insight:</strong> Every 1% reduction in turnover saves the company $2M annually!
+            The Preferred Package delivers the highest ROI with $26M net benefit (as shown in table above).
+        </div>
+
+        <h3>📊 Stated vs. Revealed Preferences Analysis</h3>
+        <div class="context-box">
+            <h4>🎯 Key Teaching Moment: Stated vs. Revealed Preferences</h4>
+            <p><strong>Stated Preferences:</strong> What students said about their retention probabilities</p>
+            <p><strong>Revealed Preferences:</strong> What students actually chose when presented with trade-offs</p>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Package</th>
+                    <th>Stated Retention %</th>
+                    <th>Actual Retention %</th>
+                    <th>Difference</th>
+                    <th>Predicted Turnover Cost</th>
+                    <th>Actual Turnover Cost</th>
+                    <th>Cost Difference</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Baseline</strong></td>
+                    <td>65%</td>
+                    <td>60%</td>
+                    <td style="color: #dc3545;">-5%</td>
+                    <td>$3,125,000</td>
+                    <td>$3,750,000</td>
+                    <td style="color: #dc3545;">-$625,000</td>
+                </tr>
+                <tr style="background-color: #e8f5e8;">
+                    <td><strong>Preferred</strong></td>
+                    <td>78%</td>
+                    <td>85%</td>
+                    <td style="color: #28a745;">+7%</td>
+                    <td>$2,250,000</td>
+                    <td>$1,875,000</td>
+                    <td style="color: #28a745;">+$375,000</td>
+                </tr>
+                <tr>
+                    <td><strong>Training-Focused</strong></td>
+                    <td>72%</td>
+                    <td>70%</td>
+                    <td style="color: #dc3545;">-2%</td>
+                    <td>$2,750,000</td>
+                    <td>$2,625,000</td>
+                    <td style="color: #28a745;">+$125,000</td>
+                </tr>
+                <tr>
+                    <td><strong>Manager-Focused</strong></td>
+                    <td>70%</td>
+                    <td>68%</td>
+                    <td style="color: #dc3545;">-2%</td>
+                    <td>$2,625,000</td>
+                    <td>$2,750,000</td>
+                    <td style="color: #dc3545;">-$125,000</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="instruction-box">
+            <h4>💡 Teaching Points for Discussion:</h4>
+            <ul>
+                <li><strong>Students often overestimate</strong> their satisfaction with current conditions (baseline)</li>
+                <li><strong>Students underestimate</strong> the value of balanced improvements (preferred package)</li>
+                <li><strong>Revealed preferences are more accurate</strong> for predicting actual behavior</li>
+                <li><strong>Cost implications:</strong> Acting on stated preferences could lead to $625K+ in additional turnover costs</li>
+            </ul>
+        </div>
+
+        <div class="status">
+            <strong>Turnover Cost Formula:</strong> (500 workers × $50,000 avg salary × 50% replacement cost × turnover rate)<br>
+            <strong>Example:</strong> 500 × $50,000 × 0.5 × 0.25 = $3,125,000 predicted cost
+        </div>
+
+        <h3>🏆 Three-Way Package Comparison</h3>
+        <div class="context-box">
+            <h4>🎯 Final Round Analysis: Baseline vs. Preferred vs. Focus Group Packages</h4>
+            <p>This shows the results from the final choice round where students compared all available packages.</p>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Package Type</th>
+                    <th>Final Choice %</th>
+                    <th>Final Retention %</th>
+                    <th>Actual Quit Rate</th>
+                    <th>Turnover Cost</th>
+                    <th>Net Savings vs. Baseline</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Baseline (Original)</strong></td>
+                    <td>15%</td>
+                    <td>60%</td>
+                    <td>40%</td>
+                    <td>$5,000,000</td>
+                    <td>$0</td>
+                </tr>
+                <tr style="background-color: #e8f5e8;">
+                    <td><strong>Student Preferred</strong></td>
+                    <td>45%</td>
+                    <td>85%</td>
+                    <td>15%</td>
+                    <td>$1,875,000</td>
+                    <td><strong style="color: #28a745;">+$3,125,000</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Focus Group A (Balanced)</strong></td>
+                    <td>25%</td>
+                    <td>80%</td>
+                    <td>20%</td>
+                    <td>$2,500,000</td>
+                    <td><strong style="color: #28a745;">+$2,500,000</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Focus Group B (Salary-First)</strong></td>
+                    <td>10%</td>
+                    <td>75%</td>
+                    <td>25%</td>
+                    <td>$3,125,000</td>
+                    <td><strong style="color: #28a745;">+$1,875,000</strong></td>
+                </tr>
+                <tr>
+                    <td><strong>Focus Group C (Development-Heavy)</strong></td>
+                    <td>5%</td>
+                    <td>78%</td>
+                    <td>22%</td>
+                    <td>$2,750,000</td>
+                    <td><strong style="color: #28a745;">+$2,250,000</strong></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="instruction-box">
+            <h4>📊 Key Insights from Final Round:</h4>
+            <ul>
+                <li><strong>Student Preferred Package wins:</strong> 45% of students chose their individually preferred package</li>
+                <li><strong>Focus groups created viable alternatives:</strong> 40% of students preferred group-designed packages</li>
+                <li><strong>Balanced packages perform best:</strong> Focus Group A's balanced approach attracted 25% of students</li>
+                <li><strong>Individual preferences still matter:</strong> Students' original preferred choice was the most popular</li>
+                <li><strong>Cost-benefit clear:</strong> All alternative packages save $1.8M+ compared to baseline</li>
+            </ul>
+        </div>
+
+        <div class="status">
+            <strong>🎓 Teaching Moment:</strong> This demonstrates how both individual preferences and collaborative design can create valuable alternatives. The exercise shows that students can work together to create packages that appeal to broader audiences while still maintaining strong retention outcomes.
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="resultModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2>🎯 Analysis Complete!</h2>
+            <p>The analysis shows that the <strong>Preferred Package</strong> delivers the highest retention at <strong>78%</strong> and saves <strong>$26M in turnover costs</strong>.</p>
+            <p><strong>⚖️ The Cost Trade-off Reality:</strong> Students were willing to reallocate the fixed $150K cost:</p>
+            <ul>
+                <li><strong>+$2.5K salary</strong> (from $53K to $55.5K)</li>
+                <li><strong>+$5K training</strong> budget (from $0 to $5K)</li>
+                <li><strong>+$15K management</strong> investment (from $25K to $40K)</li>
+                <li><strong>+$5K flexibility</strong> costs (from $25K to $30K)</li>
+            </ul>
+            <p><strong>💡 Key Learning:</strong> Within the $59K budget constraint (after $5K cut from $64K baseline), students value <em>balanced improvements</em> across all areas rather than maximizing any single benefit.</p>
+            <button class="btn btn-primary" onclick="closeModal()">Got it!</button>
+        </div>
+    </div>
+
+    <script>
+        let dataLoaded = false;
+
+        function loadData() {
+            dataLoaded = true;
+            document.getElementById('status').innerHTML = '<strong>Status:</strong> ✅ Data loaded - 30 students completed the survey';
+            document.getElementById('results').style.display = 'block';
+            
+            // Show notification
+            alert('✅ Data loaded successfully! 30 students have completed their assessments.');
+
+            // Render comparison charts
+            renderThreePanelCharts();
+        }
+
+        function showResults() {
+            if (dataLoaded) {
+                document.getElementById('resultModal').style.display = 'block';
+            } else {
+                alert('⚠️ Please load data first!');
+            }
+        }
+
+        // ===== Three-Panel Comparison (Chart.js) =====
+        let baselineChartRef, salaryFirstChartRef, flexLifestyleChartRef;
+
+        function renderThreePanelCharts() {
+            // Labels/components - matching student app (9 components)
+            const labels = [
+                'Flexibility',
+                'Certifications',
+                'Tuition',
+                'PTO',
+                'Retirement',
+                'Health',
+                'Annual Raises',
+                'Base Salary',
+                'Managerial Training'
+            ];
+
+            // Baseline absolute dollar values ($64K original baseline)
+            // These match the student app baseline values exactly
+            const baselineValues = [
+                1500,   // Flexibility (2 WFH + learning time)
+                1000,   // Certifications (professional development)
+                1500,   // Tuition (reimbursement)
+                2500,   // PTO (paid time off value)
+                3500,   // Retirement (401k match + pension)
+                5000,   // Health (comprehensive insurance)
+                2000,   // Annual Raises (expected annual increases)
+                45000,  // Base Salary (original baseline before $5K cuts)
+                2000    // Managerial Training (to reach $64K total)
+            ];
+
+            // Salary-First profile percent differences vs baseline
+            // Prioritizes salary: ↓ training, maintains basic benefits, ↓ managerial training
+            const salaryFirstPctDiff = [
+                0,      // Flexibility (unchanged)
+                -50,    // Certifications (reduced)
+                -67,    // Tuition (reduced significantly)
+                0,      // PTO (unchanged)
+                0,      // Retirement (unchanged)
+                0,      // Health (unchanged)
+                0,      // Annual Raises (unchanged)
+                -6,     // Base Salary (reduced to fit $59K budget)
+                -100    // Managerial Training (removed)
+            ];
+
+            // Flexibility/Lifestyle profile percent differences vs baseline
+            // Prioritizes work flexibility and lifestyle: ↑ flexibility, ↑ PTO, ↓ salary, ↓ training
+            const flexLifestylePctDiff = [
+                100,    // Flexibility (doubled - remote work)
+                -100,   // Certifications (removed)
+                -67,    // Tuition (reduced)
+                0,      // PTO (unchanged)
+                0,      // Retirement (unchanged)
+                0,      // Health (unchanged)
+                0,      // Annual Raises (unchanged)
+                -13,    // Base Salary (reduced for flexibility)
+                -100    // Managerial Training (removed)
+            ];
+
+            // Destroy previous charts if re-rendering
+            [baselineChartRef, salaryFirstChartRef, flexLifestyleChartRef].forEach(ch => { if (ch) ch.destroy(); });
+
+            // Helper to color +/-
+            const pctColors = arr => arr.map(v => v >= 0 ? 'rgba(16,185,129,0.85)' : 'rgba(239,68,68,0.85)');
+
+            // Baseline absolute chart (horizontal)
+            baselineChartRef = new Chart(document.getElementById('baselineChart'), {
+                type: 'bar',
+                data: {
+                    labels,
+                    datasets: [{
+                        label: 'Dollar Equivalent ($)',
+                        data: baselineValues,
+                        backgroundColor: 'rgba(107,114,128,0.85)'
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: { x: { title: { text: 'Dollar Equivalent ($)', display: true } } }
+                }
+            });
+
+            // Salary-First percent difference chart
+            salaryFirstChartRef = new Chart(document.getElementById('salaryFirstChart'), {
+                type: 'bar',
+                data: {
+                    labels,
+                    datasets: [{
+                        label: '% Difference',
+                        data: salaryFirstPctDiff,
+                        backgroundColor: pctColors(salaryFirstPctDiff)
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { min: -100, max: 100, ticks: { callback: v => v + '%' }, title: { text: 'Percent Difference (%)', display: true } }
+                    }
+                }
+            });
+
+            // Flexibility/Lifestyle percent difference chart
+            flexLifestyleChartRef = new Chart(document.getElementById('flexLifestyleChart'), {
+                type: 'bar',
+                data: {
+                    labels,
+                    datasets: [{
+                        label: '% Difference',
+                        data: flexLifestylePctDiff,
+                        backgroundColor: pctColors(flexLifestylePctDiff)
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { min: -100, max: 100, ticks: { callback: v => v + '%' }, title: { text: 'Percent Difference (%)', display: true } }
+                    }
+                }
+            });
+        }
+
+        function closeModal() {
+            document.getElementById('resultModal').style.display = 'none';
+        }
+
+        // Focus Group Management Functions
+        function enableGroupWork() {
+            alert('✅ Group work phase enabled! Students can now proceed from the wait page to group work.');
+            // In a real implementation, this would trigger the wait page button to appear
+        }
+
+        function addFocusGroupBundle() {
+            const bundleName = prompt('Enter the name for this focus group bundle:');
+            if (bundleName) {
+                const salary = prompt('Enter salary amount (e.g., 50000):');
+                const training = prompt('Enter training budget (e.g., 3000):');
+                const manager = prompt('Enter manager quality (Good/Average/Poor):');
+                const flexibility = prompt('Enter work flexibility (Full Remote/Hybrid/Office Only):');
+                
+                if (salary && training && manager && flexibility) {
+                    alert(`✅ Focus group bundle "${bundleName}" added!\nSalary: $${salary}\nTraining: $${training}\nManager: ${manager}\nFlexibility: ${flexibility}`);
+                    // In a real implementation, this would add the bundle to the system
+                }
+            }
+        }
+
+        function startFinalRound() {
+            alert('✅ Final choice round started! Students can now see all packages and make their final choices.');
+            // In a real implementation, this would trigger the final choice page
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            let modal = document.getElementById('resultModal');
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

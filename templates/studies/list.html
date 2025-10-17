@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}Browse Studies - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h2>Available Studies</h2>
+        
+        <div class="mb-3">
+            <a href="?mode=lab" class="btn btn-outline-primary btn-sm">Lab Studies</a>
+            <a href="?mode=online" class="btn btn-outline-primary btn-sm">Online Studies</a>
+            <a href="{% url 'studies:list' %}" class="btn btn-outline-secondary btn-sm">All Studies</a>
+        </div>
+        
+        {% if studies %}
+            <div class="row">
+                {% for study in studies %}
+                    <div class="col-md-6 mb-3">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ study.title }}</h5>
+                                <p class="card-text">{{ study.description|truncatewords:30 }}</p>
+                                
+                                <div class="mb-2">
+                                    <span class="badge bg-info">{{ study.get_mode_display }}</span>
+                                    <span class="badge bg-success">{{ study.credit_value }} credits</span>
+                                    <span class="badge bg-secondary">{{ study.duration_minutes }} min</span>
+                                </div>
+                                
+                                <p class="text-muted small">
+                                    Researcher: {{ study.researcher.get_full_name }}
+                                </p>
+                                
+                                <a href="{% url 'studies:detail' study.id %}" class="btn btn-primary btn-sm">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                No studies available at this time. Please check back later.
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+
+
+

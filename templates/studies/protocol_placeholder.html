@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ study.title }} - Protocol - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h2>{{ study.title }} - Protocol</h2>
+        
+        <div class="alert alert-info">
+            <h4>Protocol Not Yet Installed</h4>
+            <p>
+                This study's protocol HTML has not been installed yet. 
+                To add a protocol for this study:
+            </p>
+            <ol>
+                <li>Create the directory: <code>templates/projects/{{ study.slug }}/protocol/</code></li>
+                <li>Add your protocol HTML as: <code>templates/projects/{{ study.slug }}/protocol/index.html</code></li>
+                <li>Add any static assets to: <code>static/projects/{{ study.slug }}/</code></li>
+            </ol>
+        </div>
+        
+        {% if user.is_authenticated and user.is_researcher %}
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5>Test Data Submission</h5>
+            </div>
+            <div class="card-body">
+                <p>This is a development-only test form to verify the data collection endpoint works.</p>
+                
+                <form id="test-form">
+                    <div class="mb-3">
+                        <label for="test-data" class="form-label">Test JSON Data:</label>
+                        <textarea 
+                            class="form-control" 
+                            id="test-data" 
+                            rows="5" 
+                            placeholder='{"response": "test", "score": 42}'
+                        >{"test": true, "response": "sample data", "timestamp": "{{ now|date:'c' }}"}</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Test Response</button>
+                </form>
+                
+                <div id="result" class="mt-3"></div>
+            </div>
+        </div>
+        
+        <script>
+            document.getElementById('test-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const data = document.getElementById('test-data').value;
+                const resultDiv = document.getElementById('result');
+                
+                try {
+                    const json = JSON.parse(data);
+                    
+                    const response = await fetch('/api/studies/{{ study.id }}/submit/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(json)
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        resultDiv.innerHTML = `
+                            <div class="alert alert-success">
+                                <strong>Success!</strong><br>
+                                Response ID: ${result.response_id}<br>
+                                Session ID: ${result.session_id}<br>
+                                <a href="{% url 'studies:status' study.slug %}" class="alert-link">View Status Dashboard</a>
+                            </div>
+                        `;
+                    } else {
+                        resultDiv.innerHTML = `
+                            <div class="alert alert-danger">
+                                <strong>Error:</strong> ${result.error || 'Unknown error'}
+                            </div>
+                        `;
+                    }
+                } catch (err) {
+                    resultDiv.innerHTML = `
+                        <div class="alert alert-danger">
+                            <strong>Error:</strong> ${err.message}
+                        </div>
+                    `;
+                }
+            });
+        </script>
+        {% endif %}
+        
+        <div class="mt-4">
+            <a href="{% url 'studies:list' %}" class="btn btn-secondary">Back to Studies</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+

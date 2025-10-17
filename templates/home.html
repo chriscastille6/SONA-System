@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="text-center mb-5">
+            <h1 class="display-4">Welcome to {{ SITE_NAME }}</h1>
+            <p class="lead">Participant Recruitment & Study Management for {{ INSTITUTION_NAME }}</p>
+        </div>
+
+        {% if not user.is_authenticated %}
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h3 class="card-title">For Participants</h3>
+                            <p class="card-text">Browse research studies, earn course credits, and contribute to science.</p>
+                            <a href="{% url 'accounts:register' %}" class="btn btn-primary">Get Started</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h3 class="card-title">For Researchers</h3>
+                            <p class="card-text">Recruit participants, manage studies, and streamline your research workflow.</p>
+                            <a href="{% url 'accounts:login' %}" class="btn btn-outline-primary">Sign In</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="row g-4">
+                {% if user.is_participant %}
+                    <div class="col-md-4">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h5 class="card-title">Browse Studies</h5>
+                                <p class="card-text">Find research opportunities</p>
+                                <a href="{% url 'studies:list' %}" class="btn btn-primary">View Studies</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h5 class="card-title">My Bookings</h5>
+                                <p class="card-text">Manage your signups</p>
+                                <a href="{% url 'studies:my_bookings' %}" class="btn btn-primary">View Bookings</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h5 class="card-title">My Credits</h5>
+                                <p class="card-text">Track your progress</p>
+                                <a href="{% url 'credits:my_credits' %}" class="btn btn-primary">View Credits</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% if user.is_researcher %}
+                    <div class="col-md-6">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h5 class="card-title">My Studies</h5>
+                                <p class="card-text">Manage your research studies</p>
+                                <a href="{% url 'studies:researcher_dashboard' %}" class="btn btn-primary">Dashboard</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                <h5 class="card-title">Create Study</h5>
+                                <p class="card-text">Start recruiting participants</p>
+                                <a href="{% url 'studies:create' %}" class="btn btn-success">New Study</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        <div class="mt-5">
+            <h3>Features</h3>
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <ul class="list-unstyled">
+                        <li>✓ Browse eligible studies</li>
+                        <li>✓ Online and lab studies</li>
+                        <li>✓ Automated reminders</li>
+                        <li>✓ Easy signup & cancellation</li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <ul class="list-unstyled">
+                        <li>✓ Track research credits</li>
+                        <li>✓ Prescreening for eligibility</li>
+                        <li>✓ Email notifications</li>
+                        <li>✓ Comprehensive reporting</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+

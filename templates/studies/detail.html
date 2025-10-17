@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ study.title }} - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h2>{{ study.title }}</h2>
+        
+        <div class="card mt-3">
+            <div class="card-body">
+                <div class="mb-3">
+                    <span class="badge bg-info">{{ study.get_mode_display }}</span>
+                    <span class="badge bg-success">{{ study.credit_value }} credits</span>
+                    <span class="badge bg-secondary">{{ study.duration_minutes }} minutes</span>
+                </div>
+                
+                <h5>Description</h5>
+                <p>{{ study.description|linebreaks }}</p>
+                
+                <h5>Details</h5>
+                <ul>
+                    <li><strong>Researcher:</strong> {{ study.researcher.get_full_name }}</li>
+                    <li><strong>Duration:</strong> {{ study.duration_minutes }} minutes</li>
+                    <li><strong>Credits:</strong> {{ study.credit_value }}</li>
+                    {% if study.mode == 'online' and study.external_link %}
+                        <li><strong>Study Link:</strong> <a href="{{ study.external_link }}" target="_blank">{{ study.external_link }}</a></li>
+                    {% endif %}
+                </ul>
+                
+                {% if study.consent_text %}
+                    <h5>Informed Consent</h5>
+                    <div class="alert alert-info">
+                        {{ study.consent_text|linebreaks }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        {% if user.is_authenticated and user.is_participant %}
+            <h3 class="mt-4">Available Timeslots</h3>
+            
+            {% if timeslots %}
+                <div class="list-group mt-3">
+                    {% for timeslot in timeslots %}
+                        <div class="list-group-item {% if timeslot.is_full %}list-group-item-secondary{% endif %}">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1">{{ timeslot.starts_at|date:"l, F d, Y" }}</h6>
+                                    <p class="mb-1">{{ timeslot.starts_at|time:"g:i A" }} - {{ timeslot.ends_at|time:"g:i A" }}</p>
+                                    {% if timeslot.location %}
+                                        <small class="text-muted">Location: {{ timeslot.location }}</small>
+                                    {% endif %}
+                                    <br>
+                                    <small class="text-muted">{{ timeslot.current_signups }}/{{ timeslot.capacity }} spots filled</small>
+                                </div>
+                                <div>
+                                    {% if timeslot.is_full %}
+                                        <span class="badge bg-secondary">Full</span>
+                                    {% else %}
+                                        <a href="{% url 'studies:book_timeslot' timeslot.id %}" class="btn btn-primary btn-sm">Book</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="alert alert-warning">
+                    No available timeslots at this time. Please check back later.
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="alert alert-info mt-3">
+                <a href="{% url 'accounts:login' %}">Log in</a> as a participant to book timeslots.
+            </div>
+        {% endif %}
+        
+        <a href="{% url 'studies:list' %}" class="btn btn-secondary mt-3">Back to Studies</a>
+    </div>
+</div>
+{% endblock %}
+
+
+
+

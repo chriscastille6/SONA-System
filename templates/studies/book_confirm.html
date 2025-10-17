@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Confirm Booking - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h2>Confirm Booking</h2>
+        
+        <div class="card mt-3">
+            <div class="card-body">
+                <h5 class="card-title">{{ timeslot.study.title }}</h5>
+                
+                <p><strong>Date:</strong> {{ timeslot.starts_at|date:"l, F d, Y" }}</p>
+                <p><strong>Time:</strong> {{ timeslot.starts_at|time:"g:i A" }} - {{ timeslot.ends_at|time:"g:i A" }}</p>
+                {% if timeslot.location %}
+                    <p><strong>Location:</strong> {{ timeslot.location }}</p>
+                {% endif %}
+                <p><strong>Duration:</strong> {{ timeslot.study.duration_minutes }} minutes</p>
+                <p><strong>Credits:</strong> {{ timeslot.study.credit_value }}</p>
+                
+                <div class="alert alert-warning">
+                    <strong>Cancellation Policy:</strong> You can cancel up to {{ settings.CANCELLATION_WINDOW_HOURS }} hours before the session starts.
+                </div>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="consent" required>
+                        <label class="form-check-label" for="consent">
+                            I have read and agree to participate in this study
+                        </label>
+                    </div>
+                    
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Confirm Booking</button>
+                        <a href="{% url 'studies:detail' timeslot.study.id %}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+

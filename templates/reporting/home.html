@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Reports - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-10 offset-md-1">
+        <h2>Reports & Analytics</h2>
+        
+        <div class="row mt-4">
+            {% if user.is_instructor or user.is_admin %}
+                <div class="col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Course Credit Reports</h5>
+                            <p class="card-text">Download CSV reports of student credit completion by course.</p>
+                            <a href="/admin/courses/course/" class="btn btn-primary">View Courses</a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            
+            {% if user.is_researcher or user.is_admin %}
+                <div class="col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Study Analytics</h5>
+                            <p class="card-text">View participation rates, no-show statistics, and recruitment velocity.</p>
+                            <a href="{% url 'studies:researcher_dashboard' %}" class="btn btn-primary">View Studies</a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            
+            {% if user.is_admin %}
+                <div class="col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">System Usage</h5>
+                            <p class="card-text">Monitor overall system activity, user statistics, and performance metrics.</p>
+                            <a href="/admin/" class="btn btn-primary">Admin Dashboard</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Audit Logs</h5>
+                            <p class="card-text">Review system audit trail for compliance and security monitoring.</p>
+                            <a href="/admin/credits/auditlog/" class="btn btn-primary">View Logs</a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+
+

@@ -1,0 +1,500 @@
+---
+title: ""
+author: ""
+date: ""
+output: 
+  pdf_document:
+    latex_engine: xelatex
+    toc: false
+    number_sections: false
+    keep_tex: false
+header-includes:
+  - \usepackage[margin=1in]{geometry}
+  - \usepackage{fontspec}
+  - \setmainfont{Times New Roman}
+  - \usepackage{setspace}
+  - \singlespacing
+  - \usepackage{fancyhdr}
+  - \pagestyle{fancy}
+  - \fancyhf{}
+  - \renewcommand{\headrulewidth}{0pt}
+  - \fancyfoot[C]{HSIRB \thepage}
+  - \setlength{\parindent}{0pt}
+  - \setlength{\parskip}{6pt}
+  - \usepackage{enumitem}
+  - \setlist{nosep}
+---
+
+\begin{center}
+\large
+\textbf{NICHOLLS STATE UNIVERSITY}
+
+\textbf{HUMAN SUBJECTS INSTITUTIONAL REVIEW BOARD}
+
+\textbf{REQUEST FOR NON-EXEMPT REVIEW BY HUMAN SUBJECTS INSTITUTIONAL REVIEW BOARD}
+\end{center}
+
+Nicholls State University has established standards and guidelines to ensure adequate protection is provided to individuals participating in a research activity. The Human Subjects Institutional Review Board (HSIRB) is charged with the responsibility of screening all research which employs human participants conducted by faculty, administrators, or students affiliated with Nicholls State University. The guidelines employed for screening are those set forth by university policy. Please fill in all requested information and return two copies of this form and any supporting documentation to the HSIRB chair or your college HSIRB representative.
+
+**Procedure:**
+
+1. The primary investigator (Referred to as the "applicant") planning a research activity involving human subjects, should obtain a Request for HSIRB application form from the college HSIRB representative or HSIRB Chairperson. Research originating from other institutions should be approved by the host institution prior to applying for approval at Nicholls State University.
+
+2. The Applicant should submit two copies of the completed forms to the college HSIRB representative. An initial review of the application will be made by the college HSIRB representative to determine if the project is considered Category I, EXEMPT, Category II, EXPEDITED REVIEW, or Category III, FULL COMMITTEE REVIEW. If the determination of the college HSIRB representative is that the application warrants an EXEMPT or EXPEDITED REVIEW determination, the Applicant may begin the research project. If the College HSIRB representative determines that the proposed research requires a FULL COMMITTEE REVIEW, the Applicant will be requested to submit ten copies of the application to the HSIRB Chairperson. The college HSIRB representative may not disapprove an application. Disapproval of proposed research involving human subjects may only be determined by the full HSIRB.
+
+3. Applications may be submitted to the college HSIRB representative at any time, however, applications which will require a review by the full HSIRB must be submitted to the Chairperson of the HSIRB by the 20th of each month.
+
+4. In cases where a full review of the application is required, the Applicant may be asked to discuss the proposed research at the meeting of the HSIRB.
+
+\newpage
+
+\begin{center}
+\textbf{NICHOLLS STATE UNIVERSITY}
+
+\textbf{HUMAN SUBJECTS INSTITUTIONAL REVIEW BOARD}
+
+\textbf{REQUEST FOR REVIEW BY HUMAN SUBJECTS INSTITUTIONAL REVIEW BOARD}
+\end{center}
+
+**Title of investigation:** Theory of Optimal Fringe Benefits Using Conjoint Analysis
+
+**Name of primary investigator:** Dr. Martin Meder  \hspace{2cm}  **Phone:** 985-448-4237
+
+**Faculty supervisor (if required):** N/A
+
+**Address where HSIRB action letter is to be sent:** martin.meder@nicholls.edu OR Business Administration Department, Nicholls State University
+
+**Other investigators involved in the project:**
+
+  * Dr. Christopher Castille, christopher.castille@nicholls.edu, 985-449-7015
+
+\ 
+
+\hspace{1cm} Please note that this study is an educational classroom exercise conducted as part of Dr. Martin Meder's Labor Economics course at Nicholls State University. This exercise uses conjoint analysis and total rewards optimization to teach students about the application of the theory of optimal fringe benefits. Dr. Christopher Castille is supporting Dr. Meder in the implementation and analysis of this exercise, which has been designed as a pedagogical tool to help undergraduate business students learn skills in economic decision-making and preference analysis. The exercise design has been developed via Dr. Meder building off established conjoint analysis methodologies published in the labor economics and management literature; hence why he is listed as the PI on this HSIRB form.
+
+This study will be conducted at a single site (Nicholls State University) in Dr. Martin Meder's Labor Economics course. All data collection will occur during regular class sessions, and all participants will be undergraduate students enrolled in the course.
+
+Students enrolled in the course will be required to have completed basic labor economics coursework and will participate as part of their educational experience. The exercise is designed to reinforce theoretical concepts through hands-on application.
+
+**Estimated starting date:** Spring 2026 \hspace{2cm} **Estimated completion date:** Spring 2026
+
+**Date Submitted to the NSU HSIRB:** `r format(Sys.Date(), "%B %d, %Y")`
+
+\newpage
+
+**Source of project funds:** No external funding; educational exercise conducted as part of normal course activities
+
+**Is this project a continuation of research previously approved by the HSIRB?** No
+
+\vspace{12pt}
+
+(Attach additional pages as necessary)
+
+\newpage
+
+## 1. Description of Project or Proposal
+
+### Population of Human Subjects
+
+The population for this study consists exclusively of undergraduate students enrolled in Dr. Martin Meder's Labor Economics course at Nicholls State University. Participation is **VOLUNTARY** and students must be 18 or older. This exercise is only available to students in this specific course who have received the necessary background instruction in labor economics concepts.
+
+### Research Procedures and Data Collection
+
+This is an educational classroom exercise designed to teach students about conjoint analysis and total rewards optimization within the context of Dr. Meder's Labor Economics course. The exercise will be conducted as follows:
+
+1. **Introduction and Consent**: Students will receive a brief introduction explaining they are participating in a Total Rewards Optimization project as part of their Labor Economics coursework.
+
+2. **Role-Playing Scenario**: Students will be asked to imagine they are employees at "Firm Co." who enjoy their job but would like to receive better treatment. They are participating in a Total Rewards Optimization project to identify new employee rewards their employer would be willing to pay for.
+
+3. **Choice Tasks**: Students will complete 8 choice tasks where they select between pairs of job scenarios. Each scenario presents changes from a \$64K baseline compensation package. Due to financial pressure, all options represent a \$5K reduction to \$59K total compensation, with different allocations across four attributes:
+   - **Salary**: Ranging from \$37.5K to \$42.5K (compared to \$45K baseline)
+   - **Training Budget**: \$1K to \$5K per employee (compared to \$2.5K baseline)
+   - **Manager Quality**: Average vs Good (with associated cost trade-offs)
+   - **Work Flexibility**: Onsite, Hybrid, Remote (with associated cost trade-offs)
+   
+   Students see only the changes from baseline, color-coded green for gains and red for losses, helping them understand the cost constraint trade-offs.
+
+4. **Turnover Probability Assessment**: After completing choice tasks, students will report the probability (0-100%) that they would stay with the company for the next year for four different packages: baseline, their preferred choice, a training-focused package, and a manager-focused package.
+
+5. **Wait Page and Group Work**: Students wait for further instructions, then work in small groups to design a new benefit package they think would be acceptable to most students in the class, considering the \$59K cost constraint.
+
+6. **Final Choice Round**: Students choose between their baseline, their preferred choice, and the focus group packages, then answer final retention questions.
+
+7. **Exercise Evaluation**: Students complete a comprehensive assessment rating:
+   - How interesting they found the exercise (1-5 scale)
+   - How useful it was for understanding measuring employee preferences (1-5 scale)
+   - Whether they would recommend this process to employers (1-5 scale)
+   - How the exercise helped them understand economic concepts (1-5 scale)
+   - How the exercise helped them understand labor economics relevance to business (1-5 scale)
+   - How the discussion helped them understand economic concepts (1-5 scale)
+   - How the discussion helped them understand labor economics relevance to business (1-5 scale)
+   - How cross-teaching helped them understand labor economics integration (1-5 scale)
+   - Optional comments
+
+8. **Results Discussion**: Students will view class-wide results showing preference patterns and business impact calculations, followed by discussion of how these concepts relate to labor economics theory covered in the course.
+
+**Data Collection Method**: Online survey administered through:
+
+- Static HTML/CSS/JavaScript application (student_survey.html) - Current version: September 2025
+- Mobile-responsive design for smartphone and tablet use
+- Platform: Local server or web hosting
+- Data storage: Anonymous responses stored locally in browser
+
+The exercise takes approximately 30 minutes to complete and will be conducted during a regular class session of Dr. Meder's Labor Economics course.
+
+### Research Objectives
+
+The primary objectives of this educational exercise are:
+
+1. **Educational Goal**: To help undergraduate students in Labor Economics understand how conjoint analysis can be used as an application of the theory of optimal fringe benefits to quantify employee preferences and inform total rewards decisions, connecting theoretical labor economics concepts to practical HR applications.
+
+2. **Applied Learning**: To demonstrate how employee preferences translate to business value through turnover cost analysis and ROI calculations, reinforcing labor market theory with real-world applications.
+
+3. **Practical Application**: To show students how people analytics can inform HR decision-making in real organizational contexts, bridging the gap between economic theory and business practice.
+
+**Research Questions**: This is primarily an educational exercise rather than hypothesis-driven research. However, the exercise will generate data that could be used to explore:
+
+- Which total rewards attributes are most important to students
+- How preferences vary across demographic groups  
+- The relationship between job satisfaction and turnover intentions
+- How student preferences align with labor economics theory
+- The effectiveness of interdisciplinary teaching approaches
+- The impact of collaborative learning on economic concept understanding
+
+**Educational Justification**: This exercise is specifically designed for students who have received instruction in labor economics concepts and can meaningfully engage with the theoretical framework underlying the choice tasks. Students outside of Dr. Meder's course would not have the necessary background knowledge to participate meaningfully in this exercise.
+
+\newpage
+
+## 2. Recruitment
+
+### How will you recruit subjects?
+
+Students will be recruited exclusively through in-class announcements during Dr. Martin Meder's Labor Economics course sessions. The instructor will explain that participation in the exercise is voluntary and part of the course curriculum. No recruitment will occur outside of this specific course.
+
+**Recruitment Script:**
+
+"Today we're going to do an interactive exercise to learn how one might apply the theory of optimal fringe benefits using conjoint analysis and total optimization as part of our Labor Economics course. You'll be asked to imagine you're an employee evaluating different job scenarios. This exercise is voluntary and will help you understand how companies make decisions about employee benefits and how this relates to labor market theory we've been studying. The exercise takes about 30 minutes and we'll discuss the results as a class."
+
+### Criteria for Including Subjects
+
+- Undergraduate students enrolled in Dr. Martin Meder's Labor Economics course
+- Students who have received instruction in relevant labor economics concepts
+- Age 18 or older
+- Voluntary participation
+
+### Criteria for Excluding Subjects
+
+- Students not enrolled in Dr. Martin Meder's Labor Economics course
+- Students who have not received the necessary background instruction in labor economics concepts
+- Students under age 18
+
+\newpage
+
+## 3. Subject Benefits and Costs
+
+### Benefits
+
+**1. To the human subjects involved:**
+
+- Educational value: Learning about conjoint analysis and total rewards optimization in the context of labor economics
+- Practical knowledge applicable to future careers in HR, management, consulting, or economic analysis
+- Participation in interactive, engaging classroom activity that connects theory to practice
+- Enhanced understanding of how labor market concepts apply to real-world business decisions
+
+**2. To individuals who are not subjects, but who may have similar problems:**
+
+- Improved understanding of how employee preferences inform business decisions
+- Better preparation for future HR and management roles
+- Enhanced knowledge of labor economics applications
+
+**3. To society in general:**
+
+- Better-educated business professionals who understand people analytics and labor economics
+- Improved organizational decision-making capabilities
+- Better integration of economic theory with business practice
+
+### Payment
+
+No monetary compensation will be provided. Participation is part of the educational curriculum for the Labor Economics course.
+
+### Costs to Subjects
+
+1. **Time**: Approximately 30 minutes during class time
+2. **Money**: None
+3. **Repeated testing**: No
+
+\newpage
+
+## 4. Basis of Request for Exemption or Expedited Review
+
+This research qualifies for **EXPEDITED REVIEW** under the following categories:
+
+**Category (7)** Research on individual or group characteristics or behavior (including, but not limited to, research on perception, cognition, motivation, identity, language, communication, cultural beliefs or practices, and social behavior) or research employing survey, interview, oral history, focus group, program evaluation, human factors evaluation, or quality assurance methodologies.
+
+### Justification for Expedited Review:
+
+1. **Educational Setting**: The research will be conducted only in established or commonly accepted educational settings (classroom) AND it involves normal educational practices such as research on regular and special educational instructional strategies, or research on the effectiveness of, or the comparison among, instructional techniques, curricula or classroom management methods.
+
+2. **Anonymous Data Collection**: It is limited to the collection and study of data obtained using only survey procedures AND the data or information obtained will be recorded in such a manner that subjects cannot be identified, directly or indirectly, through identifiers linked with the subjects.
+
+3. **Minimal Risk**: The research presents no more than minimal risk to participants. Students are making hypothetical choices about job scenarios in an educational context. No sensitive personal information is collected. The exercise is completely anonymous.
+
+4. **Benign Behavioral Intervention**: Research involving benign behavioral interventions in conjunction with the collection of information from an adult subject through verbal or written responses (including data entry) if the subject prospectively agrees to the intervention and information collection.
+
+### Requested Review Category:
+
+- Educational tests (cognitive, diagnostic, aptitude, achievement)  
+- Survey procedures, interview procedures, or observation of public behavior
+
+\newpage
+
+## 5. CITI Training
+
+All investigators have completed current CITI Training certificates for social-behavioral-educational research:
+
+- Dr. Martin Meder: CITI Training completed [Date to be inserted]
+- Dr. Christopher Castille: CITI Training completed [Date to be inserted]
+
+\newpage
+
+## 6. Statement of Risk
+
+The undersigned certify that they believe that the conduct of the above described research creates no more than minimal risk of physical or emotional harm, or social or legal embarrassment to any participating human subject.
+
+The research involves:
+
+- Hypothetical decision-making in an educational context
+- Anonymous data collection with no identifying information
+- Voluntary participation with the ability to withdraw at any time
+- Standard classroom educational activities
+- No deception
+- No sensitive topics
+- No vulnerable populations beyond the normal student population
+
+**Signature of Principal Investigator:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ **Date:** \_\_\_\_\_\_\_\_\_
+
+\newpage
+
+## 7. Faculty Sponsor
+
+N/A - Principal investigator is faculty member.
+
+\newpage
+
+## 8. Recommendation of HSIRB Representative or HSIRB Chair
+
+I recommend that the above described research project be granted expedited review.
+
+**Signature of College HSIRB Representative:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ **Date:** \_\_\_\_\_\_\_\_\_
+
+**Signature of HSIRB Chairperson:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_ **Date:** \_\_\_\_\_\_\_\_\_  
+
+**HSIRB PROTOCOL NUMBER:** \_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+\newpage
+
+## APPENDICES
+
+### Appendix A: Informed Consent Form
+
+**Total Rewards Optimization Classroom Exercise - Informed Consent**
+
+You are invited to participate in a classroom exercise designed to teach conjoint analysis and total rewards optimization as part of Dr. Martin Meder's Labor Economics course. This exercise is part of your course curriculum and is only available to students enrolled in this course.
+
+**What you will do:**
+
+- Imagine you are an employee at "Firm Co." evaluating different job scenarios
+- Complete 8 choice tasks selecting between pairs of job options
+- Report your likelihood of staying with the company based on different packages
+- Participate in group work to design a benefit package
+- Evaluate the exercise and provide feedback
+
+**Time required:** Approximately 30 minutes
+
+**Risks:** None anticipated beyond normal classroom activities. This is a low-risk educational exercise involving hypothetical decision-making.
+
+**Benefits:** You will learn about conjoint analysis, total rewards optimization, and how employee preferences inform business decisions, connecting these concepts to labor economics theory covered in this course.
+
+**Confidentiality:** Your responses will be anonymous. No identifying information will be collected or stored.
+
+**Voluntary participation:** Your participation is voluntary. You may withdraw at any time without penalty to your course grade.
+
+**Questions:** Contact Dr. Martin Meder at 985-448-4237 or martin.meder@nicholls.edu, or Dr. Christopher Castille at 985-449-7015 or christopher.castille@nicholls.edu
+
+By participating in this exercise, you indicate your consent to participate.
+
+\newpage
+
+### Appendix B: Data Collection Instruments
+
+**Choice Task Example:**
+
+"Imagine you are an employee at Firm Co. Choose the job scenario you prefer:"
+
+**Option A:**
+
+- Salary: \$42K (change from \$45K baseline)
+- Training Budget: \$1K per employee (change from \$2.5K baseline)
+- Manager: Average (same as baseline)
+- Work Location: Onsite (same as baseline)
+
+**Option B:**
+
+- Salary: \$38K (change from \$45K baseline)
+- Training Budget: \$3.5K per employee (change from \$2.5K baseline)
+- Manager: Good (upgrade from baseline)
+- Work Location: Hybrid (upgrade from baseline)
+
+**Retention Question Example:**
+
+"What is the probability (0-100%) you'd stay with the company for the next year if offered the following package?"
+
+[Interactive slider from 0-100%]
+
+**Assessment Questions:**
+
+1. How interesting did you find this exercise? (1=Very boring, 5=Very interesting)
+2. How useful was this exercise for understanding measuring employee preferences? (1=Very useless, 5=Very useful)
+3. Would you recommend this type of analysis to employers? (1=Definitely no, 5=Definitely yes)
+4. This exercise helped me understand economic concepts. (1=Strongly disagree, 5=Strongly agree)
+5. This exercise helped me understand how labor economics is relevant to business applications. (1=Strongly disagree, 5=Strongly agree)
+6. The discussion on this exercise helped me understand economic concepts. (1=Strongly disagree, 5=Strongly agree)
+7. The discussion on this exercise helped me understand how labor economics is relevant to business applications. (1=Strongly disagree, 5=Strongly agree)
+8. Cross-teaching (the participation of a Management professor in this activity) helped me understand how labor economics is integrated into my business education. (1=Strongly disagree, 5=Strongly agree)
+9. Any additional comments about this exercise? (Open-ended text response)
+
+\newpage
+
+### Appendix C: Technical Implementation
+
+**Data Collection Platform:** Static HTML/CSS/JavaScript Application
+
+**Current Tool Specifications:**
+
+- **Tool Name:** Conjoint Analysis Classroom Exercise App
+- **Version:** September 2025 (Enhanced Assessment Version)
+- **Platform:** Static HTML/CSS/JavaScript (no server required)
+- **Hosting:** Local server or web hosting
+- **Data Storage:** Anonymous responses stored locally in browser
+- **Analysis:** Real-time visualization using Chart.js library
+
+**Data Analysis Methods:**
+
+- Conjoint analysis: Preference pattern visualization
+- Turnover cost calculations: Based on student retention predictions
+- ROI analysis: Cost-benefit analysis of different benefit packages
+- Results presentation: Interactive dashboard showing class-wide preferences
+
+**Technical Requirements:**
+
+- Modern web browser (Chrome, Firefox, Safari, Edge)
+- Mobile-responsive design for smartphone and tablet use
+- No special software installation required
+- JavaScript enabled (default on all browsers)
+
+**Privacy Protections:**
+
+- No personal identifying information collected
+- No names, email addresses, or student IDs
+- Data stored locally in browser only
+- No external data transmission
+- Completely anonymous participation
+
+\newpage
+
+### Appendix D: Enhanced Assessment Items Addendum
+
+**Reference:** Moryl, R. (2013). T-shirts, moonshine, and autopsies: Using podcasts to engage undergraduate microeconomics students. *International Review of Economics Education*, 13(1), 67–74. https://doi.org/10.1016/j.iree.2013.02.001
+
+**Purpose:** This addendum documents the enhanced assessment items added to evaluate the educational effectiveness of the conjoint analysis classroom exercise across multiple learning dimensions.
+
+**New Assessment Items (Adapted from Moryl, 2013):**
+
+4. **This exercise helped me understand economic concepts.**
+   - Scale: 1 (Strongly disagree) to 5 (Strongly agree)
+   - *Measures student perception of economic concept learning*
+
+5. **This exercise helped me understand how labor economics is relevant to business applications.**
+   - Scale: 1 (Strongly disagree) to 5 (Strongly agree)
+   - *Measures student understanding of practical business applications*
+
+6. **The discussion on this exercise helped me understand economic concepts.**
+   - Scale: 1 (Strongly disagree) to 5 (Strongly agree)
+   - *Measures the value of collaborative learning and classroom discussion*
+
+7. **The discussion on this exercise helped me understand how labor economics is relevant to business applications.**
+   - Scale: 1 (Strongly disagree) to 5 (Strongly agree)
+   - *Measures how discussion enhanced understanding of business applications*
+
+8. **Cross-teaching (the participation of a Management professor in this activity) helped me understand how labor economics is integrated into my business education.**
+   - Scale: 1 (Strongly disagree) to 5 (Strongly agree)
+   - *Measures the value of interdisciplinary teaching approach*
+
+**Rationale:** These items provide comprehensive evaluation of student learning outcomes, including individual learning, business relevance understanding, collaborative learning effectiveness, and interdisciplinary integration value.
+
+**Implementation:** Items are integrated into the existing student survey and presented after choice tasks and retention questions, before the final thank you page.
+
+\newpage
+
+### Appendix E: Application Screenshots
+
+This appendix provides visual documentation of the web-based applications used in the conjoint analysis classroom exercise.
+
+\vspace{12pt}
+
+**Screenshot 1: Student Survey Welcome Page**
+
+![Student Survey Welcome Page](../screenshots/01_welcome_page.png){ width=100% }
+
+\vspace{6pt}
+
+**Key Elements:** Welcome message, project title, voluntary participation notice, estimated time (5-10 minutes), and start button.
+
+\newpage
+
+**Screenshot 2: Anonymity Notice and Instructions**
+
+![Anonymity Notice](../screenshots/02_anonymity_notice.png){ width=100% }
+
+\vspace{6pt}
+
+**Key Elements:** Anonymity assurance (🔒), data storage explanation (local browser only), instructions about choice tasks, and budget context ($59K per employee, down from $64K baseline).
+
+\newpage
+
+**Screenshot 3: Choice Task Example (Options A and B)**
+
+![Choice Task Options A and B](../screenshots/03_choice_task_options_A_and_B.png){ width=100% }
+
+\vspace{6pt}
+
+**Key Elements:** Task counter (1 of 8), two job packages for comparison (Option A and Option B), four attributes per option (Base Salary, Training Budget, Manager Quality, Work Location), color coding (red for decreases, green for increases), package totals ($59,000 each), and change indicators showing differences from baseline.
+
+**Educational Design:** This screenshot demonstrates the core data collection method. Students select between pairs of packages with different allocations across compensation components. Both options total $59K, illustrating budget constraints and trade-offs. Option A shows smaller salary decrease with baseline benefits, while Option B shows larger salary decrease with enhanced training, manager quality, and work flexibility.
+
+\newpage
+
+**Screenshot 4: Instructor Dashboard**
+
+![Instructor Dashboard](../screenshots/04_instructor_dashboard.png){ width=100% }
+
+\vspace{6pt}
+
+**Key Elements:** Dashboard title, file upload section for student data (CSV format), "Upload Data" button, "Load Sample Data" button for demonstration, and instructions for data format.
+
+\newpage
+
+**Screenshot 5: Dashboard Analysis Charts**
+
+![Dashboard Charts](../screenshots/05_instructor_dashboard_charts.png){ width=100% }
+
+\vspace{6pt}
+
+**Key Elements:** Cost Allocation Analysis heading with budget context ($59K per employee), three-panel chart visualization showing absolute dollar amounts (BLUE/GREY bars), percentage changes (GREEN/RED bars), and ROI analysis, plus key insights section explaining budget trade-offs and teaching moments.
+
+\newpage
+
+**Note:** This research is valid for a 12-month period from the date of approval. Data collection may begin only after this form has received committee approval and has been properly filed with the HSIRB.
+
+**Revised:** `r format(Sys.Date(), "%B %Y")`
+

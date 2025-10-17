@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Mark Attendance - {{ site_name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title mb-0">
+                        <i class="fas fa-user-check me-2"></i>Mark Attendance
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <h5>Participant Information</h5>
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <strong>Name:</strong><br>
+                                        {{ signup.participant.get_full_name }}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <strong>Email:</strong><br>
+                                        <a href="mailto:{{ signup.participant.email }}">{{ signup.participant.email }}</a>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-6">
+                                        <strong>Study:</strong><br>
+                                        {{ signup.timeslot.study.title }}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <strong>Scheduled Time:</strong><br>
+                                        {{ signup.timeslot.starts_at|date:"M j, Y g:i A" }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h5>Current Status</h5>
+                        {% if signup.status == 'booked' %}
+                            <span class="badge bg-primary fs-6">Booked</span>
+                        {% elif signup.status == 'attended' %}
+                            <span class="badge bg-success fs-6">Already Marked as Attended</span>
+                        {% elif signup.status == 'no_show' %}
+                            <span class="badge bg-danger fs-6">Already Marked as No Show</span>
+                        {% elif signup.status == 'cancelled' %}
+                            <span class="badge bg-secondary fs-6">Cancelled</span>
+                        {% endif %}
+                    </div>
+                    
+                    {% if signup.status == 'booked' %}
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="mb-4">
+                                <h5>Mark Attendance</h5>
+                                <p class="text-muted">Select the participant's attendance status:</p>
+                                
+                                <div class="d-grid gap-2">
+                                    <button type="submit" name="status" value="attended" 
+                                            class="btn btn-success btn-lg">
+                                        <i class="fas fa-check-circle me-2"></i>
+                                        Mark as Attended
+                                        <small class="d-block">Participant completed the study</small>
+                                    </button>
+                                    
+                                    <button type="submit" name="status" value="no_show" 
+                                            class="btn btn-danger btn-lg">
+                                        <i class="fas fa-times-circle me-2"></i>
+                                        Mark as No Show
+                                        <small class="d-block">Participant did not attend</small>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    {% else %}
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            This participant's attendance has already been recorded.
+                        </div>
+                    {% endif %}
+                    
+                    <div class="alert alert-light">
+                        <h6><i class="fas fa-lightbulb me-2"></i>Notes:</h6>
+                        <ul class="mb-0">
+                            <li><strong>Attended:</strong> Participant will receive {{ signup.timeslot.study.credits_offered }} credit(s)</li>
+                            <li><strong>No Show:</strong> Participant will be marked as a no-show (counts toward no-show limit)</li>
+                            <li>Attendance cannot be changed once recorded</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex justify-content-between">
+                        <a href="{% url 'studies:roster' signup.timeslot.study.pk %}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-1"></i>Back to Roster
+                        </a>
+                        <a href="{% url 'studies:researcher_dashboard' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+
+

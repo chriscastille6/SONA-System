@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block title %}My Credits - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-10 offset-md-1">
+        <h2>My Research Credits</h2>
+        
+        <div class="credits-summary mt-3">
+            <h3>Total Credits Earned</h3>
+            <h1 class="display-3">{{ total_credits }}</h1>
+        </div>
+        
+        <h3 class="mt-4">Transaction History</h3>
+        
+        {% if transactions %}
+            <div class="table-responsive mt-3">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Study</th>
+                            <th>Course</th>
+                            <th>Credits</th>
+                            <th>Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for transaction in transactions %}
+                            <tr>
+                                <td>{{ transaction.created_at|date:"M d, Y" }}</td>
+                                <td>{{ transaction.study.title|default:"-" }}</td>
+                                <td>{{ transaction.course.code|default:"-" }}</td>
+                                <td>
+                                    {% if transaction.amount > 0 %}
+                                        <span class="text-success">+{{ transaction.amount }}</span>
+                                    {% else %}
+                                        <span class="text-danger">{{ transaction.amount }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ transaction.reason|default:"-" }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-info mt-3">
+                You haven't earned any credits yet. <a href="{% url 'studies:list' %}">Browse studies</a> and start participating!
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+
+
+

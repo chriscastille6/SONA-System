@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample Choice Task - Options A and B</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .header {
+            background-color: #3B82F6;
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .task-counter {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+        .instruction-box {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 4px;
+        }
+        .choice-container {
+            display: flex;
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .option {
+            flex: 1;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+        .option:hover {
+            border-color: #3B82F6;
+            box-shadow: 0 4px 8px rgba(59, 130, 246, 0.2);
+        }
+        .option-header {
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #3B82F6;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #3B82F6;
+        }
+        .attribute {
+            margin: 15px 0;
+            padding: 12px;
+            border-radius: 4px;
+            background: #f8f9fa;
+        }
+        .attribute-label {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .attribute-value {
+            font-size: 1.1em;
+        }
+        .increase {
+            color: #059669;
+            background-color: #d1fae5;
+        }
+        .decrease {
+            color: #DC2626;
+            background-color: #fee2e2;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        button {
+            background-color: #3B82F6;
+            color: white;
+            border: none;
+            padding: 12px 32px;
+            font-size: 1.1em;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2563EB;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Total Rewards Optimization</h1>
+    <p>Employee Preference Assessment</p>
+</div>
+
+<div class="content">
+    <div class="task-counter">
+        Task 1 of 8
+    </div>
+    
+    <div class="instruction-box">
+        <h3 style="margin-top: 0;">📊 Choose Your Preferred Package</h3>
+        <p><strong>Imagine you are an employee at "Firm Co."</strong> Due to financial pressure, your employer is reducing total compensation from <strong>$64,000</strong> to <strong>$59,000</strong> per employee.</p>
+        <p>Below are two different ways they could implement this reduction. <strong>Which package would you prefer?</strong></p>
+        <p style="font-size: 0.9em; color: #666; margin-top: 10px;">
+            💡 <em>Green</em> values show increases from baseline, <em>Red</em> values show decreases.
+        </p>
+    </div>
+
+    <div class="choice-container">
+        <div class="option">
+            <div class="option-header">Option A</div>
+            
+            <div class="attribute decrease">
+                <div class="attribute-label">💰 Base Salary</div>
+                <div class="attribute-value">$42,000 per year</div>
+                <div style="font-size: 0.9em; margin-top: 5px;">↓ $3,000 decrease from $45K baseline</div>
+            </div>
+            
+            <div class="attribute decrease">
+                <div class="attribute-label">📚 Training Budget</div>
+                <div class="attribute-value">$1,000 per employee</div>
+                <div style="font-size: 0.9em; margin-top: 5px;">↓ $1,500 decrease from $2.5K baseline</div>
+            </div>
+            
+            <div class="attribute" style="background: #f8f9fa;">
+                <div class="attribute-label">👔 Manager Quality</div>
+                <div class="attribute-value">Average</div>
+                <div style="font-size: 0.9em; margin-top: 5px; color: #666;">No change from baseline</div>
+            </div>
+            
+            <div class="attribute" style="background: #f8f9fa;">
+                <div class="attribute-label">🏢 Work Location</div>
+                <div class="attribute-value">Onsite (5 days/week)</div>
+                <div style="font-size: 0.9em; margin-top: 5px; color: #666;">No change from baseline</div>
+            </div>
+            
+            <div style="margin-top: 20px; padding-top: 15px; border-top: 2px solid #ddd; text-align: center;">
+                <strong>Total Package Value:</strong> $59,000/year
+            </div>
+        </div>
+
+        <div class="option">
+            <div class="option-header">Option B</div>
+            
+            <div class="attribute decrease">
+                <div class="attribute-label">💰 Base Salary</div>
+                <div class="attribute-value">$38,000 per year</div>
+                <div style="font-size: 0.9em; margin-top: 5px;">↓ $7,000 decrease from $45K baseline</div>
+            </div>
+            
+            <div class="attribute increase">
+                <div class="attribute-label">📚 Training Budget</div>
+                <div class="attribute-value">$3,500 per employee</div>
+                <div style="font-size: 0.9em; margin-top: 5px;">↑ $1,000 increase from $2.5K baseline</div>
+            </div>
+            
+            <div class="attribute increase">
+                <div class="attribute-label">👔 Manager Quality</div>
+                <div class="attribute-value">Good (high-quality)</div>
+                <div style="font-size: 0.9em; margin-top: 5px;">↑ Upgrade from baseline (costs +$500)</div>
+            </div>
+            
+            <div class="attribute increase">
+                <div class="attribute-label">🏢 Work Location</div>
+                <div class="attribute-value">Hybrid (3 days/week)</div>
+                <div style="font-size: 0.9em; margin-top: 5px;">↑ Upgrade from baseline</div>
+            </div>
+            
+            <div style="margin-top: 20px; padding-top: 15px; border-top: 2px solid #ddd; text-align: center;">
+                <strong>Total Package Value:</strong> $59,000/year
+            </div>
+        </div>
+    </div>
+
+    <div class="button-container">
+        <button>Continue to Next Task</button>
+    </div>
+</div>
+
+</body>
+</html>
+
