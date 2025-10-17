@@ -78,6 +78,27 @@ class Study(models.Model):
     irb_number = models.CharField(max_length=100, blank=True, help_text="IRB protocol number")
     irb_expiration = models.DateField(null=True, blank=True, help_text="IRB approval expiration date")
     
+    # IRB Audit Trail
+    irb_approved_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='irb_approvals',
+        help_text="Administrator who approved this study"
+    )
+    irb_approved_at = models.DateTimeField(null=True, blank=True, help_text="When IRB approval was granted")
+    irb_approval_notes = models.TextField(blank=True, help_text="IRB reviewer notes and comments")
+    irb_last_reviewed_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='irb_reviews',
+        help_text="Last person to review IRB status"
+    )
+    irb_last_reviewed_at = models.DateTimeField(null=True, blank=True, help_text="Last IRB review date")
+    
     # OSF fields
     osf_enabled = models.BooleanField(default=False, help_text="Project is on Open Science Framework")
     osf_project_id = models.CharField(max_length=100, blank=True, help_text="OSF project identifier")

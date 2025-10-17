@@ -1,0 +1,6239 @@
+[
+  {
+    "id": "steu_gpt1",
+    "domain": "steu",
+    "text": "Xavier completes a difficult task on time and under budget. Xavier is most likely to feel?",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 3,
+    "difficulty": -1.440361582390166,
+    "discrimination": 2.117021276595745,
+    "human_performance": 0.8085106382978723,
+    "response_distribution": {
+      "1.0": 7,
+      "3.0": 9,
+      "4.0": 76,
+      "5.0": 2
+    },
+    "total_responses": 94,
+    "participants": 94
+  },
+  {
+    "id": "steu_gpt2",
+    "domain": "steu",
+    "text": "If the current situation continues, Denise\u00e2\u20ac\u2122s employer will probably be able to move her job to a location much closer to her home.",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -2.020945334998227,
+    "discrimination": 2.2659574468085104,
+    "human_performance": 0.8829787234042553,
+    "response_distribution": {
+      "1.0": 83,
+      "2.0": 9,
+      "3.0": 1,
+      "5.0": 1
+    },
+    "total_responses": 94,
+    "participants": 94
+  },
+  {
+    "id": "steu_gpt3",
+    "domain": "steu",
+    "text": "Song finds out that a friend of hers has borrowed money from others to pay urgent bills but has in fact used the money for something else.",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 0.25671984684781396,
+    "discrimination": 1.372340425531915,
+    "human_performance": 0.43617021276595747,
+    "response_distribution": {
+      "1.0": 41,
+      "2.0": 21,
+      "3.0": 26,
+      "4.0": 6
+    },
+    "total_responses": 94,
+    "participants": 94
+  },
+  {
+    "id": "steu_gpt4",
+    "domain": "steu",
+    "text": "Charles is meeting a friend to see a movie. The friend is very late, and they are not in time to make it to the movie.",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 3,
+    "difficulty": -1.245937003424968,
+    "discrimination": 2.0531914893617023,
+    "human_performance": 0.776595744680851,
+    "response_distribution": {
+      "1.0": 19,
+      "3.0": 1,
+      "4.0": 73,
+      "5.0": 1
+    },
+    "total_responses": 94,
+    "participants": 94
+  },
+  {
+    "id": "steu_gpt5",
+    "domain": "steu",
+    "text": "Someone believes that another person harmed them on purpose. There is not a lot that can be done to make things better.",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 1,
+    "difficulty": -1.440361582390166,
+    "discrimination": 2.117021276595745,
+    "human_performance": 0.8085106382978723,
+    "response_distribution": {
+      "1.0": 18,
+      "2.0": 76
+    },
+    "total_responses": 94,
+    "participants": 94
+  },
+  {
+    "id": "steu_gpt6",
+    "domain": "steu",
+    "text": "Jim enjoys spending Saturdays playing with his children in the park. This year they have sporting activities on Saturdays.",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 1,
+    "difficulty": -1.1856236656577395,
+    "discrimination": 2.0319148936170213,
+    "human_performance": 0.7659574468085106,
+    "response_distribution": {
+      "1.0": 18,
+      "2.0": 72,
+      "4.0": 3,
+      "5.0": 1
+    },
+    "total_responses": 94,
+    "participants": 94
+  },
+  {
+    "id": "steu_gpt7",
+    "domain": "steu",
+    "text": "Megan is looking to buy a house. Something happened and she felt regret. What is most likely to have happened?",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 0.08515780834030659,
+    "discrimination": 1.4574468085106385,
+    "human_performance": 0.4787234042553192,
+    "response_distribution": {
+      "1.0": 45,
+      "2.0": 44,
+      "4.0": 4,
+      "5.0": 1
+    },
+    "total_responses": 94,
+    "participants": 94
+  },
+  {
+    "id": "steu_gpt8",
+    "domain": "steu",
+    "text": "Mary was working at her desk. Something happened that caused her to feel surprised. What is most likely to have happened?",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 2,
+    "difficulty": -0.43213335519032586,
+    "discrimination": 1.7127659574468086,
+    "human_performance": 0.6063829787234043,
+    "response_distribution": {
+      "2.0": 9,
+      "3.0": 57,
+      "4.0": 28
+    },
+    "total_responses": 94,
+    "participants": 94
+  },
+  {
+    "id": "steu_gpt9",
+    "domain": "steu",
+    "text": "Someone thinks that another person has deliberately caused something good to happen to them. They are now feeling?",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 1,
+    "difficulty": -3.4122472178487406,
+    "discrimination": 2.4361702127659575,
+    "human_performance": 0.9680851063829787,
+    "response_distribution": {
+      "1.0": 1,
+      "2.0": 91,
+      "3.0": 2
+    },
+    "total_responses": 94,
+    "participants": 94
+  },
+  {
+    "id": "steu_gpt10",
+    "domain": "steu",
+    "text": "By their own actions, a person reaches a goal they wanted to reach. The person is most likely to feel?",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.7576857016975165,
+    "discrimination": 1.8617021276595744,
+    "human_performance": 0.6808510638297872,
+    "response_distribution": {
+      "1.0": 64,
+      "2.0": 4,
+      "3.0": 2,
+      "4.0": 22,
+      "5.0": 2
+    },
+    "total_responses": 94,
+    "participants": 94
+  },
+  {
+    "id": "steu_gpt11",
+    "domain": "steu",
+    "text": "An unwanted situation becomes less likely or stops altogether. The person involved is most likely to feel?",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -4.53259949315326,
+    "discrimination": 2.4787234042553195,
+    "human_performance": 0.9893617021276596,
+    "response_distribution": {
+      "1.0": 93,
+      "2.0": 1
+    },
+    "total_responses": 94,
+    "participants": 94
+  },
+  {
+    "id": "steu_gpt12",
+    "domain": "steu",
+    "text": "Hasad tries to use his new mobile phone. He has always been able to work out how to use different appliances, but now he struggles.",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 3,
+    "difficulty": -1.1271856611121658,
+    "discrimination": 2.0106382978723403,
+    "human_performance": 0.7553191489361702,
+    "response_distribution": {
+      "1.0": 1,
+      "2.0": 11,
+      "3.0": 10,
+      "4.0": 71,
+      "5.0": 1
+    },
+    "total_responses": 94,
+    "participants": 94
+  },
+  {
+    "id": "steu_gpt13",
+    "domain": "steu",
+    "text": "Dorian\u00e2\u20ac\u2122s friend is ill and coughs all over him without bothering to turn away or cover his mouth. Dorian is most likely to feel?",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 2,
+    "difficulty": -0.2135741002980591,
+    "discrimination": 1.6063829787234043,
+    "human_performance": 0.5531914893617021,
+    "response_distribution": {
+      "1.0": 9,
+      "2.0": 28,
+      "3.0": 52,
+      "4.0": 5
+    },
+    "total_responses": 94,
+    "participants": 94
+  },
+  {
+    "id": "steu_gpt14",
+    "domain": "steu",
+    "text": "Quan and his wife are talking about what happened to them that day. Something happened that caused Quan to feel proud.",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 2,
+    "difficulty": -1.3730491343698699,
+    "discrimination": 2.095744680851064,
+    "human_performance": 0.7978723404255319,
+    "response_distribution": {
+      "1.0": 2,
+      "2.0": 13,
+      "3.0": 75,
+      "5.0": 4
+    },
+    "total_responses": 94,
+    "participants": 94
+  },
+  {
+    "id": "steu_gpt15",
+    "domain": "steu",
+    "text": "A supervisor who is unpleasant to work for leaves Alfonso\u00e2\u20ac\u2122s workplace. Alfonso is most likely to feel?",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 4,
+    "difficulty": 0.17062551703076348,
+    "discrimination": 1.4148936170212765,
+    "human_performance": 0.4574468085106383,
+    "response_distribution": {
+      "1.0": 1,
+      "2.0": 30,
+      "3.0": 20,
+      "5.0": 43
+    },
+    "total_responses": 94,
+    "participants": 94
+  },
+  {
+    "id": "steu_gpt16",
+    "domain": "steu",
+    "text": "The nature of Sara's job changes due to unpredictable factors, and she no longer gets to do the portions of her work she enjoyed most.",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.5679840376059394,
+    "discrimination": 1.7765957446808511,
+    "human_performance": 0.6382978723404256,
+    "response_distribution": {
+      "1.0": 60,
+      "2.0": 16,
+      "3.0": 2,
+      "4.0": 16
+    },
+    "total_responses": 94,
+    "participants": 94
+  },
+  {
+    "id": "steu_gpt17",
+    "domain": "steu",
+    "text": "Leila has been unable to sleep well lately, and there are no changes in her life that might indicate why. Leila is most likely to feel?",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 1,
+    "difficulty": -0.9088557533866368,
+    "discrimination": 1.925531914893617,
+    "human_performance": 0.7127659574468085,
+    "response_distribution": {
+      "1.0": 20,
+      "2.0": 67,
+      "3.0": 1,
+      "4.0": 6
+    },
+    "total_responses": 94,
+    "participants": 94
+  },
+  {
+    "id": "steu_gpt18",
+    "domain": "steu",
+    "text": "Someone believes another person has deliberately caused something good to stop happening to them. However, they still have hope.",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 1,
+    "difficulty": -3.1135153092103756,
+    "discrimination": 2.414893617021277,
+    "human_performance": 0.9574468085106383,
+    "response_distribution": {
+      "1.0": 3,
+      "2.0": 90,
+      "3.0": 1
+    },
+    "total_responses": 94,
+    "participants": 94
+  },
+  {
+    "id": "steu_gpt19",
+    "domain": "steu",
+    "text": "Matthew has been at his current job for six months. Something happened that caused him to feel regret. What is most likely to have happened?",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -2.3749057545736716,
+    "discrimination": 2.329787234042553,
+    "human_performance": 0.9148936170212766,
+    "response_distribution": {
+      "1.0": 86,
+      "2.0": 5,
+      "5.0": 3
+    },
+    "total_responses": 94,
+    "participants": 94
+  },
+  {
+    "id": "STEU_gptR10",
+    "domain": "steu",
+    "text": "GPT-generated STEU item 20",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": -1,
+    "difficulty": -1.1856236656577395,
+    "discrimination": 2.0319148936170213,
+    "human_performance": 0.7659574468085106,
+    "response_distribution": {
+      "0.0": 72,
+      "1.0": 22
+    },
+    "total_responses": 94,
+    "participants": 94
+  },
+  {
+    "id": "STEU_gptR11",
+    "domain": "steu",
+    "text": "GPT-generated STEU item 21",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -4.53259949315326,
+    "discrimination": 2.4787234042553195,
+    "human_performance": 0.9893617021276596,
+    "response_distribution": {
+      "0.0": 1,
+      "1.0": 93
+    },
+    "total_responses": 94,
+    "participants": 94
+  },
+  {
+    "id": "STEU_gptR12",
+    "domain": "steu",
+    "text": "GPT-generated STEU item 22",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -1.1271856611121658,
+    "discrimination": 2.0106382978723403,
+    "human_performance": 0.7553191489361702,
+    "response_distribution": {
+      "0.0": 23,
+      "1.0": 71
+    },
+    "total_responses": 94,
+    "participants": 94
+  },
+  {
+    "id": "STEU_gptR13",
+    "domain": "steu",
+    "text": "GPT-generated STEU item 23",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": -1,
+    "difficulty": -0.8574502318512216,
+    "discrimination": 1.9042553191489362,
+    "human_performance": 0.7021276595744681,
+    "response_distribution": {
+      "0.0": 66,
+      "1.0": 28
+    },
+    "total_responses": 94,
+    "participants": 94
+  },
+  {
+    "id": "STEU_gptR14",
+    "domain": "steu",
+    "text": "GPT-generated STEU item 24",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -1.3730491343698699,
+    "discrimination": 2.095744680851064,
+    "human_performance": 0.7978723404255319,
+    "response_distribution": {
+      "0.0": 19,
+      "1.0": 75
+    },
+    "total_responses": 94,
+    "participants": 94
+  },
+  {
+    "id": "STEU_gptR15",
+    "domain": "steu",
+    "text": "GPT-generated STEU item 25",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": -1,
+    "difficulty": -0.17062551703076306,
+    "discrimination": 1.5851063829787233,
+    "human_performance": 0.5425531914893617,
+    "response_distribution": {
+      "0.0": 51,
+      "1.0": 43
+    },
+    "total_responses": 94,
+    "participants": 94
+  },
+  {
+    "id": "STEU_gptR16",
+    "domain": "steu",
+    "text": "GPT-generated STEU item 26",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.5679840376059394,
+    "discrimination": 1.7765957446808511,
+    "human_performance": 0.6382978723404256,
+    "response_distribution": {
+      "0.0": 34,
+      "1.0": 60
+    },
+    "total_responses": 94,
+    "participants": 94
+  },
+  {
+    "id": "STEU_gptR17",
+    "domain": "steu",
+    "text": "GPT-generated STEU item 27",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.9088557533866368,
+    "discrimination": 1.925531914893617,
+    "human_performance": 0.7127659574468085,
+    "response_distribution": {
+      "0.0": 27,
+      "1.0": 67
+    },
+    "total_responses": 94,
+    "participants": 94
+  },
+  {
+    "id": "STEU_gptR18",
+    "domain": "steu",
+    "text": "GPT-generated STEU item 28",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": -1,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "0.0": 94
+    },
+    "total_responses": 94,
+    "participants": 94
+  },
+  {
+    "id": "STEU_gptR19",
+    "domain": "steu",
+    "text": "GPT-generated STEU item 29",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -2.3749057545736716,
+    "discrimination": 2.329787234042553,
+    "human_performance": 0.9148936170212766,
+    "response_distribution": {
+      "0.0": 8,
+      "1.0": 86
+    },
+    "total_responses": 94,
+    "participants": 94
+  },
+  {
+    "id": "stem_gpt1",
+    "domain": "stem",
+    "text": "Wai-Hin and Connie have shared an office for years but Wai-Hin gets a new job and Connie loses contact with her. What action would be the most effective for Connie?",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 1,
+    "difficulty": -3.367295829986474,
+    "discrimination": 2.4333333333333336,
+    "human_performance": 0.9666666666666667,
+    "response_distribution": {
+      "1.0": 2,
+      "2.0": 87,
+      "4.0": 1
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gpt2",
+    "domain": "stem",
+    "text": "Manual is only a few years from retirement when he finds out his position will no longer exist, although he will still have a job with a less prestigious role. What action would be the most effective for Manual?",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -2.327277705584417,
+    "discrimination": 2.322222222222222,
+    "human_performance": 0.9111111111111111,
+    "response_distribution": {
+      "1.0": 82,
+      "2.0": 5,
+      "4.0": 3
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gpt3",
+    "domain": "stem",
+    "text": "Surbhi starts a new job where he doesn\u00e2\u20ac\u2122t know anyone and finds that no one is particularly friendly. What action would be the most effective for Surbhi?",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 2,
+    "difficulty": -4.488636369732143,
+    "discrimination": 2.477777777777778,
+    "human_performance": 0.9888888888888889,
+    "response_distribution": {
+      "3.0": 89,
+      "4.0": 1
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gpt4",
+    "domain": "stem",
+    "text": "Andre moves away from the city his friends and family are in. He finds his friends make less effort to keep in contact than he thought they would. What action would be the most effective for Andre?",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 1,
+    "difficulty": -3.7841896339182597,
+    "discrimination": 2.4555555555555557,
+    "human_performance": 0.9777777777777777,
+    "response_distribution": {
+      "1.0": 1,
+      "2.0": 88,
+      "3.0": 1
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gpt5",
+    "domain": "stem",
+    "text": "Clayton has been overseas for a long time and returns to visit his family. So much has changed that Clayton feels left out. What action would be the most effective for Clayton?",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 1,
+    "difficulty": -4.488636369732143,
+    "discrimination": 2.477777777777778,
+    "human_performance": 0.9888888888888889,
+    "response_distribution": {
+      "1.0": 1,
+      "2.0": 89
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gpt6",
+    "domain": "stem",
+    "text": "Daniel has been accepted for a prestigious position in a different country from his family, who he is close to. He and his wife decide it is worth relocating. What action would be the most effective for Daniel?",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 1,
+    "difficulty": -3.7841896339182597,
+    "discrimination": 2.4555555555555557,
+    "human_performance": 0.9777777777777777,
+    "response_distribution": {
+      "2.0": 88,
+      "3.0": 2
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gpt7",
+    "domain": "stem",
+    "text": "Mei Ling answers the phone and hears that close relatives are in hospital critically ill. What action would be the most effective for Mei Ling?",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 2,
+    "difficulty": -4.488636369732143,
+    "discrimination": 2.477777777777778,
+    "human_performance": 0.9888888888888889,
+    "response_distribution": {
+      "3.0": 89,
+      "4.0": 1
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gpt8",
+    "domain": "stem",
+    "text": "Shona has not spoken to her nephew for months, whereas when he was younger they were very close. She rings him but he can only talk for five minutes. What action would be the most effective for Shona?",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 2,
+    "difficulty": -3.367295829986474,
+    "discrimination": 2.4333333333333336,
+    "human_performance": 0.9666666666666667,
+    "response_distribution": {
+      "1.0": 3,
+      "3.0": 87
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gpt9",
+    "domain": "stem",
+    "text": "Mina and her sister-in-law normally get along quite well, and the sister-in-law regularly baby-sits for her for a small fee. Lately she has also been cleaning away cobwebs, commenting on the mess, which Mina finds insulting.",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 1,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "2.0": 90
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gpt10",
+    "domain": "stem",
+    "text": "Juno is fairly sure his company is going down and his job is under threat. It is a large company and nothing official has been said. What action would be the most effective for Juno?",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 1,
+    "difficulty": -1.8718021769015918,
+    "discrimination": 2.2333333333333334,
+    "human_performance": 0.8666666666666667,
+    "response_distribution": {
+      "1.0": 1,
+      "2.0": 78,
+      "3.0": 11
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gpt11",
+    "domain": "stem",
+    "text": "Mallory moves from a small company to a very large one, where there is little personal contact, which she misses. What action would be the most effective for Mallory?",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 1,
+    "difficulty": -3.367295829986474,
+    "discrimination": 2.4333333333333336,
+    "human_performance": 0.9666666666666667,
+    "response_distribution": {
+      "1.0": 1,
+      "2.0": 87,
+      "3.0": 2
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gpt12",
+    "domain": "stem",
+    "text": "A demanding client takes up a lot of Jill\u00e2\u20ac\u2122s time and then asks to speak to Jill\u00e2\u20ac\u2122s boss about her performance. Although Jill\u00e2\u20ac\u2122s boss assures her that her performance is fine, Jill feels upset. What action would be the most effective for Jill?",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 1,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "2.0": 90
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gpt13",
+    "domain": "stem",
+    "text": "Blair and Flynn usually go to a cafe after the working week and chat about what\u00e2\u20ac\u2122s going on in the company. After Blair\u00e2\u20ac\u2122s job is moved to a different section in the company, he stops coming to the cafe. Flynn misses these Friday talks.",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 1,
+    "difficulty": -3.0680529351336183,
+    "discrimination": 2.4111111111111114,
+    "human_performance": 0.9555555555555556,
+    "response_distribution": {
+      "1.0": 4,
+      "2.0": 86
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gpt14",
+    "domain": "stem",
+    "text": "Michelle\u00e2\u20ac\u2122s friend Dara is moving overseas to live with her partner. They have been good friends for many years and Dara is unlikely to come back. What action would be the most effective for Michelle?",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 1,
+    "difficulty": -4.488636369732143,
+    "discrimination": 2.477777777777778,
+    "human_performance": 0.9888888888888889,
+    "response_distribution": {
+      "2.0": 89,
+      "4.0": 1
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gpt15",
+    "domain": "stem",
+    "text": "Hannah\u00e2\u20ac\u2122s access to essential resources has been delayed and her work is way behind schedule. Her progress report makes no mention of the lack of resources. What action would be the most effective for Hannah?",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 2,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "3.0": 90
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gpt16",
+    "domain": "stem",
+    "text": "Reece\u00e2\u20ac\u2122s friend points out that her young children seem to be developing more quickly than Reece's. Reece sees that this is true. What action would be the most effective for Reece?",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 1,
+    "difficulty": -3.7841896339182597,
+    "discrimination": 2.4555555555555557,
+    "human_performance": 0.9777777777777777,
+    "response_distribution": {
+      "2.0": 88,
+      "3.0": 1,
+      "4.0": 1
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gpt17",
+    "domain": "stem",
+    "text": "Jumah has been working at a new job part-time while he studies. His shift times for the week are changed at the last minute, without consulting him. What action would be the most effective for Jumah?",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 1,
+    "difficulty": -4.488636369732143,
+    "discrimination": 2.477777777777778,
+    "human_performance": 0.9888888888888889,
+    "response_distribution": {
+      "1.0": 1,
+      "2.0": 89
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gpt18",
+    "domain": "stem",
+    "text": "Julie hasn\u00e2\u20ac\u2122t seen Ka for ages and looks forward to their weekend trip away. However, Ka has changed a lot and Julie finds that she is no longer an interesting companion. What action would be the most effective for Julie?",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.8472978603872034,
+    "discrimination": 1.9,
+    "human_performance": 0.7,
+    "response_distribution": {
+      "1.0": 63,
+      "2.0": 26,
+      "3.0": 1
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gpt1r",
+    "domain": "stem",
+    "text": "GPT-generated STEM item 19",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -3.367295829986474,
+    "discrimination": 2.4333333333333336,
+    "human_performance": 0.9666666666666667,
+    "response_distribution": {
+      "0.0": 3,
+      "1.0": 87
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gpt2r",
+    "domain": "stem",
+    "text": "GPT-generated STEM item 20",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -2.327277705584417,
+    "discrimination": 2.322222222222222,
+    "human_performance": 0.9111111111111111,
+    "response_distribution": {
+      "0.0": 8,
+      "1.0": 82
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gpt3r",
+    "domain": "stem",
+    "text": "GPT-generated STEM item 21",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -4.488636369732143,
+    "discrimination": 2.477777777777778,
+    "human_performance": 0.9888888888888889,
+    "response_distribution": {
+      "0.0": 1,
+      "1.0": 89
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gpt4r",
+    "domain": "stem",
+    "text": "GPT-generated STEM item 22",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -3.7841896339182597,
+    "discrimination": 2.4555555555555557,
+    "human_performance": 0.9777777777777777,
+    "response_distribution": {
+      "0.0": 2,
+      "1.0": 88
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gpt5r",
+    "domain": "stem",
+    "text": "GPT-generated STEM item 23",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -4.488636369732143,
+    "discrimination": 2.477777777777778,
+    "human_performance": 0.9888888888888889,
+    "response_distribution": {
+      "0.0": 1,
+      "1.0": 89
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gpt6r",
+    "domain": "stem",
+    "text": "GPT-generated STEM item 24",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -3.7841896339182597,
+    "discrimination": 2.4555555555555557,
+    "human_performance": 0.9777777777777777,
+    "response_distribution": {
+      "0.0": 2,
+      "1.0": 88
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gpt7r",
+    "domain": "stem",
+    "text": "GPT-generated STEM item 25",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -4.488636369732143,
+    "discrimination": 2.477777777777778,
+    "human_performance": 0.9888888888888889,
+    "response_distribution": {
+      "0.0": 1,
+      "1.0": 89
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gpt8r",
+    "domain": "stem",
+    "text": "GPT-generated STEM item 26",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -3.367295829986474,
+    "discrimination": 2.4333333333333336,
+    "human_performance": 0.9666666666666667,
+    "response_distribution": {
+      "0.0": 3,
+      "1.0": 87
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gpt9r",
+    "domain": "stem",
+    "text": "GPT-generated STEM item 27",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 90
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gpt10r",
+    "domain": "stem",
+    "text": "GPT-generated STEM item 28",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -1.8718021769015918,
+    "discrimination": 2.2333333333333334,
+    "human_performance": 0.8666666666666667,
+    "response_distribution": {
+      "0.0": 12,
+      "1.0": 78
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gpt11r",
+    "domain": "stem",
+    "text": "GPT-generated STEM item 29",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -3.367295829986474,
+    "discrimination": 2.4333333333333336,
+    "human_performance": 0.9666666666666667,
+    "response_distribution": {
+      "0.0": 3,
+      "1.0": 87
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gpt12r",
+    "domain": "stem",
+    "text": "GPT-generated STEM item 30",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 90
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gpt13r",
+    "domain": "stem",
+    "text": "GPT-generated STEM item 31",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -3.0680529351336183,
+    "discrimination": 2.4111111111111114,
+    "human_performance": 0.9555555555555556,
+    "response_distribution": {
+      "0.0": 4,
+      "1.0": 86
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gpt14r",
+    "domain": "stem",
+    "text": "GPT-generated STEM item 32",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -4.488636369732143,
+    "discrimination": 2.477777777777778,
+    "human_performance": 0.9888888888888889,
+    "response_distribution": {
+      "0.0": 1,
+      "1.0": 89
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gpt15r",
+    "domain": "stem",
+    "text": "GPT-generated STEM item 33",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 90
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gpt16r",
+    "domain": "stem",
+    "text": "GPT-generated STEM item 34",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -3.7841896339182597,
+    "discrimination": 2.4555555555555557,
+    "human_performance": 0.9777777777777777,
+    "response_distribution": {
+      "0.0": 2,
+      "1.0": 88
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gpt17r",
+    "domain": "stem",
+    "text": "GPT-generated STEM item 35",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -4.488636369732143,
+    "discrimination": 2.477777777777778,
+    "human_performance": 0.9888888888888889,
+    "response_distribution": {
+      "0.0": 1,
+      "1.0": 89
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gpt18r",
+    "domain": "stem",
+    "text": "GPT-generated STEM item 36",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": -1,
+    "difficulty": -0.9007865453381899,
+    "discrimination": 1.9222222222222223,
+    "human_performance": 0.7111111111111111,
+    "response_distribution": {
+      "0.0": 64,
+      "1.0": 26
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "stem_gptScore",
+    "domain": "stem",
+    "text": "GPT-generated STEM item 37",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 0.04445176257083381,
+    "discrimination": 1.4777777777777779,
+    "human_performance": 0.4888888888888889,
+    "response_distribution": {
+      "0.6111111111111112": 1,
+      "0.7222222222222222": 2,
+      "0.7777777777777778": 2,
+      "0.8333333333333334": 3,
+      "0.8888888888888888": 15,
+      "0.9444444444444444": 44,
+      "1.0": 23
+    },
+    "total_responses": 90,
+    "participants": 90
+  },
+  {
+    "id": "gemok_gpt1",
+    "domain": "gemok",
+    "text": "Today, John has been voted senior class president at his high school and has been asked to give a speech in front of all the students and teachers later that day. This is a very important achievement for John ...",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 0.2876820724517809,
+    "discrimination": 1.3571428571428572,
+    "human_performance": 0.42857142857142855,
+    "response_distribution": {
+      "1.0": 39,
+      "2.0": 5,
+      "3.0": 33,
+      "4.0": 8,
+      "5.0": 6
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt2",
+    "domain": "gemok",
+    "text": "Robert\u2019s six-year old daughter is participating in a show of her ice-skating school for the first time. When Robert sees her appear on the ice, he smiles widely, his heartbeat quickens and he feels like jumpin...",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 4,
+    "difficulty": -0.7598385550586176,
+    "discrimination": 1.8626373626373627,
+    "human_performance": 0.6813186813186813,
+    "response_distribution": {
+      "1.0": 17,
+      "2.0": 1,
+      "4.0": 11,
+      "5.0": 62
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt3",
+    "domain": "gemok",
+    "text": "Jennifer is returning from a doctor\u2019s appointment when she sees a former work colleague walking towards her on the street. This person has been bullying her for a long time and Jennifer does not want to meet h...",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 1,
+    "difficulty": -0.5166907432183888,
+    "discrimination": 1.7527472527472527,
+    "human_performance": 0.6263736263736264,
+    "response_distribution": {
+      "1.0": 18,
+      "2.0": 57,
+      "3.0": 12,
+      "4.0": 4
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt4",
+    "domain": "gemok",
+    "text": "Daniel is working in a factory and replacing his boss who is on holiday. One day, a TV team comes to the factory to make a documentary and asks Daniel a lot of questions. As he did not know the questions in ad...",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.15415067982725816,
+    "discrimination": 1.5769230769230769,
+    "human_performance": 0.5384615384615384,
+    "response_distribution": {
+      "1.0": 49,
+      "2.0": 15,
+      "3.0": 7,
+      "4.0": 10,
+      "5.0": 10
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt5",
+    "domain": "gemok",
+    "text": "Mark is shopping downtown for some clothes. Suddenly and unexpectedly, he sees his wife sitting in a caf\u00e9 on the street, although she should be at work at this time. For a brief moment, Mark\u2019s eyes widen, he s...",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.021978906718775167,
+    "discrimination": 1.510989010989011,
+    "human_performance": 0.5054945054945055,
+    "response_distribution": {
+      "1.0": 46,
+      "2.0": 28,
+      "3.0": 6,
+      "4.0": 11
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt6",
+    "domain": "gemok",
+    "text": "Christopher is on the train to go to a meeting with an important client in another city. He treats himself to his favorite chocolate bar and listens to his favorite music, enjoying the nice view outside of the...",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 1,
+    "difficulty": 0.6118015411059927,
+    "discrimination": 1.2032967032967035,
+    "human_performance": 0.3516483516483517,
+    "response_distribution": {
+      "1.0": 18,
+      "2.0": 32,
+      "3.0": 10,
+      "4.0": 23,
+      "5.0": 8
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt7",
+    "domain": "gemok",
+    "text": "Susan has a performance with her choir and this time her parents have come to see it. All goes well during the concert, so afterwards she is at ease, feeling strong and in charge while she chats and laughs wit...",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -2.3393990661167616,
+    "discrimination": 2.324175824175824,
+    "human_performance": 0.9120879120879121,
+    "response_distribution": {
+      "1.0": 83,
+      "2.0": 5,
+      "3.0": 2,
+      "4.0": 1
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt8",
+    "domain": "gemok",
+    "text": "Early in the morning, William goes to the hospital with his wife who is about to give birth to their daughter. When he gets to the hospital William is pale and his voice trembles as he talks to the staff. When...",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 3,
+    "difficulty": -0.11000089521432849,
+    "discrimination": 1.554945054945055,
+    "human_performance": 0.5274725274725275,
+    "response_distribution": {
+      "1.0": 19,
+      "2.0": 3,
+      "4.0": 48,
+      "5.0": 21
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt9",
+    "domain": "gemok",
+    "text": "Mary is on her way home from a big conference at which she gave a workshop for the first time. It went very well and many people complimented her on her performance afterwards. Her husband is picking her up fr...",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 2,
+    "difficulty": -0.11000089521432849,
+    "discrimination": 1.554945054945055,
+    "human_performance": 0.5274725274725275,
+    "response_distribution": {
+      "1.0": 14,
+      "2.0": 3,
+      "3.0": 48,
+      "4.0": 3,
+      "5.0": 23
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt10",
+    "domain": "gemok",
+    "text": "James has been working for the same company for several years. His work has always been much appreciated so when a promotion is announced in his department he thinks that he will get the new position. However ...",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 1,
+    "difficulty": -0.021978906718775167,
+    "discrimination": 1.510989010989011,
+    "human_performance": 0.5054945054945055,
+    "response_distribution": {
+      "1.0": 43,
+      "2.0": 46,
+      "5.0": 2
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt11",
+    "domain": "gemok",
+    "text": "Sarah has invited some friends to celebrate her birthday. On the day of her birthday, she checks her email and sees that all of her friends cancelled last minute. In the end, she spends the evening alone at ho...",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -1.7047480922384253,
+    "discrimination": 2.1923076923076925,
+    "human_performance": 0.8461538461538461,
+    "response_distribution": {
+      "1.0": 77,
+      "2.0": 4,
+      "3.0": 4,
+      "4.0": 5,
+      "5.0": 1
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt12",
+    "domain": "gemok",
+    "text": "Rachel is going to a concert of her favorite band with her best friends. Even before the concert starts, Rachel feels like singing and dancing. She chats and laughs with her friends, and enjoys the atmosphere....",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 2,
+    "difficulty": 0.2876820724517809,
+    "discrimination": 1.3571428571428572,
+    "human_performance": 0.42857142857142855,
+    "response_distribution": {
+      "2.0": 32,
+      "3.0": 39,
+      "4.0": 5,
+      "5.0": 15
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt13",
+    "domain": "gemok",
+    "text": "Michael decides to break up with his girlfriend of two years because his does not love her anymore. He knows that she will be heartbroken and devastated and he is aware that it is him who will cause her this p...",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 1,
+    "difficulty": 0.19845093872383832,
+    "discrimination": 1.401098901098901,
+    "human_performance": 0.45054945054945056,
+    "response_distribution": {
+      "1.0": 38,
+      "2.0": 41,
+      "3.0": 8,
+      "4.0": 1,
+      "5.0": 3
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt14",
+    "domain": "gemok",
+    "text": "Jeffrey is on a hiking trip in Alaska with his girlfriend. At some point, the girlfriend asks him if they can have a short break to catch her breath. When they continue to hike, they notice that they have lost...",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 0.4238142467763611,
+    "discrimination": 1.291208791208791,
+    "human_performance": 0.3956043956043956,
+    "response_distribution": {
+      "1.0": 36,
+      "2.0": 29,
+      "3.0": 8,
+      "4.0": 5,
+      "5.0": 13
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt15",
+    "domain": "gemok",
+    "text": "Megan goes to a casino for the first time and plays a slot machine. Suddenly, the machine starts blinking and making loud sounds. Her jaw drops and her eyes widen as she watches the machine start to spit out c...",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.7598385550586176,
+    "discrimination": 1.8626373626373627,
+    "human_performance": 0.6813186813186813,
+    "response_distribution": {
+      "1.0": 62,
+      "2.0": 15,
+      "3.0": 2,
+      "4.0": 12
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt16",
+    "domain": "gemok",
+    "text": "Nicole is visiting a zoo and looking at a snake in a terrarium. She reads that this snake is particularly poisonous. As the snake has an unusual pattern and is brightly colored, Nicole moves close to the glass...",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -1.7047480922384253,
+    "discrimination": 2.1923076923076925,
+    "human_performance": 0.8461538461538461,
+    "response_distribution": {
+      "1.0": 77,
+      "2.0": 6,
+      "3.0": 4,
+      "5.0": 4
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt17",
+    "domain": "gemok",
+    "text": "Michelle is invited by some business partners to a famous restaurant. She has heard a lot about the restaurant but has never been there, so she is looking forward to visiting it. When they get there, she exami...",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 3,
+    "difficulty": 0.06595796779179729,
+    "discrimination": 1.4670329670329672,
+    "human_performance": 0.4835164835164835,
+    "response_distribution": {
+      "1.0": 42,
+      "4.0": 44,
+      "5.0": 5
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt18",
+    "domain": "gemok",
+    "text": "Julie has been trying to have a child for a few years when her sister tells her that she is pregnant. At first she feels all her muscles tensing and that she is losing control. She wants to say something hurtf...",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -3.0796137575346942,
+    "discrimination": 2.4120879120879124,
+    "human_performance": 0.9560439560439561,
+    "response_distribution": {
+      "1.0": 87,
+      "2.0": 2,
+      "3.0": 2
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt19",
+    "domain": "gemok",
+    "text": "Lisa is going to a very important meeting where she is supposed to give a presentation in front of the CEO of her company. She hopes to get the promotion she aimed at for a long time after this meeting. When s...",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -2.209494669928034,
+    "discrimination": 2.302197802197802,
+    "human_performance": 0.9010989010989011,
+    "response_distribution": {
+      "1.0": 82,
+      "2.0": 1,
+      "3.0": 3,
+      "4.0": 3,
+      "5.0": 2
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt20",
+    "domain": "gemok",
+    "text": "Scott just received the news that he did not get accepted for a fellowship while his friend Melissa did. At first, he thinks that this will impact very badly on his career as he might not be able to enroll in ...",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.611801541105993,
+    "discrimination": 1.7967032967032968,
+    "human_performance": 0.6483516483516484,
+    "response_distribution": {
+      "1.0": 59,
+      "2.0": 15,
+      "3.0": 2,
+      "4.0": 6,
+      "5.0": 9
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt1r",
+    "domain": "gemok",
+    "text": "GPT-generated GEMOK item 21",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": -1,
+    "difficulty": -0.28768207245178085,
+    "discrimination": 1.6428571428571428,
+    "human_performance": 0.5714285714285714,
+    "response_distribution": {
+      "0.0": 52,
+      "1.0": 39
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt2r",
+    "domain": "gemok",
+    "text": "GPT-generated GEMOK item 22",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": -1,
+    "difficulty": -1.4708517491479536,
+    "discrimination": 2.1263736263736264,
+    "human_performance": 0.8131868131868132,
+    "response_distribution": {
+      "0.0": 74,
+      "1.0": 17
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt3r",
+    "domain": "gemok",
+    "text": "GPT-generated GEMOK item 23",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.5166907432183888,
+    "discrimination": 1.7527472527472527,
+    "human_performance": 0.6263736263736264,
+    "response_distribution": {
+      "0.0": 34,
+      "1.0": 57
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt4r",
+    "domain": "gemok",
+    "text": "GPT-generated GEMOK item 24",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": -1,
+    "difficulty": -2.091864061678393,
+    "discrimination": 2.28021978021978,
+    "human_performance": 0.8901098901098901,
+    "response_distribution": {
+      "0.0": 81,
+      "1.0": 10
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt5r",
+    "domain": "gemok",
+    "text": "GPT-generated GEMOK item 25",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.021978906718775167,
+    "discrimination": 1.510989010989011,
+    "human_performance": 0.5054945054945055,
+    "response_distribution": {
+      "0.0": 45,
+      "1.0": 46
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt6r",
+    "domain": "gemok",
+    "text": "GPT-generated GEMOK item 26",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": -1,
+    "difficulty": -2.3393990661167616,
+    "discrimination": 2.324175824175824,
+    "human_performance": 0.9120879120879121,
+    "response_distribution": {
+      "0.0": 83,
+      "1.0": 8
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt7r",
+    "domain": "gemok",
+    "text": "GPT-generated GEMOK item 27",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -2.3393990661167616,
+    "discrimination": 2.324175824175824,
+    "human_performance": 0.9120879120879121,
+    "response_distribution": {
+      "0.0": 8,
+      "1.0": 83
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt8r",
+    "domain": "gemok",
+    "text": "GPT-generated GEMOK item 28",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.11000089521432849,
+    "discrimination": 1.554945054945055,
+    "human_performance": 0.5274725274725275,
+    "response_distribution": {
+      "0.0": 43,
+      "1.0": 48
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt9r",
+    "domain": "gemok",
+    "text": "GPT-generated GEMOK item 29",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": -1,
+    "difficulty": -1.7047480922384253,
+    "discrimination": 2.1923076923076925,
+    "human_performance": 0.8461538461538461,
+    "response_distribution": {
+      "0.0": 77,
+      "1.0": 14
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt10r",
+    "domain": "gemok",
+    "text": "GPT-generated GEMOK item 30",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": -1,
+    "difficulty": -0.11000089521432849,
+    "discrimination": 1.554945054945055,
+    "human_performance": 0.5274725274725275,
+    "response_distribution": {
+      "0.0": 48,
+      "1.0": 43
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt11r",
+    "domain": "gemok",
+    "text": "GPT-generated GEMOK item 31",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -1.7047480922384253,
+    "discrimination": 2.1923076923076925,
+    "human_performance": 0.8461538461538461,
+    "response_distribution": {
+      "0.0": 14,
+      "1.0": 77
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt12r",
+    "domain": "gemok",
+    "text": "GPT-generated GEMOK item 32",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": -1,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "0.0": 91
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt13r",
+    "domain": "gemok",
+    "text": "GPT-generated GEMOK item 33",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": -1,
+    "difficulty": -0.3327057538257363,
+    "discrimination": 1.664835164835165,
+    "human_performance": 0.5824175824175825,
+    "response_distribution": {
+      "0.0": 53,
+      "1.0": 38
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt14r",
+    "domain": "gemok",
+    "text": "GPT-generated GEMOK item 34",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": -1,
+    "difficulty": -0.4238142467763607,
+    "discrimination": 1.7087912087912087,
+    "human_performance": 0.6043956043956044,
+    "response_distribution": {
+      "0.0": 55,
+      "1.0": 36
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt15r",
+    "domain": "gemok",
+    "text": "GPT-generated GEMOK item 35",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.7598385550586176,
+    "discrimination": 1.8626373626373627,
+    "human_performance": 0.6813186813186813,
+    "response_distribution": {
+      "0.0": 29,
+      "1.0": 62
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt16r",
+    "domain": "gemok",
+    "text": "GPT-generated GEMOK item 36",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": -1,
+    "difficulty": -3.0796137575346942,
+    "discrimination": 2.4120879120879124,
+    "human_performance": 0.9560439560439561,
+    "response_distribution": {
+      "0.0": 87,
+      "1.0": 4
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt17r",
+    "domain": "gemok",
+    "text": "GPT-generated GEMOK item 37",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": -1,
+    "difficulty": -0.15415067982725816,
+    "discrimination": 1.5769230769230769,
+    "human_performance": 0.5384615384615384,
+    "response_distribution": {
+      "0.0": 49,
+      "1.0": 42
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt18r",
+    "domain": "gemok",
+    "text": "GPT-generated GEMOK item 38",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -3.0796137575346942,
+    "discrimination": 2.4120879120879124,
+    "human_performance": 0.9560439560439561,
+    "response_distribution": {
+      "0.0": 4,
+      "1.0": 87
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt19r",
+    "domain": "gemok",
+    "text": "GPT-generated GEMOK item 39",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -2.209494669928034,
+    "discrimination": 2.302197802197802,
+    "human_performance": 0.9010989010989011,
+    "response_distribution": {
+      "0.0": 9,
+      "1.0": 82
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gpt20r",
+    "domain": "gemok",
+    "text": "GPT-generated GEMOK item 40",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": -1,
+    "difficulty": -1.6226831391841212,
+    "discrimination": 2.1703296703296706,
+    "human_performance": 0.8351648351648352,
+    "response_distribution": {
+      "0.0": 76,
+      "1.0": 15
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "gemok_gptScore",
+    "domain": "gemok",
+    "text": "GPT-generated GEMOK item 41",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 1.4708517491479536,
+    "discrimination": 0.8736263736263736,
+    "human_performance": 0.18681318681318682,
+    "response_distribution": {
+      "0.15789473684210525": 1,
+      "0.21052631578947367": 3,
+      "0.2631578947368421": 8,
+      "0.3157894736842105": 2,
+      "0.3684210526315789": 6,
+      "0.42105263157894735": 17,
+      "0.47368421052631576": 14,
+      "0.5263157894736842": 17,
+      "0.5789473684210527": 12,
+      "0.631578947368421": 9,
+      "0.6842105263157895": 1,
+      "0.7368421052631579": 1
+    },
+    "total_responses": 91,
+    "participants": 91
+  },
+  {
+    "id": "em_gpt1",
+    "domain": "gecoem",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 3,
+    "difficulty": -1.004583339019833,
+    "discrimination": 1.9639175257731958,
+    "human_performance": 0.7319587628865979,
+    "response_distribution": {
+      "1.0": 7,
+      "2.0": 4,
+      "3.0": 9,
+      "4.0": 71,
+      "5.0": 6
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "em_gpt2",
+    "domain": "gecoem",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 2,
+    "difficulty": 0.43995128417933377,
+    "discrimination": 1.2835051546391751,
+    "human_performance": 0.3917525773195876,
+    "response_distribution": {
+      "1.0": 7,
+      "2.0": 36,
+      "3.0": 38,
+      "4.0": 13,
+      "5.0": 3
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "em_gpt3",
+    "domain": "gecoem",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 4,
+    "difficulty": -0.4399512841793335,
+    "discrimination": 1.7164948453608246,
+    "human_performance": 0.6082474226804123,
+    "response_distribution": {
+      "1.0": 5,
+      "2.0": 8,
+      "3.0": 9,
+      "4.0": 16,
+      "5.0": 59
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "em_gpt4",
+    "domain": "gecoem",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 3,
+    "difficulty": 0.22778393087071197,
+    "discrimination": 1.3865979381443299,
+    "human_performance": 0.44329896907216493,
+    "response_distribution": {
+      "1.0": 5,
+      "2.0": 13,
+      "3.0": 34,
+      "4.0": 43,
+      "5.0": 2
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "em_gpt5",
+    "domain": "gecoem",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 3,
+    "difficulty": 0.18610227963386075,
+    "discrimination": 1.4072164948453607,
+    "human_performance": 0.4536082474226804,
+    "response_distribution": {
+      "1.0": 1,
+      "2.0": 26,
+      "3.0": 11,
+      "4.0": 44,
+      "5.0": 15
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "em_gpt6",
+    "domain": "gecoem",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 4,
+    "difficulty": 0.6167742017753713,
+    "discrimination": 1.2010309278350515,
+    "human_performance": 0.35051546391752575,
+    "response_distribution": {
+      "1.0": 4,
+      "2.0": 32,
+      "3.0": 10,
+      "4.0": 17,
+      "5.0": 34
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "em_gpt7",
+    "domain": "gecoem",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 3,
+    "difficulty": -1.5488132906176653,
+    "discrimination": 2.149484536082474,
+    "human_performance": 0.8247422680412371,
+    "response_distribution": {
+      "1.0": 3,
+      "2.0": 2,
+      "3.0": 10,
+      "4.0": 80,
+      "5.0": 2
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "em_gpt8",
+    "domain": "gecoem",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 3,
+    "difficulty": -1.2264456601779947,
+    "discrimination": 2.0463917525773194,
+    "human_performance": 0.7731958762886598,
+    "response_distribution": {
+      "1.0": 7,
+      "3.0": 1,
+      "4.0": 75,
+      "5.0": 14
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "em_gpt9",
+    "domain": "gecoem",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 1,
+    "difficulty": -0.18610227963386053,
+    "discrimination": 1.592783505154639,
+    "human_performance": 0.5463917525773195,
+    "response_distribution": {
+      "1.0": 5,
+      "2.0": 53,
+      "3.0": 9,
+      "4.0": 19,
+      "5.0": 11
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "em_gpt10",
+    "domain": "gecoem",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 3,
+    "difficulty": -0.3968813644167728,
+    "discrimination": 1.6958762886597938,
+    "human_performance": 0.5979381443298969,
+    "response_distribution": {
+      "1.0": 32,
+      "3.0": 5,
+      "4.0": 58,
+      "5.0": 2
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "em_gpt11",
+    "domain": "gecoem",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 3,
+    "difficulty": -1.004583339019833,
+    "discrimination": 1.9639175257731958,
+    "human_performance": 0.7319587628865979,
+    "response_distribution": {
+      "1.0": 21,
+      "2.0": 2,
+      "3.0": 3,
+      "4.0": 71
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "em_gpt12",
+    "domain": "gecoem",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 1,
+    "difficulty": -0.1031842362352308,
+    "discrimination": 1.5515463917525774,
+    "human_performance": 0.5257731958762887,
+    "response_distribution": {
+      "2.0": 51,
+      "3.0": 15,
+      "4.0": 31
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "em_gpt13",
+    "domain": "gecoem",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.061875403718087245,
+    "discrimination": 1.5309278350515463,
+    "human_performance": 0.5154639175257731,
+    "response_distribution": {
+      "1.0": 50,
+      "2.0": 3,
+      "3.0": 4,
+      "4.0": 36,
+      "5.0": 4
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "em_gpt14",
+    "domain": "gecoem",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 4,
+    "difficulty": 0.6623755218931916,
+    "discrimination": 1.1804123711340206,
+    "human_performance": 0.3402061855670103,
+    "response_distribution": {
+      "5.0": 33,
+      "6.0": 27,
+      "7.0": 10,
+      "8.0": 27
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "em_gpt15",
+    "domain": "gecoem",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 1,
+    "difficulty": 0.06187540371808741,
+    "discrimination": 1.4690721649484537,
+    "human_performance": 0.4845360824742268,
+    "response_distribution": {
+      "1.0": 1,
+      "2.0": 47,
+      "3.0": 11,
+      "4.0": 33,
+      "5.0": 5
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "em_gpt16",
+    "domain": "gecoem",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 1,
+    "difficulty": -0.3117796240308412,
+    "discrimination": 1.6546391752577319,
+    "human_performance": 0.5773195876288659,
+    "response_distribution": {
+      "1.0": 2,
+      "2.0": 56,
+      "3.0": 7,
+      "4.0": 27,
+      "5.0": 5
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "em_gpt17",
+    "domain": "gecoem",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 3,
+    "difficulty": -2.280112237141987,
+    "discrimination": 2.3144329896907214,
+    "human_performance": 0.9072164948453608,
+    "response_distribution": {
+      "1.0": 1,
+      "2.0": 1,
+      "3.0": 4,
+      "4.0": 88,
+      "5.0": 3
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "em_gpt18",
+    "domain": "gecoem",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 3,
+    "difficulty": 0.18610227963386075,
+    "discrimination": 1.4072164948453607,
+    "human_performance": 0.4536082474226804,
+    "response_distribution": {
+      "1.0": 2,
+      "2.0": 25,
+      "3.0": 24,
+      "4.0": 44,
+      "5.0": 2
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "em_gpt19",
+    "domain": "gecoem",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.4399512841793335,
+    "discrimination": 1.7164948453608246,
+    "human_performance": 0.6082474226804123,
+    "response_distribution": {
+      "1.0": 59,
+      "2.0": 3,
+      "3.0": 1,
+      "4.0": 32,
+      "5.0": 2
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "em_gpt20",
+    "domain": "gecoem",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 4,
+    "difficulty": -0.2696635669491026,
+    "discrimination": 1.634020618556701,
+    "human_performance": 0.5670103092783505,
+    "response_distribution": {
+      "1.0": 4,
+      "2.0": 1,
+      "3.0": 8,
+      "4.0": 29,
+      "5.0": 55
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "EM_gpt1r",
+    "domain": "gecoem",
+    "text": "GPT-generated GECoEM item 21",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -1.004583339019833,
+    "discrimination": 1.9639175257731958,
+    "human_performance": 0.7319587628865979,
+    "response_distribution": {
+      "0.0": 26,
+      "1.0": 71
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "EM_gpt2r",
+    "domain": "gecoem",
+    "text": "GPT-generated GECoEM item 22",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": -1,
+    "difficulty": -0.5273549257172012,
+    "discrimination": 1.7577319587628866,
+    "human_performance": 0.6288659793814433,
+    "response_distribution": {
+      "0.0": 61,
+      "1.0": 36
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "EM_gpt3r",
+    "domain": "gecoem",
+    "text": "GPT-generated GECoEM item 23",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.4399512841793335,
+    "discrimination": 1.7164948453608246,
+    "human_performance": 0.6082474226804123,
+    "response_distribution": {
+      "0.0": 38,
+      "1.0": 59
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "EM_gpt4r",
+    "domain": "gecoem",
+    "text": "GPT-generated GECoEM item 24",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": -1,
+    "difficulty": -1.865867441381777,
+    "discrimination": 2.231958762886598,
+    "human_performance": 0.865979381443299,
+    "response_distribution": {
+      "0.0": 84,
+      "1.0": 13
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "EM_gpt5r",
+    "domain": "gecoem",
+    "text": "GPT-generated GECoEM item 25",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": -1,
+    "difficulty": -1.698669046162043,
+    "discrimination": 2.1907216494845363,
+    "human_performance": 0.845360824742268,
+    "response_distribution": {
+      "0.0": 82,
+      "1.0": 15
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "EM_gpt6r",
+    "domain": "gecoem",
+    "text": "GPT-generated GECoEM item 26",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": -1,
+    "difficulty": -0.7086513670959104,
+    "discrimination": 1.8402061855670102,
+    "human_performance": 0.6701030927835051,
+    "response_distribution": {
+      "0.0": 65,
+      "1.0": 32
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "EM_gpt7r",
+    "domain": "gecoem",
+    "text": "GPT-generated GECoEM item 27",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -1.5488132906176653,
+    "discrimination": 2.149484536082474,
+    "human_performance": 0.8247422680412371,
+    "response_distribution": {
+      "0.0": 17,
+      "1.0": 80
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "EM_gpt8r",
+    "domain": "gecoem",
+    "text": "GPT-generated GECoEM item 28",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -1.2264456601779947,
+    "discrimination": 2.0463917525773194,
+    "human_performance": 0.7731958762886598,
+    "response_distribution": {
+      "0.0": 22,
+      "1.0": 75
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "EM_gpt9r",
+    "domain": "gecoem",
+    "text": "GPT-generated GECoEM item 29",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.18610227963386053,
+    "discrimination": 1.592783505154639,
+    "human_performance": 0.5463917525773195,
+    "response_distribution": {
+      "0.0": 44,
+      "1.0": 53
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "EM_gpt10r",
+    "domain": "gecoem",
+    "text": "GPT-generated GECoEM item 30",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": -1,
+    "difficulty": -0.7086513670959104,
+    "discrimination": 1.8402061855670102,
+    "human_performance": 0.6701030927835051,
+    "response_distribution": {
+      "0.0": 65,
+      "1.0": 32
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "EM_gpt11r",
+    "domain": "gecoem",
+    "text": "GPT-generated GECoEM item 31",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": -1,
+    "difficulty": -1.286210902562908,
+    "discrimination": 2.0670103092783503,
+    "human_performance": 0.7835051546391752,
+    "response_distribution": {
+      "0.0": 76,
+      "1.0": 21
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "EM_gpt12r",
+    "domain": "gecoem",
+    "text": "GPT-generated GECoEM item 32",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.1031842362352308,
+    "discrimination": 1.5515463917525774,
+    "human_performance": 0.5257731958762887,
+    "response_distribution": {
+      "0.0": 46,
+      "1.0": 51
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "EM_gpt13r",
+    "domain": "gecoem",
+    "text": "GPT-generated GECoEM item 33",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.061875403718087245,
+    "discrimination": 1.5309278350515463,
+    "human_performance": 0.5154639175257731,
+    "response_distribution": {
+      "0.0": 47,
+      "1.0": 50
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "EM_gpt14r",
+    "domain": "gecoem",
+    "text": "GPT-generated GECoEM item 34",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": -1,
+    "difficulty": -0.9526583760450299,
+    "discrimination": 1.943298969072165,
+    "human_performance": 0.7216494845360825,
+    "response_distribution": {
+      "0.0": 70,
+      "1.0": 27
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "EM_gpt15r",
+    "domain": "gecoem",
+    "text": "GPT-generated GECoEM item 35",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": -1,
+    "difficulty": -0.061875403718087245,
+    "discrimination": 1.5309278350515463,
+    "human_performance": 0.5154639175257731,
+    "response_distribution": {
+      "0.0": 50,
+      "1.0": 47
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "EM_gpt16r",
+    "domain": "gecoem",
+    "text": "GPT-generated GECoEM item 36",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.3117796240308412,
+    "discrimination": 1.6546391752577319,
+    "human_performance": 0.5773195876288659,
+    "response_distribution": {
+      "0.0": 41,
+      "1.0": 56
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "EM_gpt17r",
+    "domain": "gecoem",
+    "text": "GPT-generated GECoEM item 37",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -2.280112237141987,
+    "discrimination": 2.3144329896907214,
+    "human_performance": 0.9072164948453608,
+    "response_distribution": {
+      "0.0": 9,
+      "1.0": 88
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "EM_gpt18r",
+    "domain": "gecoem",
+    "text": "GPT-generated GECoEM item 38",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": -1,
+    "difficulty": -1.0577902941478547,
+    "discrimination": 1.9845360824742269,
+    "human_performance": 0.7422680412371134,
+    "response_distribution": {
+      "0.0": 72,
+      "1.0": 25
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "EM_gpt19r",
+    "domain": "gecoem",
+    "text": "GPT-generated GECoEM item 39",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.4399512841793335,
+    "discrimination": 1.7164948453608246,
+    "human_performance": 0.6082474226804123,
+    "response_distribution": {
+      "0.0": 38,
+      "1.0": 59
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "EM_gpt20r",
+    "domain": "gecoem",
+    "text": "GPT-generated GECoEM item 40",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.2696635669491026,
+    "discrimination": 1.634020618556701,
+    "human_performance": 0.5670103092783505,
+    "response_distribution": {
+      "0.0": 42,
+      "1.0": 55
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "EM_gpt_score",
+    "domain": "gecoem",
+    "text": "GPT-generated GECoEM item 41",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 1.348073148299693,
+    "discrimination": 0.9123711340206185,
+    "human_performance": 0.20618556701030927,
+    "response_distribution": {
+      "0.1": 2,
+      "0.15": 1,
+      "0.2": 3,
+      "0.25": 2,
+      "0.3": 2,
+      "0.35": 4,
+      "0.4": 9,
+      "0.45": 16,
+      "0.5": 20,
+      "0.55": 14,
+      "0.6": 14,
+      "0.65": 3,
+      "0.7": 6,
+      "0.75": 1
+    },
+    "total_responses": 97,
+    "participants": 97
+  },
+  {
+    "id": "er_gpt1_1",
+    "domain": "gecoer",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.9760099665757774,
+    "discrimination": 1.9526315789473685,
+    "human_performance": 0.7263157894736842,
+    "response_distribution": {
+      "0.0": 26,
+      "1.0": 69
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt1_2",
+    "domain": "gecoer",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 25
+    },
+    "total_responses": 25,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt1_3",
+    "domain": "gecoer",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.19004360288786507,
+    "discrimination": 1.5947368421052632,
+    "human_performance": 0.5473684210526316,
+    "response_distribution": {
+      "0.0": 43,
+      "1.0": 52
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt1_4",
+    "domain": "gecoer",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 44
+    },
+    "total_responses": 44,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt2_1",
+    "domain": "gecoer",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -1.8417698898027164,
+    "discrimination": 2.2263157894736842,
+    "human_performance": 0.8631578947368421,
+    "response_distribution": {
+      "0.0": 13,
+      "1.0": 82
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt2_2",
+    "domain": "gecoer",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 29
+    },
+    "total_responses": 29,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt2_3",
+    "domain": "gecoer",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.10536051565782614,
+    "discrimination": 1.5526315789473684,
+    "human_performance": 0.5263157894736842,
+    "response_distribution": {
+      "0.0": 45,
+      "1.0": 50
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt2_4",
+    "domain": "gecoer",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 29
+    },
+    "total_responses": 29,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt3_1",
+    "domain": "gecoer",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.5845133395571499,
+    "discrimination": 1.7842105263157895,
+    "human_performance": 0.6421052631578947,
+    "response_distribution": {
+      "0.0": 34,
+      "1.0": 61
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt3_2",
+    "domain": "gecoer",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 42
+    },
+    "total_responses": 42,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt3_3",
+    "domain": "gecoer",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": -1,
+    "difficulty": -1.5968591302272404,
+    "discrimination": 2.163157894736842,
+    "human_performance": 0.8315789473684211,
+    "response_distribution": {
+      "0.0": 79,
+      "1.0": 16
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt3_4",
+    "domain": "gecoer",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 71
+    },
+    "total_responses": 71,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt4_1",
+    "domain": "gecoer",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": -1,
+    "difficulty": -0.4940185054496097,
+    "discrimination": 1.7421052631578948,
+    "human_performance": 0.6210526315789474,
+    "response_distribution": {
+      "0.0": 59,
+      "1.0": 36
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt4_2",
+    "domain": "gecoer",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 45
+    },
+    "total_responses": 45,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt4_3",
+    "domain": "gecoer",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -1.0296194171811581,
+    "discrimination": 1.9736842105263157,
+    "human_performance": 0.7368421052631579,
+    "response_distribution": {
+      "0.0": 25,
+      "1.0": 70
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt4_4",
+    "domain": "gecoer",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 39
+    },
+    "total_responses": 39,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt5_1",
+    "domain": "gecoer",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.9236708391717776,
+    "discrimination": 1.931578947368421,
+    "human_performance": 0.7157894736842105,
+    "response_distribution": {
+      "0.0": 27,
+      "1.0": 68
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt5_2",
+    "domain": "gecoer",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 29
+    },
+    "total_responses": 29,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt5_3",
+    "domain": "gecoer",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": -1,
+    "difficulty": -0.02105340919783248,
+    "discrimination": 1.5105263157894737,
+    "human_performance": 0.5052631578947369,
+    "response_distribution": {
+      "0.0": 48,
+      "1.0": 47
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt5_4",
+    "domain": "gecoer",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 46
+    },
+    "total_responses": 46,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt6_1",
+    "domain": "gecoer",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.6306268235786116,
+    "discrimination": 1.805263157894737,
+    "human_performance": 0.6526315789473685,
+    "response_distribution": {
+      "0.0": 33,
+      "1.0": 62
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt6_2",
+    "domain": "gecoer",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 19
+    },
+    "total_responses": 19,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt6_3",
+    "domain": "gecoer",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.7731898882334819,
+    "discrimination": 1.868421052631579,
+    "human_performance": 0.6842105263157895,
+    "response_distribution": {
+      "0.0": 30,
+      "1.0": 65
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt6_4",
+    "domain": "gecoer",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 44
+    },
+    "total_responses": 44,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt7_1",
+    "domain": "gecoer",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": -1,
+    "difficulty": -0.06317890162153188,
+    "discrimination": 1.5315789473684212,
+    "human_performance": 0.5157894736842106,
+    "response_distribution": {
+      "0.0": 49,
+      "1.0": 46
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt7_2",
+    "domain": "gecoer",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 50
+    },
+    "total_responses": 50,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt7_3",
+    "domain": "gecoer",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.3617900446055027,
+    "discrimination": 1.6789473684210525,
+    "human_performance": 0.5894736842105263,
+    "response_distribution": {
+      "0.0": 39,
+      "1.0": 56
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt7_4",
+    "domain": "gecoer",
+    "text": "cannot be printed (copyright)",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 38
+    },
+    "total_responses": 38,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt8_1",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 29",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -1.5968591302272404,
+    "discrimination": 2.163157894736842,
+    "human_performance": 0.8315789473684211,
+    "response_distribution": {
+      "0.0": 16,
+      "1.0": 79
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt8_2",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 30",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 37
+    },
+    "total_responses": 37,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt8_3",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 31",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.5389965007326868,
+    "discrimination": 1.763157894736842,
+    "human_performance": 0.631578947368421,
+    "response_distribution": {
+      "0.0": 35,
+      "1.0": 60
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt8_4",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 32",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 14
+    },
+    "total_responses": 14,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt9_1",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 33",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -1.1411719030869059,
+    "discrimination": 2.015789473684211,
+    "human_performance": 0.7578947368421053,
+    "response_distribution": {
+      "0.0": 23,
+      "1.0": 72
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt9_2",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 34",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 28
+    },
+    "total_responses": 28,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt9_3",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 35",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.44952509790219486,
+    "discrimination": 1.7210526315789474,
+    "human_performance": 0.6105263157894737,
+    "response_distribution": {
+      "0.0": 37,
+      "1.0": 58
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt9_4",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 36",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 32
+    },
+    "total_responses": 32,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt10_1",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 37",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -1.5968591302272404,
+    "discrimination": 2.163157894736842,
+    "human_performance": 0.8315789473684211,
+    "response_distribution": {
+      "0.0": 16,
+      "1.0": 79
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt10_2",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 38",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 48
+    },
+    "total_responses": 48,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt10_3",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 39",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.2754119798599666,
+    "discrimination": 1.6368421052631579,
+    "human_performance": 0.5684210526315789,
+    "response_distribution": {
+      "0.0": 41,
+      "1.0": 54
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt10_4",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 40",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 9
+    },
+    "total_responses": 9,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt11_1",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 41",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.8724881092157619,
+    "discrimination": 1.9105263157894736,
+    "human_performance": 0.7052631578947368,
+    "response_distribution": {
+      "0.0": 28,
+      "1.0": 67
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt11_2",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 42",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 26
+    },
+    "total_responses": 26,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt11_3",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 43",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.02105340919783248,
+    "discrimination": 1.5105263157894737,
+    "human_performance": 0.5052631578947369,
+    "response_distribution": {
+      "0.0": 47,
+      "1.0": 48
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt11_4",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 44",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 49
+    },
+    "total_responses": 49,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt12_1",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 45",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -1.2595426554807465,
+    "discrimination": 2.057894736842105,
+    "human_performance": 0.7789473684210526,
+    "response_distribution": {
+      "0.0": 21,
+      "1.0": 74
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt12_2",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 46",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 50
+    },
+    "total_responses": 50,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt12_3",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 47",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": -1,
+    "difficulty": -0.02105340919783248,
+    "discrimination": 1.5105263157894737,
+    "human_performance": 0.5052631578947369,
+    "response_distribution": {
+      "0.0": 48,
+      "1.0": 47
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt12_4",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 48",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 19
+    },
+    "total_responses": 19,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt13_1",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 49",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.7248958788745256,
+    "discrimination": 1.8473684210526315,
+    "human_performance": 0.6736842105263158,
+    "response_distribution": {
+      "0.0": 31,
+      "1.0": 64
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt13_2",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 50",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 18
+    },
+    "total_responses": 18,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt13_3",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 51",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -1.5234954826333755,
+    "discrimination": 2.1421052631578945,
+    "human_performance": 0.8210526315789474,
+    "response_distribution": {
+      "0.0": 17,
+      "1.0": 78
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt13_4",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 52",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 30
+    },
+    "total_responses": 30,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt14_1",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 53",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -1.8417698898027164,
+    "discrimination": 2.2263157894736842,
+    "human_performance": 0.8631578947368421,
+    "response_distribution": {
+      "0.0": 13,
+      "1.0": 82
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt14_2",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 54",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 19
+    },
+    "total_responses": 19,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt14_3",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 55",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -1.6739764335716711,
+    "discrimination": 2.1842105263157894,
+    "human_performance": 0.8421052631578947,
+    "response_distribution": {
+      "0.0": 15,
+      "1.0": 80
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt14_4",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 56",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 9
+    },
+    "total_responses": 9,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt15_1",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 57",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.31845373111853476,
+    "discrimination": 1.6578947368421053,
+    "human_performance": 0.5789473684210527,
+    "response_distribution": {
+      "0.0": 40,
+      "1.0": 55
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt15_2",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 58",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 39
+    },
+    "total_responses": 39,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt15_3",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 59",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.8724881092157619,
+    "discrimination": 1.9105263157894736,
+    "human_performance": 0.7052631578947368,
+    "response_distribution": {
+      "0.0": 28,
+      "1.0": 67
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt15_4",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 60",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 29
+    },
+    "total_responses": 29,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt16_1",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 61",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.6306268235786116,
+    "discrimination": 1.805263157894737,
+    "human_performance": 0.6526315789473685,
+    "response_distribution": {
+      "0.0": 33,
+      "1.0": 62
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt16_2",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 62",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 29
+    },
+    "total_responses": 29,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt16_3",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 63",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -1.0296194171811581,
+    "discrimination": 1.9736842105263157,
+    "human_performance": 0.7368421052631579,
+    "response_distribution": {
+      "0.0": 25,
+      "1.0": 70
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt16_4",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 64",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 29
+    },
+    "total_responses": 29,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt17_1",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 65",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.4054651081081642,
+    "discrimination": 1.7,
+    "human_performance": 0.6,
+    "response_distribution": {
+      "0.0": 38,
+      "1.0": 57
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt17_2",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 66",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 46
+    },
+    "total_responses": 46,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt17_3",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 67",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": -1,
+    "difficulty": -0.19004360288786507,
+    "discrimination": 1.5947368421052632,
+    "human_performance": 0.5473684210526316,
+    "response_distribution": {
+      "0.0": 52,
+      "1.0": 43
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt17_4",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 68",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 44
+    },
+    "total_responses": 44,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt18_1",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 69",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.4940185054496097,
+    "discrimination": 1.7421052631578948,
+    "human_performance": 0.6210526315789474,
+    "response_distribution": {
+      "0.0": 36,
+      "1.0": 59
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt18_2",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 70",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 23
+    },
+    "total_responses": 23,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt18_3",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 71",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.6306268235786116,
+    "discrimination": 1.805263157894737,
+    "human_performance": 0.6526315789473685,
+    "response_distribution": {
+      "0.0": 33,
+      "1.0": 62
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt18_4",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 72",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 46
+    },
+    "total_responses": 46,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt19_1",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 73",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.31845373111853476,
+    "discrimination": 1.6578947368421053,
+    "human_performance": 0.5789473684210527,
+    "response_distribution": {
+      "0.0": 40,
+      "1.0": 55
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt19_2",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 74",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 51
+    },
+    "total_responses": 51,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt19_3",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 75",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.6306268235786116,
+    "discrimination": 1.805263157894737,
+    "human_performance": 0.6526315789473685,
+    "response_distribution": {
+      "0.0": 33,
+      "1.0": 62
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt19_4",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 76",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 22
+    },
+    "total_responses": 22,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt20_1",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 77",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.02105340919783248,
+    "discrimination": 1.5105263157894737,
+    "human_performance": 0.5052631578947369,
+    "response_distribution": {
+      "0.0": 47,
+      "1.0": 48
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt20_2",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 78",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 39
+    },
+    "total_responses": 39,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt20_3",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 79",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.9236708391717776,
+    "discrimination": 1.931578947368421,
+    "human_performance": 0.7157894736842105,
+    "response_distribution": {
+      "0.0": 27,
+      "1.0": 68
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt20_4",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 80",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 35
+    },
+    "total_responses": 35,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt21_1",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 81",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -1.3862943611198908,
+    "discrimination": 2.1,
+    "human_performance": 0.8,
+    "response_distribution": {
+      "0.0": 19,
+      "1.0": 76
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt21_2",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 82",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 25
+    },
+    "total_responses": 25,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt21_3",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 83",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.5389965007326868,
+    "discrimination": 1.763157894736842,
+    "human_performance": 0.631578947368421,
+    "response_distribution": {
+      "0.0": 35,
+      "1.0": 60
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt21_4",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 84",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 29
+    },
+    "total_responses": 29,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt22_1",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 85",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.14763599880606468,
+    "discrimination": 1.5736842105263158,
+    "human_performance": 0.5368421052631579,
+    "response_distribution": {
+      "0.0": 44,
+      "1.0": 51
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt22_2",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 86",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 19
+    },
+    "total_responses": 19,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt22_3",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 87",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.4940185054496097,
+    "discrimination": 1.7421052631578948,
+    "human_performance": 0.6210526315789474,
+    "response_distribution": {
+      "0.0": 36,
+      "1.0": 59
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt22_4",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 88",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 61
+    },
+    "total_responses": 61,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt23_1",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 89",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.5389965007326868,
+    "discrimination": 1.763157894736842,
+    "human_performance": 0.631578947368421,
+    "response_distribution": {
+      "0.0": 35,
+      "1.0": 60
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt23_2",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 90",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 37
+    },
+    "total_responses": 37,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt23_3",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 91",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": -1,
+    "difficulty": -0.06317890162153188,
+    "discrimination": 1.5315789473684212,
+    "human_performance": 0.5157894736842106,
+    "response_distribution": {
+      "0.0": 49,
+      "1.0": 46
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt23_4",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 92",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 47
+    },
+    "total_responses": 47,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt24_1",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 93",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.8724881092157619,
+    "discrimination": 1.9105263157894736,
+    "human_performance": 0.7052631578947368,
+    "response_distribution": {
+      "0.0": 28,
+      "1.0": 67
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt24_2",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 94",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 35
+    },
+    "total_responses": 35,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt24_3",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 95",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.5845133395571499,
+    "discrimination": 1.7842105263157895,
+    "human_performance": 0.6421052631578947,
+    "response_distribution": {
+      "0.0": 34,
+      "1.0": 61
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt24_4",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 96",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 27
+    },
+    "total_responses": 27,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt25_1",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 97",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.9236708391717776,
+    "discrimination": 1.931578947368421,
+    "human_performance": 0.7157894736842105,
+    "response_distribution": {
+      "0.0": 27,
+      "1.0": 68
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt25_2",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 98",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 35
+    },
+    "total_responses": 35,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt25_3",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 99",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.8724881092157619,
+    "discrimination": 1.9105263157894736,
+    "human_performance": 0.7052631578947368,
+    "response_distribution": {
+      "0.0": 28,
+      "1.0": 67
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt25_4",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 100",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 20
+    },
+    "total_responses": 20,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt26_1",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 101",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.7248958788745256,
+    "discrimination": 1.8473684210526315,
+    "human_performance": 0.6736842105263158,
+    "response_distribution": {
+      "0.0": 31,
+      "1.0": 64
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt26_2",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 102",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 31
+    },
+    "total_responses": 31,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt26_3",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 103",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.3617900446055027,
+    "discrimination": 1.6789473684210525,
+    "human_performance": 0.5894736842105263,
+    "response_distribution": {
+      "0.0": 39,
+      "1.0": 56
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt26_4",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 104",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 39
+    },
+    "total_responses": 39,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt27_1",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 105",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -1.8417698898027164,
+    "discrimination": 2.2263157894736842,
+    "human_performance": 0.8631578947368421,
+    "response_distribution": {
+      "0.0": 13,
+      "1.0": 82
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt27_2",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 106",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 25
+    },
+    "total_responses": 25,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt27_3",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 107",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -1.0846260466933697,
+    "discrimination": 1.9947368421052631,
+    "human_performance": 0.7473684210526316,
+    "response_distribution": {
+      "0.0": 24,
+      "1.0": 71
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt27_4",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 108",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 12
+    },
+    "total_responses": 12,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt28_1",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 109",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -1.75539182505718,
+    "discrimination": 2.205263157894737,
+    "human_performance": 0.8526315789473684,
+    "response_distribution": {
+      "0.0": 14,
+      "1.0": 81
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt28_2",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 110",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 22
+    },
+    "total_responses": 22,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt28_3",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 111",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -1.2595426554807465,
+    "discrimination": 2.057894736842105,
+    "human_performance": 0.7789473684210526,
+    "response_distribution": {
+      "0.0": 21,
+      "1.0": 74
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "er_gpt28_4",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 112",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.0,
+    "discrimination": 1.0,
+    "human_performance": 1.0,
+    "response_distribution": {
+      "1.0": 13
+    },
+    "total_responses": 13,
+    "participants": 95
+  },
+  {
+    "id": "ER_gpt1",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 113",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.4940185054496097,
+    "discrimination": 1.7421052631578948,
+    "human_performance": 0.6210526315789474,
+    "response_distribution": {
+      "0.0": 5,
+      "0.5": 59,
+      "1.0": 31
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "ER_gpt2",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 114",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 0.14763599880606468,
+    "discrimination": 1.4263157894736842,
+    "human_performance": 0.4631578947368421,
+    "response_distribution": {
+      "0.0": 7,
+      "0.5": 44,
+      "1.0": 44
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "ER_gpt3",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 115",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.23262229526875333,
+    "discrimination": 1.6157894736842104,
+    "human_performance": 0.5578947368421052,
+    "response_distribution": {
+      "0.0": 30,
+      "0.5": 53,
+      "1.0": 12
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "ER_gpt4",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 116",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.02105340919783248,
+    "discrimination": 1.5105263157894737,
+    "human_performance": 0.5052631578947369,
+    "response_distribution": {
+      "0.0": 18,
+      "0.5": 48,
+      "1.0": 29
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "ER_gpt5",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 117",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 0.19004360288786473,
+    "discrimination": 1.405263157894737,
+    "human_performance": 0.45263157894736844,
+    "response_distribution": {
+      "0.0": 16,
+      "0.5": 43,
+      "1.0": 36
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "ER_gpt6",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 118",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 0.19004360288786473,
+    "discrimination": 1.405263157894737,
+    "human_performance": 0.45263157894736844,
+    "response_distribution": {
+      "0.0": 11,
+      "0.5": 41,
+      "1.0": 43
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "ER_gpt7",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 119",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 0.06317890162153168,
+    "discrimination": 1.4684210526315788,
+    "human_performance": 0.4842105263157895,
+    "response_distribution": {
+      "0.0": 21,
+      "0.5": 46,
+      "1.0": 28
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "ER_gpt8",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 120",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.06317890162153188,
+    "discrimination": 1.5315789473684212,
+    "human_performance": 0.5157894736842106,
+    "response_distribution": {
+      "0.0": 5,
+      "0.5": 41,
+      "1.0": 49
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "ER_gpt9",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 121",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 0.14763599880606468,
+    "discrimination": 1.4263157894736842,
+    "human_performance": 0.4631578947368421,
+    "response_distribution": {
+      "0.0": 9,
+      "0.5": 42,
+      "1.0": 44
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "ER_gpt10",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 122",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 0.10536051565782652,
+    "discrimination": 1.4473684210526314,
+    "human_performance": 0.47368421052631576,
+    "response_distribution": {
+      "0.0": 7,
+      "0.5": 43,
+      "1.0": 45
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "ER_gpt11",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 123",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 0.2754119798599665,
+    "discrimination": 1.3631578947368421,
+    "human_performance": 0.43157894736842106,
+    "response_distribution": {
+      "0.0": 17,
+      "0.5": 41,
+      "1.0": 37
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "ER_gpt12",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 124",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 0.02105340919783238,
+    "discrimination": 1.4894736842105263,
+    "human_performance": 0.49473684210526314,
+    "response_distribution": {
+      "0.0": 11,
+      "0.5": 47,
+      "1.0": 37
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "ER_gpt13",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 125",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.3617900446055027,
+    "discrimination": 1.6789473684210525,
+    "human_performance": 0.5894736842105263,
+    "response_distribution": {
+      "0.0": 9,
+      "0.5": 30,
+      "1.0": 56
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "ER_gpt14",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 126",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -1.0296194171811581,
+    "discrimination": 1.9736842105263157,
+    "human_performance": 0.7368421052631579,
+    "response_distribution": {
+      "0.0": 3,
+      "0.5": 22,
+      "1.0": 70
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "ER_gpt15",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 127",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 0.23262229526875347,
+    "discrimination": 1.3842105263157896,
+    "human_performance": 0.4421052631578947,
+    "response_distribution": {
+      "0.0": 13,
+      "0.5": 42,
+      "1.0": 40
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "ER_gpt16",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 128",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.02105340919783248,
+    "discrimination": 1.5105263157894737,
+    "human_performance": 0.5052631578947369,
+    "response_distribution": {
+      "0.0": 11,
+      "0.5": 36,
+      "1.0": 48
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "ER_gpt17",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 129",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 0.14763599880606468,
+    "discrimination": 1.4263157894736842,
+    "human_performance": 0.4631578947368421,
+    "response_distribution": {
+      "0.0": 23,
+      "0.5": 44,
+      "1.0": 28
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "ER_gpt18",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 130",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 0.02105340919783238,
+    "discrimination": 1.4894736842105263,
+    "human_performance": 0.49473684210526314,
+    "response_distribution": {
+      "0.0": 11,
+      "0.5": 47,
+      "1.0": 37
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "ER_gpt19",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 131",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 0.2754119798599665,
+    "discrimination": 1.3631578947368421,
+    "human_performance": 0.43157894736842106,
+    "response_distribution": {
+      "0.0": 16,
+      "0.5": 41,
+      "1.0": 38
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "ER_gpt20",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 132",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 0.14763599880606468,
+    "discrimination": 1.4263157894736842,
+    "human_performance": 0.4631578947368421,
+    "response_distribution": {
+      "0.0": 15,
+      "0.5": 44,
+      "1.0": 36
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "ER_gpt21",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 133",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.06317890162153188,
+    "discrimination": 1.5315789473684212,
+    "human_performance": 0.5157894736842106,
+    "response_distribution": {
+      "0.0": 8,
+      "0.5": 38,
+      "1.0": 49
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "ER_gpt22",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 134",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.3617900446055027,
+    "discrimination": 1.6789473684210525,
+    "human_performance": 0.5894736842105263,
+    "response_distribution": {
+      "0.0": 12,
+      "0.5": 56,
+      "1.0": 27
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "ER_gpt23",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 135",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 0.31845373111853476,
+    "discrimination": 1.3421052631578947,
+    "human_performance": 0.42105263157894735,
+    "response_distribution": {
+      "0.0": 22,
+      "0.5": 40,
+      "1.0": 33
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "ER_gpt24",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 136",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 0.02105340919783238,
+    "discrimination": 1.4894736842105263,
+    "human_performance": 0.49473684210526314,
+    "response_distribution": {
+      "0.0": 14,
+      "0.5": 34,
+      "1.0": 47
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "ER_gpt25",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 137",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.06317890162153188,
+    "discrimination": 1.5315789473684212,
+    "human_performance": 0.5157894736842106,
+    "response_distribution": {
+      "0.0": 9,
+      "0.5": 37,
+      "1.0": 49
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "ER_gpt26",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 138",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 0.2754119798599665,
+    "discrimination": 1.3631578947368421,
+    "human_performance": 0.43157894736842106,
+    "response_distribution": {
+      "0.0": 16,
+      "0.5": 38,
+      "1.0": 41
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "ER_gpt27",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 139",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.5389965007326868,
+    "discrimination": 1.763157894736842,
+    "human_performance": 0.631578947368421,
+    "response_distribution": {
+      "0.0": 2,
+      "0.5": 33,
+      "1.0": 60
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "ER_gpt28",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 140",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": -0.8223589120399517,
+    "discrimination": 1.8894736842105264,
+    "human_performance": 0.6947368421052632,
+    "response_distribution": {
+      "0.0": 6,
+      "0.5": 23,
+      "1.0": 66
+    },
+    "total_responses": 95,
+    "participants": 95
+  },
+  {
+    "id": "ER_gpt",
+    "domain": "gecoer",
+    "text": "GPT-generated GECoER item 141",
+    "options": [
+      "Option A",
+      "Option B",
+      "Option C",
+      "Option D"
+    ],
+    "correctAnswer": 0,
+    "difficulty": 2.6968769005040847,
+    "discrimination": 0.6263157894736842,
+    "human_performance": 0.06315789473684211,
+    "response_distribution": {
+      "0.05357142857142857": 1,
+      "0.125": 1,
+      "0.23214285714285715": 1,
+      "0.2857142857142857": 1,
+      "0.3392857142857143": 1,
+      "0.35714285714285715": 1,
+      "0.375": 1,
+      "0.4107142857142857": 1,
+      "0.42857142857142855": 6,
+      "0.44642857142857145": 1,
+      "0.4642857142857143": 4,
+      "0.48214285714285715": 1,
+      "0.5": 4,
+      "0.5178571428571429": 2,
+      "0.5357142857142857": 3,
+      "0.5535714285714286": 2,
+      "0.5714285714285714": 5,
+      "0.5892857142857143": 5,
+      "0.6071428571428571": 1,
+      "0.625": 6,
+      "0.6428571428571429": 3,
+      "0.6607142857142857": 3,
+      "0.6785714285714286": 2,
+      "0.6964285714285714": 3,
+      "0.7142857142857143": 3,
+      "0.7321428571428571": 1,
+      "0.75": 1,
+      "0.7678571428571429": 3,
+      "0.8035714285714286": 2,
+      "0.8214285714285714": 2,
+      "0.8392857142857143": 1,
+      "0.8571428571428571": 3,
+      "0.875": 3,
+      "0.8928571428571429": 3,
+      "0.9107142857142857": 1,
+      "0.9285714285714286": 4,
+      "0.9464285714285714": 3,
+      "0.9642857142857143": 3,
+      "0.9821428571428571": 2,
+      "1.0": 1
+    },
+    "total_responses": 95,
+    "participants": 95
+  }
+]
