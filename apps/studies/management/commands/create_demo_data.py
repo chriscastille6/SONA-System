@@ -69,18 +69,20 @@ class Command(BaseCommand):
         """Create administrator/superuser account."""
         email = 'admin@nicholls.edu'
         
-        # Delete if exists
-        User.objects.filter(email=email).delete()
+        # Only create if doesn't exist (don't delete existing admin)
+        if User.objects.filter(email=email).exists():
+            user = User.objects.get(email=email)
+            self.stdout.write(f'  ✓ Administrator already exists: {user.get_full_name()}')
+        else:
+            user = User.objects.create_superuser(
+                email=email,
+                password='admin123',
+                first_name='System',
+                last_name='Administrator',
+                role='admin'
+            )
+            self.stdout.write(f'  ✓ Created administrator: {user.get_full_name()}')
         
-        user = User.objects.create_superuser(
-            email=email,
-            password='admin123',
-            first_name='System',
-            last_name='Administrator',
-            role='admin'
-        )
-        
-        self.stdout.write(f'  ✓ Created administrator: {user.get_full_name()}')
         return user
 
     def create_researcher(self):
