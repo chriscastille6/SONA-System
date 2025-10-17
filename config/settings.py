@@ -166,7 +166,7 @@ CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default='http://localhost:
 # Site Configuration
 SITE_NAME = config('SITE_NAME', default='Research Participant System')
 SITE_URL = config('SITE_URL', default='http://localhost:8000')
-INSTITUTION_NAME = config('INSTITUTION_NAME', default='University Name')
+INSTITUTION_NAME = config('INSTITUTION_NAME', default='Nicholls State University')
 
 # Policy Settings
 CANCELLATION_WINDOW_HOURS = config('CANCELLATION_WINDOW_HOURS', default=2, cast=int)
