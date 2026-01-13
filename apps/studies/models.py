@@ -54,6 +54,10 @@ class Study(models.Model):
     # Status
     is_active = models.BooleanField(default=True, help_text="Study is visible to participants")
     is_approved = models.BooleanField(default=True, help_text="Admin approval status")
+    is_classroom_based = models.BooleanField(
+        default=False,
+        help_text="Classroom-based study (not available for general signup, IRB monitoring only)"
+    )
     
     # Eligibility criteria (JSON)
     eligibility = models.JSONField(
@@ -77,6 +81,10 @@ class Study(models.Model):
     )
     irb_number = models.CharField(max_length=100, blank=True, help_text="IRB protocol number")
     irb_expiration = models.DateField(null=True, blank=True, help_text="IRB approval expiration date")
+    involves_deception = models.BooleanField(
+        default=False,
+        help_text="Protocol involves deception (requires chair review)"
+    )
     
     # IRB Audit Trail
     irb_approved_by = models.ForeignKey(
@@ -708,4 +716,274 @@ class ReviewDocument(models.Model):
             self.file_size_bytes = len(file_content)
             self.file.seek(0)  # Reset file pointer
         super().save(*args, **kwargs)
+
+
+class CollegeRepresentative(models.Model):
+    """Maps colleges/departments to IRB representatives."""
+    
+    COLLEGE_CHOICES = [
+        ('business', 'College of Business Administration'),
+        ('education', 'College of Education and Behavioral Sciences'),
+        ('liberal_arts', 'College of Liberal Arts'),
+        ('sciences', 'College of Sciences & Technology'),
+        ('nursing', 'Department of Nursing'),
+    ]
+    
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    college = models.CharField(max_length=50, choices=COLLEGE_CHOICES, unique=True)
+    representative = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        limit_choices_to={'role': 'irb_member'},
+        related_name='college_representative_assignments',
+        help_text="IRB member serving as college representative"
+    )
+    is_chair = models.BooleanField(
+        default=False,
+        help_text="This representative is the IRB Chair"
+    )
+    active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        db_table = 'college_representatives'
+        verbose_name = 'College Representative'
+        verbose_name_plural = 'College Representatives'
+        ordering = ['college']
+    
+    def __str__(self):
+        return f"{self.get_college_display()} - {self.representative.get_full_name() if self.representative else 'Unassigned'}"
+
+
+class ProtocolSubmission(models.Model):
+    """Formal IRB protocol submission with review workflow."""
+    
+    REVIEW_TYPE_CHOICES = [
+        ('exempt', 'Exempt'),
+        ('expedited', 'Expedited Review'),
+        ('full', 'Full Board Review'),
+    ]
+    
+    DECISION_CHOICES = [
+        ('pending', 'Pending Review'),
+        ('approved', 'Approved'),
+        ('revise_resubmit', 'Revise & Resubmit'),
+        ('rejected', 'Rejected'),
+    ]
+    
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    study = models.ForeignKey(
+        Study,
+        on_delete=models.CASCADE,
+        related_name='protocol_submissions'
+    )
+    submission_number = models.CharField(
+        max_length=50,
+        unique=True,
+        db_index=True,
+        help_text="Auto-generated submission number"
+    )
+    version = models.IntegerField(default=1, help_text="Submission version number")
+    
+    # PI's suggested review type
+    pi_suggested_review_type = models.CharField(
+        max_length=20,
+        choices=REVIEW_TYPE_CHOICES,
+        help_text="Review type suggested by Primary Investigator"
+    )
+    
+    # College rep assignment
+    college_rep = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='assigned_submissions',
+        limit_choices_to={'role': 'irb_member'},
+        help_text="College representative assigned to this submission"
+    )
+    college_rep_determination = models.CharField(
+        max_length=20,
+        choices=REVIEW_TYPE_CHOICES,
+        blank=True,
+        help_text="College rep's determination of review type"
+    )
+    
+    # Deception flag (from study, but can be overridden)
+    involves_deception = models.BooleanField(
+        default=False,
+        help_text="Protocol involves deception (requires chair review)"
+    )
+    
+    # Current state
+    review_type = models.CharField(
+        max_length=20,
+        choices=REVIEW_TYPE_CHOICES,
+        help_text="Actual review type (may differ from PI suggestion)"
+    )
+    decision = models.CharField(
+        max_length=20,
+        choices=DECISION_CHOICES,
+        default='pending',
+        db_index=True,
+        help_text="Current decision status"
+    )
+    
+    # Protocol number (issued on approval)
+    protocol_number = models.CharField(
+        max_length=100,
+        blank=True,
+        db_index=True,
+        help_text="IRB protocol number (issued upon approval)"
+    )
+    
+    # Decision details
+    rejection_grounds = models.TextField(
+        blank=True,
+        help_text="Grounds for rejection (if rejected)"
+    )
+    rnr_notes = models.TextField(
+        blank=True,
+        help_text="Revise & resubmit notes and required changes"
+    )
+    approval_notes = models.TextField(
+        blank=True,
+        help_text="Approval notes and conditions"
+    )
+    
+    # Reviewers (for expedited: 2 reviewers + college rep)
+    reviewers = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name='protocol_reviews',
+        blank=True,
+        limit_choices_to={'role': 'irb_member'},
+        help_text="IRB members assigned to review (for expedited reviews)"
+    )
+    
+    # Chair review (for full board or deception)
+    chair_reviewer = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='chair_reviews',
+        limit_choices_to={'role': 'irb_member'},
+        help_text="IRB Chair reviewing this submission"
+    )
+    
+    # Link to AI review (optional)
+    ai_review = models.ForeignKey(
+        IRBReview,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='protocol_submission',
+        help_text="Optional AI-assisted review"
+    )
+    
+    # Timestamps
+    submitted_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    reviewed_at = models.DateTimeField(null=True, blank=True)
+    decided_at = models.DateTimeField(null=True, blank=True)
+    
+    # Submitted by
+    submitted_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='submitted_protocols',
+        help_text="Primary Investigator who submitted"
+    )
+    
+    # Decision made by
+    decided_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='decided_protocols',
+        help_text="IRB member who made the decision"
+    )
+    
+    class Meta:
+        db_table = 'protocol_submissions'
+        verbose_name = 'Protocol Submission'
+        verbose_name_plural = 'Protocol Submissions'
+        ordering = ['-submitted_at']
+        indexes = [
+            models.Index(fields=['study', '-version']),
+            models.Index(fields=['decision', 'submitted_at']),
+            models.Index(fields=['review_type', 'decision']),
+            models.Index(fields=['college_rep', 'decision']),
+        ]
+        unique_together = [['study', 'version']]
+    
+    def __str__(self):
+        return f"Submission {self.submission_number} - {self.study.title} (v{self.version})"
+    
+    def save(self, *args, **kwargs):
+        """Auto-generate submission number and increment version."""
+        if not self.submission_number:
+            # Generate submission number: SUB-YYYY-NNN
+            year = timezone.now().year
+            count = ProtocolSubmission.objects.filter(
+                submission_number__startswith=f'SUB-{year}'
+            ).count() + 1
+            self.submission_number = f'SUB-{year}-{count:03d}'
+        
+        if not self.version or self.version == 1:
+            # Get the max version for this study
+            max_version = ProtocolSubmission.objects.filter(
+                study=self.study
+            ).aggregate(
+                max_ver=models.Max('version')
+            )['max_ver']
+            self.version = (max_version or 0) + 1
+        
+        # If deception is involved, route to chair
+        if self.involves_deception and not self.chair_reviewer:
+            chair = CollegeRepresentative.objects.filter(is_chair=True, active=True).first()
+            if chair and chair.representative:
+                self.chair_reviewer = chair.representative
+                self.review_type = 'full'  # Deception always requires full review
+        
+        super().save(*args, **kwargs)
+    
+    def generate_protocol_number(self):
+        """Generate protocol number: HSIRB-YYYY-NNN"""
+        if self.protocol_number:
+            return self.protocol_number
+        
+        year = timezone.now().year
+        count = ProtocolSubmission.objects.filter(
+            protocol_number__startswith=f'HSIRB-{year}'
+        ).exclude(protocol_number='').count() + 1
+        self.protocol_number = f'HSIRB-{year}-{count:03d}'
+        self.save(update_fields=['protocol_number'])
+        return self.protocol_number
+    
+    @property
+    def can_be_approved_by_college_rep(self):
+        """Check if exempt protocols can be approved by college rep."""
+        return self.review_type == 'exempt' and self.decision == 'pending'
+    
+    @property
+    def requires_chair_review(self):
+        """Check if submission requires chair review."""
+        return (
+            self.review_type == 'full' or
+            self.involves_deception or
+            (self.chair_reviewer is not None)
+        )
+    
+    @property
+    def requires_expedited_reviewers(self):
+        """Check if expedited review needs 2 additional reviewers."""
+        return (
+            self.review_type == 'expedited' and
+            self.decision == 'pending' and
+            self.reviewers.count() < 2
+        )
 
