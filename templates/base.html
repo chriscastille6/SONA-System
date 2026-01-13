@@ -20,7 +20,10 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #A6192E;">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'home' %}">{{ SITE_NAME }}</a>
+            <a class="navbar-brand" href="{% url 'home' %}" style="line-height: 1.2;">
+                <div>{{ SITE_NAME }}</div>
+                <small style="font-size: 0.7em; opacity: 0.9; font-weight: normal;">Created by the People Analytics Lab of the Bayou</small>
+            </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
