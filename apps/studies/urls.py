@@ -29,6 +29,14 @@ urlpatterns = [
     # Protocol and data collection
     path('<slug:slug>/run/', views.run_protocol, name='run_protocol'),
     path('<slug:slug>/status/', views.study_status, name='status'),
+    
+    # IRB AI Review
+    path('<uuid:study_id>/irb-review/create/', views.irb_review_create, name='irb_review_create'),
+    path('<uuid:study_id>/irb-review/<int:version>/', views.irb_review_detail, name='irb_review_detail'),
+    path('<uuid:study_id>/irb-review/history/', views.irb_review_history, name='irb_review_history'),
+    path('irb/dashboard/', views.irb_member_dashboard, name='irb_member_dashboard'),
+    path('irb/assignments/<uuid:assignment_id>/toggle-email/', views.toggle_irb_email_updates, name='irb_toggle_email'),
+    path('committee/', views.committee_dashboard, name='committee_dashboard'),
 ]
 
 

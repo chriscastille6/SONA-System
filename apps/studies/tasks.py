@@ -6,8 +6,118 @@ from django.utils import timezone
 from django.core.mail import send_mail
 from django.conf import settings
 from datetime import timedelta
-from .models import Signup, Study, Response
+from typing import Tuple
+
+from .models import Signup, Study, Response, IRBReviewerAssignment, StudyUpdate
 import importlib
+
+
+def _notify_irb_reviewers(study, subject, message) -> Tuple[int, str]:
+    """Send an email to all subscribed IRB reviewers for a study."""
+    assignments = IRBReviewerAssignment.objects.filter(
+        study=study,
+        receive_email_updates=True
+    ).select_related('reviewer')
+    
+    recipients = []
+    assignment_ids = []
+    for assignment in assignments:
+        reviewer = assignment.reviewer
+        if reviewer and reviewer.email:
+            recipients.append(reviewer.email)
+            assignment_ids.append(assignment.id)
+    
+    if not recipients:
+        return 0, "No IRB reviewers subscribed to email updates."
+    
+    if not getattr(settings, 'EMAIL_HOST', ''):
+        return 0, "Email not configured; IRB reviewers were not notified."
+    
+    try:
+        send_mail(
+            subject=subject,
+            message=message.strip(),
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=recipients,
+            fail_silently=False,
+        )
+        now = timezone.now()
+        if assignment_ids:
+            IRBReviewerAssignment.objects.filter(id__in=assignment_ids).update(last_notified_at=now)
+        return len(recipients), f"Notified {len(recipients)} IRB reviewers."
+    except Exception as exc:
+        return 0, f"Failed to notify IRB reviewers: {exc}"
+
+
+def notify_irb_members_about_update(update: StudyUpdate) -> str:
+    """Email IRB reviewers about a new study update."""
+    study = update.study
+    author_name = update.author.get_full_name() if update.author else "Research team"
+    summary = (update.message or '').strip()
+    if len(summary) > 500:
+        summary = f"{summary[:497]}..."
+    if not summary and update.attachment_name:
+        summary = f"Attachment shared: {update.attachment_name}"
+    link = f"{settings.SITE_URL}/studies/{study.slug}/status/"
+    
+    subject = f"IRB Update: {study.title}"
+    message = f"""
+Hello IRB team,
+
+{author_name} posted a new update for the study "{study.title}".
+
+Summary:
+{summary or 'The update includes supporting materials for review.'}
+
+View the live protocol dashboard: {link}
+
+You are receiving this message because you are assigned as an IRB reviewer for this study.
+"""
+    count, response = _notify_irb_reviewers(study, subject, message)
+    if count:
+        update.notified_at = timezone.now()
+        update.save(update_fields=['notified_at'])
+    return response
+
+
+def notify_irb_members_about_review(review) -> str:
+    """Email IRB reviewers when a new AI review is completed."""
+    study = review.study
+    risk_label = review.get_overall_risk_level_display() if review.overall_risk_level else 'Pending'
+    link = f"{settings.SITE_URL}/studies/{study.id}/irb-review/{review.version}/"
+    
+    subject = f"IRB Alert: AI Review v{review.version} for {study.title}"
+    message = f"""
+Hello IRB team,
+
+An AI-generated IRB review (version {review.version}) is now available for "{study.title}".
+
+Status: {review.get_status_display()}
+Overall Risk Level: {risk_label}
+Critical Issues: {len(review.critical_issues)}
+Moderate Issues: {len(review.moderate_issues)}
+Minor Issues: {len(review.minor_issues)}
+
+View the detailed report: {link}
+
+Thank you for keeping this protocol compliant.
+"""
+    count, response = _notify_irb_reviewers(study, subject, message)
+    return response
+
+
+def send_irb_test_email(study, subject=None, message=None) -> Tuple[int, str]:
+    """Send a manual test email to IRB reviewers assigned to the study."""
+    default_subject = subject or f"IRB Notification Test: {study.title}"
+    default_message = message or f"""
+Hello IRB team,
+
+This is a test notification confirming that email delivery is configured for:
+"{study.title}"
+
+If you received this message, no further action is necessary.
+"""
+    return _notify_irb_reviewers(study, default_subject, default_message)
 
 
 @shared_task
@@ -233,6 +343,96 @@ View study dashboard: {settings.SITE_URL}/studies/{study.slug}/status/
         # Email not configured, notification will show in dashboard only
         return f"Email not configured; notification visible in dashboard only"
 
+
+@shared_task
+def run_irb_ai_review(review_id):
+    """
+    Run AI-assisted IRB review in background.
+    
+    This task:
+    1. Updates status to 'in_progress'
+    2. Initializes IRBAnalyzer with the review
+    3. Runs all AI agents in parallel
+    4. Aggregates findings and categorizes issues
+    5. Sends email notification when complete
+    
+    Args:
+        review_id: UUID of the IRBReview record
+    
+    Returns:
+        Summary dict with results
+    """
+    import asyncio
+    from apps.studies.irb_ai import IRBAnalyzer
+    from apps.studies.models import IRBReview
+    
+    try:
+        review = IRBReview.objects.get(id=review_id)
+        study = review.study
+        
+        # Initialize analyzer
+        analyzer = IRBAnalyzer(review_id)
+        
+        # Run async review
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        result = loop.run_until_complete(analyzer.run_review())
+        loop.close()
+        
+        # Send notification email
+        if result.get('success') and review.initiated_by:
+            try:
+                recipient = review.initiated_by.email
+                risk_emoji = {'minimal': '✅', 'low': '🟢', 'moderate': '🟡', 'high': '🔴'}.get(
+                    review.overall_risk_level, '⚪'
+                )
+                
+                send_mail(
+                    subject=f'IRB AI Review Complete: {study.title}',
+                    message=f'''
+Hello {review.initiated_by.first_name or 'Researcher'},
+
+Your AI-assisted IRB review is complete for:
+
+Study: {study.title}
+Review Version: {review.version}
+
+Results:
+{risk_emoji} Overall Risk Level: {review.get_overall_risk_level_display()}
+🔴 Critical Issues: {len(review.critical_issues)}
+🟡 Moderate Issues: {len(review.moderate_issues)}
+🟢 Minor Issues: {len(review.minor_issues)}
+
+Processing Time: {review.processing_time_seconds} seconds
+
+View detailed report: {settings.SITE_URL}/studies/{study.id}/irb-review/{review.version}/
+
+{settings.INSTITUTION_NAME}
+{settings.SITE_NAME}
+                    '''.strip(),
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[recipient],
+                    fail_silently=True,
+                )
+            except Exception as e:
+                print(f"Failed to send IRB review notification: {e}")
+        
+        if result.get('success'):
+            try:
+                irb_response = notify_irb_members_about_review(review)
+                if irb_response:
+                    print(irb_response)
+            except Exception as exc:
+                print(f"Failed to notify IRB reviewers about review {review.id}: {exc}")
+        
+        return result
+        
+    except Exception as e:
+        return {
+            'success': False,
+            'error': str(e),
+            'review_id': review_id
+        }
 
 
 

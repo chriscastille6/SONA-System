@@ -1,6 +1,7 @@
 """
 Views for studies app.
 """
+from django.db.models import Prefetch
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -12,8 +13,32 @@ from django.template.loader import get_template
 from django.template import TemplateDoesNotExist
 import json
 import uuid
-from .models import Study, Timeslot, Signup, Response
-from .tasks import run_sequential_bayes_monitoring
+from .models import (
+    Study,
+    Timeslot,
+    Signup,
+    Response,
+    IRBReview,
+    ReviewDocument,
+    IRBReviewerAssignment,
+    StudyUpdate,
+)
+from .tasks import (
+    run_sequential_bayes_monitoring,
+    run_irb_ai_review,
+    notify_irb_members_about_update,
+)
+
+
+def user_can_access_study(user, study):
+    """Determine if the given user can view protected study information."""
+    if not getattr(user, 'is_authenticated', False):
+        return False
+    if getattr(user, 'is_admin', False) or getattr(user, 'is_staff', False):
+        return True
+    if getattr(user, 'is_researcher', False) and study.researcher_id == getattr(user, 'id', None):
+        return True
+    return study.is_assigned_reviewer(user)
 
 
 def study_list(request):
@@ -288,17 +313,72 @@ def study_status(request, slug):
     study = get_object_or_404(Study, slug=slug)
     
     # Check permission (researchers can view their own studies, admins can view all)
-    if request.user.is_authenticated:
-        if request.user.is_researcher and study.researcher == request.user:
-            pass  # Authorized
-        elif request.user.is_admin:
-            pass  # Authorized
-        else:
+    if not user_can_access_study(request.user, study):
+        if request.user.is_authenticated:
             messages.error(request, 'Access denied.')
             return redirect('studies:list')
-    else:
         messages.error(request, 'Please log in.')
         return redirect('accounts:login')
+    
+    can_post_update = (
+        request.user.is_authenticated and (
+            (getattr(request.user, 'is_researcher', False) and study.researcher_id == request.user.id) or
+            getattr(request.user, 'is_admin', False)
+        )
+    )
+    update_form_error = None
+    update_draft_message = ''
+    update_draft_visibility = 'irb'
+    
+    if request.method == 'POST':
+        if not can_post_update:
+            messages.error(request, 'Only the study owner can post updates.')
+            return redirect('studies:status', slug=slug)
+        
+        message_text = (request.POST.get('message') or '').strip()
+        visibility = request.POST.get('visibility', 'irb')
+        update_draft_message = message_text
+        update_draft_visibility = visibility
+        visibility_keys = {choice[0] for choice in StudyUpdate.VISIBILITY_CHOICES}
+        if visibility not in visibility_keys:
+            visibility = 'irb'
+        attachment = request.FILES.get('attachment')
+        
+        if not message_text and not attachment:
+            update_form_error = 'Please provide a message or upload a file.'
+        else:
+            update = StudyUpdate.objects.create(
+                study=study,
+                author=request.user,
+                visibility=visibility,
+                message=message_text,
+                attachment=attachment
+            )
+            
+            if update.visibility == 'irb':
+                notify_result = notify_irb_members_about_update(update)
+                messages.success(
+                    request,
+                    f'IRB update posted. {notify_result}'.strip()
+                )
+            else:
+                messages.success(request, 'Internal research team update posted.')
+            return redirect('studies:status', slug=slug)
+    
+    # Determine which updates are visible to the current user
+    if can_post_update or getattr(request.user, 'is_admin', False) or getattr(request.user, 'is_staff', False):
+        allowed_visibilities = [choice[0] for choice in StudyUpdate.VISIBILITY_CHOICES]
+    elif study.is_assigned_reviewer(request.user):
+        allowed_visibilities = ['irb']
+    else:
+        allowed_visibilities = ['irb']
+    
+    study_updates = (
+        study.updates.filter(visibility__in=allowed_visibilities)
+        .select_related('author')
+        .order_by('-created_at')[:10]
+    )
+    viewing_as_irb = study.is_assigned_reviewer(request.user) and not can_post_update
     
     # Get recent responses for display
     recent_responses = study.responses.order_by('-created_at')[:10]
@@ -306,8 +386,265 @@ def study_status(request, slug):
     return render(request, 'studies/status.html', {
         'study': study,
         'recent_responses': recent_responses,
+        'study_updates': study_updates,
+        'can_post_update': can_post_update,
+        'update_form_error': update_form_error,
+        'update_visibility_choices': StudyUpdate.VISIBILITY_CHOICES,
+        'viewing_as_irb': viewing_as_irb,
+        'update_draft_message': update_draft_message,
+        'update_draft_visibility': update_draft_visibility,
     })
 
+
+# ========== IRB AI REVIEW VIEWS ==========
+
+@login_required
+def irb_review_create(request, study_id):
+    """Create a new AI-assisted IRB review."""
+    study = get_object_or_404(Study, id=study_id, researcher=request.user)
+    
+    if request.method == 'POST':
+        # Create new review
+        review = IRBReview.objects.create(
+            study=study,
+            initiated_by=request.user,
+            osf_repo_url=request.POST.get('osf_url', '')
+        )
+        
+        # Handle uploaded files
+        uploaded_count = 0
+        for file_key in request.FILES:
+            uploaded_file = request.FILES[file_key]
+            file_type = request.POST.get(f'{file_key}_type', 'other')
+            
+            doc = ReviewDocument.objects.create(
+                review=review,
+                file=uploaded_file,
+                filename=uploaded_file.name,
+                file_type=file_type
+            )
+            uploaded_count += 1
+        
+        # Record uploaded files metadata
+        review.uploaded_files = [
+            {
+                'filename': doc.filename,
+                'type': doc.file_type,
+                'size': doc.file_size_bytes,
+                'hash': doc.file_hash
+            }
+            for doc in review.documents.all()
+        ]
+        review.save(update_fields=['uploaded_files'])
+        
+        # Trigger background review
+        run_irb_ai_review.delay(str(review.id))
+        
+        messages.success(
+            request,
+            f'IRB review initiated (version {review.version}). You will be notified when analysis is complete.'
+        )
+        return redirect('studies:irb_review_detail', study_id=study.id, version=review.version)
+    
+    # GET: Show upload form
+    return render(request, 'studies/irb_review_create.html', {
+        'study': study,
+    })
+
+
+@login_required
+def irb_review_detail(request, study_id, version):
+    """View detailed IRB review results."""
+    study = get_object_or_404(Study, id=study_id)
+    
+    if not user_can_access_study(request.user, study):
+        messages.error(request, 'Access denied: you are not assigned to this study.')
+        return redirect('home')
+    
+    review = get_object_or_404(IRBReview, study=study, version=version)
+    
+    # Handle researcher response submission
+    if request.method == 'POST':
+        if not (request.user.is_researcher and study.researcher == request.user):
+            messages.error(request, 'Only the study owner can respond to AI review findings.')
+            return redirect('studies:irb_review_detail', study_id=study.id, version=version)
+        
+        review.researcher_notes = request.POST.get('notes', '')
+        
+        # Record which issues were addressed
+        addressed = []
+        for key in request.POST:
+            if key.startswith('issue_'):
+                issue_id = key.replace('issue_', '')
+                addressed.append(issue_id)
+        
+        review.issues_addressed = addressed
+        review.save(update_fields=['researcher_notes', 'issues_addressed'])
+        
+        messages.success(request, 'Response saved.')
+        return redirect('studies:irb_review_detail', study_id=study.id, version=version)
+    
+    # Prepare issues for display
+    all_issues = [
+        {'severity': 'critical', **issue} for issue in review.critical_issues
+    ] + [
+        {'severity': 'moderate', **issue} for issue in review.moderate_issues
+    ] + [
+        {'severity': 'minor', **issue} for issue in review.minor_issues
+    ]
+    
+    return render(request, 'studies/irb_review_report.html', {
+        'study': study,
+        'review': review,
+        'all_issues': all_issues,
+        'can_edit_review': request.user.is_researcher and study.researcher == request.user,
+    })
+
+
+@login_required
+def irb_review_history(request, study_id):
+    """View all IRB reviews for a study."""
+    study = get_object_or_404(Study, id=study_id)
+    
+    if not user_can_access_study(request.user, study):
+        messages.error(request, 'Access denied: you are not assigned to this study.')
+        return redirect('home')
+    
+    reviews = IRBReview.objects.filter(study=study).order_by('-version')
+    
+    return render(request, 'studies/irb_review_history.html', {
+        'study': study,
+        'reviews': reviews,
+        'can_initiate_review': request.user.is_researcher and study.researcher == request.user,
+        'viewing_as_irb': study.is_assigned_reviewer(request.user) and not (request.user.is_researcher and study.researcher == request.user),
+    })
+
+
+@login_required
+def committee_dashboard(request):
+    """IRB committee dashboard for reviewing AI reports."""
+    # Restrict access to admins, staff, or assigned IRB members
+    if request.user.is_staff or getattr(request.user, 'is_admin', False):
+        studies = Study.objects.all()
+    elif getattr(request.user, 'is_irb_member', False):
+        studies = Study.objects.filter(reviewer_assignments__reviewer=request.user)
+    else:
+        messages.error(request, 'Access denied: Committee members only.')
+        return redirect('home')
+    
+    # Get studies with reviews, filtered by IRB status
+    irb_status_filter = request.GET.get('irb_status', '')
+    
+    if irb_status_filter:
+        studies = studies.filter(irb_status=irb_status_filter)
+    
+    studies = studies.prefetch_related('irb_reviews').select_related('researcher').distinct()
+    
+    assignments_map = {}
+    if getattr(request.user, 'is_irb_member', False):
+        assignment_qs = IRBReviewerAssignment.objects.filter(
+            reviewer=request.user,
+            study_id__in=studies.values_list('id', flat=True)
+        )
+        assignments_map = {assignment.study_id: assignment for assignment in assignment_qs}
+    
+    # Annotate with latest review info
+    studies_with_reviews = []
+    for study in studies:
+        latest_review = study.latest_irb_review
+        studies_with_reviews.append({
+            'study': study,
+            'latest_review': latest_review,
+            'has_critical': latest_review and len(latest_review.critical_issues) > 0 if latest_review else False,
+            'assignment': assignments_map.get(study.id),
+        })
+    
+    return render(request, 'studies/committee_dashboard.html', {
+        'studies_with_reviews': studies_with_reviews,
+        'irb_status_choices': Study.IRB_STATUS_CHOICES,
+        'selected_status': irb_status_filter,
+        'show_admin_links': request.user.is_staff or getattr(request.user, 'is_admin', False),
+    })
+
+
+@login_required
+@require_http_methods(["POST"])
+def toggle_irb_email_updates(request, assignment_id):
+    """Allow IRB members (or staff) to toggle email notifications."""
+    if not (getattr(request.user, 'is_irb_member', False) or request.user.is_staff or getattr(request.user, 'is_admin', False)):
+        messages.error(request, 'Access denied: IRB members only.')
+        return redirect('home')
+    
+    assignment = get_object_or_404(
+        IRBReviewerAssignment,
+        id=assignment_id
+    )
+    
+    if assignment.reviewer != request.user and not (request.user.is_staff or getattr(request.user, 'is_admin', False)):
+        messages.error(request, 'You cannot modify another reviewer’s preferences.')
+        return redirect('studies:irb_member_dashboard')
+    
+    assignment.receive_email_updates = not assignment.receive_email_updates
+    assignment.save(update_fields=['receive_email_updates'])
+    
+    state = 'enabled' if assignment.receive_email_updates else 'disabled'
+    messages.success(
+        request,
+        f'Email notifications {state} for "{assignment.study.title}".'
+    )
+    
+    next_url = request.POST.get('next') or request.META.get('HTTP_REFERER')
+    if next_url:
+        return redirect(next_url)
+    if getattr(request.user, 'is_irb_member', False):
+        return redirect('studies:irb_member_dashboard')
+    return redirect('studies:committee_dashboard')
+
+
+@login_required
+def irb_member_dashboard(request):
+    """Dashboard for individual IRB members to track assigned studies."""
+    if not (getattr(request.user, 'is_irb_member', False) or request.user.is_staff or getattr(request.user, 'is_admin', False)):
+        messages.error(request, 'Access denied: IRB members only.')
+        return redirect('home')
+    
+    assignments = (
+        IRBReviewerAssignment.objects.filter(reviewer=request.user)
+        .select_related('study', 'study__researcher')
+        .prefetch_related(
+            Prefetch(
+                'study__irb_reviews',
+                queryset=IRBReview.objects.order_by('-version'),
+                to_attr='prefetched_irb_reviews'
+            ),
+            Prefetch(
+                'study__updates',
+                queryset=StudyUpdate.objects.filter(visibility='irb').select_related('author').order_by('-created_at'),
+                to_attr='prefetched_irb_updates'
+            ),
+        )
+        .order_by('-created_at')
+    )
+    
+    assigned_items = []
+    for assignment in assignments:
+        study = assignment.study
+        prefetched_reviews = getattr(study, 'prefetched_irb_reviews', list(study.irb_reviews.order_by('-version')[:3]))
+        latest_review = prefetched_reviews[0] if prefetched_reviews else None
+        prefetched_updates = getattr(study, 'prefetched_irb_updates', list(
+            study.updates.filter(visibility='irb').select_related('author').order_by('-created_at')[:5]
+        ))
+        assigned_items.append({
+            'assignment': assignment,
+            'study': study,
+            'latest_review': latest_review,
+            'recent_reviews': prefetched_reviews[:3],
+            'updates': prefetched_updates[:5],
+        })
+    
+    return render(request, 'studies/irb_member_dashboard.html', {
+        'assigned_items': assigned_items,
+    })
 
 
 

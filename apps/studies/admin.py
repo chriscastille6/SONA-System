@@ -5,7 +5,48 @@ from django.contrib import admin
 from django.utils import timezone
 from django.utils.html import format_html
 from apps.credits.models import AuditLog
-from .models import Study, Timeslot, Signup, Response
+from .models import (
+    Study,
+    Timeslot,
+    Signup,
+    Response,
+    IRBReview,
+    ReviewDocument,
+    IRBReviewerAssignment,
+    StudyUpdate,
+)
+
+
+class IRBReviewerAssignmentInline(admin.TabularInline):
+    model = IRBReviewerAssignment
+    extra = 0
+    raw_id_fields = ['reviewer']
+    fields = ['reviewer', 'receive_email_updates', 'last_notified_at', 'created_at', 'updated_at']
+    readonly_fields = ['last_notified_at', 'created_at', 'updated_at']
+
+
+class StudyUpdateInline(admin.StackedInline):
+    model = StudyUpdate
+    extra = 0
+    fields = [
+        'author',
+        'visibility',
+        'message',
+        'attachment',
+        'attachment_name',
+        'attachment_size',
+        'notified_at',
+        'created_at',
+        'updated_at',
+    ]
+    readonly_fields = [
+        'author',
+        'attachment_name',
+        'attachment_size',
+        'notified_at',
+        'created_at',
+        'updated_at',
+    ]
 
 
 @admin.register(Study)
@@ -16,7 +57,7 @@ class StudyAdmin(admin.ModelAdmin):
     raw_id_fields = ['researcher', 'irb_approved_by', 'irb_last_reviewed_by']
     readonly_fields = ['created_at', 'updated_at', 'current_bf', 'irb_approved_at', 'irb_last_reviewed_at', 'view_audit_trail']
     actions = ['approve_studies', 'mark_irb_reviewed']
-    
+    inlines = [IRBReviewerAssignmentInline, StudyUpdateInline]
     fieldsets = (
         ('Basic Information', {
             'fields': ('title', 'slug', 'description', 'mode', 'researcher', 'credit_value')
@@ -153,6 +194,140 @@ class ResponseAdmin(admin.ModelAdmin):
         }),
     )
 
+
+@admin.register(IRBReview)
+class IRBReviewAdmin(admin.ModelAdmin):
+    list_display = ['study', 'version', 'status', 'overall_risk_level', 'initiated_by', 'initiated_at', 'critical_count', 'moderate_count']
+    list_filter = ['status', 'overall_risk_level', 'initiated_at']
+    search_fields = ['study__title', 'study__slug', 'initiated_by__email']
+    raw_id_fields = ['study', 'initiated_by']
+    readonly_fields = [
+        'id', 'version', 'initiated_at', 'completed_at', 'processing_time_seconds',
+        'ethics_analysis', 'privacy_analysis', 'vulnerability_analysis',
+        'data_security_analysis', 'consent_analysis', 'critical_issues',
+        'moderate_issues', 'minor_issues', 'recommendations', 'ai_model_versions',
+        'uploaded_files', 'view_documents', 'view_summary'
+    ]
+    actions = ['trigger_committee_review']
+    
+    fieldsets = (
+        ('Review Information', {
+            'fields': ('study', 'version', 'status', 'initiated_by', 'initiated_at', 'completed_at')
+        }),
+        ('Materials', {
+            'fields': ('osf_repo_url', 'uploaded_files', 'view_documents')
+        }),
+        ('Overall Assessment', {
+            'fields': ('overall_risk_level', 'view_summary', 'processing_time_seconds')
+        }),
+        ('Findings by Severity', {
+            'fields': ('critical_issues', 'moderate_issues', 'minor_issues')
+        }),
+        ('Agent-Specific Analysis', {
+            'fields': ('ethics_analysis', 'privacy_analysis', 'vulnerability_analysis', 
+                      'data_security_analysis', 'consent_analysis'),
+            'classes': ('collapse',)
+        }),
+        ('Recommendations', {
+            'fields': ('recommendations',)
+        }),
+        ('Researcher Response', {
+            'fields': ('researcher_notes', 'issues_addressed')
+        }),
+        ('Audit Trail', {
+            'fields': ('ai_model_versions',),
+            'classes': ('collapse',)
+        }),
+    )
+    
+    def critical_count(self, obj):
+        """Display count of critical issues."""
+        count = len(obj.critical_issues)
+        if count > 0:
+            return format_html('<span style="color: red; font-weight: bold;">{}</span>', count)
+        return count
+    critical_count.short_description = 'Critical'
+    
+    def moderate_count(self, obj):
+        """Display count of moderate issues."""
+        count = len(obj.moderate_issues)
+        if count > 0:
+            return format_html('<span style="color: orange; font-weight: bold;">{}</span>', count)
+        return count
+    moderate_count.short_description = 'Moderate'
+    
+    def view_documents(self, obj):
+        """Display list of uploaded documents."""
+        if not obj.pk:
+            return "N/A (review not saved yet)"
+        
+        docs = obj.documents.all()
+        if not docs:
+            return "No documents uploaded"
+        
+        html = '<ul>'
+        for doc in docs:
+            html += f'<li>{doc.filename} ({doc.get_file_type_display()}) - {doc.file_size_bytes:,} bytes</li>'
+        html += '</ul>'
+        return format_html(html)
+    view_documents.short_description = 'Uploaded Documents'
+    
+    def view_summary(self, obj):
+        """Display a summary of the review."""
+        if obj.status != 'completed':
+            return f"Status: {obj.get_status_display()}"
+        
+        risk_colors = {
+            'minimal': 'green',
+            'low': 'lightgreen',
+            'moderate': 'orange',
+            'high': 'red'
+        }
+        color = risk_colors.get(obj.overall_risk_level, 'gray')
+        
+        html = f'<div style="background: {color}; color: white; padding: 10px; border-radius: 5px; font-weight: bold;">'
+        html += f'{obj.get_overall_risk_level_display()}'
+        html += '</div>'
+        html += f'<p><strong>Total Issues:</strong> {len(obj.critical_issues) + len(obj.moderate_issues) + len(obj.minor_issues)}</p>'
+        html += f'<p><strong>Recommendations:</strong> {len(obj.recommendations)}</p>'
+        
+        return format_html(html)
+    view_summary.short_description = 'Review Summary'
+    
+    def trigger_committee_review(self, request, queryset):
+        """Admin action to trigger AI review for selected studies."""
+        from .tasks import run_irb_ai_review
+        
+        count = 0
+        for review in queryset.filter(status='pending'):
+            run_irb_ai_review.delay(str(review.id))
+            count += 1
+        
+        self.message_user(request, f'Triggered AI review for {count} studies.')
+    trigger_committee_review.short_description = "Trigger AI review (committee)"
+
+
+@admin.register(StudyUpdate)
+class StudyUpdateAdmin(admin.ModelAdmin):
+    list_display = ['study', 'visibility', 'author', 'created_at', 'notified_at']
+    list_filter = ['visibility', 'created_at']
+    search_fields = ['study__title', 'author__email', 'message']
+    raw_id_fields = ['study', 'author']
+    readonly_fields = ['attachment_name', 'attachment_size', 'created_at', 'updated_at', 'notified_at']
+
+
+@admin.register(ReviewDocument)
+class ReviewDocumentAdmin(admin.ModelAdmin):
+    list_display = ['filename', 'file_type', 'review', 'uploaded_at', 'file_size_kb']
+    list_filter = ['file_type', 'uploaded_at']
+    search_fields = ['filename', 'review__study__title']
+    raw_id_fields = ['review']
+    readonly_fields = ['id', 'uploaded_at', 'file_hash', 'file_size_bytes']
+    
+    def file_size_kb(self, obj):
+        """Display file size in KB."""
+        return f"{obj.file_size_bytes / 1024:.1f} KB"
+    file_size_kb.short_description = 'File Size'
 
 
 

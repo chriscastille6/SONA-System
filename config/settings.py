@@ -21,6 +21,16 @@ if RAILWAY_ENVIRONMENT:
     # Trust Railway's proxy headers
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
+# Render.com deployment support
+RENDER_ENVIRONMENT = config('RENDER', default=None)
+if RENDER_ENVIRONMENT:
+    ALLOWED_HOSTS.append('.onrender.com')
+    # Trust Render's proxy headers
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# AI Review Feature Gating
+AI_REVIEW_ENABLED = config('AI_REVIEW_ENABLED', default='False', cast=bool)
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -35,6 +45,7 @@ INSTALLED_APPS = [
     'django_filters',
     'corsheaders',
     'django_celery_beat',
+    'django_celery_results',
     'django_htmx',
     
     # Local apps
@@ -112,6 +123,9 @@ TIME_ZONE = 'America/New_York'
 USE_I18N = True
 USE_TZ = True
 
+# URL Prefix (for deployment behind /hsirb/ path)
+FORCE_SCRIPT_NAME = config('FORCE_SCRIPT_NAME', default='/hsirb')
+
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
@@ -120,6 +134,13 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# AI IRB Review Configuration
+IRB_AI_PROVIDER = config('IRB_AI_PROVIDER', default='openai')  # 'anthropic' or 'openai'
+ANTHROPIC_API_KEY = config('ANTHROPIC_API_KEY', default='')
+OPENAI_API_KEY = config('OPENAI_API_KEY', default='')
+IRB_AI_MODEL = config('IRB_AI_MODEL', default='gpt-4o')  # or 'claude-3-5-sonnet-20241022'
+IRB_REVIEW_STORAGE = 'media/irb_reviews/'
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -134,8 +155,8 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
 DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='noreply@university.edu')
 
 # Celery Configuration
-CELERY_BROKER_URL = config('CELERY_BROKER_URL', default='redis://localhost:6379/0')
-CELERY_RESULT_BACKEND = config('CELERY_RESULT_BACKEND', default='redis://localhost:6379/0')
+CELERY_BROKER_URL = config('CELERY_BROKER_URL', default='django://')
+CELERY_RESULT_BACKEND = config('CELERY_RESULT_BACKEND', default='django-db')
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -216,7 +237,7 @@ LOGGING = {
 os.makedirs(BASE_DIR / 'logs', exist_ok=True)
 
 # Login/Logout URLs
-LOGIN_URL = '/login/'
+LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 

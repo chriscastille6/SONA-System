@@ -37,6 +37,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     
     ROLE_CHOICES = [
         ('admin', 'Administrator'),
+        ('irb_member', 'IRB Committee Member'),
         ('researcher', 'Researcher'),
         ('instructor', 'Instructor'),
         ('participant', 'Participant'),
@@ -80,6 +81,10 @@ class User(AbstractBaseUser, PermissionsMixin):
     @property
     def is_admin(self):
         return self.role == 'admin'
+    
+    @property
+    def is_irb_member(self):
+        return self.role == 'irb_member'
     
     @property
     def is_researcher(self):

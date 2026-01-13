@@ -98,6 +98,13 @@ class Study(models.Model):
         help_text="Last person to review IRB status"
     )
     irb_last_reviewed_at = models.DateTimeField(null=True, blank=True, help_text="Last IRB review date")
+    irb_reviewers = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        through='IRBReviewerAssignment',
+        related_name='assigned_irb_studies',
+        blank=True,
+        help_text="IRB members assigned to audit this study"
+    )
     
     # OSF fields
     osf_enabled = models.BooleanField(default=False, help_text="Project is on Open Science Framework")
@@ -181,6 +188,142 @@ class Study(models.Model):
     def response_count(self):
         """Count total protocol responses."""
         return self.responses.count()
+    
+    @property
+    def latest_irb_review(self):
+        """Get the most recent IRB review for this study."""
+        return self.irb_reviews.order_by('-version').first()
+    
+    @property
+    def irb_review_status(self):
+        """Get IRB review status summary."""
+        latest = self.latest_irb_review
+        if not latest:
+            return 'not_reviewed'
+        if latest.status != 'completed':
+            return latest.status
+        if latest.critical_issues:
+            return 'critical_issues'
+        if latest.moderate_issues:
+            return 'moderate_issues'
+        if latest.minor_issues:
+            return 'minor_issues'
+        return 'clear'
+    
+    def is_assigned_reviewer(self, user):
+        """Check whether the user is an assigned IRB reviewer for this study."""
+        if not getattr(user, 'is_irb_member', False):
+            return False
+        return self.reviewer_assignments.filter(reviewer=user).exists()
+
+
+class IRBReviewerAssignment(models.Model):
+    """Link IRB members to studies they oversee."""
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    study = models.ForeignKey(
+        Study,
+        on_delete=models.CASCADE,
+        related_name='reviewer_assignments'
+    )
+    reviewer = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='irb_assignments',
+        limit_choices_to={'role': 'irb_member'}
+    )
+    receive_email_updates = models.BooleanField(
+        default=True,
+        help_text="Send email notifications when there are new reviews or updates."
+    )
+    last_notified_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="Last time an automated notification was sent."
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'irb_reviewer_assignments'
+        verbose_name = 'IRB Reviewer Assignment'
+        verbose_name_plural = 'IRB Reviewer Assignments'
+        unique_together = [['study', 'reviewer']]
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['study', 'reviewer']),
+            models.Index(fields=['reviewer', '-created_at']),
+        ]
+
+    def __str__(self):
+        return f"{self.reviewer.get_full_name()} → {self.study.title}"
+
+
+class StudyUpdate(models.Model):
+    """Researcher-authored updates shared with IRB reviewers."""
+
+    VISIBILITY_CHOICES = [
+        ('irb', 'IRB Reviewers'),
+        ('team', 'Research Team Only'),
+    ]
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    study = models.ForeignKey(
+        Study,
+        on_delete=models.CASCADE,
+        related_name='updates'
+    )
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='study_updates'
+    )
+    visibility = models.CharField(
+        max_length=20,
+        choices=VISIBILITY_CHOICES,
+        default='irb',
+        db_index=True,
+        help_text="Choose who should see this update."
+    )
+    message = models.TextField(blank=True)
+    attachment = models.FileField(
+        upload_to='study_updates/%Y/%m/',
+        blank=True
+    )
+    attachment_name = models.CharField(max_length=255, blank=True)
+    attachment_size = models.IntegerField(default=0)
+    notified_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="Last time IRB reviewers were emailed about this update."
+    )
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'study_updates'
+        verbose_name = 'Study Update'
+        verbose_name_plural = 'Study Updates'
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['study', 'visibility', '-created_at']),
+        ]
+
+    def __str__(self):
+        author = self.author.get_full_name() if self.author else "Unknown"
+        return f"Update by {author} on {self.study.title}"
+
+    def save(self, *args, **kwargs):
+        """Populate attachment metadata automatically."""
+        if self.attachment and not self.attachment_name:
+            self.attachment_name = self.attachment.name
+            try:
+                self.attachment_size = self.attachment.size
+            except Exception:
+                pass
+        super().save(*args, **kwargs)
 
 
 class Timeslot(models.Model):
@@ -361,4 +504,208 @@ class Response(models.Model):
     
     def __str__(self):
         return f"Response for {self.study.title} at {self.created_at}"
+
+
+class IRBReview(models.Model):
+    """AI-assisted IRB review of study materials."""
+    
+    REVIEW_STATUS = [
+        ('pending', 'Pending'),
+        ('in_progress', 'In Progress'),
+        ('completed', 'Completed'),
+        ('failed', 'Failed'),
+    ]
+    
+    RISK_LEVELS = [
+        ('minimal', 'Minimal Risk'),
+        ('low', 'Low Risk'),
+        ('moderate', 'Moderate Risk'),
+        ('high', 'High Risk'),
+    ]
+    
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    
+    study = models.ForeignKey(Study, on_delete=models.CASCADE, related_name='irb_reviews')
+    version = models.IntegerField(default=1, help_text="Protocol version number")
+    
+    # Initiation tracking
+    initiated_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='initiated_irb_reviews'
+    )
+    initiated_at = models.DateTimeField(auto_now_add=True)
+    completed_at = models.DateTimeField(null=True, blank=True)
+    status = models.CharField(max_length=20, choices=REVIEW_STATUS, default='pending', db_index=True)
+    
+    # Material sources
+    osf_repo_url = models.URLField(
+        blank=True,
+        help_text="OSF repository URL if materials are hosted there"
+    )
+    uploaded_files = models.JSONField(
+        default=list,
+        help_text="List of uploaded file metadata"
+    )
+    
+    # AI Analysis results from each agent
+    ethics_analysis = models.JSONField(
+        null=True,
+        blank=True,
+        help_text="Ethics agent findings"
+    )
+    privacy_analysis = models.JSONField(
+        null=True,
+        blank=True,
+        help_text="Privacy agent findings"
+    )
+    vulnerability_analysis = models.JSONField(
+        null=True,
+        blank=True,
+        help_text="Vulnerable populations analysis"
+    )
+    data_security_analysis = models.JSONField(
+        null=True,
+        blank=True,
+        help_text="Data handling and security findings"
+    )
+    consent_analysis = models.JSONField(
+        null=True,
+        blank=True,
+        help_text="Consent adequacy analysis"
+    )
+    
+    # Aggregated results
+    overall_risk_level = models.CharField(
+        max_length=20,
+        choices=RISK_LEVELS,
+        blank=True,
+        help_text="Overall risk assessment"
+    )
+    critical_issues = models.JSONField(
+        default=list,
+        help_text="Critical ethical issues requiring immediate attention"
+    )
+    moderate_issues = models.JSONField(
+        default=list,
+        help_text="Moderate issues requiring attention"
+    )
+    minor_issues = models.JSONField(
+        default=list,
+        help_text="Minor suggestions for improvement"
+    )
+    recommendations = models.JSONField(
+        default=list,
+        help_text="Actionable recommendations from AI analysis"
+    )
+    
+    # Researcher response
+    researcher_notes = models.TextField(
+        blank=True,
+        help_text="Researcher's response to the review"
+    )
+    issues_addressed = models.JSONField(
+        default=list,
+        help_text="List of issue IDs that have been addressed"
+    )
+    
+    # Audit trail
+    ai_model_versions = models.JSONField(
+        default=dict,
+        help_text="Track which AI models and versions were used"
+    )
+    processing_time_seconds = models.IntegerField(
+        null=True,
+        blank=True,
+        help_text="Time taken to complete the review"
+    )
+    
+    class Meta:
+        db_table = 'irb_reviews'
+        verbose_name = 'IRB Review'
+        verbose_name_plural = 'IRB Reviews'
+        ordering = ['-initiated_at']
+        indexes = [
+            models.Index(fields=['study', '-version']),
+            models.Index(fields=['status', 'initiated_at']),
+            models.Index(fields=['overall_risk_level']),
+        ]
+        unique_together = [['study', 'version']]
+    
+    def __str__(self):
+        return f"IRB Review v{self.version} for {self.study.title}"
+    
+    def save(self, *args, **kwargs):
+        """Auto-increment version number for new reviews."""
+        if not self.version or self.version == 1:
+            # Get the max version for this study
+            max_version = IRBReview.objects.filter(
+                study=self.study
+            ).aggregate(
+                max_ver=models.Max('version')
+            )['max_ver']
+            self.version = (max_version or 0) + 1
+        super().save(*args, **kwargs)
+
+
+class ReviewDocument(models.Model):
+    """Document uploaded for IRB review."""
+    
+    FILE_TYPES = [
+        ('protocol', 'Study Protocol'),
+        ('consent', 'Consent Form'),
+        ('survey', 'Survey/Questionnaire'),
+        ('recruitment', 'Recruitment Materials'),
+        ('debrief', 'Debriefing Materials'),
+        ('other', 'Other'),
+    ]
+    
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    
+    review = models.ForeignKey(
+        IRBReview,
+        on_delete=models.CASCADE,
+        related_name='documents'
+    )
+    file = models.FileField(
+        upload_to='irb_reviews/%Y/%m/',
+        help_text="Uploaded document file"
+    )
+    filename = models.CharField(max_length=255)
+    file_type = models.CharField(
+        max_length=50,
+        choices=FILE_TYPES,
+        default='other',
+        help_text="Type of document"
+    )
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+    file_hash = models.CharField(
+        max_length=64,
+        help_text="SHA256 hash for integrity verification"
+    )
+    file_size_bytes = models.IntegerField(
+        default=0,
+        help_text="File size in bytes"
+    )
+    
+    class Meta:
+        db_table = 'review_documents'
+        verbose_name = 'Review Document'
+        verbose_name_plural = 'Review Documents'
+        ordering = ['file_type', 'uploaded_at']
+    
+    def __str__(self):
+        return f"{self.filename} ({self.get_file_type_display()})"
+    
+    def save(self, *args, **kwargs):
+        """Calculate file hash and size on save."""
+        if self.file and not self.file_hash:
+            import hashlib
+            self.file.seek(0)
+            file_content = self.file.read()
+            self.file_hash = hashlib.sha256(file_content).hexdigest()
+            self.file_size_bytes = len(file_content)
+            self.file.seek(0)  # Reset file pointer
+        super().save(*args, **kwargs)
 
