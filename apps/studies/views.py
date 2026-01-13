@@ -152,16 +152,16 @@ def my_bookings(request):
 
 @login_required
 def researcher_dashboard(request):
-    """Researcher dashboard - shows studies with protocol submissions."""
-    if not (request.user.is_researcher or request.user.is_instructor):
+    """Researcher dashboard - shows ALL studies by this researcher."""
+    # Allow admin, researcher, or instructor roles
+    if not (request.user.is_researcher or request.user.is_instructor or request.user.is_admin or request.user.is_staff):
         messages.error(request, 'Access denied.')
         return redirect('home')
     
-    # Get studies with protocol submissions (submitted for IRB review)
+    # Get ALL studies by this researcher (not just those with protocol submissions)
     studies = Study.objects.filter(
-        researcher=request.user,
-        protocol_submissions__isnull=False
-    ).distinct().order_by('-created_at')
+        researcher=request.user
+    ).order_by('-created_at')
     
     return render(request, 'studies/researcher_dashboard.html', {'studies': studies})
 
@@ -169,29 +169,57 @@ def researcher_dashboard(request):
 @login_required
 def create_study(request):
     """Create new study."""
-    if not request.user.is_researcher:
+    # Allow admin, researcher, or instructor roles
+    if not (request.user.is_researcher or request.user.is_instructor or request.user.is_admin or request.user.is_staff):
         messages.error(request, 'Access denied.')
         return redirect('home')
     
-    if request.method == 'POST':
-        # TODO: Implement study creation form
-        messages.success(request, 'Study created successfully!')
-        return redirect('studies:researcher_dashboard')
+    from .forms import StudyForm
     
-    return render(request, 'studies/create.html')
+    if request.method == 'POST':
+        form = StudyForm(request.POST)
+        if form.is_valid():
+            study = form.save(commit=False)
+            study.researcher = request.user
+            # Generate a slug from the title
+            from django.utils.text import slugify
+            base_slug = slugify(study.title)[:290]
+            slug = base_slug
+            counter = 1
+            while Study.objects.filter(slug=slug).exists():
+                slug = f"{base_slug}-{counter}"
+                counter += 1
+            study.slug = slug
+            study.save()
+            messages.success(request, f'Study "{study.title}" created successfully! You can now submit it for IRB review.')
+            return redirect('studies:researcher_dashboard')
+    else:
+        form = StudyForm()
+    
+    return render(request, 'studies/create.html', {'form': form})
 
 
 @login_required
 def edit_study(request, pk):
     """Edit study."""
-    study = get_object_or_404(Study, pk=pk, researcher=request.user)
+    # Allow admin/staff to edit any study, others can only edit their own
+    if request.user.is_admin or request.user.is_staff:
+        study = get_object_or_404(Study, pk=pk)
+    else:
+        study = get_object_or_404(Study, pk=pk, researcher=request.user)
+    
+    from .forms import StudyForm
     
     if request.method == 'POST':
-        # TODO: Implement study editing
-        messages.success(request, 'Study updated successfully!')
-        return redirect('studies:researcher_dashboard')
+        form = StudyForm(request.POST, instance=study)
+        if form.is_valid():
+            form.save()
+            messages.success(request, f'Study "{study.title}" updated successfully!')
+            return redirect('studies:researcher_dashboard')
+    else:
+        form = StudyForm(instance=study)
     
-    return render(request, 'studies/edit.html', {'study': study})
+    return render(request, 'studies/edit.html', {'study': study, 'form': form})
 
 
 @login_required

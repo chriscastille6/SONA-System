@@ -1,17 +1,14 @@
 {% extends 'base.html' %}
-{% load static %}
 
-{% block title %}Edit Study - {{ site_name }}{% endblock %}
+{% block title %}Edit Study - {{ SITE_NAME }}{% endblock %}
 
 {% block content %}
 <div class="container mt-4">
     <div class="row">
         <div class="col-md-8 offset-md-2">
             <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title mb-0">
-                        <i class="fas fa-edit me-2"></i>Edit Study: {{ study.title }}
-                    </h2>
+                <div class="card-header" style="background-color: #A6192E; color: white;">
+                    <h2 class="card-title mb-0">Edit Study: {{ study.title }}</h2>
                 </div>
                 <div class="card-body">
                     <form method="post" novalidate>
@@ -23,208 +20,129 @@
                             </div>
                         {% endif %}
                         
-                        <div class="row">
-                            <div class="col-md-6">
                                 <div class="mb-3">
-                                    <label for="{{ form.title.id_for_label }}" class="form-label">
+                            <label for="id_title" class="form-label">
                                         Study Title <span class="text-danger">*</span>
                                     </label>
-                                    <input type="text" 
-                                           class="form-control {% if form.title.errors %}is-invalid{% endif %}" 
-                                           id="{{ form.title.id_for_label }}" 
-                                           name="{{ form.title.name }}" 
-                                           value="{{ form.title.value|default:study.title }}"
-                                           required>
+                            {{ form.title }}
                                     {% if form.title.errors %}
-                                        <div class="invalid-feedback">
-                                            {{ form.title.errors.0 }}
-                                        </div>
+                                <div class="text-danger small">{{ form.title.errors.0 }}</div>
                                     {% endif %}
-                                </div>
-                            </div>
-                            
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="{{ form.researcher.id_for_label }}" class="form-label">
-                                        Lead Researcher <span class="text-danger">*</span>
-                                    </label>
-                                    <select class="form-select {% if form.researcher.errors %}is-invalid{% endif %}" 
-                                            id="{{ form.researcher.id_for_label }}" 
-                                            name="{{ form.researcher.name }}" 
-                                            required>
-                                        <option value="">Select Researcher</option>
-                                        {% for choice in form.researcher.field.queryset %}
-                                            <option value="{{ choice.pk }}" 
-                                                    {% if form.researcher.value == choice.pk %}selected{% endif %}>
-                                                {{ choice.get_full_name }} ({{ choice.email }})
-                                            </option>
-                                        {% endfor %}
-                                    </select>
-                                    {% if form.researcher.errors %}
-                                        <div class="invalid-feedback">
-                                            {{ form.researcher.errors.0 }}
-                                        </div>
-                                    {% endif %}
-                                </div>
-                            </div>
                         </div>
                         
                         <div class="mb-3">
-                            <label for="{{ form.description.id_for_label }}" class="form-label">
+                            <label for="id_description" class="form-label">
                                 Study Description <span class="text-danger">*</span>
                             </label>
-                            <textarea class="form-control {% if form.description.errors %}is-invalid{% endif %}" 
-                                      id="{{ form.description.id_for_label }}" 
-                                      name="{{ form.description.name }}" 
-                                      rows="4"
-                                      required>{{ form.description.value|default:study.description }}</textarea>
+                            {{ form.description }}
                             {% if form.description.errors %}
-                                <div class="invalid-feedback">
-                                    {{ form.description.errors.0 }}
-                                </div>
-                            {% endif %}
-                        </div>
-                        
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label for="{{ form.duration_minutes.id_for_label }}" class="form-label">
-                                        Duration (minutes) <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="number" 
-                                           class="form-control {% if form.duration_minutes.errors %}is-invalid{% endif %}" 
-                                           id="{{ form.duration_minutes.id_for_label }}" 
-                                           name="{{ form.duration_minutes.name }}" 
-                                           value="{{ form.duration_minutes.value|default:study.duration_minutes }}"
-                                           min="1" max="480"
-                                           required>
-                                    {% if form.duration_minutes.errors %}
-                                        <div class="invalid-feedback">
-                                            {{ form.duration_minutes.errors.0 }}
-                                        </div>
-                                    {% endif %}
-                                </div>
-                            </div>
-                            
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label for="{{ form.credits_offered.id_for_label }}" class="form-label">
-                                        Credits Offered <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="number" 
-                                           class="form-control {% if form.credits_offered.errors %}is-invalid{% endif %}" 
-                                           id="{{ form.credits_offered.id_for_label }}" 
-                                           name="{{ form.credits_offered.name }}" 
-                                           value="{{ form.credits_offered.value|default:study.credits_offered }}"
-                                           min="0.5" max="10" step="0.5"
-                                           required>
-                                    {% if form.credits_offered.errors %}
-                                        <div class="invalid-feedback">
-                                            {{ form.credits_offered.errors.0 }}
-                                        </div>
-                                    {% endif %}
-                                </div>
-                            </div>
-                            
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label for="{{ form.max_participants.id_for_label }}" class="form-label">
-                                        Max Participants <span class="text-danger">*</span>
-                                    </label>
-                                    <input type="number" 
-                                           class="form-control {% if form.max_participants.errors %}is-invalid{% endif %}" 
-                                           id="{{ form.max_participants.id_for_label }}" 
-                                           name="{{ form.max_participants.name }}" 
-                                           value="{{ form.max_participants.value|default:study.max_participants }}"
-                                           min="1" max="100"
-                                           required>
-                                    {% if form.max_participants.errors %}
-                                        <div class="invalid-feedback">
-                                            {{ form.max_participants.errors.0 }}
-                                        </div>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="{{ form.location.id_for_label }}" class="form-label">
-                                Study Location
-                            </label>
-                            <input type="text" 
-                                   class="form-control {% if form.location.errors %}is-invalid{% endif %}" 
-                                   id="{{ form.location.id_for_label }}" 
-                                   name="{{ form.location.name }}" 
-                                   value="{{ form.location.value|default:study.location }}">
-                            {% if form.location.errors %}
-                                <div class="invalid-feedback">
-                                    {{ form.location.errors.0 }}
-                                </div>
-                            {% endif %}
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="{{ form.requirements.id_for_label }}" class="form-label">
-                                Participant Requirements
-                            </label>
-                            <textarea class="form-control {% if form.requirements.errors %}is-invalid{% endif %}" 
-                                      id="{{ form.requirements.id_for_label }}" 
-                                      name="{{ form.requirements.name }}" 
-                                      rows="3">{{ form.requirements.value|default:study.requirements }}</textarea>
-                            {% if form.requirements.errors %}
-                                <div class="invalid-feedback">
-                                    {{ form.requirements.errors.0 }}
-                                </div>
+                                <div class="text-danger small">{{ form.description.errors.0 }}</div>
                             {% endif %}
                         </div>
                         
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <div class="form-check">
-                                        <input class="form-check-input" 
-                                               type="checkbox" 
-                                               id="{{ form.requires_prescreen.id_for_label }}" 
-                                               name="{{ form.requires_prescreen.name }}" 
-                                               {% if form.requires_prescreen.value or study.requires_prescreen %}checked{% endif %}>
-                                        <label class="form-check-label" for="{{ form.requires_prescreen.id_for_label }}">
-                                            Requires Prescreening
-                                        </label>
-                                    </div>
+                                    <label for="id_mode" class="form-label">
+                                        Study Type <span class="text-danger">*</span>
+                                    </label>
+                                    {{ form.mode }}
+                                    {% if form.mode.errors %}
+                                        <div class="text-danger small">{{ form.mode.errors.0 }}</div>
+                                    {% endif %}
                                 </div>
                             </div>
-                            
                             <div class="col-md-6">
                                 <div class="mb-3">
-                                    <div class="form-check">
-                                        <input class="form-check-input" 
-                                               type="checkbox" 
-                                               id="{{ form.is_active.id_for_label }}" 
-                                               name="{{ form.is_active.name }}" 
-                                               {% if form.is_active.value or study.is_active %}checked{% endif %}>
-                                        <label class="form-check-label" for="{{ form.is_active.id_for_label }}">
-                                            Study is Active
+                                    <label for="id_credit_value" class="form-label">
+                                        Credits Offered
+                                    </label>
+                                    {{ form.credit_value }}
+                                    {% if form.credit_value.errors %}
+                                        <div class="text-danger small">{{ form.credit_value.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="id_consent_text" class="form-label">
+                                Consent Form Text <span class="text-danger">*</span>
+                            </label>
+                            {{ form.consent_text }}
+                            {% if form.consent_text.errors %}
+                                <div class="text-danger small">{{ form.consent_text.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="card bg-light mb-3">
+                            <div class="card-body">
+                                <h6 class="card-title">Study Options</h6>
+                                
+                                <div class="form-check mb-2">
+                                    {{ form.is_classroom_based }}
+                                    <label class="form-check-label" for="id_is_classroom_based">
+                                        {{ form.is_classroom_based.label }}
+                            </label>
+                        </div>
+                        
+                                <div class="form-check mb-2">
+                                    {{ form.involves_deception }}
+                                    <label class="form-check-label" for="id_involves_deception">
+                                        {{ form.involves_deception.label }}
                                         </label>
-                                    </div>
+                            </div>
+                            
+                                    <div class="form-check">
+                                    {{ form.is_active }}
+                                    <label class="form-check-label" for="id_is_active">
+                                        {{ form.is_active.label }}
+                                        </label>
                                 </div>
                             </div>
                         </div>
                         
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <a href="{% url 'studies:researcher_dashboard' %}" class="btn btn-secondary me-md-2">
-                                <i class="fas fa-arrow-left me-1"></i>Cancel
+                                Cancel
                             </a>
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-1"></i>Update Study
+                            <button type="submit" class="btn btn-primary" style="background-color: #A6192E; border-color: #A6192E;">
+                                Save Changes
                             </button>
                         </div>
                     </form>
                 </div>
             </div>
+            
+            {% if study.protocol_submissions.exists %}
+            <div class="card mt-4">
+                <div class="card-header">
+                    <h5 class="mb-0">Protocol Submissions</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        {% for submission in study.protocol_submissions.all %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span>
+                                {{ submission.submission_number }} (v{{ submission.version }})
+                                <span class="badge 
+                                    {% if submission.decision == 'approved' %}bg-success
+                                    {% elif submission.decision == 'rejected' %}bg-danger
+                                    {% elif submission.decision == 'revise_resubmit' %}bg-warning
+                                    {% else %}bg-secondary{% endif %}">
+                                    {{ submission.get_decision_display }}
+                                </span>
+                            </span>
+                            <a href="{% url 'studies:protocol_submission_detail' submission.id %}" class="btn btn-sm btn-outline-primary">
+                                View
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>
 {% endblock %}
-
-
-
