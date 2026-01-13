@@ -1,7 +1,8 @@
 """
 Views for studies app.
 """
-from django.db.models import Prefetch
+from django.db.models import Prefetch, Q
+from django.db import models
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
@@ -11,6 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.template.loader import get_template
 from django.template import TemplateDoesNotExist
+from django.conf import settings
 import json
 import uuid
 from .models import (
@@ -22,7 +24,10 @@ from .models import (
     ReviewDocument,
     IRBReviewerAssignment,
     StudyUpdate,
+    ProtocolSubmission,
+    CollegeRepresentative,
 )
+from .irb_utils import assign_college_rep, route_submission, get_irb_chair
 from .tasks import (
     run_sequential_bayes_monitoring,
     run_irb_ai_review,
@@ -44,6 +49,9 @@ def user_can_access_study(user, study):
 def study_list(request):
     """Browse available studies."""
     studies = Study.objects.filter(is_active=True, is_approved=True)
+    
+    # Exclude classroom-based studies from general signup
+    studies = studies.filter(is_classroom_based=False)
     
     # Filter by mode if specified
     mode = request.GET.get('mode')
@@ -144,12 +152,16 @@ def my_bookings(request):
 
 @login_required
 def researcher_dashboard(request):
-    """Researcher dashboard."""
-    if not request.user.is_researcher:
+    """Researcher dashboard - shows studies with protocol submissions."""
+    if not (request.user.is_researcher or request.user.is_instructor):
         messages.error(request, 'Access denied.')
         return redirect('home')
     
-    studies = Study.objects.filter(researcher=request.user).order_by('-created_at')
+    # Get studies with protocol submissions (submitted for IRB review)
+    studies = Study.objects.filter(
+        researcher=request.user,
+        protocol_submissions__isnull=False
+    ).distinct().order_by('-created_at')
     
     return render(request, 'studies/researcher_dashboard.html', {'studies': studies})
 
@@ -644,6 +656,302 @@ def irb_member_dashboard(request):
     
     return render(request, 'studies/irb_member_dashboard.html', {
         'assigned_items': assigned_items,
+    })
+
+
+# ========== PROTOCOL SUBMISSION VIEWS ==========
+
+@login_required
+def protocol_submit(request, study_id):
+    """PI submits protocol for IRB review."""
+    study = get_object_or_404(Study, id=study_id)
+    
+    # Only study owner can submit
+    if not (request.user.is_researcher and study.researcher == request.user):
+        messages.error(request, 'Only the study owner can submit protocols.')
+        return redirect('studies:detail', study_id=study.id)
+    
+    if request.method == 'POST':
+        # Get form data
+        pi_suggested_review_type = request.POST.get('review_type')
+        involves_deception = request.POST.get('involves_deception') == 'on'
+        use_ai_review = request.POST.get('use_ai_review') == 'on'
+        
+        if not pi_suggested_review_type:
+            messages.error(request, 'Please select a review type.')
+            return redirect('studies:protocol_submit', study_id=study.id)
+        
+        # Create submission
+        submission = ProtocolSubmission.objects.create(
+            study=study,
+            submitted_by=request.user,
+            pi_suggested_review_type=pi_suggested_review_type,
+            involves_deception=involves_deception,
+            review_type=pi_suggested_review_type,  # Initial, may change
+        )
+        
+        # Update study deception flag
+        study.involves_deception = involves_deception
+        study.save(update_fields=['involves_deception'])
+        
+        # Assign college rep
+        assign_college_rep(submission)
+        
+        # Route submission
+        route_submission(submission)
+        
+        # Optionally trigger AI review
+        ai_review = None
+        if use_ai_review:
+            from django.conf import settings
+            if getattr(settings, 'AI_REVIEW_ENABLED', False):
+                # Create AI review
+                ai_review = IRBReview.objects.create(
+                    study=study,
+                    initiated_by=request.user,
+                )
+                submission.ai_review = ai_review
+                submission.save(update_fields=['ai_review'])
+                run_irb_ai_review.delay(str(ai_review.id))
+                messages.info(request, 'AI review initiated. You will be notified when complete.')
+            else:
+                messages.warning(request, 'AI review is not currently enabled. Protocol submitted without AI review.')
+        
+        messages.success(
+            request,
+            f'Protocol submitted successfully (Submission #{submission.submission_number}). '
+            f'Your college representative will review it shortly.'
+        )
+        return redirect('studies:protocol_submission_detail', submission_id=submission.id)
+    
+    # GET: Show submission form
+    existing_submission = ProtocolSubmission.objects.filter(study=study).order_by('-version').first()
+    
+    return render(request, 'studies/protocol_submit.html', {
+        'study': study,
+        'existing_submission': existing_submission,
+        'ai_review_enabled': getattr(settings, 'AI_REVIEW_ENABLED', False),
+    })
+
+
+@login_required
+def protocol_submission_detail(request, submission_id):
+    """View protocol submission details."""
+    submission = get_object_or_404(ProtocolSubmission, id=submission_id)
+    study = submission.study
+    
+    # Check access
+    can_view = (
+        request.user.is_staff or
+        getattr(request.user, 'is_admin', False) or
+        (request.user.is_researcher and study.researcher == request.user) or
+        submission.college_rep == request.user or
+        submission.chair_reviewer == request.user or
+        submission.reviewers.filter(id=request.user.id).exists()
+    )
+    
+    if not can_view:
+        messages.error(request, 'Access denied.')
+        return redirect('home')
+    
+    # Get IRB members for reviewer assignment
+    from apps.accounts.models import User
+    irb_members = User.objects.filter(role='irb_member')
+    if submission.college_rep:
+        irb_members = irb_members.exclude(id=submission.college_rep.id)
+    
+    return render(request, 'studies/protocol_submission_detail.html', {
+        'submission': submission,
+        'study': study,
+        'is_pi': request.user.is_researcher and study.researcher == request.user,
+        'is_college_rep': submission.college_rep == request.user,
+        'is_chair': submission.chair_reviewer == request.user,
+        'is_reviewer': submission.reviewers.filter(id=request.user.id).exists(),
+        'irb_members': irb_members,
+    })
+
+
+@login_required
+@require_http_methods(["POST"])
+def protocol_college_rep_review(request, submission_id):
+    """College rep makes initial determination."""
+    submission = get_object_or_404(ProtocolSubmission, id=submission_id)
+    
+    # Only college rep can review
+    if submission.college_rep != request.user:
+        messages.error(request, 'Only the assigned college representative can make this determination.')
+        return redirect('studies:protocol_submission_detail', submission_id=submission.id)
+    
+    if submission.decision != 'pending':
+        messages.error(request, 'This submission has already been decided.')
+        return redirect('studies:protocol_submission_detail', submission_id=submission.id)
+    
+    determination = request.POST.get('determination')
+    notes = request.POST.get('notes', '')
+    
+    if determination not in ['exempt', 'expedited', 'full']:
+        messages.error(request, 'Invalid determination.')
+        return redirect('studies:protocol_submission_detail', submission_id=submission.id)
+    
+    submission.college_rep_determination = determination
+    submission.review_type = determination
+    submission.reviewed_at = timezone.now()
+    
+    # If exempt, college rep can approve immediately
+    if determination == 'exempt':
+        # College rep can approve exempt protocols
+        pass  # Will be handled by decision view
+    
+    # If expedited, need to assign 2 reviewers
+    elif determination == 'expedited':
+        # Reviewers will be assigned separately
+        pass
+    
+    # If full, route to chair
+    elif determination == 'full':
+        chair = get_irb_chair()
+        if chair:
+            submission.chair_reviewer = chair
+        else:
+            messages.warning(request, 'IRB Chair not found. Please assign manually.')
+    
+    submission.save()
+    
+    messages.success(request, f'Determination recorded: {determination.title()}.')
+    return redirect('studies:protocol_submission_detail', submission_id=submission.id)
+
+
+@login_required
+@require_http_methods(["POST"])
+def protocol_assign_reviewers(request, submission_id):
+    """Assign reviewers for expedited review."""
+    submission = get_object_or_404(ProtocolSubmission, id=submission_id)
+    
+    # Only college rep or chair can assign reviewers
+    can_assign = (
+        submission.college_rep == request.user or
+        submission.chair_reviewer == request.user or
+        request.user.is_staff or
+        getattr(request.user, 'is_admin', False)
+    )
+    
+    if not can_assign:
+        messages.error(request, 'You do not have permission to assign reviewers.')
+        return redirect('studies:protocol_submission_detail', submission_id=submission.id)
+    
+    reviewer_ids = request.POST.getlist('reviewers')
+    
+    if len(reviewer_ids) < 2:
+        messages.error(request, 'Expedited reviews require at least 2 reviewers.')
+        return redirect('studies:protocol_submission_detail', submission_id=submission.id)
+    
+    from apps.accounts.models import User
+    reviewers = User.objects.filter(
+        id__in=reviewer_ids,
+        role='irb_member'
+    )
+    
+    submission.reviewers.set(reviewers)
+    messages.success(request, f'Assigned {reviewers.count()} reviewers.')
+    
+    return redirect('studies:protocol_submission_detail', submission_id=submission.id)
+
+
+@login_required
+@require_http_methods(["POST"])
+def protocol_make_decision(request, submission_id):
+    """Make decision on protocol (approve/R&R/reject)."""
+    submission = get_object_or_404(ProtocolSubmission, id=submission_id)
+    
+    # Check permissions
+    can_decide = False
+    if submission.review_type == 'exempt':
+        can_decide = submission.college_rep == request.user
+    elif submission.review_type == 'expedited':
+        can_decide = (
+            submission.college_rep == request.user or
+            submission.reviewers.filter(id=request.user.id).exists()
+        )
+    elif submission.review_type == 'full':
+        can_decide = submission.chair_reviewer == request.user
+    
+    can_decide = can_decide or request.user.is_staff or getattr(request.user, 'is_admin', False)
+    
+    if not can_decide:
+        messages.error(request, 'You do not have permission to make decisions on this submission.')
+        return redirect('studies:protocol_submission_detail', submission_id=submission.id)
+    
+    if submission.decision != 'pending':
+        messages.error(request, 'This submission has already been decided.')
+        return redirect('studies:protocol_submission_detail', submission_id=submission.id)
+    
+    decision = request.POST.get('decision')
+    notes = request.POST.get('notes', '')
+    
+    if decision not in ['approved', 'revise_resubmit', 'rejected']:
+        messages.error(request, 'Invalid decision.')
+        return redirect('studies:protocol_submission_detail', submission_id=submission.id)
+    
+    submission.decision = decision
+    submission.decided_by = request.user
+    submission.decided_at = timezone.now()
+    
+    if decision == 'approved':
+        # Generate protocol number
+        protocol_number = submission.generate_protocol_number()
+        submission.approval_notes = notes
+        
+        # Update study
+        submission.study.irb_status = 'approved'
+        submission.study.irb_number = protocol_number
+        submission.study.irb_approved_by = request.user
+        submission.study.irb_approved_at = timezone.now()
+        submission.study.irb_approval_notes = notes
+        submission.study.save()
+        
+        messages.success(request, f'Protocol approved! Protocol number: {protocol_number}')
+    
+    elif decision == 'revise_resubmit':
+        submission.rnr_notes = notes
+        messages.info(request, 'Protocol marked for revision and resubmission.')
+    
+    elif decision == 'rejected':
+        submission.rejection_grounds = notes
+        messages.warning(request, 'Protocol rejected.')
+    
+    submission.save()
+    
+    return redirect('studies:protocol_submission_detail', submission_id=submission.id)
+
+
+@login_required
+def protocol_submission_list(request):
+    """List protocol submissions (for IRB members)."""
+    if not (getattr(request.user, 'is_irb_member', False) or request.user.is_staff or getattr(request.user, 'is_admin', False)):
+        messages.error(request, 'Access denied: IRB members only.')
+        return redirect('home')
+    
+    # Get submissions user is involved with
+    if request.user.is_staff or getattr(request.user, 'is_admin', False):
+        submissions = ProtocolSubmission.objects.all()
+    else:
+        submissions = ProtocolSubmission.objects.filter(
+            Q(college_rep=request.user) |
+            Q(chair_reviewer=request.user) |
+            Q(reviewers=request.user)
+        ).distinct()
+    
+    # Filter by status
+    decision_filter = request.GET.get('decision', '')
+    if decision_filter:
+        submissions = submissions.filter(decision=decision_filter)
+    
+    submissions = submissions.select_related('study', 'study__researcher', 'college_rep', 'chair_reviewer').prefetch_related('reviewers').order_by('-submitted_at')
+    
+    return render(request, 'studies/protocol_submission_list.html', {
+        'submissions': submissions,
+        'decision_choices': ProtocolSubmission.DECISION_CHOICES,
+        'selected_decision': decision_filter,
     })
 
 

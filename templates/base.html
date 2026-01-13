@@ -40,7 +40,7 @@
                             <li class="nav-item"><a class="nav-link" href="{% url 'studies:committee_dashboard' %}">Committee</a></li>
                         {% endif %}
                         {% if user.is_instructor %}
-                            <li class="nav-item"><a class="nav-link" href="{% url 'courses:my_courses' %}">My Courses</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'studies:researcher_dashboard' %}">My Studies</a></li>
                             <li class="nav-item"><a class="nav-link" href="{% url 'reporting:home' %}">Reports</a></li>
                         {% endif %}
                         {% if user.is_staff or user.is_admin %}
