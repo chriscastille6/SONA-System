@@ -186,7 +186,7 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default='http://localhost:3000', cast=Csv())
 
 # Site Configuration
-SITE_NAME = config('SITE_NAME', default='Research Participant System')
+SITE_NAME = config('SITE_NAME', default='Participant Recruitment and Management System (PRAMS)')
 SITE_URL = config('SITE_URL', default='http://localhost:8000')
 INSTITUTION_NAME = config('INSTITUTION_NAME', default='Nicholls State University')
 
