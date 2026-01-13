@@ -196,6 +196,11 @@ MAX_WEEKLY_SIGNUPS = config('MAX_WEEKLY_SIGNUPS', default=3, cast=int)
 NO_SHOW_LIMIT = config('NO_SHOW_LIMIT', default=2, cast=int)
 REMINDER_HOURS_BEFORE = config('REMINDER_HOURS_BEFORE', default='24,2', cast=Csv(cast=int))
 
+# CSRF Settings
+CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='http://localhost:8000', cast=Csv())
+CSRF_COOKIE_HTTPONLY = True
+CSRF_USE_SESSIONS = False
+
 # Security Settings (Production)
 if not DEBUG:
     SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=True, cast=bool)
@@ -204,6 +209,10 @@ if not DEBUG:
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = 'DENY'
+    
+    # Trust proxy headers for campus server deployment
+    if 'bayoupal.nicholls.edu' in ALLOWED_HOSTS:
+        SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Logging
 LOGGING = {
