@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}Protocol Submissions{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <h2>Protocol Submissions</h2>
+        
+        <!-- Filter -->
+        <div class="card mb-3">
+            <div class="card-body">
+                <form method="get" class="d-flex gap-2 align-items-end">
+                    <div class="flex-grow-1">
+                        <label for="decision" class="form-label">Filter by Decision</label>
+                        <select name="decision" id="decision" class="form-select">
+                            <option value="">All</option>
+                            {% for value, label in decision_choices %}
+                            <option value="{{ value }}" {% if selected_decision == value %}selected{% endif %}>
+                                {{ label }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                    <a href="{% url 'studies:protocol_submission_list' %}" class="btn btn-outline-secondary">Clear</a>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Submissions Table -->
+        <div class="card">
+            <div class="card-body">
+                {% if submissions %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Submission #</th>
+                                <th>Study</th>
+                                <th>PI</th>
+                                <th>Review Type</th>
+                                <th>Decision</th>
+                                <th>College Rep</th>
+                                <th>Submitted</th>
+                                <th>Protocol #</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for submission in submissions %}
+                            <tr>
+                                <td><strong>{{ submission.submission_number }}</strong></td>
+                                <td>{{ submission.study.title|truncatewords:5 }}</td>
+                                <td>{{ submission.submitted_by.get_full_name|default:"Unknown" }}</td>
+                                <td>
+                                    <span class="badge bg-info">{{ submission.get_review_type_display }}</span>
+                                    {% if submission.involves_deception %}
+                                    <span class="badge bg-danger">Deception</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if submission.decision == 'pending' %}
+                                    <span class="badge bg-warning text-dark">Pending</span>
+                                    {% elif submission.decision == 'approved' %}
+                                    <span class="badge bg-success">Approved</span>
+                                    {% elif submission.decision == 'revise_resubmit' %}
+                                    <span class="badge bg-info">R&R</span>
+                                    {% elif submission.decision == 'rejected' %}
+                                    <span class="badge bg-danger">Rejected</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ submission.college_rep.get_full_name|default:"Not assigned" }}</td>
+                                <td>{{ submission.submitted_at|date:"M d, Y" }}</td>
+                                <td>
+                                    {% if submission.protocol_number %}
+                                    <strong class="text-success">{{ submission.protocol_number }}</strong>
+                                    {% else %}
+                                    <span class="text-muted">—</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'studies:protocol_submission_detail' submission.id %}" class="btn btn-sm btn-outline-primary">
+                                        View
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <p class="text-muted">No protocol submissions found.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

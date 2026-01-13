@@ -1,0 +1,7 @@
+# Exclude large demo media assets from deployment bundle to stay under Railway upload limits
+static/projects/ei-dk/videos/
+
+# Local reference folders not needed in production
+approved irb/
+
+

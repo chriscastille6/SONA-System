@@ -1,0 +1,123 @@
+[
+  {
+    "id": "perception_01",
+    "type": "perception_rapid",
+    "emotion_label": "Anger",
+    "face_image": "perception_faces/page-000.jpg",
+    "is_match": true,
+    "difficulty": "easy"
+  },
+  {
+    "id": "perception_02",
+    "type": "perception_rapid",
+    "emotion_label": "Anger",
+    "face_image": "perception_faces/page-001.jpg",
+    "is_match": true,
+    "difficulty": "easy"
+  },
+  {
+    "id": "perception_03",
+    "type": "perception_rapid",
+    "emotion_label": "Anger",
+    "face_image": "perception_faces/page-002.jpg",
+    "is_match": true,
+    "difficulty": "easy"
+  },
+  {
+    "id": "perception_04",
+    "type": "perception_rapid",
+    "emotion_label": "Fear",
+    "face_image": "perception_faces/page-003.jpg",
+    "is_match": true,
+    "difficulty": "moderate"
+  },
+  {
+    "id": "perception_05",
+    "type": "perception_rapid",
+    "emotion_label": "Contempt",
+    "face_image": "perception_faces/page-004.jpg",
+    "is_match": true,
+    "difficulty": "hard"
+  },
+  {
+    "id": "perception_06",
+    "type": "perception_rapid",
+    "emotion_label": "Confusion",
+    "face_image": "perception_faces/page-005.jpg",
+    "is_match": true,
+    "difficulty": "moderate"
+  },
+  {
+    "id": "perception_07",
+    "type": "perception_rapid",
+    "emotion_label": "Contemplation",
+    "face_image": "perception_faces/page-006.jpg",
+    "is_match": true,
+    "difficulty": "moderate"
+  },
+  {
+    "id": "perception_08",
+    "type": "perception_rapid",
+    "emotion_label": "Contemplation",
+    "face_image": "perception_faces/page-007.jpg",
+    "is_match": true,
+    "difficulty": "moderate"
+  },
+  {
+    "id": "perception_09",
+    "type": "perception_rapid",
+    "emotion_label": "Contempt",
+    "face_image": "perception_faces/page-008.jpg",
+    "is_match": true,
+    "difficulty": "hard"
+  },
+  {
+    "id": "perception_10",
+    "type": "perception_rapid",
+    "emotion_label": "Joy",
+    "face_image": "perception_faces/page-009.jpg",
+    "is_match": true,
+    "difficulty": "easy"
+  },
+  {
+    "id": "perception_11",
+    "type": "perception_rapid",
+    "emotion_label": "Disappointment",
+    "face_image": "perception_faces/page-010.jpg",
+    "is_match": true,
+    "difficulty": "moderate"
+  },
+  {
+    "id": "perception_12",
+    "type": "perception_rapid",
+    "emotion_label": "Disgust",
+    "face_image": "perception_faces/page-011.jpg",
+    "is_match": true,
+    "difficulty": "moderate"
+  },
+  {
+    "id": "perception_13",
+    "type": "perception_rapid",
+    "emotion_label": "Disgust",
+    "face_image": "perception_faces/page-012.jpg",
+    "is_match": true,
+    "difficulty": "moderate"
+  },
+  {
+    "id": "perception_14",
+    "type": "perception_rapid",
+    "emotion_label": "Fear",
+    "face_image": "perception_faces/page-013.jpg",
+    "is_match": true,
+    "difficulty": "moderate"
+  },
+  {
+    "id": "perception_15",
+    "type": "perception_rapid",
+    "emotion_label": "Fear",
+    "face_image": "perception_faces/page-014.jpg",
+    "is_match": true,
+    "difficulty": "moderate"
+  }
+]
+

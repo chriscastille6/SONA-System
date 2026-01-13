@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<!-- emotional-intelligence-assessment/sheldon_replication.html -->
+<!-- Sheldon et al. (2014) correlational replication study interface -->
+<!-- Implements consent → demographics → self-estimates → EI test → feedback → outcomes flow -->
+<!-- RELEVANT FILES: sheldon_replication.js, pilot_test/mini_feedback_engine.js, web_assessment/assessment.js -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotional Intelligence Study</title>
+    <script>
+        const STUDY_ID = "{{ study.id }}";
+        const STUDY_SLUG = "{{ study.slug }}";
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+            color: #3b82f6;
+            text-decoration: underline;
+            text-decoration-style: dotted;
+        }
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 300px;
+            background-color: #1f2937;
+            color: #fff;
+            text-align: left;
+            border-radius: 6px;
+            padding: 12px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -150px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        .slider-container {
+            padding: 20px 0;
+        }
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #e5e7eb;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #3b82f6;
+            cursor: pointer;
+        }
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #3b82f6;
+            cursor: pointer;
+            border: none;
+        }
+        .progress-bar {
+            height: 4px;
+            background: #e5e7eb;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #3b82f6;
+            transition: width 0.3s ease;
+        }
+        .likert-option {
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        .likert-option:hover {
+            background-color: #eff6ff;
+        }
+        .likert-option.selected {
+            background-color: #dbeafe;
+            border-color: #3b82f6;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex justify-between items-center">
+                <h1 class="text-xl font-bold text-gray-900">Emotional Intelligence Study</h1>
+                <div class="text-sm text-gray-600">
+                    <span id="phase-indicator">Step 1 of 8</span>
+                </div>
+            </div>
+            <div class="w-full mt-2">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="main-progress" style="width: 14%"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Phase 1: Consent -->
+        <div id="consent-phase" class="bg-white rounded-lg shadow-sm border p-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Study Information & Consent</h2>
+            
+            <div class="space-y-4 text-gray-700">
+                <p class="font-semibold text-lg">Study Purpose</p>
+                <p>This study examines how people understand their own emotional intelligence (EI) abilities. You will complete a brief EI assessment and receive immediate feedback about your performance relative to others.</p>
+                
+                <p class="font-semibold text-lg mt-6">What You'll Do</p>
+                <ul class="list-disc list-inside space-y-2 ml-4">
+                    <li>Provide brief demographic information (optional gender, age range)</li>
+                    <li>Estimate your EI abilities compared to the general population</li>
+                    <li>Complete a short EI ability test (approximately 10-15 minutes)</li>
+                    <li>Receive immediate feedback with percentile scores</li>
+                    <li>Answer questions about your interest in EI training</li>
+                </ul>
+                
+                <p class="font-semibold text-lg mt-6">Your Rights & Privacy</p>
+                <ul class="list-disc list-inside space-y-2 ml-4">
+                    <li><strong>Voluntary:</strong> Participation is completely voluntary; you may withdraw at any time</li>
+                    <li><strong>Anonymous:</strong> No personally identifiable information is collected</li>
+                    <li><strong>Educational Pilot:</strong> This study is for educational purposes and is not IRB-approved research</li>
+                    <li><strong>Data Use:</strong> Aggregated anonymous data will be used for research and educational purposes only</li>
+                    <li><strong>No Risks:</strong> There are no known risks beyond those of everyday life</li>
+                </ul>
+                
+                <p class="font-semibold text-lg mt-6">Time Commitment</p>
+                <p>Total time: approximately 15-20 minutes</p>
+                
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mt-6">
+                    <p class="text-sm text-blue-900">
+                        <strong>Note:</strong> This is an educational pilot study, not approved by an IRB. 
+                        By continuing, you acknowledge this and consent to participate in this educational research activity.
+                    </p>
+                </div>
+                
+                <div class="mt-8">
+                    <p class="font-semibold text-lg text-gray-900 mb-4">Do you consent to participate?</p>
+                    <p class="text-sm text-gray-600 mb-4">
+                        Please indicate whether you voluntarily agree to participate in this educational research study.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="mt-8 flex justify-between gap-4">
+                <button id="consent-decline" 
+                        class="px-8 py-3 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 font-medium">
+                    No, I do not consent
+                </button>
+                <button id="consent-continue" 
+                        class="px-8 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium">
+                    Yes, I consent to participate →
+                </button>
+            </div>
+        </div>
+        
+        <!-- Phase 2: Demographics -->
+        <div id="demographics-phase" class="bg-white rounded-lg shadow-sm border p-8 hidden">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Background Information</h2>
+            <p class="text-gray-600 mb-6">Please provide some brief background information. All responses are optional.</p>
+            
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Age Range</label>
+                    <select id="age-range" class="w-full border border-gray-300 rounded-lg p-3">
+                        <option value="">Prefer not to say</option>
+                        <option value="18-24">18-24</option>
+                        <option value="25-34">25-34</option>
+                        <option value="35-44">35-44</option>
+                        <option value="45-54">45-54</option>
+                        <option value="55-64">55-64</option>
+                        <option value="65+">65+</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Gender (optional)</label>
+                    <select id="gender" class="w-full border border-gray-300 rounded-lg p-3">
+                        <option value="">Prefer not to say</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="non-binary">Non-binary</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Current Status</label>
+                    <select id="status" class="w-full border border-gray-300 rounded-lg p-3">
+                        <option value="">Prefer not to say</option>
+                        <option value="student">Student</option>
+                        <option value="professional">Working Professional</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Race/Ethnicity (Optional)</label>
+                    <select id="ethnicity" class="w-full border border-gray-300 rounded-lg p-3">
+                        <option value="">Prefer not to answer</option>
+                        <option value="hispanic-latino">Hispanic or Latino</option>
+                        <option value="white">White (Not Hispanic or Latino)</option>
+                        <option value="black-african-american">Black or African American</option>
+                        <option value="asian">Asian</option>
+                        <option value="american-indian-alaska-native">American Indian or Alaska Native</option>
+                        <option value="native-hawaiian-pacific-islander">Native Hawaiian or Other Pacific Islander</option>
+                        <option value="two-or-more">Two or More Races</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="mt-8 flex justify-between">
+                <button id="demographics-back" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                    ← Back
+                </button>
+                <button id="demographics-continue" class="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium">
+                    Continue →
+                </button>
+            </div>
+        </div>
+        
+        <!-- Phase 3: Self-Estimates -->
+        <div id="self-estimate-phase" class="bg-white rounded-lg shadow-sm border p-8 hidden">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Self-Assessment</h2>
+            
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                <p class="text-sm text-blue-900">
+                    <strong>Instructions:</strong> Before taking the actual test, we'd like to know how you think you'll perform. 
+                    Please estimate where your emotional intelligence abilities fall compared to the 
+                    <span class="tooltip">general population
+                        <span class="tooltip-text">
+                            <strong>General Population:</strong> This refers to adults in general (ages 18+), not just students or professionals. 
+                            A score of 50th percentile means you're exactly average—half of people score higher, half score lower.
+                        </span>
+                    </span>.
+                </p>
+            </div>
+            
+            <div class="space-y-8">
+                <!-- Overall EI -->
+                <div class="border-b pb-6">
+                    <label class="block text-lg font-medium text-gray-900 mb-3">
+                        Overall Emotional Intelligence
+                    </label>
+                    <p class="text-sm text-gray-600 mb-4">
+                        Compared to the general population, what 
+                        <span class="tooltip">percentile
+                            <span class="tooltip-text">
+                                <strong>What is a percentile?</strong><br>
+                                If you're at the 70th percentile, you score higher than 70% of people.<br><br>
+                                • 50th percentile = exactly average<br>
+                                • 25th percentile = below average<br>
+                                • 75th percentile = above average<br>
+                                • 90th percentile = well above average
+                            </span>
+                        </span>
+                        do you think your overall emotional intelligence is?
+                    </p>
+                    <div class="slider-container">
+                        <input type="range" min="1" max="99" value="50" class="slider" id="self-estimate-overall">
+                        <div class="flex justify-between text-sm text-gray-600 mt-2">
+                            <span>1st</span>
+                            <span class="font-medium text-lg text-blue-600" id="overall-value">50th</span>
+                            <span>99th</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Understanding -->
+                <div class="border-b pb-6">
+                    <label class="block text-lg font-medium text-gray-900 mb-3">
+                        Emotion Understanding
+                    </label>
+                    <p class="text-sm text-gray-600 mb-4">
+                        Your ability to <strong>recognize and interpret</strong> emotions in yourself and others (e.g., identifying when someone is frustrated vs. disappointed).
+                    </p>
+                    <div class="slider-container">
+                        <input type="range" min="1" max="99" value="50" class="slider" id="self-estimate-understanding">
+                        <div class="flex justify-between text-sm text-gray-600 mt-2">
+                            <span>1st</span>
+                            <span class="font-medium text-lg text-blue-600" id="understanding-value">50th</span>
+                            <span>99th</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Management -->
+                <div class="border-b pb-6">
+                    <label class="block text-lg font-medium text-gray-900 mb-3">
+                        Emotion Management
+                    </label>
+                    <p class="text-sm text-gray-600 mb-4">
+                        Your ability to <strong>manage and regulate</strong> emotions effectively (e.g., staying calm under pressure, helping others manage their feelings).
+                    </p>
+                    <div class="slider-container">
+                        <input type="range" min="1" max="99" value="50" class="slider" id="self-estimate-management">
+                        <div class="flex justify-between text-sm text-gray-600 mt-2">
+                            <span>1st</span>
+                            <span class="font-medium text-lg text-blue-600" id="management-value">50th</span>
+                            <span>99th</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Knowledge -->
+                <div class="border-b pb-6">
+                    <label class="block text-lg font-medium text-gray-900 mb-3">
+                        Emotion Knowledge
+                    </label>
+                    <p class="text-sm text-gray-600 mb-4">
+                        Your <strong>theoretical understanding</strong> of how emotions work (e.g., knowing what causes different emotions, understanding emotional dynamics).
+                    </p>
+                    <div class="slider-container">
+                        <input type="range" min="1" max="99" value="50" class="slider" id="self-estimate-knowledge">
+                        <div class="flex justify-between text-sm text-gray-600 mt-2">
+                            <span>1st</span>
+                            <span class="font-medium text-lg text-blue-600" id="knowledge-value">50th</span>
+                            <span>99th</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Competence -->
+                <div>
+                    <label class="block text-lg font-medium text-gray-900 mb-3">
+                        Emotion Competence (Application)
+                    </label>
+                    <p class="text-sm text-gray-600 mb-4">
+                        Your ability to <strong>apply emotional intelligence</strong> in real workplace situations (e.g., handling difficult conversations, building rapport).
+                    </p>
+                    <div class="slider-container">
+                        <input type="range" min="1" max="99" value="50" class="slider" id="self-estimate-competence">
+                        <div class="flex justify-between text-sm text-gray-600 mt-2">
+                            <span>1st</span>
+                            <span class="font-medium text-lg text-blue-600" id="competence-value">50th</span>
+                            <span>99th</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-8 flex justify-between">
+                <button id="self-estimate-back" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                    ← Back
+                </button>
+                <button id="self-estimate-continue" class="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium">
+                    Begin EI Test →
+                </button>
+            </div>
+        </div>
+        
+        <!-- Phase 4: EI Test (video-based) -->
+        <div id="test-phase" class="bg-white rounded-lg shadow-sm border p-8 hidden">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Emotional Intelligence Assessment</h2>
+            
+            <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-300 rounded-lg p-6 mb-6">
+                <h3 class="text-lg font-bold text-gray-900 mb-3">Assessment Structure: Two Parts</h3>
+                <p class="text-sm text-blue-900 mb-4">
+                    This assessment measures your emotional intelligence in two complementary ways:
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div class="bg-white rounded-lg p-4 border border-blue-200">
+                        <h4 class="font-semibold text-gray-900 mb-2">Part 1: Typical Behavior</h4>
+                        <p class="text-sm text-gray-700 mb-2">
+                            Questions ask: <em>"What would you naturally do?"</em>
+                        </p>
+                        <p class="text-xs text-gray-600">
+                            ✓ Answer honestly about your usual responses<br>
+                            ✓ No right or wrong answers<br>
+                            ✓ Reflects your day-to-day emotional patterns
+                        </p>
+                    </div>
+                    <div class="bg-white rounded-lg p-4 border border-green-200">
+                        <h4 class="font-semibold text-gray-900 mb-2">Part 2: Best Practices</h4>
+                        <p class="text-sm text-gray-700 mb-2">
+                            Questions ask: <em>"What is most effective?"</em>
+                        </p>
+                        <p class="text-xs text-gray-600">
+                            ✓ Select the research-backed best answer<br>
+                            ✓ Tests your knowledge of EI principles<br>
+                            ✓ Reflects what you know, not just what you do
+                        </p>
+                    </div>
+                </div>
+                <p class="text-sm text-blue-900">
+                    <strong>What to expect:</strong> You will watch 3 short workplace videos and answer 20 questions about each one (60 total). 
+                    You can replay videos as needed.
+                </p>
+            </div>
+            
+            <div id="test-content">
+                <p class="text-gray-600 mb-4">Question <span id="test-current">1</span> of <span id="test-total">12</span></p>
+                <div class="h-4 bg-gray-200 rounded-full mb-6">
+                    <div class="h-4 bg-blue-600 rounded-full" id="test-progress" style="width: 8%"></div>
+                </div>
+                
+                <div id="test-question-area">
+                    <!-- Test questions will be loaded here by JavaScript -->
+                </div>
+            </div>
+            
+            <div class="mt-8 flex justify-between">
+                <button id="test-back" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                    ← Previous
+                </button>
+                <button id="test-continue" disabled class="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium">
+                    Next →
+                </button>
+            </div>
+        </div>
+        
+        <!-- Phase 5: Emotion Perception Task -->
+        <div id="perception-phase" class="bg-white rounded-lg shadow-sm border p-8 hidden">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Emotion Perception Task</h2>
+            
+            <div class="bg-purple-50 border border-purple-200 rounded-lg p-4 mb-6">
+                <p class="text-sm text-purple-900">
+                    <strong>Instructions:</strong> You will see 15 emotional expressions paired with emotion words.
+                    Your task is to quickly decide if the word matches the facial expression shown.
+                    Keep your cursor on the center button between trials. You have 5 seconds for each response.
+                </p>
+            </div>
+            
+            <div id="perception-content">
+                <p class="text-gray-600 mb-4">Trial <span id="perception-current">1</span> of <span id="perception-total">15</span></p>
+                <div class="h-4 bg-gray-200 rounded-full mb-6">
+                    <div class="h-4 bg-purple-600 rounded-full" id="perception-progress" style="width: 6.67%"></div>
+                </div>
+                
+                <div id="perception-trial-area" class="flex flex-col items-center">
+                    <!-- Perception trial will be loaded here by JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Phase 6: Feedback -->
+        <div id="feedback-phase" class="bg-white rounded-lg shadow-sm border p-8 hidden">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Your Emotional Intelligence Results</h2>
+            
+            <!-- Summary Box -->
+            <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-300 rounded-lg p-6 mb-8">
+                <h3 class="text-lg font-bold text-gray-900 mb-3">Assessment vs. Self-Perception</h3>
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-700">Your Assessed EI:</span>
+                        <span class="text-2xl font-bold text-green-600" id="feedback-overall-assessed">--</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-700">Your Self-Estimate:</span>
+                        <span class="text-2xl font-bold text-blue-600" id="feedback-overall-self">--</span>
+                    </div>
+                    <div class="flex justify-between items-center pt-2 border-t border-blue-200">
+                        <span class="text-gray-700 font-medium">Calibration:</span>
+                        <span class="text-xl font-bold" id="feedback-overall-bias">--</span>
+                    </div>
+                </div>
+                <p class="text-sm text-gray-600 mt-3" id="feedback-calibration-message">
+                    Loading...
+                </p>
+            </div>
+
+            <!-- Visual Comparison Section -->
+            <div class="mb-8">
+                <h3 class="text-lg font-bold text-gray-900 mb-4">Visual Profile Comparison</h3>
+                
+                <!-- Radar Charts -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                    <div class="border border-gray-200 rounded-lg p-4 bg-blue-50">
+                        <h4 class="font-semibold text-gray-900 mb-3 text-center">Your Self-Reported EI</h4>
+                        <canvas id="self-radar" aria-label="Self-reported EI radar chart"></canvas>
+                    </div>
+                    <div class="border border-gray-200 rounded-lg p-4 bg-green-50">
+                        <h4 class="font-semibold text-gray-900 mb-3 text-center">Your Assessed EI</h4>
+                        <canvas id="actual-radar" aria-label="Assessed EI radar chart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Bias Bar Chart -->
+                <div class="border border-gray-200 rounded-lg p-6 bg-gray-50">
+                    <h4 class="font-semibold text-gray-900 mb-2">Calibration Analysis: How Accurate Was Your Self-Assessment?</h4>
+                    <p class="text-sm text-gray-600 mb-4">
+                        Positive values = overestimation | Negative values = underestimation | Near zero = accurate self-awareness
+                    </p>
+                    <canvas id="bias-chart" aria-label="Calibration bias bar chart" style="max-height: 300px;"></canvas>
+                </div>
+            </div>
+
+            <!-- Interpretation -->
+            <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-6">
+                <h4 class="font-semibold text-gray-900 mb-3">What This Means</h4>
+                <p class="text-gray-700 mb-3" id="feedback-interpretation-text">
+                    Loading...
+                </p>
+                <p class="text-sm text-gray-600">
+                    <strong>Note:</strong> These scores are based on your performance on a video-based EI test compared to general population norms. 
+                    The difference between your self-assessment and actual performance can reveal important insights about self-awareness—a key component of emotional intelligence itself.
+                </p>
+            </div>
+
+            <!-- Evidence-Based Development Resources -->
+            <div class="bg-green-50 border border-green-200 rounded-lg p-6 mb-6">
+                <h4 class="font-semibold text-gray-900 mb-3">📚 Evidence-Based Ways to Develop Your Emotional Intelligence</h4>
+                <div class="space-y-3">
+                    <div>
+                        <h5 class="font-medium text-gray-800">🧘 Mindfulness & Emotion Awareness Training</h5>
+                        <ul class="text-sm text-gray-700 ml-4 mt-1 space-y-1">
+                            <li>• <a href="https://palousemindfulness.com/" target="_blank" class="text-blue-600 hover:underline">Free MBSR Course (UMass)</a> - 8-week evidence-based program</li>
+                            <li>• <a href="https://www.headspace.com/" target="_blank" class="text-blue-600 hover:underline">Headspace</a> or <a href="https://www.calm.com/" target="_blank" class="text-blue-600 hover:underline">Calm</a> - Guided meditation apps</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h5 class="font-medium text-gray-800">📖 Books on Emotional Intelligence</h5>
+                        <ul class="text-sm text-gray-700 ml-4 mt-1 space-y-1">
+                            <li>• <a href="https://www.amazon.com/Emotional-Intelligence-2-0-Travis-Bradberry/dp/0974320625" target="_blank" class="text-blue-600 hover:underline">Emotional Intelligence 2.0</a> (Bradberry & Greaves) - Practical strategies with self-assessment</li>
+                            <li>• <a href="https://www.amazon.com/Primal-Leadership-Emotional-Intelligence-ebook/dp/B000JMKTN2" target="_blank" class="text-blue-600 hover:underline">Primal Leadership</a> (Goleman, Boyatzis, McKee) - EI in leadership contexts</li>
+                        </ul>
+                    </div>
+                    <div class="pt-3 border-t border-green-300">
+                        <p class="text-sm text-gray-700">
+                            <strong>Key insight:</strong> Emotional intelligence is not fixed—it can be developed through practice, feedback, and deliberate skill-building. 
+                            Research shows that structured training programs can significantly improve EI competencies.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Research Note -->
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                <p class="text-sm text-blue-900">
+                    <strong>For Research Purposes:</strong> This is an educational pilot study investigating self-awareness and emotional intelligence. 
+                    Your data helps us understand how people perceive their own EI abilities. This is not a clinical diagnostic tool.
+                </p>
+                <p class="text-sm text-blue-900 mt-2">
+                    <strong>Questions?</strong> Contact <a href="mailto:christopher.castille@nicholls.edu" class="underline hover:text-blue-700">christopher.castille@nicholls.edu</a>
+                </p>
+            </div>
+            
+            <div class="mt-8 flex justify-end">
+                <button id="feedback-continue" class="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-medium">
+                    Continue to Final Questions →
+                </button>
+            </div>
+        </div>
+        
+        <!-- Phase 7: Outcomes -->
+        <div id="outcomes-phase" class="bg-white rounded-lg shadow-sm border p-8 hidden">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Interest in EI Training</h2>
+            
+            <p class="text-gray-600 mb-6">
+                Now that you've seen your results, we'd like to know about your interest in emotional intelligence training or development.
+            </p>
+            
+            <div class="space-y-8">
+                
+                <!-- Interest Level -->
+                <div class="border-b pb-6">
+                    <label class="block text-lg font-medium text-gray-900 mb-3">
+                        How interested are you in receiving EI training or coaching?
+                    </label>
+                    <div class="space-y-2">
+                        <div class="likert-option border-2 border-gray-200 rounded-lg p-3" data-question="interest" data-value="1">
+                            <span>1 - Not at all interested</span>
+                        </div>
+                        <div class="likert-option border-2 border-gray-200 rounded-lg p-3" data-question="interest" data-value="2">
+                            <span>2 - Slightly interested</span>
+                        </div>
+                        <div class="likert-option border-2 border-gray-200 rounded-lg p-3" data-question="interest" data-value="3">
+                            <span>3 - Moderately interested</span>
+                        </div>
+                        <div class="likert-option border-2 border-gray-200 rounded-lg p-3" data-question="interest" data-value="4">
+                            <span>4 - Very interested</span>
+                        </div>
+                        <div class="likert-option border-2 border-gray-200 rounded-lg p-3" data-question="interest" data-value="5">
+                            <span>5 - Extremely interested</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Likelihood to Enroll -->
+                <div class="border-b pb-6">
+                    <label class="block text-lg font-medium text-gray-900 mb-3">
+                        How likely would you be to enroll in an EI development program if one were available?
+                    </label>
+                    <div class="space-y-2">
+                        <div class="likert-option border-2 border-gray-200 rounded-lg p-3" data-question="likelihood" data-value="1">
+                            <span>1 - Very unlikely</span>
+                        </div>
+                        <div class="likert-option border-2 border-gray-200 rounded-lg p-3" data-question="likelihood" data-value="2">
+                            <span>2 - Unlikely</span>
+                        </div>
+                        <div class="likert-option border-2 border-gray-200 rounded-lg p-3" data-question="likelihood" data-value="3">
+                            <span>3 - Neutral / Unsure</span>
+                        </div>
+                        <div class="likert-option border-2 border-gray-200 rounded-lg p-3" data-question="likelihood" data-value="4">
+                            <span>4 - Likely</span>
+                        </div>
+                        <div class="likert-option border-2 border-gray-200 rounded-lg p-3" data-question="likelihood" data-value="5">
+                            <span>5 - Very likely</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Willingness to Pay -->
+                <div>
+                    <label class="block text-lg font-medium text-gray-900 mb-3">
+                        If an effective EI training program were available, approximately how much would you be willing to pay for it?
+                    </label>
+                    <p class="text-sm text-gray-500 mb-3">
+                        <span class="tooltip">Note: This is hypothetical
+                            <span class="tooltip-text">
+                                <strong>Purely Informational:</strong> This question is for research purposes only. 
+                                No payment is required or will be collected. We're interested in understanding the perceived value of EI training.
+                            </span>
+                        </span> 
+                        — no payment will be collected.
+                    </p>
+                    <div class="space-y-2">
+                        <div class="likert-option border-2 border-gray-200 rounded-lg p-3" data-question="wtp" data-value="0">
+                            <span>$0 (would not pay)</span>
+                        </div>
+                        <div class="likert-option border-2 border-gray-200 rounded-lg p-3" data-question="wtp" data-value="25">
+                            <span>$1 - $25</span>
+                        </div>
+                        <div class="likert-option border-2 border-gray-200 rounded-lg p-3" data-question="wtp" data-value="50">
+                            <span>$26 - $50</span>
+                        </div>
+                        <div class="likert-option border-2 border-gray-200 rounded-lg p-3" data-question="wtp" data-value="100">
+                            <span>$51 - $100</span>
+                        </div>
+                        <div class="likert-option border-2 border-gray-200 rounded-lg p-3" data-question="wtp" data-value="200">
+                            <span>$101 - $200</span>
+                        </div>
+                        <div class="likert-option border-2 border-gray-200 rounded-lg p-3" data-question="wtp" data-value="500">
+                            <span>$201 - $500</span>
+                        </div>
+                        <div class="likert-option border-2 border-gray-200 rounded-lg p-3" data-question="wtp" data-value="1000">
+                            <span>$500+</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+            
+            <div class="mt-8 flex justify-between">
+                <button id="outcomes-back" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                    ← Back
+                </button>
+                <button id="outcomes-continue" disabled class="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed font-medium">
+                    Submit Responses →
+                </button>
+            </div>
+        </div>
+        
+        <!-- Phase 8: Debrief -->
+        <div id="debrief-phase" class="bg-white rounded-lg shadow-sm border p-8 hidden">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">Thank You for Participating!</h2>
+            
+            <div class="space-y-4 text-gray-700">
+                <p class="text-lg">Your responses have been recorded. Here's what this study was about:</p>
+                
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 mt-4">
+                    <h3 class="font-semibold text-lg text-blue-900 mb-2">Study Purpose</h3>
+                    <p class="text-blue-900">
+                        This study examines <strong>metacognitive accuracy</strong> in emotional intelligence—how well people can estimate their own EI abilities. 
+                        Research shows that lower performers often overestimate their abilities (the "Dunning-Kruger effect"), 
+                        while higher performers may underestimate theirs.
+                    </p>
+                </div>
+                
+                <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mt-4">
+                    <h3 class="font-semibold text-lg text-yellow-900 mb-2">Important Caveats</h3>
+                    <ul class="list-disc list-inside space-y-2 text-yellow-900">
+                        <li>This is <strong>correlational research</strong>—we're looking for patterns across many people, not diagnosing individuals</li>
+                        <li>Your individual feedback is based on <strong>preliminary norms</strong> and should be interpreted cautiously</li>
+                        <li>Short tests have measurement error; your "true" ability may differ from today's score</li>
+                        <li>These results don't define you—EI is developable through practice and training</li>
+                    </ul>
+                </div>
+                
+                <h3 class="font-semibold text-lg text-gray-900 mt-6">What Happens Next?</h3>
+                <p>
+                    Once we collect data from at least 20 participants, we'll analyze:
+                </p>
+                <ul class="list-disc list-inside space-y-1 ml-4 text-gray-700">
+                    <li>Correlation between actual performance and self-estimates (calibration)</li>
+                    <li>Relationship between ability level and over/underestimation (bias)</li>
+                    <li>How feedback affects interest in EI training</li>
+                </ul>
+                
+                <h3 class="font-semibold text-lg text-gray-900 mt-6">Questions or Concerns?</h3>
+                <p>
+                    This is an educational pilot study. If you have questions about the research or would like to learn more, 
+                    please contact the study team at: <strong>[Your Contact Email]</strong>
+                </p>
+                
+                <div class="bg-green-50 border border-green-200 rounded-lg p-6 mt-6">
+                    <h3 class="font-semibold text-lg text-green-900 mb-2">Want to Develop Your EI?</h3>
+                    <p class="text-green-900 mb-3">
+                        Emotional intelligence is highly trainable. Here are evidence-based resources:
+                    </p>
+                    <ul class="list-disc list-inside space-y-1 text-green-900">
+                        <li>"Emotional Intelligence 2.0" by Bradberry & Greaves</li>
+                        <li>"Working with Emotional Intelligence" by Daniel Goleman</li>
+                        <li>Online courses on platforms like Coursera, LinkedIn Learning</li>
+                        <li>Practice mindfulness and active listening daily</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="mt-8 text-center">
+                <p class="text-gray-600 mb-4">You may now close this window.</p>
+                <button onclick="window.print()" class="px-6 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">
+                    Print This Page
+                </button>
+            </div>
+        </div>
+        
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-white border-t mt-12">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+            <p class="text-sm text-gray-500 text-center">
+                Educational Research Study | Anonymous Data Collection | Not IRB-Approved
+            </p>
+        </div>
+    </footer>
+    
+    <script src="/static/projects/ei-dk/sheldon_replication.js"></script>
+</body>
+</html>
+
+

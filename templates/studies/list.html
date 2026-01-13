@@ -32,7 +32,18 @@
                                     Researcher: {{ study.researcher.get_full_name }}
                                 </p>
                                 
-                                <a href="{% url 'studies:detail' study.id %}" class="btn btn-primary btn-sm">View Details</a>
+                                <div class="d-flex gap-2">
+                                    {% if study.mode == 'online' and study.external_link %}
+                                        <a href="{{ study.external_link }}" target="_blank" class="btn btn-success btn-sm">
+                                            <i class="bi bi-play-circle"></i> Start Study
+                                        </a>
+                                    {% elif study.mode == 'online' %}
+                                        <a href="{% url 'studies:run_protocol' study.slug %}" class="btn btn-success btn-sm">
+                                            <i class="bi bi-play-circle"></i> Start Study
+                                        </a>
+                                    {% endif %}
+                                    <a href="{% url 'studies:detail' study.id %}" class="btn btn-outline-primary btn-sm">View Details</a>
+                                </div>
                             </div>
                         </div>
                     </div>

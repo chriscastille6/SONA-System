@@ -1,10 +1,14 @@
 """
 Views for accounts app.
 """
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
+from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LoginView
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy
 from django.utils import timezone
+from django.utils.http import url_has_allowed_host_and_scheme
 from datetime import timedelta
 from .models import User, EmailVerificationToken
 
@@ -115,6 +119,32 @@ def edit_profile(request):
         'profile': request.user.profile
     })
 
+
+class RoleAwareLoginView(LoginView):
+    """
+    Override the default login view so we can land users on the most relevant dashboard.
+    IRB members go to their dashboard, researchers to the researcher dashboard, etc.
+    """
+    template_name = 'accounts/login.html'
+
+    def get_success_url(self):
+        """Respect ?next= when safe, otherwise route by role."""
+        next_url = self.request.POST.get('next') or self.request.GET.get('next')
+        if next_url and url_has_allowed_host_and_scheme(
+            url=next_url,
+            allowed_hosts={self.request.get_host()},
+            require_https=self.request.is_secure(),
+        ):
+            return next_url
+
+        user = self.request.user
+        if getattr(user, 'is_irb_member', False):
+            return reverse_lazy('studies:irb_member_dashboard')
+        if getattr(user, 'is_researcher', False):
+            return reverse_lazy('studies:researcher_dashboard')
+        if getattr(user, 'is_participant', False):
+            return reverse_lazy('studies:list')
+        return settings.LOGIN_REDIRECT_URL
 
 
 

@@ -55,12 +55,51 @@
                                     {% endif %}
                                 </div>
                                 
-                                <div class="btn-group btn-group-sm" role="group">
+                                <div class="mb-2">
+                                    {% with review_status=study.irb_review_status %}
+                                    {% if review_status == 'critical_issues' %}
+                                        <span class="badge bg-danger">AI Review: Critical Issues</span>
+                                    {% elif review_status == 'moderate_issues' %}
+                                        <span class="badge bg-warning">AI Review: Needs Attention</span>
+                                    {% elif review_status == 'minor_issues' %}
+                                        <span class="badge bg-info">AI Review: Minor Issues</span>
+                                    {% elif review_status == 'clear' %}
+                                        <span class="badge bg-success">AI Review: Clear</span>
+                                    {% elif review_status == 'in_progress' %}
+                                        <span class="badge bg-warning">AI Review: In Progress...</span>
+                                    {% endif %}
+                                    {% endwith %}
+                                </div>
+                                
+                                <div class="btn-group btn-group-sm mb-2" role="group">
                                     <a href="{% url 'studies:status' study.slug %}" class="btn btn-outline-success">Status</a>
                                     <a href="{% url 'studies:manage_timeslots' study.id %}" class="btn btn-outline-primary">Timeslots</a>
                                     <a href="{% url 'studies:roster' study.id %}" class="btn btn-outline-primary">Roster</a>
                                     <a href="{% url 'studies:edit' study.id %}" class="btn btn-outline-secondary">Edit</a>
                                 </div>
+                                
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <a href="{% url 'studies:protocol_submit' study.id %}" class="btn btn-outline-primary">
+                                        <i class="bi bi-file-earmark-check"></i> Submit Protocol
+                                    </a>
+                                    <a href="{% url 'studies:irb_review_create' study.id %}" class="btn btn-outline-warning">
+                                        <i class="bi bi-robot"></i> AI IRB Review
+                                    </a>
+                                    {% if study.latest_irb_review %}
+                                    <a href="{% url 'studies:irb_review_history' study.id %}" class="btn btn-outline-info">
+                                        History ({{ study.irb_reviews.count }})
+                                    </a>
+                                    {% endif %}
+                                </div>
+                                {% if study.protocol_submissions.exists %}
+                                <div class="mt-2">
+                                    <small class="text-muted">
+                                        <a href="{% url 'studies:protocol_submission_detail' study.protocol_submissions.first.id %}">
+                                            Latest Submission: {{ study.protocol_submissions.first.submission_number }}
+                                        </a>
+                                    </small>
+                                </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

@@ -1,0 +1,1286 @@
+[
+  {
+    "id": "audio_vid01_tendency_management_others",
+    "type": "video",
+    "video_id": "audio_vid01",
+    "video_url": "generated_videos_audio/feedback_delivery_lipsync.mp4",
+    "facet": "management_others",
+    "item_format": "tendency",
+    "difficulty": "moderate",
+    "theme": "feedback_delivery",
+    "sjt_prompt": "Imagine you are the manager. You notice the team member seems uncertain and slightly tense as you begin discussing the needed changes.",
+    "text": "What would you most likely do to support their emotional state?",
+    "options": [
+      "Acknowledge their effort first, then provide specific examples of what needs improvement",
+      "Keep the conversation brief and efficient to minimize discomfort",
+      "Soften the feedback by suggesting the issues are minor",
+      "Move quickly through the problems so we can end on a positive note"
+    ],
+    "scoring_weights": [
+      2,
+      1,
+      0,
+      0
+    ],
+    "scoring_rationale": "Validation + specificity is sophisticated emotional support (2 pts). Efficiency shows awareness but lacks warmth (1 pt). Minimizing or rushing avoids true emotional support (0 pts)."
+  },
+  {
+    "id": "audio_vid01_tendency_management_others_b",
+    "type": "video",
+    "video_id": "audio_vid01",
+    "video_url": "generated_videos_audio/feedback_delivery_lipsync.mp4",
+    "facet": "management_others",
+    "item_format": "tendency",
+    "difficulty": "moderate",
+    "theme": "feedback_delivery",
+    "sjt_prompt": "Imagine you are the manager. You can see the team member is processing the feedback and seems a bit overwhelmed by the amount of revision needed.",
+    "text": "What would you naturally do next to help them?",
+    "options": [
+      "Pause to check in: 'How are you feeling about this? What questions do you have?'",
+      "Reassure them: 'Don't worry, this happens to everyone when learning'",
+      "Move to solutions: 'Let me show you an example of what I mean'",
+      "Give space: 'Take some time to think it over and we can discuss tomorrow'"
+    ],
+    "scoring_weights": [
+      2,
+      1,
+      2,
+      1
+    ],
+    "scoring_rationale": "Checking in (2 pts) and moving to solutions (2 pts) are both adaptive. Reassurance is well-intentioned but may minimize (1 pt). Giving space is moderate (1 pt)."
+  },
+  {
+    "id": "audio_vid01_tendency_recognition",
+    "type": "video",
+    "video_id": "audio_vid01",
+    "video_url": "generated_videos_audio/feedback_delivery_lipsync.mp4",
+    "facet": "recognition",
+    "item_format": "tendency",
+    "difficulty": "moderate",
+    "theme": "feedback_delivery",
+    "sjt_prompt": "You are observing a manager providing feedback to a team member about a draft document. Watch the interaction carefully, paying attention to facial expressions, body language, and tone of voice.",
+    "text": "Watching this interaction, what aspect would you naturally pay attention to first?",
+    "options": [
+      "The manager's tone of voice and word choice",
+      "The team member's facial expressions and body language",
+      "The overall emotional atmosphere in the room",
+      "The specific content being discussed in the feedback"
+    ],
+    "scoring_weights": [
+      1,
+      2,
+      2,
+      0
+    ],
+    "scoring_rationale": "Recognition of emotional cues (facial expressions, atmosphere) demonstrates attentional focus on affective information (2 pts). Tone/words capture mixed content+affect (1 pt). Pure content focus misses emotional data (0 pts)."
+  },
+  {
+    "id": "audio_vid01_tendency_recognition_b",
+    "type": "video",
+    "video_id": "audio_vid01",
+    "video_url": "generated_videos_audio/feedback_delivery_lipsync.mp4",
+    "facet": "recognition",
+    "item_format": "tendency",
+    "difficulty": "moderate",
+    "theme": "feedback_delivery",
+    "sjt_prompt": "You are observing a manager providing feedback to a team member about a draft document. Watch the interaction carefully, paying attention to facial expressions, body language, and tone of voice.",
+    "text": "As you watch this interaction unfold, what would catch your attention most?",
+    "options": [
+      "How the team member reacts to each piece of feedback",
+      "Whether the manager seems patient or impatient",
+      "The back-and-forth rhythm of their conversation",
+      "The specific examples the manager mentions"
+    ],
+    "scoring_weights": [
+      2,
+      2,
+      1,
+      0
+    ],
+    "scoring_rationale": "Attending to emotional reactions or affective tone shows emotion recognition focus (2 pts). Conversational rhythm shows partial awareness (1 pt). Content-only focus misses emotional cues (0 pts)."
+  },
+  {
+    "id": "audio_vid01_tendency_regulation_self",
+    "type": "video",
+    "video_id": "audio_vid01",
+    "video_url": "generated_videos_audio/feedback_delivery_lipsync.mp4",
+    "facet": "regulation_self",
+    "item_format": "tendency",
+    "difficulty": "moderate",
+    "theme": "feedback_delivery",
+    "sjt_prompt": "Imagine you are the team member receiving this feedback. You feel some initial defensiveness rising as you hear the critique of your work.",
+    "text": "In this moment, what would you most likely do to manage your own emotional response?",
+    "options": [
+      "Take a breath and remind myself this is about improving the work, not criticizing me personally",
+      "Keep my feelings to myself and just agree to make changes",
+      "Focus on staying composed and not showing any reaction",
+      "Mentally prepare my explanation for why I made those choices"
+    ],
+    "scoring_weights": [
+      2,
+      1,
+      1,
+      0
+    ],
+    "scoring_rationale": "Reappraisal (reframing feedback) is adaptive regulation (2 pts). Suppression and acceptance are moderate strategies (1 pt each). Defensive preparation is maladaptive (0 pts)."
+  },
+  {
+    "id": "audio_vid01_tendency_regulation_self_b",
+    "type": "video",
+    "video_id": "audio_vid01",
+    "video_url": "generated_videos_audio/feedback_delivery_lipsync.mp4",
+    "facet": "regulation_self",
+    "item_format": "tendency",
+    "difficulty": "moderate",
+    "theme": "feedback_delivery",
+    "sjt_prompt": "Imagine you are the team member. You worked hard on this document and are now hearing that it needs significant changes. You feel a knot forming in your stomach.",
+    "text": "In this moment, how would you handle the uncomfortable feeling?",
+    "options": [
+      "Notice the discomfort, then refocus on what I can learn from this",
+      "Push the feeling aside and concentrate on taking notes",
+      "Try to stay composed on the outside while feeling stressed inside",
+      "Start thinking about how to explain my reasoning for the choices I made"
+    ],
+    "scoring_weights": [
+      2,
+      1,
+      1,
+      0
+    ],
+    "scoring_rationale": "Acceptance + reappraisal is adaptive regulation (2 pts). Suppression or surface composure is moderate but costly (1 pt). Defensive preparation is maladaptive (0 pts)."
+  },
+  {
+    "id": "audio_vid01_tendency_understanding",
+    "type": "video",
+    "video_id": "audio_vid01",
+    "video_url": "generated_videos_audio/feedback_delivery_lipsync.mp4",
+    "facet": "understanding",
+    "item_format": "tendency",
+    "difficulty": "moderate",
+    "theme": "feedback_delivery",
+    "sjt_prompt": "You are observing a manager providing feedback to a team member about a draft document. Watch the interaction carefully, paying attention to facial expressions, body language, and tone of voice.",
+    "text": "What would be your first impression of why this conversation is happening?",
+    "options": [
+      "The manager wants to help the team member develop and improve",
+      "There is a serious performance problem that needs correcting",
+      "The manager is frustrated and needs to express dissatisfaction",
+      "This is routine feedback with no particular emotional significance"
+    ],
+    "scoring_weights": [
+      2,
+      1,
+      0,
+      0
+    ],
+    "scoring_rationale": "Developmental attribution reflects sophisticated understanding of constructive feedback motives (2 pts). Problem-focused is accurate but less nuanced (1 pt). Punitive or dismissive attributions miss supportive intent (0 pts)."
+  },
+  {
+    "id": "audio_vid01_tendency_understanding_b",
+    "type": "video",
+    "video_id": "audio_vid01",
+    "video_url": "generated_videos_audio/feedback_delivery_lipsync.mp4",
+    "facet": "understanding",
+    "item_format": "tendency",
+    "difficulty": "moderate",
+    "theme": "feedback_delivery",
+    "sjt_prompt": "You are observing a manager providing feedback to a team member about a draft document. Watch the interaction carefully, paying attention to facial expressions, body language, and tone of voice.",
+    "text": "How would you make sense of the dynamic between these two people?",
+    "options": [
+      "They have a trusting relationship where honest feedback can be given and received",
+      "The manager has authority and the team member must comply",
+      "The team member is anxious about disappointing their manager",
+      "This is a routine work interaction without much emotional depth"
+    ],
+    "scoring_weights": [
+      2,
+      1,
+      1,
+      0
+    ],
+    "scoring_rationale": "Recognizing trust and psychological safety shows sophisticated emotion understanding (2 pts). Power dynamics or anxiety are partially accurate (1 pt). Dismissing emotional content shows poor understanding (0 pts)."
+  },
+  {
+    "id": "audio_vid01_recognition_01",
+    "type": "video",
+    "video_id": "audio_vid01",
+    "video_url": "generated_videos_audio/feedback_delivery_lipsync.mp4",
+    "facet": "recognition",
+    "difficulty": "easy",
+    "theme": "feedback_delivery",
+    "sjt_prompt": "You are observing a manager providing feedback to a team member about a draft document. Watch the interaction carefully, paying attention to facial expressions, body language, and tone of voice.",
+    "text": "What primary emotion is the manager conveying during this feedback session?",
+    "options": [
+      "Indifferent and disconnected from the conversation",
+      "Concerned yet supportive, wanting to help improve the work",
+      "Amused by the situation and not taking it seriously",
+      "Critical and annoyed with the team member's work"
+    ],
+    "correctAnswer": 1,
+    "item_format": "ability"
+  },
+  {
+    "id": "audio_vid01_recognition_02",
+    "type": "video",
+    "video_id": "audio_vid01",
+    "video_url": "generated_videos_audio/feedback_delivery_lipsync.mp4",
+    "facet": "recognition",
+    "difficulty": "moderate",
+    "theme": "feedback_delivery",
+    "sjt_prompt": "You are observing a manager providing feedback to a team member about a draft document. Watch the interaction carefully, paying attention to facial expressions, body language, and tone of voice.",
+    "text": "Based on the team member's nonverbal cues, what emotion are they likely experiencing?",
+    "options": [
+      "Angry about having to revise their work",
+      "Confident and dismissive of concerns",
+      "Defensive and resistant to the feedback",
+      "Uncertain but receptive to guidance"
+    ],
+    "correctAnswer": 3,
+    "item_format": "ability"
+  },
+  {
+    "id": "audio_vid01_recognition_03",
+    "type": "video",
+    "video_id": "audio_vid01",
+    "video_url": "generated_videos_audio/feedback_delivery_lipsync.mp4",
+    "facet": "recognition",
+    "difficulty": "hard",
+    "theme": "feedback_delivery",
+    "sjt_prompt": "You are observing a manager providing feedback to a team member about a draft document. Watch the interaction carefully, paying attention to facial expressions, body language, and tone of voice.",
+    "text": "What subtle emotion is the manager managing while delivering this feedback?",
+    "options": [
+      "Relief that the conversation is almost over",
+      "Satisfaction with the team member's performance overall",
+      "Concern about project timelines while maintaining a supportive demeanor",
+      "Impatience about the quality of work, which they're actively suppressing"
+    ],
+    "correctAnswer": 2,
+    "item_format": "ability"
+  },
+  {
+    "id": "audio_vid01_understanding_01",
+    "type": "video",
+    "video_id": "audio_vid01",
+    "video_url": "generated_videos_audio/feedback_delivery_lipsync.mp4",
+    "facet": "understanding",
+    "difficulty": "moderate",
+    "theme": "feedback_delivery",
+    "sjt_prompt": "You are observing a manager providing feedback to a team member about a draft document. Watch the interaction carefully, paying attention to facial expressions, body language, and tone of voice.",
+    "text": "What best explains the manager's intent in this interaction?",
+    "options": [
+      "To improve clarity and strengthen examples to meet the client's goals",
+      "To avoid taking on additional work by delegating back to the employee",
+      "To assign blame for mistakes made in the draft",
+      "To change the entire project scope and direction"
+    ],
+    "correctAnswer": 0,
+    "item_format": "ability"
+  },
+  {
+    "id": "audio_vid01_understanding_02",
+    "type": "video",
+    "video_id": "audio_vid01",
+    "video_url": "generated_videos_audio/feedback_delivery_lipsync.mp4",
+    "facet": "understanding",
+    "difficulty": "moderate",
+    "theme": "feedback_delivery",
+    "sjt_prompt": "You are observing a manager providing feedback to a team member about a draft document. Watch the interaction carefully, paying attention to facial expressions, body language, and tone of voice.",
+    "text": "Why might the manager lead with 'I appreciate the effort' before addressing issues?",
+    "options": [
+      "To fulfill a required corporate politeness protocol",
+      "To acknowledge the team member's work and reduce defensive reactions",
+      "To avoid discussing the actual problems with the draft",
+      "To manipulate the team member into accepting criticism more easily"
+    ],
+    "correctAnswer": 1,
+    "item_format": "ability"
+  },
+  {
+    "id": "audio_vid01_understanding_03",
+    "type": "video",
+    "video_id": "audio_vid01",
+    "video_url": "generated_videos_audio/feedback_delivery_lipsync.mp4",
+    "facet": "understanding",
+    "difficulty": "hard",
+    "theme": "feedback_delivery",
+    "sjt_prompt": "You are observing a manager providing feedback to a team member about a draft document. Watch the interaction carefully, paying attention to facial expressions, body language, and tone of voice.",
+    "text": "What underlying relationship dynamic makes this feedback interaction effective?",
+    "options": [
+      "Mutual respect and psychological safety allowing for honest developmental dialogue",
+      "A transactional relationship focused solely on task completion",
+      "Fear of negative consequences motivating the employee to improve",
+      "A power hierarchy where the employee must comply regardless of feelings"
+    ],
+    "correctAnswer": 0,
+    "item_format": "ability"
+  },
+  {
+    "id": "audio_vid01_regulation_self_01",
+    "type": "video",
+    "video_id": "audio_vid01",
+    "video_url": "generated_videos_audio/feedback_delivery_lipsync.mp4",
+    "facet": "regulation_self",
+    "difficulty": "moderate",
+    "theme": "feedback_delivery",
+    "sjt_prompt": "You are the manager in this situation, feeling some pressure to deliver the project on time while also supporting your team member's development. You need to provide critical feedback.",
+    "text": "If you were the manager feeling this pressure, what would be the most emotionally intelligent first step?",
+    "options": [
+      "Avoid the difficult conversation and hope the issues resolve themselves",
+      "Pause to acknowledge the effort made, then address specific areas for improvement",
+      "Lead with all the problems to be efficient and direct",
+      "Ask the team member to completely rewrite without providing guidance"
+    ],
+    "correctAnswer": 1,
+    "item_format": "ability"
+  },
+  {
+    "id": "audio_vid01_regulation_self_02",
+    "type": "video",
+    "video_id": "audio_vid01",
+    "video_url": "generated_videos_audio/feedback_delivery_lipsync.mp4",
+    "facet": "regulation_self",
+    "difficulty": "easy",
+    "theme": "feedback_delivery",
+    "sjt_prompt": "You are the manager in this situation, feeling some pressure to deliver the project on time while also supporting your team member's development. You need to provide critical feedback.",
+    "text": "What does the manager's body language (leaning forward, open gestures) indicate about their self-regulation?",
+    "options": [
+      "They are actively creating an approachable, engaged presence",
+      "They are uncomfortable with giving feedback",
+      "They are struggling to control their impatience",
+      "They are trying to dominate the conversation"
+    ],
+    "correctAnswer": 0,
+    "item_format": "ability"
+  },
+  {
+    "id": "audio_vid01_regulation_self_03",
+    "type": "video",
+    "video_id": "audio_vid01",
+    "video_url": "generated_videos_audio/feedback_delivery_lipsync.mp4",
+    "facet": "regulation_self",
+    "difficulty": "hard",
+    "theme": "feedback_delivery",
+    "sjt_prompt": "You are the manager in this situation. You've reviewed the draft three times already and are feeling frustrated about the repeated issues. You need to provide feedback without letting your frustration show.",
+    "text": "What emotional regulation strategy is most evident in the manager's approach?",
+    "options": [
+      "Suppression - hiding all emotional reactions to maintain professionalism",
+      "Distraction - avoiding thinking about the quality issues",
+      "Reappraisal - reframing the situation as a learning opportunity rather than a failure",
+      "Venting - expressing frustration to motivate improvement"
+    ],
+    "correctAnswer": 2,
+    "item_format": "ability"
+  },
+  {
+    "id": "audio_vid01_management_others_01",
+    "type": "video",
+    "video_id": "audio_vid01",
+    "video_url": "generated_videos_audio/feedback_delivery_lipsync.mp4",
+    "facet": "management_others",
+    "difficulty": "easy",
+    "theme": "feedback_delivery",
+    "sjt_prompt": "You are observing a manager providing feedback to a team member about a draft document. The team member shows slight concern and uncertainty. Watch the interaction carefully.",
+    "text": "What response by the manager would best support the team member's emotional state right now?",
+    "options": [
+      "Tell them to 'figure it out' and come back when it's fixed",
+      "Change the deadline without discussing the concerns",
+      "Point out the mistakes again to ensure they understand what went wrong",
+      "Provide specific examples of improvements needed and offer collaborative problem-solving"
+    ],
+    "correctAnswer": 3,
+    "item_format": "ability"
+  },
+  {
+    "id": "audio_vid01_management_others_02",
+    "type": "video",
+    "video_id": "audio_vid01",
+    "video_url": "generated_videos_audio/feedback_delivery_lipsync.mp4",
+    "facet": "management_others",
+    "difficulty": "moderate",
+    "theme": "feedback_delivery",
+    "sjt_prompt": "You are observing a manager providing feedback to a team member about a draft document. The team member shows slight concern and uncertainty. Watch the interaction carefully.",
+    "text": "How does saying 'I'm happy to help' function emotionally for the team member?",
+    "options": [
+      "It creates obligation to accept help they may not want",
+      "It provides reassurance and reduces anxiety about making corrections",
+      "It shifts all responsibility for improvement to the manager",
+      "It diminishes their competence by suggesting they can't handle it alone"
+    ],
+    "correctAnswer": 1,
+    "item_format": "ability"
+  },
+  {
+    "id": "audio_vid01_management_others_03",
+    "type": "video",
+    "video_id": "audio_vid01",
+    "video_url": "generated_videos_audio/feedback_delivery_lipsync.mp4",
+    "facet": "management_others",
+    "difficulty": "hard",
+    "theme": "feedback_delivery",
+    "sjt_prompt": "You are observing a manager providing feedback to a team member about a draft document. The team member shows slight concern and uncertainty. Watch the interaction carefully.",
+    "text": "What is the most sophisticated emotional management technique the manager uses?",
+    "options": [
+      "Maintaining emotional distance to stay objective about the work",
+      "Using the word 'we' to avoid making the team member feel singled out",
+      "Creating forward momentum by focusing on concrete next steps rather than dwelling on problems",
+      "Minimizing the issues by calling them 'just a couple of points'"
+    ],
+    "correctAnswer": 2,
+    "item_format": "ability"
+  },
+  {
+    "id": "audio_vid02_tendency_management_others",
+    "type": "video",
+    "video_id": "audio_vid02",
+    "video_url": "generated_videos_audio/A_professional_at_a_desk_showing_stress_with_tense_posture__rapid_movements__furrowed_brow__and_chec.mp4",
+    "facet": "management_others",
+    "item_format": "tendency",
+    "difficulty": "moderate",
+    "theme": "deadline_stress",
+    "sjt_prompt": "Imagine you are the colleague who needs to speak with the stressed person. You recognize they are overwhelmed but you also have an urgent need.",
+    "text": "What would you most likely do to support them while addressing your need?",
+    "options": [
+      "Approach calmly, acknowledge they look busy, and briefly explain what I need",
+      "Wait until they appear less stressed before saying anything",
+      "Send an email instead to avoid interrupting",
+      "Approach normally since my issue is also important"
+    ],
+    "scoring_weights": [
+      2,
+      1,
+      1,
+      0
+    ],
+    "scoring_rationale": "Verbal acknowledgment + calm approach shows co-regulation skill (2 pts). Waiting or email shows awareness but avoids direct support (1 pt). Ignoring their state lacks emotional management (0 pts)."
+  },
+  {
+    "id": "audio_vid02_tendency_management_others_b",
+    "type": "video",
+    "video_id": "audio_vid02",
+    "video_url": "generated_videos_audio/A_professional_at_a_desk_showing_stress_with_tense_posture__rapid_movements__furrowed_brow__and_chec.mp4",
+    "facet": "management_others",
+    "item_format": "tendency",
+    "difficulty": "moderate",
+    "theme": "deadline_stress",
+    "sjt_prompt": "Imagine you are the approaching colleague. You need to discuss something with the stressed person, but it is not urgent. You can see they are overwhelmed.",
+    "text": "How would you handle this situation?",
+    "options": [
+      "Ask: 'I can see you are swamped. Is now okay or should I come back later?'",
+      "Keep it brief: 'Quick question - just need 30 seconds'",
+      "Be direct about my need: 'I need to talk to you about the project'",
+      "Come back later without saying anything"
+    ],
+    "scoring_weights": [
+      2,
+      1,
+      0,
+      1
+    ],
+    "scoring_rationale": "Acknowledging their state and offering flexibility is sophisticated co-regulation (2 pts). Brief approach shows awareness (1 pt). Direct approach ignores their state (0 pts). Avoidance is moderate (1 pt)."
+  },
+  {
+    "id": "audio_vid02_tendency_recognition",
+    "type": "video",
+    "video_id": "audio_vid02",
+    "video_url": "generated_videos_audio/A_professional_at_a_desk_showing_stress_with_tense_posture__rapid_movements__furrowed_brow__and_chec.mp4",
+    "facet": "recognition",
+    "item_format": "tendency",
+    "difficulty": "moderate",
+    "theme": "deadline_stress",
+    "sjt_prompt": "You are observing two colleagues in a busy office environment. One person is at their desk dealing with urgent tasks, while another colleague needs to speak with them. Watch both people's behavior carefully.",
+    "text": "As you observe this situation, what would you notice first?",
+    "options": [
+      "The stressed person's rapid movements and tense body language",
+      "Whether the stressed person looks approachable or not",
+      "The tasks and papers scattered on the desk",
+      "The approaching colleague's hesitation and change in pace"
+    ],
+    "scoring_weights": [
+      2,
+      1,
+      0,
+      2
+    ],
+    "scoring_rationale": "Recognizing stress cues (body tension) or interpersonal sensitivity (colleague's response) shows emotion perception (2 pts). Approachability is somewhat affective (1 pt). Task focus misses emotional data (0 pts)."
+  },
+  {
+    "id": "audio_vid02_tendency_recognition_b",
+    "type": "video",
+    "video_id": "audio_vid02",
+    "video_url": "generated_videos_audio/A_professional_at_a_desk_showing_stress_with_tense_posture__rapid_movements__furrowed_brow__and_chec.mp4",
+    "facet": "recognition",
+    "item_format": "tendency",
+    "difficulty": "moderate",
+    "theme": "deadline_stress",
+    "sjt_prompt": "You are observing two colleagues in a busy office environment. One person is at their desk dealing with urgent tasks, while another colleague needs to speak with them. Watch both people's behavior carefully.",
+    "text": "What signals would you pick up on from the stressed person?",
+    "options": [
+      "The physical tension in their posture and quick movements",
+      "The focused, intense look on their face",
+      "How absorbed they are in their work, not noticing surroundings",
+      "The number of tasks and papers on their desk"
+    ],
+    "scoring_weights": [
+      2,
+      2,
+      1,
+      0
+    ],
+    "scoring_rationale": "Physical tension and facial affect are direct emotion cues (2 pts). Absorption shows awareness but less emotional precision (1 pt). Task focus misses affective state (0 pts)."
+  },
+  {
+    "id": "audio_vid02_tendency_regulation_self",
+    "type": "video",
+    "video_id": "audio_vid02",
+    "video_url": "generated_videos_audio/A_professional_at_a_desk_showing_stress_with_tense_posture__rapid_movements__furrowed_brow__and_chec.mp4",
+    "facet": "regulation_self",
+    "item_format": "tendency",
+    "difficulty": "moderate",
+    "theme": "deadline_stress",
+    "sjt_prompt": "Imagine you are the colleague who needs to speak with the stressed person about an urgent matter. You also feel time pressure and notice your own stress beginning to rise.",
+    "text": "What would you most likely do to manage your own state before approaching?",
+    "options": [
+      "Take a moment to slow my pace and lower my energy level",
+      "Push through my discomfort and approach quickly to get it over with",
+      "Remind myself that my issue is also urgent and deserves attention",
+      "Keep my stress to myself so I don't add to theirs"
+    ],
+    "scoring_weights": [
+      2,
+      0,
+      1,
+      1
+    ],
+    "scoring_rationale": "Active downregulation (slowing pace) is adaptive self-regulation (2 pts). Cognitive reframing and suppression are moderate (1 pt). Avoidance through rushing is maladaptive (0 pts)."
+  },
+  {
+    "id": "audio_vid02_tendency_regulation_self_b",
+    "type": "video",
+    "video_id": "audio_vid02",
+    "video_url": "generated_videos_audio/A_professional_at_a_desk_showing_stress_with_tense_posture__rapid_movements__furrowed_brow__and_chec.mp4",
+    "facet": "regulation_self",
+    "item_format": "tendency",
+    "difficulty": "moderate",
+    "theme": "deadline_stress",
+    "sjt_prompt": "Imagine you are the person at the desk with multiple urgent deadlines. You feel your stress level rising as you realize you cannot finish everything on time.",
+    "text": "What would you most likely do with your rising stress?",
+    "options": [
+      "Take three deep breaths, then prioritize which tasks are truly most important",
+      "Power through the discomfort and work faster to get more done",
+      "Acknowledge the stress is real, then break tasks into smaller steps",
+      "Tell myself to stop stressing and just focus on the work"
+    ],
+    "scoring_weights": [
+      2,
+      1,
+      2,
+      1
+    ],
+    "scoring_rationale": "Deep breathing + prioritization and acknowledgment + problem-solving are adaptive strategies (2 pts). Powering through and self-talk are moderate suppression/distraction (1 pt each)."
+  },
+  {
+    "id": "audio_vid02_tendency_understanding",
+    "type": "video",
+    "video_id": "audio_vid02",
+    "video_url": "generated_videos_audio/A_professional_at_a_desk_showing_stress_with_tense_posture__rapid_movements__furrowed_brow__and_chec.mp4",
+    "facet": "understanding",
+    "item_format": "tendency",
+    "difficulty": "moderate",
+    "theme": "deadline_stress",
+    "sjt_prompt": "You are observing two colleagues in a busy office environment. One person is at their desk dealing with urgent tasks, while another colleague needs to speak with them. Watch both people's behavior carefully.",
+    "text": "What would you initially think is driving this interaction?",
+    "options": [
+      "The stressed person is overwhelmed and needs space to focus",
+      "The approaching colleague is trying to be considerate of the stress",
+      "Work demands are creating tension between these colleagues",
+      "The stressed person is always like this and it's just their personality"
+    ],
+    "scoring_weights": [
+      2,
+      2,
+      1,
+      0
+    ],
+    "scoring_rationale": "Understanding situational stress or interpersonal attunement reflects emotion knowledge (2 pts). Conflict attribution is plausible but less accurate (1 pt). Dispositional attribution ignores context (0 pts)."
+  },
+  {
+    "id": "audio_vid02_tendency_understanding_b",
+    "type": "video",
+    "video_id": "audio_vid02",
+    "video_url": "generated_videos_audio/A_professional_at_a_desk_showing_stress_with_tense_posture__rapid_movements__furrowed_brow__and_chec.mp4",
+    "facet": "understanding",
+    "item_format": "tendency",
+    "difficulty": "moderate",
+    "theme": "deadline_stress",
+    "sjt_prompt": "You are observing two colleagues in a busy office environment. One person is at their desk dealing with urgent tasks, while another colleague needs to speak with them. Watch both people's behavior carefully.",
+    "text": "What would you think is the main emotion at play in this situation?",
+    "options": [
+      "Time pressure creating stress and a sense of urgency",
+      "Frustration with having too much work to do",
+      "Anxiety about meeting expectations or deadlines",
+      "Focus and determination to complete tasks"
+    ],
+    "scoring_weights": [
+      2,
+      1,
+      2,
+      1
+    ],
+    "scoring_rationale": "Stress/urgency and anxiety are accurate emotion labels (2 pts). Frustration is plausible but less precise (1 pt). Determination reframes stress positively, showing moderate insight (1 pt)."
+  },
+  {
+    "id": "audio_vid02_recognition_01",
+    "type": "video",
+    "video_id": "audio_vid02",
+    "video_url": "generated_videos_audio/A_professional_at_a_desk_showing_stress_with_tense_posture__rapid_movements__furrowed_brow__and_chec.mp4",
+    "facet": "recognition",
+    "difficulty": "easy",
+    "theme": "deadline_stress",
+    "sjt_prompt": "You are observing two colleagues in a busy office environment. One person is at their desk dealing with urgent tasks, while another colleague needs to speak with them. Watch both people's behavior carefully.",
+    "text": "What emotion is the person at the desk primarily displaying?",
+    "options": [
+      "Boredom with routine tasks",
+      "Stress and feeling overwhelmed by workload",
+      "Anger at being interrupted by colleagues",
+      "Excitement about completing the project"
+    ],
+    "correctAnswer": 1,
+    "item_format": "ability"
+  },
+  {
+    "id": "audio_vid02_recognition_02",
+    "type": "video",
+    "video_id": "audio_vid02",
+    "video_url": "generated_videos_audio/A_professional_at_a_desk_showing_stress_with_tense_posture__rapid_movements__furrowed_brow__and_chec.mp4",
+    "facet": "recognition",
+    "difficulty": "moderate",
+    "theme": "deadline_stress",
+    "sjt_prompt": "You are observing two colleagues in a busy office environment. One person is at their desk dealing with urgent tasks, while another colleague needs to speak with them. Watch both people's behavior carefully.",
+    "text": "What does the approaching colleague's change in behavior indicate they have recognized?",
+    "options": [
+      "The stressed person is angry and should be avoided",
+      "The stressed person prefers to work completely alone",
+      "The stressed person's current emotional state and need for space",
+      "The stressed person is not important enough to interrupt"
+    ],
+    "correctAnswer": 2,
+    "item_format": "ability"
+  },
+  {
+    "id": "audio_vid02_recognition_03",
+    "type": "video",
+    "video_id": "audio_vid02",
+    "video_url": "generated_videos_audio/A_professional_at_a_desk_showing_stress_with_tense_posture__rapid_movements__furrowed_brow__and_chec.mp4",
+    "facet": "recognition",
+    "difficulty": "hard",
+    "theme": "deadline_stress",
+    "sjt_prompt": "You are observing two colleagues in a busy office environment. One person is at their desk dealing with urgent tasks, while another colleague needs to speak with them. Watch both people's behavior carefully.",
+    "text": "What subtle emotional shift does the approaching colleague demonstrate?",
+    "options": [
+      "Increasing their own urgency to match the stressed colleague's energy",
+      "Deliberately downregulating their energy and pace in response to the stress they observe",
+      "Showing frustration that their colleague is always busy",
+      "Becoming anxious about approaching due to fear of conflict"
+    ],
+    "correctAnswer": 1,
+    "item_format": "ability"
+  },
+  {
+    "id": "audio_vid02_understanding_01",
+    "type": "video",
+    "video_id": "audio_vid02",
+    "video_url": "generated_videos_audio/A_professional_at_a_desk_showing_stress_with_tense_posture__rapid_movements__furrowed_brow__and_chec.mp4",
+    "facet": "understanding",
+    "difficulty": "moderate",
+    "theme": "deadline_stress",
+    "sjt_prompt": "You are observing two colleagues in a busy office environment. One person is at their desk dealing with urgent tasks, while another colleague needs to speak with them. Watch both people's behavior carefully.",
+    "text": "Why does stress typically affect how people process information and communicate?",
+    "options": [
+      "Stress improves focus and makes communication more efficient",
+      "Stress makes people deliberately rude to keep others away",
+      "Stress has no impact on communication ability, only on task performance",
+      "Stress narrows attention and reduces cognitive capacity for complex social interactions"
+    ],
+    "correctAnswer": 3,
+    "item_format": "ability"
+  },
+  {
+    "id": "audio_vid02_understanding_02",
+    "type": "video",
+    "video_id": "audio_vid02",
+    "video_url": "generated_videos_audio/A_professional_at_a_desk_showing_stress_with_tense_posture__rapid_movements__furrowed_brow__and_chec.mp4",
+    "facet": "understanding",
+    "difficulty": "moderate",
+    "theme": "deadline_stress",
+    "sjt_prompt": "You are observing two colleagues in a busy office environment. One person is at their desk dealing with urgent tasks, while another colleague needs to speak with them. Watch both people's behavior carefully.",
+    "text": "What principle of emotion dynamics explains why the approaching colleague slows down?",
+    "options": [
+      "Stressed people respond better to fast, efficient communication",
+      "The colleague is trying to avoid triggering their own stress response",
+      "Showing any emotion in professional settings is inappropriate",
+      "Emotions are contagious, so displaying calm can help regulate another's stress"
+    ],
+    "correctAnswer": 3,
+    "item_format": "ability"
+  },
+  {
+    "id": "audio_vid02_understanding_03",
+    "type": "video",
+    "video_id": "audio_vid02",
+    "video_url": "generated_videos_audio/A_professional_at_a_desk_showing_stress_with_tense_posture__rapid_movements__furrowed_brow__and_chec.mp4",
+    "facet": "understanding",
+    "difficulty": "hard",
+    "theme": "deadline_stress",
+    "sjt_prompt": "You are observing two colleagues in a busy office environment. One person is at their desk dealing with urgent tasks, while another colleague needs to speak with them. Watch both people's behavior carefully.",
+    "text": "What does this interaction reveal about the relationship between emotional states and interpersonal timing?",
+    "options": [
+      "People in heightened emotional states need adjusted pacing and more processing space",
+      "Matching someone's emotional intensity always improves communication",
+      "Emotional states don't affect optimal timing for interactions",
+      "All difficult conversations should be delayed until emotions are neutral"
+    ],
+    "correctAnswer": 0,
+    "item_format": "ability"
+  },
+  {
+    "id": "audio_vid02_regulation_self_01",
+    "type": "video",
+    "video_id": "audio_vid02",
+    "video_url": "generated_videos_audio/A_professional_at_a_desk_showing_stress_with_tense_posture__rapid_movements__furrowed_brow__and_chec.mp4",
+    "facet": "regulation_self",
+    "difficulty": "moderate",
+    "theme": "deadline_stress",
+    "sjt_prompt": "You are the colleague approaching the stressed person. You also have an urgent matter that needs attention, and you feel your own stress rising as you need to interrupt someone who's clearly overwhelmed.",
+    "text": "What self-regulation strategy is most important in this situation?",
+    "options": [
+      "Avoid the interaction entirely to protect your own emotional state",
+      "Consciously slow your own pace and lower your energy to avoid escalating the situation",
+      "Match the other person's stress level to show you understand the urgency",
+      "Suppress your own urgency completely and pretend there's no time pressure"
+    ],
+    "correctAnswer": 1,
+    "item_format": "ability"
+  },
+  {
+    "id": "audio_vid02_regulation_self_02",
+    "type": "video",
+    "video_id": "audio_vid02",
+    "video_url": "generated_videos_audio/A_professional_at_a_desk_showing_stress_with_tense_posture__rapid_movements__furrowed_brow__and_chec.mp4",
+    "facet": "regulation_self",
+    "difficulty": "easy",
+    "theme": "deadline_stress",
+    "sjt_prompt": "You are the colleague approaching the stressed person. You also have an urgent matter that needs attention, and you feel your own stress rising as you need to interrupt someone who's clearly overwhelmed.",
+    "text": "What physical self-regulation technique is the approaching colleague using?",
+    "options": [
+      "Rapid movements to show urgency and get the conversation done quickly",
+      "Deliberately slowing their movements and giving more physical space",
+      "Avoiding eye contact to reduce confrontation",
+      "Standing very close to establish connection"
+    ],
+    "correctAnswer": 1,
+    "item_format": "ability"
+  },
+  {
+    "id": "audio_vid02_regulation_self_03",
+    "type": "video",
+    "video_id": "audio_vid02",
+    "video_url": "generated_videos_audio/A_professional_at_a_desk_showing_stress_with_tense_posture__rapid_movements__furrowed_brow__and_chec.mp4",
+    "facet": "regulation_self",
+    "difficulty": "hard",
+    "theme": "deadline_stress",
+    "sjt_prompt": "You are the colleague approaching the stressed person. You also have an urgent matter that needs attention, and you feel your own stress rising as you need to interrupt someone who's clearly overwhelmed.",
+    "text": "This interaction demonstrates which advanced self-regulation concept?",
+    "options": [
+      "Emotional suppression - hiding your true feelings to maintain social norms",
+      "Response modulation - adjusting your behavioral expression to fit the situational demands",
+      "Cognitive distraction - thinking about something else to avoid feeling stress",
+      "Situational selection - avoiding stressful situations entirely"
+    ],
+    "correctAnswer": 1,
+    "item_format": "ability"
+  },
+  {
+    "id": "audio_vid02_management_others_01",
+    "type": "video",
+    "video_id": "audio_vid02",
+    "video_url": "generated_videos_audio/A_professional_at_a_desk_showing_stress_with_tense_posture__rapid_movements__furrowed_brow__and_chec.mp4",
+    "facet": "management_others",
+    "difficulty": "easy",
+    "theme": "deadline_stress",
+    "sjt_prompt": "You are the colleague who needs to speak with the stressed person about an urgent task issue. Your goal is to communicate your needs while supporting their emotional state.",
+    "text": "What is the most emotionally intelligent way to begin this interaction?",
+    "options": [
+      "Jump right in with your urgent issue to be respectful of their time",
+      "Send an email instead to avoid any interpersonal interaction",
+      "Wait until they are completely done with all their work before approaching",
+      "Approach calmly, acknowledge you can see they're busy, and briefly state your need"
+    ],
+    "correctAnswer": 3,
+    "item_format": "ability"
+  },
+  {
+    "id": "audio_vid02_management_others_02",
+    "type": "video",
+    "video_id": "audio_vid02",
+    "video_url": "generated_videos_audio/A_professional_at_a_desk_showing_stress_with_tense_posture__rapid_movements__furrowed_brow__and_chec.mp4",
+    "facet": "management_others",
+    "difficulty": "moderate",
+    "theme": "deadline_stress",
+    "sjt_prompt": "You are the colleague who needs to speak with the stressed person about an urgent task issue. Your goal is to communicate your needs while supporting their emotional state.",
+    "text": "How does slowing your approach help manage the stressed colleague's emotional state?",
+    "options": [
+      "It signals you don't actually think your issue is important",
+      "It has no real effect; stressed people won't notice approach speed",
+      "It makes them feel guilty for being stressed and motivates them to calm down",
+      "It gives them time to finish their current thought and reduces the startle/interruption effect"
+    ],
+    "correctAnswer": 3,
+    "item_format": "ability"
+  },
+  {
+    "id": "audio_vid02_management_others_03",
+    "type": "video",
+    "video_id": "audio_vid02",
+    "video_url": "generated_videos_audio/A_professional_at_a_desk_showing_stress_with_tense_posture__rapid_movements__furrowed_brow__and_chec.mp4",
+    "facet": "management_others",
+    "difficulty": "hard",
+    "theme": "deadline_stress",
+    "sjt_prompt": "You are the colleague who needs to speak with the stressed person about an urgent task issue. Your goal is to communicate your needs while supporting their emotional state.",
+    "text": "This interaction demonstrates which sophisticated principle of managing others' emotions?",
+    "options": [
+      "Co-regulate by modeling the emotional state you want to facilitate in the other person",
+      "Take full responsibility for solving their stress before addressing your own needs",
+      "Always mirror the other person's emotional state to build rapport",
+      "Avoid all interactions when people are experiencing negative emotions"
+    ],
+    "correctAnswer": 0,
+    "item_format": "ability"
+  },
+  {
+    "id": "audio_vid03_tendency_management_others",
+    "type": "video",
+    "video_id": "audio_vid03",
+    "video_url": "generated_videos_audio/Two_colleagues_in_a_quiet_office_area__One_is_speaking_with_a_vulnerable_expression_and_hesitant_ges-2.mp4",
+    "facet": "management_others",
+    "item_format": "tendency",
+    "difficulty": "moderate",
+    "theme": "colleague_support",
+    "sjt_prompt": "Imagine you are the listener. Your colleague has just shared something vulnerable and seems to be waiting for your response.",
+    "text": "What would you most likely do to support them emotionally?",
+    "options": [
+      "Acknowledge what they shared and validate their feelings before saying anything else",
+      "Offer advice or suggestions about how to handle the situation",
+      "Share a similar experience of my own so they know they're not alone",
+      "Reassure them that things will work out and it's not as bad as it seems"
+    ],
+    "scoring_weights": [
+      2,
+      0,
+      1,
+      0
+    ],
+    "scoring_rationale": "Validation-first approach demonstrates sophisticated emotional support (2 pts). Self-disclosure can build connection but risks shifting focus (1 pt). Advice-giving or minimizing bypasses emotional validation (0 pts)."
+  },
+  {
+    "id": "audio_vid03_tendency_management_others_b",
+    "type": "video",
+    "video_id": "audio_vid03",
+    "video_url": "generated_videos_audio/Two_colleagues_in_a_quiet_office_area__One_is_speaking_with_a_vulnerable_expression_and_hesitant_ges-2.mp4",
+    "facet": "management_others",
+    "item_format": "tendency",
+    "difficulty": "moderate",
+    "theme": "colleague_support",
+    "sjt_prompt": "Imagine you are the listener. Your colleague has just finished sharing their difficult situation and falls quiet, looking at you expectantly.",
+    "text": "What would your instinct be in this moment?",
+    "options": [
+      "Reflect back what you heard: 'It sounds like you are dealing with...'",
+      "Offer reassurance: 'I am sure things will get better soon'",
+      "Share your own similar experience to show you understand",
+      "Ask: 'What do you think you will do about it?'"
+    ],
+    "scoring_weights": [
+      2,
+      0,
+      1,
+      1
+    ],
+    "scoring_rationale": "Reflective listening validates their experience (2 pts). Solution-focused question and self-disclosure are moderately helpful (1 pt). Reassurance minimizes their difficulty (0 pts)."
+  },
+  {
+    "id": "audio_vid03_tendency_recognition",
+    "type": "video",
+    "video_id": "audio_vid03",
+    "video_url": "generated_videos_audio/Two_colleagues_in_a_quiet_office_area__One_is_speaking_with_a_vulnerable_expression_and_hesitant_ges-2.mp4",
+    "facet": "recognition",
+    "item_format": "tendency",
+    "difficulty": "moderate",
+    "theme": "colleague_support",
+    "sjt_prompt": "You are observing two colleagues having a private conversation in a quiet area of the office. One colleague is sharing something personal, while the other is listening. Watch their interaction carefully.",
+    "text": "Watching this conversation, what would you naturally focus on?",
+    "options": [
+      "The speaker's downcast gaze and hesitant gestures",
+      "The listener's attentive body language and facial expressions",
+      "Whether this seems like an appropriate workplace conversation",
+      "The emotional connection or rapport between them"
+    ],
+    "scoring_weights": [
+      2,
+      2,
+      0,
+      2
+    ],
+    "scoring_rationale": "Recognizing vulnerability (speaker cues), empathy (listener cues), or relational quality shows emotion perception (2 pts). Appropriateness judgment misses affective content (0 pts)."
+  },
+  {
+    "id": "audio_vid03_tendency_recognition_b",
+    "type": "video",
+    "video_id": "audio_vid03",
+    "video_url": "generated_videos_audio/Two_colleagues_in_a_quiet_office_area__One_is_speaking_with_a_vulnerable_expression_and_hesitant_ges-2.mp4",
+    "facet": "recognition",
+    "item_format": "tendency",
+    "difficulty": "moderate",
+    "theme": "colleague_support",
+    "sjt_prompt": "You are observing two colleagues having a private conversation in a quiet area of the office. One colleague is sharing something personal, while the other is listening. Watch their interaction carefully.",
+    "text": "What tells you the most about what is happening emotionally?",
+    "options": [
+      "The speaker's vulnerability in their voice and expression",
+      "The listener's steady, caring attention",
+      "The quiet, private nature of the conversation",
+      "The specific words being used in the conversation"
+    ],
+    "scoring_weights": [
+      2,
+      2,
+      1,
+      0
+    ],
+    "scoring_rationale": "Recognizing vulnerability or empathy shows emotion perception (2 pts). Noticing privacy shows contextual awareness (1 pt). Word focus misses nonverbal affect (0 pts)."
+  },
+  {
+    "id": "audio_vid03_tendency_regulation_self",
+    "type": "video",
+    "video_id": "audio_vid03",
+    "video_url": "generated_videos_audio/Two_colleagues_in_a_quiet_office_area__One_is_speaking_with_a_vulnerable_expression_and_hesitant_ges-2.mp4",
+    "facet": "regulation_self",
+    "item_format": "tendency",
+    "difficulty": "moderate",
+    "theme": "colleague_support",
+    "sjt_prompt": "Imagine you are the listener. Your colleague is sharing something emotionally difficult, and you notice yourself feeling some discomfort with the intensity of their emotion.",
+    "text": "What would you most likely do to manage your own discomfort in this moment?",
+    "options": [
+      "Stay present with the discomfort and keep my attention on them",
+      "Try to lighten the mood with a comment or shift to problem-solving",
+      "Remind myself that it's okay to feel uncomfortable and this is important",
+      "Keep my expression neutral so they don't see my discomfort"
+    ],
+    "scoring_weights": [
+      2,
+      0,
+      2,
+      1
+    ],
+    "scoring_rationale": "Distress tolerance (staying present, accepting discomfort) is adaptive regulation (2 pts). Suppression is moderate (1 pt). Deflection/fixing to reduce own discomfort is maladaptive (0 pts)."
+  },
+  {
+    "id": "audio_vid03_tendency_regulation_self_b",
+    "type": "video",
+    "video_id": "audio_vid03",
+    "video_url": "generated_videos_audio/Two_colleagues_in_a_quiet_office_area__One_is_speaking_with_a_vulnerable_expression_and_hesitant_ges-2.mp4",
+    "facet": "regulation_self",
+    "item_format": "tendency",
+    "difficulty": "moderate",
+    "theme": "colleague_support",
+    "sjt_prompt": "Imagine you are the listener. As your colleague shares their struggle, you feel yourself getting emotional too. You want to be supportive but worry about becoming too affected.",
+    "text": "How would you manage your own emotional response?",
+    "options": [
+      "Allow myself to feel moved while staying grounded enough to support them",
+      "Focus on staying calm and composed so I can be helpful",
+      "Redirect my attention to what they need rather than what I am feeling",
+      "Take a moment to steady myself before responding"
+    ],
+    "scoring_weights": [
+      2,
+      1,
+      2,
+      1
+    ],
+    "scoring_rationale": "Allowing emotion + grounding and attention-shifting to their needs are adaptive distress tolerance strategies (2 pts). Composure and steadying are moderate suppression approaches (1 pt each)."
+  },
+  {
+    "id": "audio_vid03_tendency_understanding",
+    "type": "video",
+    "video_id": "audio_vid03",
+    "video_url": "generated_videos_audio/Two_colleagues_in_a_quiet_office_area__One_is_speaking_with_a_vulnerable_expression_and_hesitant_ges-2.mp4",
+    "facet": "understanding",
+    "item_format": "tendency",
+    "difficulty": "moderate",
+    "theme": "colleague_support",
+    "sjt_prompt": "You are observing two colleagues having a private conversation in a quiet area of the office. One colleague is sharing something personal, while the other is listening. Watch their interaction carefully.",
+    "text": "What would be your first impression of why this disclosure is happening?",
+    "options": [
+      "The speaker trusts the listener and feels safe sharing with them",
+      "The speaker needs to vent and the listener happened to be available",
+      "The listener is good at their job and people often confide in them",
+      "Something difficult happened and the speaker needs support"
+    ],
+    "scoring_weights": [
+      2,
+      0,
+      1,
+      2
+    ],
+    "scoring_rationale": "Understanding trust/safety or emotional need reflects sophisticated attribution (2 pts). Skill recognition is moderately insightful (1 pt). Availability explanation misses relational selectivity (0 pts)."
+  },
+  {
+    "id": "audio_vid03_tendency_understanding_b",
+    "type": "video",
+    "video_id": "audio_vid03",
+    "video_url": "generated_videos_audio/Two_colleagues_in_a_quiet_office_area__One_is_speaking_with_a_vulnerable_expression_and_hesitant_ges-2.mp4",
+    "facet": "understanding",
+    "item_format": "tendency",
+    "difficulty": "moderate",
+    "theme": "colleague_support",
+    "sjt_prompt": "You are observing two colleagues having a private conversation in a quiet area of the office. One colleague is sharing something personal, while the other is listening. Watch their interaction carefully.",
+    "text": "What would you assume about why the speaker chose this person to confide in?",
+    "options": [
+      "The listener has shown themselves to be trustworthy and empathetic over time",
+      "The speaker needed to talk and this person was available",
+      "The listener has been through similar situations and can relate",
+      "They work closely together so it is natural to share"
+    ],
+    "scoring_weights": [
+      2,
+      0,
+      2,
+      1
+    ],
+    "scoring_rationale": "Trust/empathy history and shared experience show sophisticated understanding of disclosure patterns (2 pts). Proximity is partially accurate (1 pt). Availability misses relational selectivity (0 pts)."
+  },
+  {
+    "id": "audio_vid03_recognition_01",
+    "type": "video",
+    "video_id": "audio_vid03",
+    "video_url": "generated_videos_audio/Two_colleagues_in_a_quiet_office_area__One_is_speaking_with_a_vulnerable_expression_and_hesitant_ges-2.mp4",
+    "facet": "recognition",
+    "difficulty": "easy",
+    "theme": "colleague_support",
+    "sjt_prompt": "You are observing two colleagues having a private conversation in a quiet area of the office. One colleague is sharing something personal, while the other is listening. Watch their interaction carefully.",
+    "text": "What emotion is the listener primarily displaying?",
+    "options": [
+      "Impatience to get back to work",
+      "Judgment and disapproval of what's being shared",
+      "Empathy and genuine care for the colleague",
+      "Awkwardness and discomfort with the disclosure"
+    ],
+    "correctAnswer": 2,
+    "item_format": "ability"
+  },
+  {
+    "id": "audio_vid03_recognition_02",
+    "type": "video",
+    "video_id": "audio_vid03",
+    "video_url": "generated_videos_audio/Two_colleagues_in_a_quiet_office_area__One_is_speaking_with_a_vulnerable_expression_and_hesitant_ges-2.mp4",
+    "facet": "recognition",
+    "difficulty": "moderate",
+    "theme": "colleague_support",
+    "sjt_prompt": "You are observing two colleagues having a private conversation in a quiet area of the office. One colleague is sharing something personal, while the other is listening. Watch their interaction carefully.",
+    "text": "What does the speaker's body language (downcast gaze, hesitant gestures) indicate?",
+    "options": [
+      "They are feeling vulnerable and uncertain about disclosing",
+      "They are trying to manipulate the listener emotionally",
+      "They are being deceptive about what they're sharing",
+      "They are not interested in the listener's response"
+    ],
+    "correctAnswer": 0,
+    "item_format": "ability"
+  },
+  {
+    "id": "audio_vid03_recognition_03",
+    "type": "video",
+    "video_id": "audio_vid03",
+    "video_url": "generated_videos_audio/Two_colleagues_in_a_quiet_office_area__One_is_speaking_with_a_vulnerable_expression_and_hesitant_ges-2.mp4",
+    "facet": "recognition",
+    "difficulty": "hard",
+    "theme": "colleague_support",
+    "sjt_prompt": "You are observing two colleagues having a private conversation in a quiet area of the office. One colleague is sharing something personal, while the other is listening. Watch their interaction carefully.",
+    "text": "What subtle cue indicates the listener is fully present and engaged?",
+    "options": [
+      "They frequently look around to ensure privacy",
+      "They cross their arms to show they're taking the situation seriously",
+      "They nod slowly and lean forward with gentle, consistent eye contact",
+      "They maintain constant, unblinking eye contact throughout"
+    ],
+    "correctAnswer": 2,
+    "item_format": "ability"
+  },
+  {
+    "id": "audio_vid03_understanding_01",
+    "type": "video",
+    "video_id": "audio_vid03",
+    "video_url": "generated_videos_audio/Two_colleagues_in_a_quiet_office_area__One_is_speaking_with_a_vulnerable_expression_and_hesitant_ges-2.mp4",
+    "facet": "understanding",
+    "difficulty": "moderate",
+    "theme": "colleague_support",
+    "sjt_prompt": "You are observing two colleagues having a private conversation in a quiet area of the office. One colleague is sharing something personal, while the other is listening. Watch their interaction carefully.",
+    "text": "Why does empathetic listening create psychological safety for the speaker?",
+    "options": [
+      "It forces the speaker to continue sharing even if uncomfortable",
+      "It has no real impact; people either feel safe or they don't",
+      "It signals that the listener won't judge or dismiss their concerns",
+      "It makes the speaker feel obligated to return the favor"
+    ],
+    "correctAnswer": 2,
+    "item_format": "ability"
+  },
+  {
+    "id": "audio_vid03_understanding_02",
+    "type": "video",
+    "video_id": "audio_vid03",
+    "video_url": "generated_videos_audio/Two_colleagues_in_a_quiet_office_area__One_is_speaking_with_a_vulnerable_expression_and_hesitant_ges-2.mp4",
+    "facet": "understanding",
+    "difficulty": "moderate",
+    "theme": "colleague_support",
+    "sjt_prompt": "You are observing two colleagues having a private conversation in a quiet area of the office. One colleague is sharing something personal, while the other is listening. Watch their interaction carefully.",
+    "text": "What does the listener's forward lean and open body language communicate?",
+    "options": [
+      "They disagree with what the speaker is saying",
+      "They are engaged, interested, and receptive to what's being shared",
+      "They are trying to physically intimidate the speaker",
+      "They are uncomfortable and want to leave quickly"
+    ],
+    "correctAnswer": 1,
+    "item_format": "ability"
+  },
+  {
+    "id": "audio_vid03_understanding_03",
+    "type": "video",
+    "video_id": "audio_vid03",
+    "video_url": "generated_videos_audio/Two_colleagues_in_a_quiet_office_area__One_is_speaking_with_a_vulnerable_expression_and_hesitant_ges-2.mp4",
+    "facet": "understanding",
+    "difficulty": "hard",
+    "theme": "colleague_support",
+    "sjt_prompt": "You are observing two colleagues having a private conversation in a quiet area of the office. One colleague is sharing something personal, while the other is listening. Watch their interaction carefully.",
+    "text": "What principle of emotional disclosure explains why the speaker is sharing this with this particular colleague?",
+    "options": [
+      "People randomly disclose to whoever is available when stressed",
+      "The listener's empathetic responses have established them as emotionally safe",
+      "Professional obligation requires sharing personal issues with coworkers",
+      "The speaker has no other options for support"
+    ],
+    "correctAnswer": 1,
+    "item_format": "ability"
+  },
+  {
+    "id": "audio_vid03_regulation_self_01",
+    "type": "video",
+    "video_id": "audio_vid03",
+    "video_url": "generated_videos_audio/Two_colleagues_in_a_quiet_office_area__One_is_speaking_with_a_vulnerable_expression_and_hesitant_ges-2.mp4",
+    "facet": "regulation_self",
+    "difficulty": "moderate",
+    "theme": "colleague_support",
+    "sjt_prompt": "You are the listener in this situation. The colleague is sharing something emotionally difficult, and you notice yourself feeling some discomfort with the intensity of the disclosure.",
+    "text": "What is the most emotionally intelligent way to manage your discomfort?",
+    "options": [
+      "Interrupt to offer immediate solutions so the conversation can end",
+      "Change the subject to something lighter to ease your discomfort",
+      "Leave the situation by making an excuse about urgent work",
+      "Acknowledge your discomfort internally while staying present and focused on the speaker"
+    ],
+    "correctAnswer": 3,
+    "item_format": "ability"
+  },
+  {
+    "id": "audio_vid03_regulation_self_02",
+    "type": "video",
+    "video_id": "audio_vid03",
+    "video_url": "generated_videos_audio/Two_colleagues_in_a_quiet_office_area__One_is_speaking_with_a_vulnerable_expression_and_hesitant_ges-2.mp4",
+    "facet": "regulation_self",
+    "difficulty": "easy",
+    "theme": "colleague_support",
+    "sjt_prompt": "You are the listener in this situation. The colleague is sharing something emotionally difficult, and you notice yourself feeling some discomfort with the intensity of the disclosure.",
+    "text": "What does the listener's calm, steady presence demonstrate about their self-regulation?",
+    "options": [
+      "They feel no emotions themselves and can't relate",
+      "They are emotionally detached and don't care",
+      "They are faking interest while thinking about other things",
+      "They can manage their own emotional reactions to stay present for others"
+    ],
+    "correctAnswer": 3,
+    "item_format": "ability"
+  },
+  {
+    "id": "audio_vid03_regulation_self_03",
+    "type": "video",
+    "video_id": "audio_vid03",
+    "video_url": "generated_videos_audio/Two_colleagues_in_a_quiet_office_area__One_is_speaking_with_a_vulnerable_expression_and_hesitant_ges-2.mp4",
+    "facet": "regulation_self",
+    "difficulty": "hard",
+    "theme": "colleague_support",
+    "sjt_prompt": "You are the listener in this situation. The colleague is sharing something emotionally difficult, and you notice yourself feeling some discomfort with the intensity of the disclosure.",
+    "text": "What sophisticated self-regulation skill enables the listener to maintain presence during emotional disclosure?",
+    "options": [
+      "Emotional numbing - disconnecting from all feelings",
+      "Distress tolerance - ability to experience discomfort without needing to escape or fix it",
+      "Emotional contagion - fully taking on the other person's emotions",
+      "Cognitive avoidance - thinking about unrelated topics during the conversation"
+    ],
+    "correctAnswer": 1,
+    "item_format": "ability"
+  },
+  {
+    "id": "audio_vid03_management_others_01",
+    "type": "video",
+    "video_id": "audio_vid03",
+    "video_url": "generated_videos_audio/Two_colleagues_in_a_quiet_office_area__One_is_speaking_with_a_vulnerable_expression_and_hesitant_ges-2.mp4",
+    "facet": "management_others",
+    "difficulty": "easy",
+    "theme": "colleague_support",
+    "sjt_prompt": "You are the listener in this situation. Your colleague is sharing a difficult personal situation and seems to need emotional support.",
+    "text": "What is the most supportive response in this moment?",
+    "options": [
+      "Listen attentively and validate their feelings before problem-solving",
+      "Minimize their concerns by saying 'it could be worse'",
+      "Immediately offer advice and solutions to fix the problem",
+      "Share a similar story about yourself to show you understand"
+    ],
+    "correctAnswer": 0,
+    "item_format": "ability"
+  },
+  {
+    "id": "audio_vid03_management_others_02",
+    "type": "video",
+    "video_id": "audio_vid03",
+    "video_url": "generated_videos_audio/Two_colleagues_in_a_quiet_office_area__One_is_speaking_with_a_vulnerable_expression_and_hesitant_ges-2.mp4",
+    "facet": "management_others",
+    "difficulty": "moderate",
+    "theme": "colleague_support",
+    "sjt_prompt": "You are the listener in this situation. Your colleague is sharing a difficult personal situation and seems to need emotional support.",
+    "text": "How does the listener's slow nodding function emotionally for the speaker?",
+    "options": [
+      "It provides nonverbal validation and encouragement to continue",
+      "It indicates impatience for the speaker to finish",
+      "It signals agreement with everything being said",
+      "It has no particular emotional function"
+    ],
+    "correctAnswer": 0,
+    "item_format": "ability"
+  },
+  {
+    "id": "audio_vid03_management_others_03",
+    "type": "video",
+    "video_id": "audio_vid03",
+    "video_url": "generated_videos_audio/Two_colleagues_in_a_quiet_office_area__One_is_speaking_with_a_vulnerable_expression_and_hesitant_ges-2.mp4",
+    "facet": "management_others",
+    "difficulty": "hard",
+    "theme": "colleague_support",
+    "sjt_prompt": "You are the listener in this situation. Your colleague is sharing a difficult personal situation and seems to need emotional support.",
+    "text": "What advanced emotional support technique is the listener demonstrating?",
+    "options": [
+      "Validation - acknowledging and normalizing their emotional experience without judgment",
+      "Deflection - redirecting attention away from difficult emotions",
+      "Coaching - telling them what they should think and feel",
+      "Fixing - immediately solving the problem for them"
+    ],
+    "correctAnswer": 0,
+    "item_format": "ability"
+  }
+]

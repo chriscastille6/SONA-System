@@ -5,11 +5,17 @@
 {% block content %}
 <div class="row">
     <div class="col-md-12">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2>{{ study.title }} - Status Dashboard</h2>
-            <div>
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+            <h2 class="mb-0">{{ study.title }} - Status Dashboard</h2>
+            <div class="d-flex gap-2">
+                {% if can_post_update %}
                 <a href="{% url 'studies:run_protocol' study.slug %}" class="btn btn-primary">Run Protocol</a>
                 <a href="{% url 'studies:researcher_dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
+                {% elif viewing_as_irb %}
+                <a href="{% url 'studies:irb_member_dashboard' %}" class="btn btn-secondary">Back to IRB Dashboard</a>
+                {% else %}
+                <a href="{% url 'studies:researcher_dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
+                {% endif %}
             </div>
         </div>
         
@@ -201,6 +207,91 @@
                 </div>
                 {% else %}
                 <p class="text-muted">No responses yet.</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- IRB Updates -->
+        <div class="card mt-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">IRB Updates & Notifications</h5>
+                {% if can_post_update %}
+                <span class="badge bg-info">Shared with IRB reviewers</span>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                {% if can_post_update %}
+                <form method="post" enctype="multipart/form-data" class="mb-4">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="update-message" class="form-label">Share an update</label>
+                        <textarea name="message" id="update-message" class="form-control" rows="4"
+                                  placeholder="Summarize progress, approvals, or next steps for the IRB team.">{{ update_draft_message }}</textarea>
+                    </div>
+                    <div class="row g-3 align-items-end">
+                        <div class="col-md-4">
+                            <label for="update-visibility" class="form-label">Audience</label>
+                            <select name="visibility" id="update-visibility" class="form-select">
+                                {% for value, label in update_visibility_choices %}
+                                <option value="{{ value }}" {% if value == update_draft_visibility %}selected{% endif %}>{{ label }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-md-5">
+                            <label for="update-attachment" class="form-label">Attachment (optional)</label>
+                            <input type="file" name="attachment" id="update-attachment" class="form-control">
+                            <div class="form-text">Share revised protocols, consent forms, or supporting documents.</div>
+                        </div>
+                        <div class="col-md-3 d-grid">
+                            <button type="submit" class="btn btn-primary">Post Update</button>
+                        </div>
+                    </div>
+                    {% if update_form_error %}
+                    <div class="alert alert-danger mt-3 mb-0">
+                        {{ update_form_error }}
+                    </div>
+                    {% endif %}
+                </form>
+                {% elif study_updates %}
+                <div class="alert alert-light">
+                    These updates were shared by the research team. You will receive email alerts when new updates are posted.
+                </div>
+                {% endif %}
+                
+                <h6 class="text-uppercase text-muted">Recent Updates</h6>
+                {% if study_updates %}
+                <ul class="list-unstyled mb-0">
+                    {% for update in study_updates %}
+                    <li class="mb-3 border-bottom pb-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                {% if update.author %}
+                                <strong>{{ update.author.get_full_name }}</strong>
+                                {% else %}
+                                <strong>Research Team</strong>
+                                {% endif %}
+                                <span class="badge bg-secondary ms-2">{{ update.get_visibility_display }}</span>
+                            </div>
+                            <span class="text-muted small">{{ update.created_at|date:"M d, Y g:i A" }}</span>
+                        </div>
+                        {% if update.message %}
+                        <p class="mb-2">{{ update.message|linebreaksbr }}</p>
+                        {% endif %}
+                        {% if update.attachment %}
+                        <div class="small">
+                            📎 <a href="{{ update.attachment.url }}" target="_blank">
+                                {{ update.attachment_name|default:update.attachment.name }}
+                            </a>
+                            {% if update.attachment_size %}
+                                ({{ update.attachment_size|filesizeformat }})
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p class="text-muted mb-0">No updates have been posted yet.</p>
                 {% endif %}
             </div>
         </div>

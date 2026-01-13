@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{% block title %}AI IRB Review - {{ study.title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'studies:researcher_dashboard' %}">My Studies</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'studies:detail' study.id %}">{{ study.title }}</a></li>
+                <li class="breadcrumb-item active">AI IRB Review</li>
+            </ol>
+        </nav>
+        
+        <h2>AI-Assisted IRB Review</h2>
+        <p class="lead">{{ study.title }}</p>
+        
+        <div class="alert alert-info">
+            <h5>About AI-Assisted IRB Review</h5>
+            <p>This automated review uses multiple AI agents to analyze your study materials for ethical considerations:</p>
+            <ul>
+                <li><strong>Ethics Agent</strong>: Belmont Report principles (respect, beneficence, justice)</li>
+                <li><strong>Privacy Agent</strong>: Data protection and confidentiality</li>
+                <li><strong>Vulnerability Agent</strong>: Protection of vulnerable populations</li>
+                <li><strong>Data Security Agent</strong>: Security measures and data handling</li>
+                <li><strong>Consent Agent</strong>: Informed consent adequacy</li>
+            </ul>
+            <p class="mb-0">
+                <strong>Note:</strong> This is a supplementary tool to help identify potential issues before formal IRB submission. 
+                It does not replace human IRB review and should be used to improve your protocol.
+            </p>
+        </div>
+        
+        <div class="card">
+            <div class="card-body">
+                <h4>Submit Materials for Review</h4>
+                
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    {% if study.osf_enabled and study.osf_link %}
+                    <div class="mb-4">
+                        <h5>Open Science Framework</h5>
+                        <p>This study has an OSF repository linked.</p>
+                        <div class="input-group">
+                            <input type="text" name="osf_url" class="form-control" 
+                                   value="{{ study.osf_link }}" 
+                                   placeholder="https://osf.io/abc123/">
+                            <div class="input-group-text">
+                                <input class="form-check-input" type="checkbox" id="use_osf" checked>
+                                <label class="form-check-label ms-2" for="use_osf">Use OSF files</label>
+                            </div>
+                        </div>
+                        <small class="text-muted">The AI will fetch protocol documents from this OSF repository.</small>
+                    </div>
+                    {% else %}
+                    <div class="mb-4">
+                        <label for="osf_url" class="form-label">OSF Repository URL (Optional)</label>
+                        <input type="text" name="osf_url" id="osf_url" class="form-control" 
+                               placeholder="https://osf.io/abc123/">
+                        <small class="text-muted">If your materials are on OSF, provide the URL to import them automatically.</small>
+                    </div>
+                    {% endif %}
+                    
+                    <hr>
+                    
+                    <h5>Upload Documents</h5>
+                    <p class="text-muted">Upload your protocol documents for AI analysis. Supported formats: PDF, Word (.docx), HTML, TXT</p>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Study Protocol</label>
+                        <input type="file" name="protocol_file" class="form-control" accept=".pdf,.doc,.docx,.txt,.html,.htm">
+                        <input type="hidden" name="protocol_file_type" value="protocol">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Consent Form</label>
+                        <input type="file" name="consent_file" class="form-control" accept=".pdf,.doc,.docx,.txt,.html,.htm">
+                        <input type="hidden" name="consent_file_type" value="consent">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Survey/Questionnaire</label>
+                        <input type="file" name="survey_file" class="form-control" accept=".pdf,.doc,.docx,.txt,.html,.htm">
+                        <input type="hidden" name="survey_file_type" value="survey">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Recruitment Materials</label>
+                        <input type="file" name="recruitment_file" class="form-control" accept=".pdf,.doc,.docx,.txt,.html,.htm">
+                        <input type="hidden" name="recruitment_file_type" value="recruitment">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Other Documents</label>
+                        <input type="file" name="other_file" class="form-control" accept=".pdf,.doc,.docx,.txt,.html,.htm">
+                        <input type="hidden" name="other_file_type" value="other">
+                    </div>
+                    
+                    <div class="alert alert-warning">
+                        <strong>Processing Time:</strong> AI review typically takes 2-5 minutes depending on the amount of material. 
+                        You will receive an email notification when the review is complete.
+                    </div>
+                    
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-robot"></i> Start AI Review
+                        </button>
+                        <a href="{% url 'studies:researcher_dashboard' %}" class="btn btn-outline-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        {% if study.irb_reviews.exists %}
+        <div class="mt-4">
+            <a href="{% url 'studies:irb_review_history' study.id %}" class="btn btn-outline-info">
+                View Previous Reviews
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+
+
+
+
+
+

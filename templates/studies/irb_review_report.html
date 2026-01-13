@@ -1,0 +1,286 @@
+{% extends 'base.html' %}
+
+{% block title %}IRB Review Report v{{ review.version }} - {{ study.title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'studies:researcher_dashboard' %}">My Studies</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'studies:detail' study.id %}">{{ study.title }}</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'studies:irb_review_history' study.id %}">IRB Reviews</a></li>
+                <li class="breadcrumb-item active">Version {{ review.version }}</li>
+            </ol>
+        </nav>
+        
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2>AI IRB Review Report</h2>
+                <p class="lead mb-0">{{ study.title }}</p>
+                <small class="text-muted">Version {{ review.version }} | {{ review.initiated_at|date:"M d, Y g:i A" }}</small>
+            </div>
+            <div>
+                {% if review.status == 'completed' %}
+                    <span class="badge bg-success">Completed</span>
+                {% elif review.status == 'in_progress' %}
+                    <span class="badge bg-warning">In Progress...</span>
+                {% elif review.status == 'failed' %}
+                    <span class="badge bg-danger">Failed</span>
+                {% else %}
+                    <span class="badge bg-secondary">{{ review.get_status_display }}</span>
+                {% endif %}
+            </div>
+        </div>
+        
+        {% if review.status == 'in_progress' %}
+        <div class="alert alert-info">
+            <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+            AI review is currently in progress. This page will update when complete. (Refresh to check status)
+        </div>
+        {% endif %}
+        
+        {% if review.status == 'completed' %}
+        
+        <!-- Overall Risk Assessment -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h4>Overall Risk Assessment</h4>
+                <div class="d-flex align-items-center gap-3">
+                    <div>
+                        {% if review.overall_risk_level == 'minimal' %}
+                            <span class="badge bg-success" style="font-size: 1.5rem; padding: 1rem;">✅ Minimal Risk</span>
+                        {% elif review.overall_risk_level == 'low' %}
+                            <span class="badge bg-info" style="font-size: 1.5rem; padding: 1rem;">🟢 Low Risk</span>
+                        {% elif review.overall_risk_level == 'moderate' %}
+                            <span class="badge bg-warning" style="font-size: 1.5rem; padding: 1rem;">🟡 Moderate Risk</span>
+                        {% elif review.overall_risk_level == 'high' %}
+                            <span class="badge bg-danger" style="font-size: 1.5rem; padding: 1rem;">🔴 High Risk</span>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <div><strong>Critical Issues:</strong> <span class="text-danger">{{ review.critical_issues|length }}</span></div>
+                        <div><strong>Moderate Issues:</strong> <span class="text-warning">{{ review.moderate_issues|length }}</span></div>
+                        <div><strong>Minor Issues:</strong> <span class="text-muted">{{ review.minor_issues|length }}</span></div>
+                    </div>
+                </div>
+                
+                {% if review.processing_time_seconds %}
+                <p class="text-muted mt-3 mb-0">
+                    <small>Analysis completed in {{ review.processing_time_seconds }} seconds using {{ review.ai_model_versions|length }} AI agents</small>
+                </p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Issues by Severity -->
+        {% if all_issues %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4 class="mb-0">Identified Issues ({{ all_issues|length }} total)</h4>
+            </div>
+            <div class="card-body">
+                
+                <!-- Critical Issues -->
+                {% if review.critical_issues %}
+                <h5 class="text-danger">🔴 Critical Issues ({{ review.critical_issues|length }})</h5>
+                <p class="text-muted small">These issues require immediate attention and may prevent IRB approval.</p>
+                {% for issue in review.critical_issues %}
+                <div class="card border-danger mb-3">
+                    <div class="card-body">
+                        <h6 class="card-title">
+                            <span class="badge bg-danger">Critical</span>
+                            <span class="badge bg-secondary">{{ issue.category }}</span>
+                            <span class="text-muted small">by {{ issue.agent }}</span>
+                        </h6>
+                        <p class="card-text"><strong>{{ issue.description }}</strong></p>
+                        <div class="alert alert-light mb-2">
+                            <strong>Recommendation:</strong> {{ issue.recommendation }}
+                        </div>
+                        <p class="text-muted small mb-0">
+                            <strong>Affected Section:</strong> {{ issue.affected_section }}
+                        </p>
+                    </div>
+                </div>
+                {% endfor %}
+                {% endif %}
+                
+                <!-- Moderate Issues -->
+                {% if review.moderate_issues %}
+                <h5 class="text-warning mt-4">🟡 Moderate Issues ({{ review.moderate_issues|length }})</h5>
+                <p class="text-muted small">These issues should be addressed to strengthen your protocol.</p>
+                {% for issue in review.moderate_issues %}
+                <div class="card border-warning mb-3">
+                    <div class="card-body">
+                        <h6 class="card-title">
+                            <span class="badge bg-warning">Moderate</span>
+                            <span class="badge bg-secondary">{{ issue.category }}</span>
+                            <span class="text-muted small">by {{ issue.agent }}</span>
+                        </h6>
+                        <p class="card-text">{{ issue.description }}</p>
+                        <div class="alert alert-light mb-2">
+                            <strong>Recommendation:</strong> {{ issue.recommendation }}
+                        </div>
+                        <p class="text-muted small mb-0">
+                            <strong>Affected Section:</strong> {{ issue.affected_section }}
+                        </p>
+                    </div>
+                </div>
+                {% endfor %}
+                {% endif %}
+                
+                <!-- Minor Issues -->
+                {% if review.minor_issues %}
+                <h5 class="text-muted mt-4">🟢 Minor Issues & Suggestions ({{ review.minor_issues|length }})</h5>
+                <p class="text-muted small">These are suggestions for improvement and best practices.</p>
+                <div class="accordion" id="minorIssuesAccordion">
+                    {% for issue in review.minor_issues %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" 
+                                    data-bs-toggle="collapse" data-bs-target="#minor{{ forloop.counter }}">
+                                <span class="badge bg-secondary me-2">{{ issue.category }}</span>
+                                {{ issue.description|truncatewords:15 }}
+                            </button>
+                        </h2>
+                        <div id="minor{{ forloop.counter }}" class="accordion-collapse collapse" 
+                             data-bs-parent="#minorIssuesAccordion">
+                            <div class="accordion-body">
+                                <p>{{ issue.description }}</p>
+                                <div class="alert alert-light">
+                                    <strong>Recommendation:</strong> {{ issue.recommendation }}
+                                </div>
+                                <p class="text-muted small mb-0">
+                                    <strong>Affected Section:</strong> {{ issue.affected_section }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                
+            </div>
+        </div>
+        {% else %}
+        <div class="alert alert-success">
+            <h5>✅ No Issues Identified</h5>
+            <p class="mb-0">The AI review did not identify any ethical concerns with your study materials.</p>
+        </div>
+        {% endif %}
+        
+        <!-- Researcher Response -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4 class="mb-0">Researcher Response</h4>
+            </div>
+            <div class="card-body">
+                {% if can_edit_review %}
+                <p>Document how you've addressed the identified issues or provide additional context.</p>
+                
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    {% if all_issues %}
+                    <div class="mb-3">
+                        <label class="form-label">Issues Addressed</label>
+                        {% for issue in all_issues %}
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" 
+                                   name="issue_{{ issue.issue_id }}" 
+                                   id="issue_{{ issue.issue_id }}"
+                                   {% if issue.issue_id in review.issues_addressed %}checked{% endif %}>
+                            <label class="form-check-label" for="issue_{{ issue.issue_id }}">
+                                <span class="badge bg-{{ issue.severity }}">{{ issue.severity }}</span>
+                                {{ issue.description|truncatewords:20 }}
+                            </label>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                    
+                    <div class="mb-3">
+                        <label for="notes" class="form-label">Response Notes</label>
+                        <textarea name="notes" id="notes" class="form-control" rows="6" 
+                                  placeholder="Describe how you've addressed the issues or provide additional context...">{{ review.researcher_notes }}</textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">Save Response</button>
+                </form>
+                {% else %}
+                <p class="text-muted">Only the lead researcher can edit this section. Their latest notes are shown below for auditing.</p>
+                <div class="mb-3">
+                    <label class="form-label">Notes Submitted</label>
+                    <div class="form-control-plaintext border rounded bg-light p-3">
+                        {% if review.researcher_notes %}
+                            {{ review.researcher_notes|linebreaks }}
+                        {% else %}
+                            <span class="text-muted">No response has been provided yet.</span>
+                        {% endif %}
+                    </div>
+                </div>
+                {% if all_issues %}
+                <div>
+                    <label class="form-label">Issues Marked as Addressed</label>
+                    <ul class="list-unstyled mb-0">
+                        {% for issue in all_issues %}
+                        <li>
+                            {% if issue.issue_id in review.issues_addressed %}
+                                <span class="badge bg-success me-2">Addressed</span>
+                            {% else %}
+                                <span class="badge bg-secondary me-2">Pending</span>
+                            {% endif %}
+                            {{ issue.description|truncatewords:20 }}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Actions -->
+        <div class="card">
+            <div class="card-body">
+                <h5>Next Steps</h5>
+                <div class="d-flex gap-2 flex-wrap">
+                    {% if can_edit_review and (review.critical_issues or review.moderate_issues) %}
+                    <a href="{% url 'studies:irb_review_create' study.id %}" class="btn btn-warning">
+                        <i class="bi bi-arrow-repeat"></i> Run New Review (After Fixes)
+                    </a>
+                    {% endif %}
+                    
+                    <a href="{% url 'studies:irb_review_history' study.id %}" class="btn btn-outline-primary">
+                        <i class="bi bi-clock-history"></i> View All Reviews
+                    </a>
+                    
+                    <a href="{% url 'studies:status' study.slug %}" class="btn btn-outline-secondary">
+                        View Study Status
+                    </a>
+                    
+                    {% if can_edit_review %}
+                    <a href="{% url 'studies:researcher_dashboard' %}" class="btn btn-outline-secondary">
+                        Back to Researcher Dashboard
+                    </a>
+                    {% else %}
+                    <a href="{% url 'studies:irb_member_dashboard' %}" class="btn btn-outline-secondary">
+                        Back to IRB Dashboard
+                    </a>
+                    {% endif %}
+                    
+                    <button onclick="window.print()" class="btn btn-outline-info">
+                        <i class="bi bi-printer"></i> Print Report
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+
+
+

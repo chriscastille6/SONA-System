@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+
+{% block title %}IRB Member Dashboard{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>Your Assigned Protocols</h2>
+            <a href="{% url 'studies:committee_dashboard' %}" class="btn btn-outline-secondary">
+                Committee Overview
+            </a>
+        </div>
+        
+        {% if assigned_items %}
+            {% for item in assigned_items %}
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-start">
+                    <div>
+                        <h5 class="mb-1">{{ item.study.title }}</h5>
+                        <div class="small text-muted">
+                            Lead Researcher: {{ item.study.researcher.get_full_name }} ({{ item.study.researcher.email }})
+                        </div>
+                        <div class="small text-muted">
+                            IRB Protocol #: {{ item.study.irb_number|default:"Pending" }}
+                            &middot;
+                            Status: <strong>{{ item.study.get_irb_status_display }}</strong>
+                        </div>
+                    </div>
+                    <div class="text-end">
+                        <div class="mb-2">
+                            {% if item.assignment.receive_email_updates %}
+                                <span class="badge bg-success">Email updates enabled</span>
+                            {% else %}
+                                <span class="badge bg-secondary">Email updates disabled</span>
+                            {% endif %}
+                        </div>
+                        <form method="post" action="{% url 'studies:irb_toggle_email' item.assignment.id %}" class="d-inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                            {% if item.assignment.receive_email_updates %}
+                            <button type="submit" class="btn btn-sm btn-outline-secondary">
+                                Pause email alerts
+                            </button>
+                            {% else %}
+                            <button type="submit" class="btn btn-sm btn-outline-primary">
+                                Enable email alerts
+                            </button>
+                            {% endif %}
+                        </form>
+                        <div class="small text-muted mt-2">
+                            Assigned {{ item.assignment.created_at|date:"M d, Y" }}
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h6 class="text-uppercase text-muted">Latest AI Review</h6>
+                            {% if item.latest_review %}
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                    <span class="badge bg-light text-dark">v{{ item.latest_review.version }}</span>
+                                    <span class="badge bg-info text-dark">{{ item.latest_review.get_status_display }}</span>
+                                    {% if item.latest_review.overall_risk_level %}
+                                        <span class="badge bg-primary">
+                                            {{ item.latest_review.get_overall_risk_level_display }}
+                                        </span>
+                                    {% endif %}
+                                </div>
+                                <div class="small text-muted mb-2">
+                                    Initiated {{ item.latest_review.initiated_at|date:"M d, Y g:i A" }}
+                                    {% if item.latest_review.completed_at %}
+                                        &middot; Completed {{ item.latest_review.completed_at|date:"M d, Y g:i A" }}
+                                    {% endif %}
+                                </div>
+                                <div class="small">
+                                    <span class="text-danger">{{ item.latest_review.critical_issues|length }} critical</span>,
+                                    <span class="text-warning">{{ item.latest_review.moderate_issues|length }} moderate</span>,
+                                    <span class="text-muted">{{ item.latest_review.minor_issues|length }} minor</span>
+                                </div>
+                            {% else %}
+                                <div class="alert alert-light mb-0">
+                                    No AI review has been completed yet. Watch for updates from the researcher.
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-4">
+                            <h6 class="text-uppercase text-muted">Quick Actions</h6>
+                            <div class="d-grid gap-2">
+                                <a href="{% url 'studies:status' item.study.slug %}" class="btn btn-outline-primary btn-sm">
+                                    View Live Study Status
+                                </a>
+                                <a href="{% url 'studies:irb_review_history' item.study.id %}" class="btn btn-outline-secondary btn-sm">
+                                    Review History
+                                </a>
+                                {% if item.latest_review %}
+                                <a href="{% url 'studies:irb_review_detail' item.study.id item.latest_review.version %}" class="btn btn-outline-secondary btn-sm">
+                                    Open Latest Report
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="text-uppercase text-muted">Recent AI Reviews</h6>
+                            {% if item.recent_reviews %}
+                                <ul class="list-unstyled mb-0">
+                                    {% for review in item.recent_reviews %}
+                                    <li class="mb-2">
+                                        <strong>v{{ review.version }}</strong> &middot;
+                                        {{ review.get_status_display }} &middot;
+                                        {{ review.initiated_at|date:"M d, Y" }}
+                                        {% if review.overall_risk_level %}
+                                            &middot; {{ review.get_overall_risk_level_display }}
+                                        {% endif %}
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p class="text-muted mb-0">No AI reviews recorded yet.</p>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-uppercase text-muted">Researcher Updates</h6>
+                            {% if item.updates %}
+                                <ul class="list-unstyled mb-0">
+                                    {% for update in item.updates %}
+                                    <li class="mb-3">
+                                        <div class="d-flex justify-content-between">
+                                            <strong>
+                                                {% if update.author %}
+                                                    {{ update.author.get_full_name }}
+                                                {% else %}
+                                                    Research Team
+                                                {% endif %}
+                                            </strong>
+                                            <span class="text-muted small">{{ update.created_at|date:"M d, Y g:i A" }}</span>
+                                        </div>
+                                        {% if update.message %}
+                                        <p class="mb-1">{{ update.message|linebreaksbr }}</p>
+                                        {% endif %}
+                                        {% if update.attachment %}
+                                        <div class="small">
+                                            📎 <a href="{{ update.attachment.url }}" target="_blank">
+                                                {{ update.attachment_name|default:update.attachment.name }}
+                                            </a>
+                                            {% if update.attachment_size %}
+                                                ({{ update.attachment_size|filesizeformat }})
+                                            {% endif %}
+                                        </div>
+                                        {% endif %}
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <div class="alert alert-light mb-0">
+                                    No updates shared yet. You'll receive email alerts when new updates are posted.
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="alert alert-info">
+                You do not have any assigned protocols yet. Once a study is shared with you, it will appear here automatically.
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+

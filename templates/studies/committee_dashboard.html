@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+
+{% block title %}IRB Committee Dashboard{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>IRB Committee Dashboard</h2>
+            {% if show_admin_links %}
+            <a href="{% url 'admin:studies_irbreview_changelist' %}" class="btn btn-outline-secondary">
+                Admin Interface
+            </a>
+            {% endif %}
+        </div>
+        
+        <!-- Filter Bar -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <form method="get" class="row g-3">
+                    <div class="col-auto">
+                        <label class="form-label">Filter by IRB Status:</label>
+                    </div>
+                    <div class="col-auto">
+                        <select name="irb_status" class="form-select" onchange="this.form.submit()">
+                            <option value="">All Studies</option>
+                            {% for value, label in irb_status_choices %}
+                            <option value="{{ value }}" {% if selected_status == value %}selected{% endif %}>
+                                {{ label }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-outline-primary">Apply Filter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Studies with Reviews -->
+        <div class="row">
+            {% for item in studies_with_reviews %}
+            <div class="col-md-6 mb-4">
+                <div class="card {% if item.has_critical %}border-danger{% endif %}">
+                    <div class="card-header">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h5 class="mb-1">{{ item.study.title }}</h5>
+                                <small class="text-muted">{{ item.study.researcher.get_full_name }}</small>
+                            </div>
+                            <div class="text-end">
+                                <span class="badge bg-secondary">{{ item.study.get_irb_status_display }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        {% if item.latest_review %}
+                            <div class="mb-3">
+                                <strong>Latest AI Review (v{{ item.latest_review.version }}):</strong>
+                                <div class="mt-2">
+                                    {% if item.latest_review.status == 'completed' %}
+                                        <div class="d-flex align-items-center gap-2 mb-2">
+                                            {% if item.latest_review.overall_risk_level == 'minimal' %}
+                                                <span class="badge bg-success">✅ Minimal Risk</span>
+                                            {% elif item.latest_review.overall_risk_level == 'low' %}
+                                                <span class="badge bg-info">🟢 Low Risk</span>
+                                            {% elif item.latest_review.overall_risk_level == 'moderate' %}
+                                                <span class="badge bg-warning">🟡 Moderate Risk</span>
+                                            {% elif item.latest_review.overall_risk_level == 'high' %}
+                                                <span class="badge bg-danger">🔴 High Risk</span>
+                                            {% endif %}
+                                        </div>
+                                        
+                                        <div class="small">
+                                            <span class="text-danger">{{ item.latest_review.critical_issues|length }} critical</span>,
+                                            <span class="text-warning">{{ item.latest_review.moderate_issues|length }} moderate</span>,
+                                            <span class="text-muted">{{ item.latest_review.minor_issues|length }} minor</span>
+                                        </div>
+                                        
+                                        <div class="text-muted small mt-2">
+                                            {{ item.latest_review.initiated_at|date:"M d, Y g:i A" }}
+                                        </div>
+                                        
+                                        {% if item.latest_review.researcher_notes %}
+                                        <div class="alert alert-light mt-2 mb-0">
+                                            <strong>Researcher Response:</strong>
+                                            <p class="mb-0 small">{{ item.latest_review.researcher_notes|truncatewords:30 }}</p>
+                                        </div>
+                                        {% endif %}
+                                    {% else %}
+                                        <span class="badge bg-warning">{{ item.latest_review.get_status_display }}</span>
+                                        <div class="text-muted small">{{ item.latest_review.initiated_at|date:"M d, Y g:i A" }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                            <div class="d-flex gap-2 flex-wrap">
+                                {% if show_admin_links %}
+                                <a href="{% url 'admin:studies_irbreview_change' item.latest_review.id %}" 
+                                   class="btn btn-sm btn-primary">
+                                    View in Admin
+                                </a>
+                                <a href="{% url 'admin:studies_study_change' item.study.id %}" 
+                                   class="btn btn-sm btn-outline-secondary">
+                                    Edit Study
+                                </a>
+                                {% else %}
+                                <a href="{% url 'studies:irb_review_detail' item.study.id item.latest_review.version %}" 
+                                   class="btn btn-sm btn-outline-primary">
+                                    Open Report
+                                </a>
+                                {% endif %}
+                                <a href="{% url 'studies:status' item.study.slug %}" class="btn btn-sm btn-outline-secondary">
+                                    View Study Status
+                                </a>
+                            </div>
+                        {% else %}
+                            <div class="alert alert-light mb-0">
+                                <p class="mb-2">No AI review has been run for this study yet.</p>
+                                <small class="text-muted">Researchers can initiate AI reviews from their dashboard.</small>
+                            </div>
+                            <div class="d-flex gap-2 mt-3">
+                                <a href="{% url 'studies:status' item.study.slug %}" class="btn btn-sm btn-outline-secondary">
+                                    View Study Status
+                                </a>
+                                {% if show_admin_links %}
+                                <a href="{% url 'admin:studies_study_change' item.study.id %}" 
+                                   class="btn btn-sm btn-outline-secondary">
+                                    Edit Study
+                                </a>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% if item.assignment and not show_admin_links %}
+                <div class="card-footer text-muted small">
+                    Email updates: 
+                    {% if item.assignment.receive_email_updates %}
+                        Enabled
+                    {% else %}
+                        Disabled
+                    {% endif %}
+                    &middot; Assigned {{ item.assignment.created_at|date:"M d, Y" }}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        
+        {% if not studies_with_reviews %}
+        <div class="alert alert-info">
+            No studies found matching the selected filter.
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+
+
+

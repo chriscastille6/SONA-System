@@ -853,6 +853,153 @@ class ProtocolSubmission(models.Model):
         help_text="Approval notes and conditions"
     )
     
+    # ========== DETAILED PROTOCOL INFORMATION ==========
+    
+    # 1. Protocol Description
+    protocol_description = models.TextField(
+        blank=True,
+        help_text="Detailed description of the research project or proposal"
+    )
+    population_description = models.TextField(
+        blank=True,
+        help_text="Description of the population of human subjects"
+    )
+    research_procedures = models.TextField(
+        blank=True,
+        help_text="Detailed research procedures and data collection methods"
+    )
+    research_objectives = models.TextField(
+        blank=True,
+        help_text="Primary research objectives and goals"
+    )
+    research_questions = models.TextField(
+        blank=True,
+        help_text="Research questions or hypotheses (if applicable)"
+    )
+    educational_justification = models.TextField(
+        blank=True,
+        help_text="Educational justification (if this is an educational exercise)"
+    )
+    
+    # 2. Recruitment
+    recruitment_method = models.TextField(
+        blank=True,
+        help_text="How will you recruit subjects?"
+    )
+    recruitment_script = models.TextField(
+        blank=True,
+        help_text="Recruitment script or materials"
+    )
+    inclusion_criteria = models.TextField(
+        blank=True,
+        help_text="Criteria for including subjects"
+    )
+    exclusion_criteria = models.TextField(
+        blank=True,
+        help_text="Criteria for excluding subjects"
+    )
+    
+    # 3. Benefits and Costs
+    benefits_to_subjects = models.TextField(
+        blank=True,
+        help_text="Benefits to the human subjects involved"
+    )
+    benefits_to_others = models.TextField(
+        blank=True,
+        help_text="Benefits to individuals who are not subjects but may have similar problems"
+    )
+    benefits_to_society = models.TextField(
+        blank=True,
+        help_text="Benefits to society in general"
+    )
+    payment_compensation = models.TextField(
+        blank=True,
+        help_text="Payment or compensation provided to participants"
+    )
+    costs_to_subjects = models.TextField(
+        blank=True,
+        help_text="Costs to subjects (time, money, repeated testing, etc.)"
+    )
+    
+    # 4. Review Type Justification
+    review_type_justification = models.TextField(
+        blank=True,
+        help_text="Basis for requesting exemption, expedited review, or full board review"
+    )
+    exemption_category = models.CharField(
+        max_length=100,
+        blank=True,
+        help_text="Exemption category (if requesting exempt status)"
+    )
+    expedited_category = models.CharField(
+        max_length=100,
+        blank=True,
+        help_text="Expedited review category (if requesting expedited review)"
+    )
+    
+    # 5. Risks
+    risk_statement = models.TextField(
+        blank=True,
+        help_text="Statement of risk - describe any physical, emotional, social, or legal risks"
+    )
+    risk_mitigation = models.TextField(
+        blank=True,
+        help_text="Risk mitigation strategies and protections for participants"
+    )
+    
+    # 6. Data Handling
+    data_collection_methods = models.TextField(
+        blank=True,
+        help_text="Detailed description of data collection methods and instruments"
+    )
+    data_storage = models.TextField(
+        blank=True,
+        help_text="How data will be stored and secured"
+    )
+    confidentiality_procedures = models.TextField(
+        blank=True,
+        help_text="Procedures for maintaining confidentiality or anonymity"
+    )
+    data_retention = models.TextField(
+        blank=True,
+        help_text="Data retention policy and timeline"
+    )
+    data_access = models.TextField(
+        blank=True,
+        help_text="Who will have access to the data"
+    )
+    
+    # 7. Consent Procedures
+    consent_procedures = models.TextField(
+        blank=True,
+        help_text="How informed consent will be obtained from participants"
+    )
+    
+    # Additional Information
+    estimated_start_date = models.CharField(
+        max_length=100,
+        blank=True,
+        help_text="Estimated starting date"
+    )
+    estimated_completion_date = models.CharField(
+        max_length=100,
+        blank=True,
+        help_text="Estimated completion date"
+    )
+    funding_source = models.TextField(
+        blank=True,
+        help_text="Source of project funds"
+    )
+    continuation_of_previous = models.BooleanField(
+        default=False,
+        help_text="Is this project a continuation of research previously approved by the HSIRB?"
+    )
+    previous_protocol_number = models.CharField(
+        max_length=100,
+        blank=True,
+        help_text="Previous HSIRB protocol number (if continuation)"
+    )
+    
     # Reviewers (for expedited: 2 reviewers + college rep)
     reviewers = models.ManyToManyField(
         settings.AUTH_USER_MODEL,

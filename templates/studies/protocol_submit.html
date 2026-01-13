@@ -1,0 +1,519 @@
+{% extends 'base.html' %}
+
+{% block title %}Submit Protocol for IRB Review - {{ study.title }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-md-10 offset-md-1">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'studies:researcher_dashboard' %}">My Studies</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'studies:detail' study.id %}">{{ study.title }}</a></li>
+                    <li class="breadcrumb-item active">Submit Protocol</li>
+                </ol>
+            </nav>
+            
+            <h2>Submit Protocol for IRB Review</h2>
+            <p class="lead">{{ study.title }}</p>
+            
+            {% if existing_submission %}
+            <div class="alert alert-info">
+                <strong>Previous Submission:</strong> 
+                <a href="{% url 'studies:protocol_submission_detail' existing_submission.id %}">
+                    Submission #{{ existing_submission.submission_number }} (v{{ existing_submission.version }})
+                </a>
+                - Status: <strong>{{ existing_submission.get_decision_display }}</strong>
+                <br><small>You can use the form below to create a new version or revise your submission.</small>
+            </div>
+            {% endif %}
+            
+            <form method="post" id="protocol-submission-form">
+                {% csrf_token %}
+                
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+                
+                <!-- Section 1: Review Type and Basic Information -->
+                <div class="card mb-4">
+                    <div class="card-header" style="background-color: #A6192E; color: white;">
+                        <h4 class="mb-0">1. Review Type Suggestion & Basic Information</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label"><strong>Review Type Suggestion <span class="text-danger">*</span></strong></label>
+                            <p class="text-muted small">Based on your protocol, suggest which review type you believe is appropriate. Your college representative will make the final determination.</p>
+                            {% for choice in form.pi_suggested_review_type.field.choices %}
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" name="{{ form.pi_suggested_review_type.name }}" 
+                                           id="review_{{ choice.0 }}" value="{{ choice.0 }}" 
+                                           {% if form.pi_suggested_review_type.value == choice.0 %}checked{% endif %} required>
+                                    <label class="form-check-label" for="review_{{ choice.0 }}">
+                                        <strong>{{ choice.1 }}</strong>
+                                        {% if choice.0 == 'exempt' %}
+                                            <small class="d-block text-muted">- Educational settings, anonymous surveys, public observation</small>
+                                        {% elif choice.0 == 'expedited' %}
+                                            <small class="d-block text-muted">- Minimal risk, standard behavioral methodologies</small>
+                                        {% elif choice.0 == 'full' %}
+                                            <small class="d-block text-muted">- More than minimal risk, vulnerable populations, sensitive topics</small>
+                                        {% endif %}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                            {% if form.pi_suggested_review_type.errors %}
+                                <div class="text-danger small">{{ form.pi_suggested_review_type.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.estimated_start_date.id_for_label }}" class="form-label">
+                                        {{ form.estimated_start_date.label }} <span class="text-danger">*</span>
+                                    </label>
+                                    {{ form.estimated_start_date }}
+                                    {% if form.estimated_start_date.errors %}
+                                        <div class="text-danger small">{{ form.estimated_start_date.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.estimated_completion_date.id_for_label }}" class="form-label">
+                                        {{ form.estimated_completion_date.label }} <span class="text-danger">*</span>
+                                    </label>
+                                    {{ form.estimated_completion_date }}
+                                    {% if form.estimated_completion_date.errors %}
+                                        <div class="text-danger small">{{ form.estimated_completion_date.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.funding_source.id_for_label }}" class="form-label">
+                                {{ form.funding_source.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.funding_source }}
+                            {% if form.funding_source.errors %}
+                                <div class="text-danger small">{{ form.funding_source.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-check mb-3">
+                            {{ form.continuation_of_previous }}
+                            <label class="form-check-label" for="{{ form.continuation_of_previous.id_for_label }}">
+                                {{ form.continuation_of_previous.label }}
+                            </label>
+                        </div>
+                        
+                        <div class="mb-3" id="previous-protocol-field" style="display: none;">
+                            <label for="{{ form.previous_protocol_number.id_for_label }}" class="form-label">
+                                {{ form.previous_protocol_number.label }}
+                            </label>
+                            {{ form.previous_protocol_number }}
+                            {% if form.previous_protocol_number.errors %}
+                                <div class="text-danger small">{{ form.previous_protocol_number.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-check mb-3">
+                            {{ form.involves_deception }}
+                            <label class="form-check-label" for="{{ form.involves_deception.id_for_label }}">
+                                {{ form.involves_deception.label }}
+                            </label>
+                            <small class="d-block text-muted">{{ form.involves_deception.help_text }}</small>
+                        </div>
+                        
+                        {% if ai_review_enabled %}
+                        <div class="form-check mb-3">
+                            {{ form.use_ai_review }}
+                            <label class="form-check-label" for="{{ form.use_ai_review.id_for_label }}">
+                                {{ form.use_ai_review.label }}
+                            </label>
+                            <small class="d-block text-muted">{{ form.use_ai_review.help_text }}</small>
+                        </div>
+                        {% else %}
+                        <div class="alert alert-warning">
+                            <strong>AI Review Not Available</strong><br>
+                            AI-assisted review is currently disabled. Your protocol will be submitted for standard IRB review.
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                
+                <!-- Section 2: Protocol Description -->
+                <div class="card mb-4">
+                    <div class="card-header" style="background-color: #7C858E; color: white;">
+                        <h4 class="mb-0">2. Description of Project or Proposal</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="{{ form.protocol_description.id_for_label }}" class="form-label">
+                                {{ form.protocol_description.label }}
+                            </label>
+                            {{ form.protocol_description }}
+                            {% if form.protocol_description.errors %}
+                                <div class="text-danger small">{{ form.protocol_description.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.population_description.id_for_label }}" class="form-label">
+                                {{ form.population_description.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.population_description }}
+                            {% if form.population_description.errors %}
+                                <div class="text-danger small">{{ form.population_description.errors.0 }}</div>
+                            {% endif %}
+                            <small class="form-text text-muted">{{ form.population_description.help_text }}</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.research_procedures.id_for_label }}" class="form-label">
+                                {{ form.research_procedures.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.research_procedures }}
+                            {% if form.research_procedures.errors %}
+                                <div class="text-danger small">{{ form.research_procedures.errors.0 }}</div>
+                            {% endif %}
+                            <small class="form-text text-muted">{{ form.research_procedures.help_text }}</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.research_objectives.id_for_label }}" class="form-label">
+                                {{ form.research_objectives.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.research_objectives }}
+                            {% if form.research_objectives.errors %}
+                                <div class="text-danger small">{{ form.research_objectives.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.research_questions.id_for_label }}" class="form-label">
+                                {{ form.research_questions.label }}
+                            </label>
+                            {{ form.research_questions }}
+                            {% if form.research_questions.errors %}
+                                <div class="text-danger small">{{ form.research_questions.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.educational_justification.id_for_label }}" class="form-label">
+                                {{ form.educational_justification.label }}
+                            </label>
+                            {{ form.educational_justification }}
+                            {% if form.educational_justification.errors %}
+                                <div class="text-danger small">{{ form.educational_justification.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 3: Recruitment -->
+                <div class="card mb-4">
+                    <div class="card-header" style="background-color: #7C858E; color: white;">
+                        <h4 class="mb-0">3. Recruitment</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="{{ form.recruitment_method.id_for_label }}" class="form-label">
+                                {{ form.recruitment_method.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.recruitment_method }}
+                            {% if form.recruitment_method.errors %}
+                                <div class="text-danger small">{{ form.recruitment_method.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.recruitment_script.id_for_label }}" class="form-label">
+                                {{ form.recruitment_script.label }}
+                            </label>
+                            {{ form.recruitment_script }}
+                            {% if form.recruitment_script.errors %}
+                                <div class="text-danger small">{{ form.recruitment_script.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.inclusion_criteria.id_for_label }}" class="form-label">
+                                {{ form.inclusion_criteria.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.inclusion_criteria }}
+                            {% if form.inclusion_criteria.errors %}
+                                <div class="text-danger small">{{ form.inclusion_criteria.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.exclusion_criteria.id_for_label }}" class="form-label">
+                                {{ form.exclusion_criteria.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.exclusion_criteria }}
+                            {% if form.exclusion_criteria.errors %}
+                                <div class="text-danger small">{{ form.exclusion_criteria.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 4: Benefits and Costs -->
+                <div class="card mb-4">
+                    <div class="card-header" style="background-color: #7C858E; color: white;">
+                        <h4 class="mb-0">4. Subject Benefits and Costs</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="{{ form.benefits_to_subjects.id_for_label }}" class="form-label">
+                                {{ form.benefits_to_subjects.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.benefits_to_subjects }}
+                            {% if form.benefits_to_subjects.errors %}
+                                <div class="text-danger small">{{ form.benefits_to_subjects.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.benefits_to_others.id_for_label }}" class="form-label">
+                                {{ form.benefits_to_others.label }}
+                            </label>
+                            {{ form.benefits_to_others }}
+                            {% if form.benefits_to_others.errors %}
+                                <div class="text-danger small">{{ form.benefits_to_others.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.benefits_to_society.id_for_label }}" class="form-label">
+                                {{ form.benefits_to_society.label }}
+                            </label>
+                            {{ form.benefits_to_society }}
+                            {% if form.benefits_to_society.errors %}
+                                <div class="text-danger small">{{ form.benefits_to_society.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.payment_compensation.id_for_label }}" class="form-label">
+                                {{ form.payment_compensation.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.payment_compensation }}
+                            {% if form.payment_compensation.errors %}
+                                <div class="text-danger small">{{ form.payment_compensation.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.costs_to_subjects.id_for_label }}" class="form-label">
+                                {{ form.costs_to_subjects.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.costs_to_subjects }}
+                            {% if form.costs_to_subjects.errors %}
+                                <div class="text-danger small">{{ form.costs_to_subjects.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 5: Review Type Justification -->
+                <div class="card mb-4">
+                    <div class="card-header" style="background-color: #7C858E; color: white;">
+                        <h4 class="mb-0">5. Basis of Request for Exemption or Expedited Review</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="{{ form.review_type_justification.id_for_label }}" class="form-label">
+                                {{ form.review_type_justification.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.review_type_justification }}
+                            {% if form.review_type_justification.errors %}
+                                <div class="text-danger small">{{ form.review_type_justification.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.exemption_category.id_for_label }}" class="form-label">
+                                        {{ form.exemption_category.label }}
+                                    </label>
+                                    {{ form.exemption_category }}
+                                    {% if form.exemption_category.errors %}
+                                        <div class="text-danger small">{{ form.exemption_category.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.expedited_category.id_for_label }}" class="form-label">
+                                        {{ form.expedited_category.label }}
+                                    </label>
+                                    {{ form.expedited_category }}
+                                    {% if form.expedited_category.errors %}
+                                        <div class="text-danger small">{{ form.expedited_category.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 6: Risks -->
+                <div class="card mb-4">
+                    <div class="card-header" style="background-color: #7C858E; color: white;">
+                        <h4 class="mb-0">6. Statement of Risk</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="{{ form.risk_statement.id_for_label }}" class="form-label">
+                                {{ form.risk_statement.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.risk_statement }}
+                            {% if form.risk_statement.errors %}
+                                <div class="text-danger small">{{ form.risk_statement.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.risk_mitigation.id_for_label }}" class="form-label">
+                                {{ form.risk_mitigation.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.risk_mitigation }}
+                            {% if form.risk_mitigation.errors %}
+                                <div class="text-danger small">{{ form.risk_mitigation.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 7: Data Handling -->
+                <div class="card mb-4">
+                    <div class="card-header" style="background-color: #7C858E; color: white;">
+                        <h4 class="mb-0">7. Data Handling and Confidentiality</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="{{ form.data_collection_methods.id_for_label }}" class="form-label">
+                                {{ form.data_collection_methods.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.data_collection_methods }}
+                            {% if form.data_collection_methods.errors %}
+                                <div class="text-danger small">{{ form.data_collection_methods.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.data_storage.id_for_label }}" class="form-label">
+                                {{ form.data_storage.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.data_storage }}
+                            {% if form.data_storage.errors %}
+                                <div class="text-danger small">{{ form.data_storage.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.confidentiality_procedures.id_for_label }}" class="form-label">
+                                {{ form.confidentiality_procedures.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.confidentiality_procedures }}
+                            {% if form.confidentiality_procedures.errors %}
+                                <div class="text-danger small">{{ form.confidentiality_procedures.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.data_retention.id_for_label }}" class="form-label">
+                                {{ form.data_retention.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.data_retention }}
+                            {% if form.data_retention.errors %}
+                                <div class="text-danger small">{{ form.data_retention.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.data_access.id_for_label }}" class="form-label">
+                                {{ form.data_access.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.data_access }}
+                            {% if form.data_access.errors %}
+                                <div class="text-danger small">{{ form.data_access.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 8: Consent Procedures -->
+                <div class="card mb-4">
+                    <div class="card-header" style="background-color: #7C858E; color: white;">
+                        <h4 class="mb-0">8. Consent Procedures</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="{{ form.consent_procedures.id_for_label }}" class="form-label">
+                                {{ form.consent_procedures.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.consent_procedures }}
+                            {% if form.consent_procedures.errors %}
+                                <div class="text-danger small">{{ form.consent_procedures.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="alert alert-info">
+                            <strong>Note:</strong> Your consent form text is already stored in the study record. This section describes <em>how</em> consent will be obtained.
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Submit Button -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="alert alert-info">
+                            <h6>What Happens Next?</h6>
+                            <ol class="mb-0">
+                                <li>Your submission will be assigned to your college representative</li>
+                                <li>College rep will review and make initial determination</li>
+                                <li>If exempt: College rep can approve immediately</li>
+                                <li>If expedited: 2 additional reviewers will be assigned</li>
+                                <li>If full: Submission goes to IRB Chair</li>
+                                <li>You'll receive notifications at each step</li>
+                            </ol>
+                        </div>
+                        
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg" style="background-color: #A6192E; border-color: #A6192E;">
+                                <i class="bi bi-send"></i> Submit Protocol
+                            </button>
+                            <a href="{% url 'studies:detail' study.id %}" class="btn btn-outline-secondary btn-lg">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+// Show/hide previous protocol number field based on continuation checkbox
+document.addEventListener('DOMContentLoaded', function() {
+    const continuationCheckbox = document.getElementById('{{ form.continuation_of_previous.id_for_label }}');
+    const previousProtocolField = document.getElementById('previous-protocol-field');
+    
+    if (continuationCheckbox) {
+        function toggleField() {
+            previousProtocolField.style.display = continuationCheckbox.checked ? 'block' : 'none';
+        }
+        
+        continuationCheckbox.addEventListener('change', toggleField);
+        toggleField(); // Initial state
+    }
+});
+</script>
+{% endblock %}

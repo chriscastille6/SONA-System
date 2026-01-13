@@ -1,0 +1,168 @@
+{% extends 'base.html' %}
+
+{% block title %}IRB Review History - {{ study.title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                {% if viewing_as_irb %}
+                <li class="breadcrumb-item"><a href="{% url 'studies:irb_member_dashboard' %}">IRB Dashboard</a></li>
+                {% else %}
+                <li class="breadcrumb-item"><a href="{% url 'studies:researcher_dashboard' %}">My Studies</a></li>
+                {% endif %}
+                <li class="breadcrumb-item"><a href="{% url 'studies:status' study.slug %}">{{ study.title }}</a></li>
+                <li class="breadcrumb-item active">IRB Review History</li>
+            </ol>
+        </nav>
+        
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2>IRB Review History</h2>
+                <p class="lead mb-0">{{ study.title }}</p>
+            </div>
+            {% if can_initiate_review %}
+            <a href="{% url 'studies:irb_review_create' study.id %}" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> New Review
+            </a>
+            {% endif %}
+        </div>
+        
+        {% if reviews %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Version</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Risk Level</th>
+                        <th>Issues</th>
+                        <th>Processing Time</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for review in reviews %}
+                    <tr>
+                        <td><strong>v{{ review.version }}</strong></td>
+                        <td>{{ review.initiated_at|date:"M d, Y g:i A" }}</td>
+                        <td>
+                            {% if review.status == 'completed' %}
+                                <span class="badge bg-success">Completed</span>
+                            {% elif review.status == 'in_progress' %}
+                                <span class="badge bg-warning">In Progress</span>
+                            {% elif review.status == 'failed' %}
+                                <span class="badge bg-danger">Failed</span>
+                            {% else %}
+                                <span class="badge bg-secondary">{{ review.get_status_display }}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if review.overall_risk_level == 'minimal' %}
+                                <span class="badge bg-success">✅ Minimal</span>
+                            {% elif review.overall_risk_level == 'low' %}
+                                <span class="badge bg-info">🟢 Low</span>
+                            {% elif review.overall_risk_level == 'moderate' %}
+                                <span class="badge bg-warning">🟡 Moderate</span>
+                            {% elif review.overall_risk_level == 'high' %}
+                                <span class="badge bg-danger">🔴 High</span>
+                            {% else %}
+                                <span class="text-muted">N/A</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if review.status == 'completed' %}
+                                <span class="text-danger">{{ review.critical_issues|length }} critical</span>,
+                                <span class="text-warning">{{ review.moderate_issues|length }} moderate</span>,
+                                <span class="text-muted">{{ review.minor_issues|length }} minor</span>
+                            {% else %}
+                                <span class="text-muted">—</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if review.processing_time_seconds %}
+                                {{ review.processing_time_seconds }}s
+                            {% else %}
+                                <span class="text-muted">—</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if review.status == 'completed' %}
+                                <a href="{% url 'studies:irb_review_detail' study.id review.version %}" 
+                                   class="btn btn-sm btn-outline-primary">View Report</a>
+                            {% else %}
+                                <button class="btn btn-sm btn-outline-secondary" disabled>Pending</button>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Version Comparison -->
+        {% if reviews|length > 1 %}
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0">Progress Over Time</h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">Track how your protocol has improved across review versions:</p>
+                
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Version</th>
+                            <th>Critical</th>
+                            <th>Moderate</th>
+                            <th>Minor</th>
+                            <th>Risk Level</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for review in reviews %}
+                        {% if review.status == 'completed' %}
+                        <tr>
+                            <td>v{{ review.version }}</td>
+                            <td>
+                                <span class="badge bg-danger">{{ review.critical_issues|length }}</span>
+                                {% if forloop.counter0 > 0 and reviews|length > forloop.counter0 %}
+                                    {% with prev=reviews|slice:forloop.counter|first %}
+                                    {% if prev.critical_issues|length > review.critical_issues|length %}
+                                        <span class="text-success">↓ improved</span>
+                                    {% endif %}
+                                    {% endwith %}
+                                {% endif %}
+                            </td>
+                            <td><span class="badge bg-warning">{{ review.moderate_issues|length }}</span></td>
+                            <td><span class="badge bg-secondary">{{ review.minor_issues|length }}</span></td>
+                            <td>{{ review.get_overall_risk_level_display }}</td>
+                        </tr>
+                        {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+        
+        {% else %}
+        <div class="alert alert-info">
+            <h5>No Reviews Yet</h5>
+            <p>You haven't run an AI IRB review for this study yet.</p>
+            {% if can_initiate_review %}
+            <a href="{% url 'studies:irb_review_create' study.id %}" class="btn btn-primary">
+                Start First Review
+            </a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+
+
+

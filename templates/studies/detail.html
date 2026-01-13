@@ -37,7 +37,26 @@
             </div>
         </div>
         
-        {% if user.is_authenticated and user.is_participant %}
+        {% if study.is_classroom_based %}
+            <div class="alert alert-info mt-3">
+                <strong>Classroom-Based Study:</strong> This study is conducted in specific classrooms and is not available for general signup. IRB monitoring information is available to authorized personnel.
+            </div>
+        {% elif study.mode == 'online' and study.external_link %}
+            {% if user.is_authenticated and user.is_participant %}
+                <div class="mt-4">
+                    <a href="{{ study.external_link }}" target="_blank" class="btn btn-success btn-lg">
+                        <i class="bi bi-play-circle"></i> Start Study
+                    </a>
+                    <p class="text-muted mt-2">
+                        <small>This will open the assessment in a new window.</small>
+                    </p>
+                </div>
+            {% else %}
+                <div class="alert alert-info mt-3">
+                    <a href="{% url 'accounts:login' %}">Log in</a> as a participant to access this study.
+                </div>
+            {% endif %}
+        {% elif user.is_authenticated and user.is_participant %}
             <h3 class="mt-4">Available Timeslots</h3>
             
             {% if timeslots %}

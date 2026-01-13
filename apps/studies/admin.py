@@ -14,6 +14,8 @@ from .models import (
     ReviewDocument,
     IRBReviewerAssignment,
     StudyUpdate,
+    ProtocolSubmission,
+    CollegeRepresentative,
 )
 
 
@@ -328,6 +330,93 @@ class ReviewDocumentAdmin(admin.ModelAdmin):
         """Display file size in KB."""
         return f"{obj.file_size_bytes / 1024:.1f} KB"
     file_size_kb.short_description = 'File Size'
+
+
+@admin.register(CollegeRepresentative)
+class CollegeRepresentativeAdmin(admin.ModelAdmin):
+    list_display = ['college', 'representative', 'is_chair', 'active', 'created_at']
+    list_filter = ['is_chair', 'active', 'college']
+    search_fields = ['college', 'representative__email', 'representative__first_name', 'representative__last_name']
+    raw_id_fields = ['representative']
+    readonly_fields = ['created_at', 'updated_at']
+    
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related('representative')
+
+
+@admin.register(ProtocolSubmission)
+class ProtocolSubmissionAdmin(admin.ModelAdmin):
+    list_display = [
+        'submission_number',
+        'study',
+        'pi_suggested_review_type',
+        'review_type',
+        'decision',
+        'college_rep',
+        'submitted_at',
+        'protocol_number',
+    ]
+    list_filter = [
+        'decision',
+        'review_type',
+        'pi_suggested_review_type',
+        'involves_deception',
+        'submitted_at',
+    ]
+    search_fields = [
+        'submission_number',
+        'protocol_number',
+        'study__title',
+        'submitted_by__email',
+        'submitted_by__first_name',
+        'submitted_by__last_name',
+    ]
+    raw_id_fields = [
+        'study',
+        'submitted_by',
+        'college_rep',
+        'chair_reviewer',
+        'decided_by',
+        'ai_review',
+    ]
+    filter_horizontal = ['reviewers']
+    readonly_fields = [
+        'submission_number',
+        'submitted_at',
+        'reviewed_at',
+        'decided_at',
+    ]
+    fieldsets = (
+        ('Submission Info', {
+            'fields': ('submission_number', 'study', 'version', 'submitted_by', 'submitted_at')
+        }),
+        ('Review Type', {
+            'fields': ('pi_suggested_review_type', 'college_rep_determination', 'review_type', 'involves_deception')
+        }),
+        ('Assignment', {
+            'fields': ('college_rep', 'chair_reviewer', 'reviewers')
+        }),
+        ('Decision', {
+            'fields': ('decision', 'protocol_number', 'decided_by', 'decided_at', 'reviewed_at')
+        }),
+        ('Notes', {
+            'fields': ('approval_notes', 'rnr_notes', 'rejection_grounds')
+        }),
+        ('AI Review', {
+            'fields': ('ai_review',),
+            'classes': ('collapse',)
+        }),
+    )
+    
+    def get_queryset(self, request):
+        return super().get_queryset(request).select_related(
+            'study',
+            'submitted_by',
+            'college_rep',
+            'chair_reviewer',
+            'decided_by',
+            'ai_review',
+        ).prefetch_related('reviewers')
 
 
 

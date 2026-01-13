@@ -1,0 +1,251 @@
+{% extends 'base.html' %}
+
+{% block title %}Protocol Submission #{{ submission.submission_number }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-10 offset-md-1">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                {% if is_pi %}
+                <li class="breadcrumb-item"><a href="{% url 'studies:researcher_dashboard' %}">My Studies</a></li>
+                {% else %}
+                <li class="breadcrumb-item"><a href="{% url 'studies:protocol_submission_list' %}">Protocol Submissions</a></li>
+                {% endif %}
+                <li class="breadcrumb-item active">Submission #{{ submission.submission_number }}</li>
+            </ol>
+        </nav>
+        
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h2>Protocol Submission #{{ submission.submission_number }}</h2>
+                <p class="lead mb-0">{{ submission.study.title }}</p>
+            </div>
+            <div>
+                {% if submission.decision == 'pending' %}
+                <span class="badge bg-warning text-dark">Pending Review</span>
+                {% elif submission.decision == 'approved' %}
+                <span class="badge bg-success">Approved</span>
+                {% elif submission.decision == 'revise_resubmit' %}
+                <span class="badge bg-info">Revise & Resubmit</span>
+                {% elif submission.decision == 'rejected' %}
+                <span class="badge bg-danger">Rejected</span>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Submission Info -->
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5 class="mb-0">Submission Information</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Submitted By:</strong> {{ submission.submitted_by.get_full_name|default:"Unknown" }}</p>
+                        <p><strong>Submitted At:</strong> {{ submission.submitted_at|date:"F d, Y g:i A" }}</p>
+                        <p><strong>Version:</strong> {{ submission.version }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>PI Suggested Review Type:</strong> {{ submission.get_pi_suggested_review_type_display }}</p>
+                        <p><strong>Actual Review Type:</strong> <strong>{{ submission.get_review_type_display }}</strong></p>
+                        {% if submission.involves_deception %}
+                        <p><span class="badge bg-danger">Involves Deception</span></p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Assignment Info -->
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5 class="mb-0">Review Assignment</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>College Representative:</strong> 
+                            {% if submission.college_rep %}
+                                {{ submission.college_rep.get_full_name }}
+                            {% else %}
+                                <span class="text-muted">Not assigned</span>
+                            {% endif %}
+                        </p>
+                        {% if submission.college_rep_determination %}
+                        <p><strong>College Rep Determination:</strong> {{ submission.get_college_rep_determination_display }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        {% if submission.chair_reviewer %}
+                        <p><strong>IRB Chair:</strong> {{ submission.chair_reviewer.get_full_name }}</p>
+                        {% endif %}
+                        {% if submission.reviewers.exists %}
+                        <p><strong>Reviewers:</strong>
+                            <ul>
+                                {% for reviewer in submission.reviewers.all %}
+                                <li>{{ reviewer.get_full_name }}</li>
+                                {% endfor %}
+                            </ul>
+                        </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Decision Info -->
+        {% if submission.decision != 'pending' %}
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5 class="mb-0">Decision</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Decision:</strong> <strong>{{ submission.get_decision_display }}</strong></p>
+                {% if submission.protocol_number %}
+                <p><strong>Protocol Number:</strong> <strong class="text-success">{{ submission.protocol_number }}</strong></p>
+                {% endif %}
+                {% if submission.decided_by %}
+                <p><strong>Decided By:</strong> {{ submission.decided_by.get_full_name }}</p>
+                <p><strong>Decided At:</strong> {{ submission.decided_at|date:"F d, Y g:i A" }}</p>
+                {% endif %}
+                
+                {% if submission.approval_notes %}
+                <div class="alert alert-success">
+                    <strong>Approval Notes:</strong><br>
+                    {{ submission.approval_notes|linebreaks }}
+                </div>
+                {% endif %}
+                
+                {% if submission.rnr_notes %}
+                <div class="alert alert-info">
+                    <strong>Revision Required:</strong><br>
+                    {{ submission.rnr_notes|linebreaks }}
+                </div>
+                {% endif %}
+                
+                {% if submission.rejection_grounds %}
+                <div class="alert alert-danger">
+                    <strong>Rejection Grounds:</strong><br>
+                    {{ submission.rejection_grounds|linebreaks }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- College Rep Review Form -->
+        {% if is_college_rep and submission.decision == 'pending' and not submission.college_rep_determination %}
+        <div class="card mb-3">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">College Representative Review</h5>
+            </div>
+            <div class="card-body">
+                <form method="post" action="{% url 'studies:protocol_college_rep_review' submission.id %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label"><strong>Make Determination:</strong></label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="determination" id="det_exempt" value="exempt" required>
+                            <label class="form-check-label" for="det_exempt">Exempt - Can approve immediately</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="determination" id="det_expedited" value="expedited" required>
+                            <label class="form-check-label" for="det_expedited">Expedited Review - Requires 2 reviewers</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="determination" id="det_full" value="full" required>
+                            <label class="form-check-label" for="det_full">Full Board Review - Requires Chair review</label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="notes" class="form-label">Notes (optional)</label>
+                        <textarea class="form-control" id="notes" name="notes" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Determination</button>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- Assign Reviewers (for expedited) -->
+        {% if submission.review_type == 'expedited' and submission.decision == 'pending' and submission.requires_expedited_reviewers and is_college_rep %}
+        <div class="card mb-3">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0">Assign Reviewers for Expedited Review</h5>
+            </div>
+            <div class="card-body">
+                <p>Expedited reviews require 2 additional IRB members. Select reviewers:</p>
+                <form method="post" action="{% url 'studies:protocol_assign_reviewers' submission.id %}">
+                    {% csrf_token %}
+                    {% for user in irb_members %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="reviewers" value="{{ user.id }}" id="reviewer_{{ user.id }}">
+                        <label class="form-check-label" for="reviewer_{{ user.id }}">
+                            {{ user.get_full_name }} ({{ user.email }})
+                        </label>
+                    </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-info mt-3">Assign Reviewers</button>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- Decision Form -->
+        {% if submission.decision == 'pending' and (is_college_rep or is_chair or is_reviewer) %}
+        <div class="card mb-3">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">Make Decision</h5>
+            </div>
+            <div class="card-body">
+                <form method="post" action="{% url 'studies:protocol_make_decision' submission.id %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label"><strong>Decision:</strong></label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="decision" id="dec_approved" value="approved" required>
+                            <label class="form-check-label" for="dec_approved">
+                                <strong>Approve</strong> - Issue protocol number
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="decision" id="dec_rnr" value="revise_resubmit" required>
+                            <label class="form-check-label" for="dec_rnr">
+                                <strong>Revise & Resubmit</strong> - Request changes
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="decision" id="dec_rejected" value="rejected" required>
+                            <label class="form-check-label" for="dec_rejected">
+                                <strong>Reject</strong> - Protocol rejected
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="decision_notes" class="form-label">Notes / Grounds</label>
+                        <textarea class="form-control" id="decision_notes" name="notes" rows="5" required></textarea>
+                        <div class="form-text">Required. Explain your decision, approval conditions, required revisions, or rejection grounds.</div>
+                    </div>
+                    <button type="submit" class="btn btn-success">Submit Decision</button>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- Study Link -->
+        <div class="card">
+            <div class="card-body">
+                <a href="{% url 'studies:detail' submission.study.id %}" class="btn btn-outline-primary">
+                    View Study Details
+                </a>
+                {% if submission.ai_review %}
+                <a href="{% url 'studies:irb_review_detail' submission.study.id submission.ai_review.version %}" class="btn btn-outline-info">
+                    View AI Review
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

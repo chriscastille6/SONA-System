@@ -692,71 +692,75 @@ def irb_member_dashboard(request):
 @login_required
 def protocol_submit(request, study_id):
     """PI submits protocol for IRB review."""
+    from .forms import ProtocolSubmissionForm
+    
     study = get_object_or_404(Study, id=study_id)
     
-    # Only study owner can submit
-    if not (request.user.is_researcher and study.researcher == request.user):
+    # Only study owner can submit (or admin/staff)
+    if not (request.user.is_researcher and study.researcher == request.user) and not (request.user.is_admin or request.user.is_staff):
         messages.error(request, 'Only the study owner can submit protocols.')
-        return redirect('studies:detail', study_id=study.id)
+        return redirect('studies:detail', pk=study.id)
+    
+    existing_submission = ProtocolSubmission.objects.filter(study=study).order_by('-version').first()
     
     if request.method == 'POST':
-        # Get form data
-        pi_suggested_review_type = request.POST.get('review_type')
-        involves_deception = request.POST.get('involves_deception') == 'on'
-        use_ai_review = request.POST.get('use_ai_review') == 'on'
-        
-        if not pi_suggested_review_type:
-            messages.error(request, 'Please select a review type.')
-            return redirect('studies:protocol_submit', study_id=study.id)
-        
-        # Create submission
-        submission = ProtocolSubmission.objects.create(
-            study=study,
-            submitted_by=request.user,
-            pi_suggested_review_type=pi_suggested_review_type,
-            involves_deception=involves_deception,
-            review_type=pi_suggested_review_type,  # Initial, may change
-        )
-        
-        # Update study deception flag
-        study.involves_deception = involves_deception
-        study.save(update_fields=['involves_deception'])
-        
-        # Assign college rep
-        assign_college_rep(submission)
-        
-        # Route submission
-        route_submission(submission)
-        
-        # Optionally trigger AI review
-        ai_review = None
-        if use_ai_review:
-            from django.conf import settings
-            if getattr(settings, 'AI_REVIEW_ENABLED', False):
-                # Create AI review
-                ai_review = IRBReview.objects.create(
-                    study=study,
-                    initiated_by=request.user,
-                )
-                submission.ai_review = ai_review
-                submission.save(update_fields=['ai_review'])
-                run_irb_ai_review.delay(str(ai_review.id))
-                messages.info(request, 'AI review initiated. You will be notified when complete.')
-            else:
-                messages.warning(request, 'AI review is not currently enabled. Protocol submitted without AI review.')
-        
-        messages.success(
-            request,
-            f'Protocol submitted successfully (Submission #{submission.submission_number}). '
-            f'Your college representative will review it shortly.'
-        )
-        return redirect('studies:protocol_submission_detail', submission_id=submission.id)
-    
-    # GET: Show submission form
-    existing_submission = ProtocolSubmission.objects.filter(study=study).order_by('-version').first()
+        form = ProtocolSubmissionForm(request.POST)
+        if form.is_valid():
+            # Get AI review preference before saving
+            use_ai_review = form.cleaned_data.pop('use_ai_review', False)
+            
+            # Create submission with all form data
+            submission = form.save(commit=False)
+            submission.study = study
+            submission.submitted_by = request.user
+            submission.review_type = submission.pi_suggested_review_type  # Initial, may change
+            submission.save()
+            
+            # Update study deception flag
+            study.involves_deception = submission.involves_deception
+            study.save(update_fields=['involves_deception'])
+            
+            # Assign college rep
+            assign_college_rep(submission)
+            
+            # Route submission
+            route_submission(submission)
+            
+            # Optionally trigger AI review
+            if use_ai_review:
+                if getattr(settings, 'AI_REVIEW_ENABLED', False):
+                    # Create AI review
+                    ai_review = IRBReview.objects.create(
+                        study=study,
+                        initiated_by=request.user,
+                    )
+                    submission.ai_review = ai_review
+                    submission.save(update_fields=['ai_review'])
+                    run_irb_ai_review.delay(str(ai_review.id))
+                    messages.info(request, 'AI review initiated. You will be notified when complete.')
+                else:
+                    messages.warning(request, 'AI review is not currently enabled. Protocol submitted without AI review.')
+            
+            messages.success(
+                request,
+                f'Protocol submitted successfully (Submission #{submission.submission_number}). '
+                f'Your college representative will review it shortly.'
+            )
+            return redirect('studies:protocol_submission_detail', submission_id=submission.id)
+    else:
+        # Pre-fill form with existing submission data if available
+        initial_data = {}
+        if existing_submission:
+            for field in ProtocolSubmissionForm.Meta.fields:
+                if hasattr(existing_submission, field):
+                    value = getattr(existing_submission, field)
+                    if value:  # Only include non-empty values
+                        initial_data[field] = value
+        form = ProtocolSubmissionForm(initial=initial_data)
     
     return render(request, 'studies/protocol_submit.html', {
         'study': study,
+        'form': form,
         'existing_submission': existing_submission,
         'ai_review_enabled': getattr(settings, 'AI_REVIEW_ENABLED', False),
     })
