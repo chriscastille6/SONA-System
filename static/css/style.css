@@ -1,12 +1,20 @@
 /* Custom styles for Research Participant Recruitment System */
+/* Nicholls State University Brand Colors */
 
 :root {
-    --primary-color: #0d6efd;
-    --secondary-color: #6c757d;
+    /* Nicholls State University Official Colors */
+    --nicholls-red: #A6192E;        /* Primary brand red (Pantone 187 C) */
+    --nicholls-gray: #7C858E;       /* Secondary brand gray (Pantone 430 C) */
+    --nicholls-dark-gray: #4A4A4A;  /* Dark gray for text */
+    --nicholls-light-gray: #E5E5E5; /* Light gray for backgrounds */
+    
+    /* Bootstrap-compatible color mappings */
+    --primary-color: var(--nicholls-red);
+    --secondary-color: var(--nicholls-gray);
     --success-color: #198754;
     --danger-color: #dc3545;
     --warning-color: #ffc107;
-    --info-color: #0dcaf0;
+    --info-color: var(--nicholls-gray);
 }
 
 body {
@@ -22,6 +30,19 @@ main {
 .navbar-brand {
     font-weight: bold;
     font-size: 1.5rem;
+}
+
+.navbar-nav .logout-link {
+    border: none;
+    background: none;
+    padding: 0.5rem 1rem;
+    color: inherit;
+    text-align: left;
+}
+
+.navbar-nav .logout-link:hover,
+.navbar-nav .logout-link:focus {
+    color: rgba(255, 255, 255, 0.75);
 }
 
 .card {

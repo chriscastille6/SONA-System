@@ -15,7 +15,7 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #A6192E;">
         <div class="container">
             <a class="navbar-brand" href="{% url 'home' %}">{{ SITE_NAME }}</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -32,15 +32,24 @@
                         {% if user.is_researcher %}
                             <li class="nav-item"><a class="nav-link" href="{% url 'studies:researcher_dashboard' %}">My Studies</a></li>
                         {% endif %}
+                        {% if user.is_irb_member %}
+                            <li class="nav-item"><a class="nav-link" href="{% url 'studies:irb_member_dashboard' %}">IRB Dashboard</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'studies:committee_dashboard' %}">Committee</a></li>
+                        {% endif %}
                         {% if user.is_instructor %}
                             <li class="nav-item"><a class="nav-link" href="{% url 'courses:my_courses' %}">My Courses</a></li>
                             <li class="nav-item"><a class="nav-link" href="{% url 'reporting:home' %}">Reports</a></li>
                         {% endif %}
-                        {% if user.is_admin %}
+                        {% if user.is_staff or user.is_admin %}
                             <li class="nav-item"><a class="nav-link" href="/admin/">Admin Panel</a></li>
                         {% endif %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'accounts:profile' %}">Profile</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'accounts:logout' %}">Logout</a></li>
+                        <li class="nav-item">
+                            <form method="post" action="{% url 'accounts:logout' %}" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-link nav-link text-white px-0">Logout</button>
+                            </form>
+                        </li>
                     {% else %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'accounts:login' %}">Login</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'accounts:register' %}">Register</a></li>
@@ -65,9 +74,12 @@
 
     <footer class="bg-light py-4 mt-5">
         <div class="container text-center text-muted">
-            <p>&copy; 2025 {{ INSTITUTION_NAME }}. All rights reserved.</p>
-            <p class="small">
+            <p>{{ INSTITUTION_NAME }}</p>
+            <p class="small mb-1">
                 Research Participant Management System. Developed with AI assistance.
+            </p>
+            <p class="small text-muted mb-0">
+                Inspired by the proven workflows of <a href="https://www.sona-systems.com" target="_blank" rel="noopener" class="text-decoration-none">Sona Systems</a>.
             </p>
         </div>
     </footer>
