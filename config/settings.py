@@ -124,7 +124,8 @@ USE_I18N = True
 USE_TZ = True
 
 # URL Prefix (for deployment behind /hsirb/ path)
-FORCE_SCRIPT_NAME = config('FORCE_SCRIPT_NAME', default='/hsirb')
+# Only set if explicitly configured (for campus server deployment)
+FORCE_SCRIPT_NAME = config('FORCE_SCRIPT_NAME', default=None)
 
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
