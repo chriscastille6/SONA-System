@@ -146,6 +146,50 @@ footer {
     display: none;
 }
 
+/* Nicholls State University Branding */
+.navbar {
+    background-color: var(--nicholls-red) !important;
+}
+
+.btn-primary {
+    background-color: var(--nicholls-red);
+    border-color: var(--nicholls-red);
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: #8B1526;
+    border-color: #8B1526;
+}
+
+.btn-outline-primary {
+    color: var(--nicholls-red);
+    border-color: var(--nicholls-red);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--nicholls-red);
+    border-color: var(--nicholls-red);
+}
+
+.text-primary {
+    color: var(--nicholls-red) !important;
+}
+
+.border-primary {
+    border-color: var(--nicholls-red) !important;
+}
+
+.bg-primary {
+    background-color: var(--nicholls-red) !important;
+}
+
+/* Secondary gray for accents */
+.btn-secondary {
+    background-color: var(--nicholls-gray);
+    border-color: var(--nicholls-gray);
+}
+
 /* Accessibility */
 a:focus, button:focus {
     outline: 2px solid var(--primary-color);
