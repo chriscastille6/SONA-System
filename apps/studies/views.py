@@ -7,6 +7,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils import timezone
+from django.utils.html import format_html
+from django.urls import reverse
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
@@ -191,7 +193,18 @@ def create_study(request):
                 counter += 1
             study.slug = slug
             study.save()
-            messages.success(request, f'Study "{study.title}" created successfully! You can now submit it for IRB review.')
+            protocol_url = reverse('studies:protocol_submit', args=[study.id])
+            messages.success(
+                request,
+                format_html(
+                    'Study "<strong>{}</strong>" created successfully! '
+                    '<a href="{}" class="alert-link">Submit for IRB review</a> or return to your '
+                    '<a href="{}" class="alert-link">dashboard</a>.',
+                    study.title,
+                    protocol_url,
+                    reverse('studies:researcher_dashboard')
+                )
+            )
             return redirect('studies:researcher_dashboard')
     else:
         form = StudyForm()
@@ -741,10 +754,19 @@ def protocol_submit(request, study_id):
                 else:
                     messages.warning(request, 'AI review is not currently enabled. Protocol submitted without AI review.')
             
+            submission_detail_url = reverse('studies:protocol_submission_detail', args=[submission.id])
+            dashboard_url = reverse('studies:researcher_dashboard')
             messages.success(
                 request,
-                f'Protocol submitted successfully (Submission #{submission.submission_number}). '
-                f'Your college representative will review it shortly.'
+                format_html(
+                    'Protocol submitted successfully! <strong>Submission #{}</strong><br>'
+                    '<small>Your college representative will review it within 5-7 business days. '
+                    '<a href="{}" class="alert-link">View submission details</a> or return to your '
+                    '<a href="{}" class="alert-link">dashboard</a>.</small>',
+                    submission.submission_number,
+                    submission_detail_url,
+                    dashboard_url
+                )
             )
             return redirect('studies:protocol_submission_detail', submission_id=submission.id)
     else:
@@ -756,6 +778,17 @@ def protocol_submit(request, study_id):
                     value = getattr(existing_submission, field)
                     if value:  # Only include non-empty values
                         initial_data[field] = value
+        
+        # Auto-fill PI information from logged-in user profile
+        if not initial_data.get('pi_name'):
+            initial_data['pi_name'] = request.user.get_full_name()
+        if not initial_data.get('pi_email'):
+            initial_data['pi_email'] = request.user.email
+        if not initial_data.get('pi_department'):
+            # Try to get department from user profile
+            if hasattr(request.user, 'profile') and request.user.profile.department:
+                initial_data['pi_department'] = request.user.profile.department
+        
         form = ProtocolSubmissionForm(initial=initial_data)
     
     return render(request, 'studies/protocol_submit.html', {
