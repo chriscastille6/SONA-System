@@ -31,7 +31,7 @@ if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 # Customize admin site
-admin.site.site_header = f"{settings.SITE_NAME} Administration"
-admin.site.site_title = settings.SITE_NAME
-admin.site.index_title = "System Administration"
+admin.site.site_header = "PRAMS Administration"
+admin.site.site_title = "PRAMS"
+admin.site.index_title = "Participant Recruitment & Management System"
 
