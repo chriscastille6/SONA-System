@@ -102,11 +102,11 @@
                             </div>
                         </div>
                         
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <a href="{% url 'studies:researcher_dashboard' %}" class="btn btn-secondary me-md-2">
+                        <div class="d-flex gap-2 flex-wrap justify-content-end">
+                            <a href="{% url 'studies:researcher_dashboard' %}" class="btn btn-secondary">
                                 Cancel
                             </a>
-                            <a href="{% url 'studies:protocol_enter' study.id %}" class="btn btn-info me-md-2">
+                            <a href="{% url 'studies:protocol_enter' study.id %}" class="btn btn-info">
                                 <i class="bi bi-file-earmark-text"></i> Enter Protocol Information
                             </a>
                             <button type="submit" class="btn btn-primary" style="background-color: #A6192E; border-color: #A6192E;">

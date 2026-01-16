@@ -21,26 +21,31 @@
                 <div class="card-body">
                     <p class="lead">Review your protocol information before submitting:</p>
                     
-                    <div class="alert alert-warning">
-                        <strong>Important:</strong> Once submitted, your protocol will be sent to your college representative for review. 
+                    <div class="alert alert-warning mb-4">
+                        <strong><i class="bi bi-exclamation-triangle"></i> Important:</strong> Once submitted, your protocol will be sent to your college representative for review. 
                         You will not be able to edit it after submission (you can create a new version if revisions are needed).
                     </div>
                     
                     <div class="mb-4">
-                        <h5>Protocol Summary</h5>
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <strong>Study:</strong> {{ study.title }}
-                            </li>
-                            <li class="list-group-item">
-                                <strong>Suggested Review Type:</strong> {{ draft_submission.get_pi_suggested_review_type_display }}
-                            </li>
-                            {% if draft_submission.involves_deception %}
-                            <li class="list-group-item">
-                                <span class="badge bg-danger">Involves Deception</span>
-                            </li>
-                            {% endif %}
-                        </ul>
+                        <h5 class="mb-3"><i class="bi bi-file-earmark-text"></i> Protocol Summary</h5>
+                        <div class="card">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span><strong>Study:</strong></span>
+                                    <span>{{ study.title }}</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span><strong>Suggested Review Type:</strong></span>
+                                    <span class="badge bg-info">{{ draft_submission.get_pi_suggested_review_type_display }}</span>
+                                </li>
+                                {% if draft_submission.involves_deception %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span><strong>Special Considerations:</strong></span>
+                                    <span class="badge bg-danger">Involves Deception</span>
+                                </li>
+                                {% endif %}
+                            </ul>
+                        </div>
                     </div>
                     
                     <form method="post">
@@ -56,7 +61,7 @@
                         </div>
                         {% endif %}
                         
-                        <div class="d-flex gap-2">
+                        <div class="d-flex gap-2 flex-wrap">
                             <button type="submit" class="btn btn-primary btn-lg" style="background-color: #A6192E; border-color: #A6192E;">
                                 <i class="bi bi-send"></i> Submit for IRB Review
                             </button>

@@ -295,6 +295,20 @@ a:focus, button:focus {
         font-size: 0.75rem;
     }
     
+    /* Button groups - wrap on mobile */
+    .d-flex.gap-2.flex-wrap {
+        flex-direction: column;
+    }
+    
+    .d-flex.gap-2.flex-wrap .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+    
+    .d-flex.gap-2.flex-wrap .btn:last-child {
+        margin-bottom: 0;
+    }
+    
     /* Ensure buttons are large enough for touch */
     .btn {
         min-height: 44px;
