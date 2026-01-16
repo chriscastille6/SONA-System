@@ -1140,6 +1140,12 @@ class ProtocolSubmission(models.Model):
         help_text="Additional IRB contact information or notes"
     )
     
+    # PI's reviewer suggestions (informational for college rep)
+    suggested_reviewers = models.TextField(
+        blank=True,
+        help_text="PI's suggestions for reviewers (informational - college representative will make final assignment)"
+    )
+    
     # Signatures (workflow tracking)
     pi_signature_date = models.DateTimeField(
         null=True,

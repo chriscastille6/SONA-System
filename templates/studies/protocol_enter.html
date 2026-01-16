@@ -788,6 +788,13 @@
                             {{ form.irb_contact_notes }}
                             <small class="form-text text-muted">{{ form.irb_contact_notes.help_text }}</small>
                         </div>
+                        <div class="mb-3">
+                            <label for="{{ form.suggested_reviewers.id_for_label }}" class="form-label">
+                                {{ form.suggested_reviewers.label }}
+                            </label>
+                            {{ form.suggested_reviewers }}
+                            <small class="form-text text-muted">{{ form.suggested_reviewers.help_text }}</small>
+                        </div>
                     </div>
                 </div>
                 

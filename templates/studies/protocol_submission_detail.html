@@ -52,6 +52,14 @@
                         {% if submission.involves_deception %}
                         <p><span class="badge bg-danger">Involves Deception</span></p>
                         {% endif %}
+                        {% if submission.suggested_reviewers %}
+                        <div class="mt-3">
+                            <p><strong>PI Suggested Reviewers:</strong></p>
+                            <div class="alert alert-info mb-0">
+                                {{ submission.suggested_reviewers|linebreaks }}
+                            </div>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

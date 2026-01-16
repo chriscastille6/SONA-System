@@ -487,6 +487,14 @@ class ProtocolSubmissionForm(forms.ModelForm):
         help_text='Additional IRB contact information or notes'
     )
     
+    # PI's reviewer suggestions
+    suggested_reviewers = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        label='Suggested Reviewers (Optional)',
+        help_text='You may suggest reviewers for your protocol. The college representative will make the final assignment, but your suggestions will be considered. Example: "I recommend Jon Murphy (CBA rep) and Julianne Allen as reviewers."'
+    )
+    
     class Meta:
         model = ProtocolSubmission
         fields = [
@@ -556,5 +564,6 @@ class ProtocolSubmissionForm(forms.ModelForm):
             'study_contact_email',
             'study_contact_phone',
             'irb_contact_notes',
+            'suggested_reviewers',
         ]
         # Note: 'use_ai_review' is not a model field, handled separately in view
