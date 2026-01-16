@@ -89,7 +89,17 @@ The study involves the following procedures:
 
 6. Feedback and Comparison: [DESCRIBE FEEDBACK PROVIDED]
 
-7. Debriefing: Participants will receive a comprehensive debriefing explaining the study's purpose, [KEY CONCEPTS], and resources for further learning.
+7. Debriefing: Participants will receive a comprehensive debriefing explaining the study's purpose, [KEY CONCEPTS], and resources for further learning. The debriefing includes:
+   - Study Purpose: [EXPLANATION]
+   - Research Context: [CONTEXT]
+   - What We Are Looking For: [ANALYSIS PLANS]
+   - Understanding Results: Clarification that assessments are research tools (not diagnostic), scores are probabilistic, and abilities can be developed
+   - Important Clarifications: [KEY CLARIFICATIONS]
+   - Contact Information: PI contact information and resources for questions
+   - Additional Resources: Mental health resources and IRB contact information
+   - Lab Information: [LAB SPONSORSHIP INFO if applicable]
+   
+   The debriefing is provided in a comprehensive HTML format that participants can view, print, and reference after completing the study.
 
 All data collection will occur online through the servers hosted by Nicholls State University. The entire procedure takes approximately [DURATION] minutes to complete.
 ```
@@ -130,6 +140,8 @@ This research serves educational purposes by:
 ```
 Participants will be recruited through the Participant Recruitment and Management System (PRAMS) platform. Students enrolled at Nicholls State University courses will be able to view and sign up for this study through the PRAMS system. Recruitment materials will be posted on the PRAMS system with a clear description of the study requirements, duration, 
 and credit value (if applicable).
+
+Announcements for participating in this study may also be made through word of mouth marketing.
 ```
 
 **Recruitment Script Template**:
