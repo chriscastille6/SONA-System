@@ -228,7 +228,7 @@
         {% endif %}
         
         <!-- Decision Form -->
-        {% if submission.decision == 'pending' and (is_college_rep or is_chair or is_reviewer) %}
+        {% if submission.decision == 'pending' and is_college_rep or submission.decision == 'pending' and is_chair or submission.decision == 'pending' and is_reviewer %}
         <div class="card mb-3">
             <div class="card-header bg-success text-white">
                 <h5 class="mb-0">Make Decision</h5>
