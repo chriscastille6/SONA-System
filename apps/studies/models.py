@@ -1000,6 +1000,146 @@ class ProtocolSubmission(models.Model):
         help_text="Previous HSIRB protocol number (if continuation)"
     )
     
+    # ========== ADDITIONAL IRB REQUIREMENTS ==========
+    
+    # Investigator Information
+    pi_name = models.CharField(
+        max_length=200,
+        blank=True,
+        help_text="Primary Investigator full name"
+    )
+    pi_title = models.CharField(
+        max_length=200,
+        blank=True,
+        help_text="PI title/position"
+    )
+    pi_department = models.CharField(
+        max_length=200,
+        blank=True,
+        help_text="PI department"
+    )
+    pi_email = models.EmailField(
+        blank=True,
+        help_text="PI email address"
+    )
+    pi_phone = models.CharField(
+        max_length=50,
+        blank=True,
+        help_text="PI phone number"
+    )
+    co_investigators = models.TextField(
+        blank=True,
+        help_text="List of co-investigators (name, title, department, email)"
+    )
+    citi_training_completion = models.TextField(
+        blank=True,
+        help_text="CITI training completion dates and certificate numbers for all investigators"
+    )
+    
+    # Vulnerable Populations
+    involves_vulnerable_populations = models.BooleanField(
+        default=False,
+        help_text="Does this research involve vulnerable populations?"
+    )
+    vulnerable_populations_description = models.TextField(
+        blank=True,
+        help_text="Describe which vulnerable populations are involved and protections in place"
+    )
+    vulnerable_population_protections = models.TextField(
+        blank=True,
+        help_text="Specific protections and safeguards for vulnerable populations"
+    )
+    
+    # International Research
+    involves_international_research = models.BooleanField(
+        default=False,
+        help_text="Does this research involve international participants or locations?"
+    )
+    international_research_locations = models.TextField(
+        blank=True,
+        help_text="Geographic locations where research will be conducted"
+    )
+    cultural_considerations = models.TextField(
+        blank=True,
+        help_text="Cultural considerations and adaptations for international research"
+    )
+    
+    # Financial Interests
+    financial_interest_disclosure = models.TextField(
+        blank=True,
+        help_text="Disclosure of any financial interests or conflicts of interest"
+    )
+    financial_interest_none = models.BooleanField(
+        default=False,
+        help_text="No financial interests to disclose"
+    )
+    
+    # Study Monitoring
+    data_monitoring_plan = models.TextField(
+        blank=True,
+        help_text="Plan for monitoring data collection and quality assurance"
+    )
+    oversight_procedures = models.TextField(
+        blank=True,
+        help_text="Procedures for oversight and quality assurance"
+    )
+    
+    # Publication and Dissemination
+    publication_plan = models.TextField(
+        blank=True,
+        help_text="Plan for publication and dissemination of results"
+    )
+    data_sharing_plan = models.TextField(
+        blank=True,
+        help_text="Plan for sharing data with other researchers or repositories"
+    )
+    participant_access_to_results = models.TextField(
+        blank=True,
+        help_text="How participants can access study results (if applicable)"
+    )
+    
+    # Appendices/Documents
+    appendices_notes = models.TextField(
+        blank=True,
+        help_text="Notes about supporting documents, instruments, or analysis plans attached"
+    )
+    
+    # Additional Contact Information
+    study_contact_name = models.CharField(
+        max_length=200,
+        blank=True,
+        help_text="Study contact person name (if different from PI)"
+    )
+    study_contact_email = models.EmailField(
+        blank=True,
+        help_text="Study contact email"
+    )
+    study_contact_phone = models.CharField(
+        max_length=50,
+        blank=True,
+        help_text="Study contact phone"
+    )
+    irb_contact_notes = models.TextField(
+        blank=True,
+        help_text="Additional IRB contact information or notes"
+    )
+    
+    # Signatures (workflow tracking)
+    pi_signature_date = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="Date PI signed the submission"
+    )
+    co_investigator_signatures = models.TextField(
+        blank=True,
+        help_text="Co-investigator signatures and dates"
+    )
+    department_chair_signature_date = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="Date department chair signed (if required)"
+    )
+    
     # Reviewers (for expedited: 2 reviewers + college rep)
     reviewers = models.ManyToManyField(
         settings.AUTH_USER_MODEL,

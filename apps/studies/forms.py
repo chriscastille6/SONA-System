@@ -315,6 +315,178 @@ class ProtocolSubmissionForm(forms.ModelForm):
         help_text='If continuation, provide the previous protocol number'
     )
     
+    # Investigator Information
+    pi_name = forms.CharField(
+        required=False,
+        max_length=200,
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        label='Primary Investigator Name',
+        help_text='Full name of the Primary Investigator'
+    )
+    pi_title = forms.CharField(
+        required=False,
+        max_length=200,
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        label='PI Title/Position',
+        help_text='PI academic title or position'
+    )
+    pi_department = forms.CharField(
+        required=False,
+        max_length=200,
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        label='PI Department',
+        help_text='Department or college'
+    )
+    pi_email = forms.EmailField(
+        required=False,
+        widget=forms.EmailInput(attrs={'class': 'form-control'}),
+        label='PI Email',
+        help_text='Primary Investigator email address'
+    )
+    pi_phone = forms.CharField(
+        required=False,
+        max_length=50,
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        label='PI Phone',
+        help_text='Primary Investigator phone number'
+    )
+    co_investigators = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        label='Co-Investigators',
+        help_text='List all co-investigators (name, title, department, email)'
+    )
+    citi_training_completion = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        label='CITI Training Completion',
+        help_text='CITI training completion dates and certificate numbers for all investigators'
+    )
+    
+    # Vulnerable Populations
+    involves_vulnerable_populations = forms.BooleanField(
+        required=False,
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        label='Involves Vulnerable Populations',
+        help_text='Check if this research involves vulnerable populations (children, prisoners, pregnant women, etc.)'
+    )
+    vulnerable_populations_description = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        label='Vulnerable Populations Description',
+        help_text='Describe which vulnerable populations are involved'
+    )
+    vulnerable_population_protections = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        label='Vulnerable Population Protections',
+        help_text='Specific protections and safeguards for vulnerable populations'
+    )
+    
+    # International Research
+    involves_international_research = forms.BooleanField(
+        required=False,
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        label='Involves International Research',
+        help_text='Check if this research involves international participants or locations'
+    )
+    international_research_locations = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+        label='International Research Locations',
+        help_text='Geographic locations where research will be conducted'
+    )
+    cultural_considerations = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        label='Cultural Considerations',
+        help_text='Cultural considerations and adaptations for international research'
+    )
+    
+    # Financial Interests
+    financial_interest_disclosure = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        label='Financial Interest Disclosure',
+        help_text='Disclose any financial interests or conflicts of interest related to this research'
+    )
+    financial_interest_none = forms.BooleanField(
+        required=False,
+        widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+        label='No Financial Interests',
+        help_text='Check if there are no financial interests to disclose'
+    )
+    
+    # Study Monitoring
+    data_monitoring_plan = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        label='Data Monitoring Plan',
+        help_text='Plan for monitoring data collection and quality assurance'
+    )
+    oversight_procedures = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        label='Oversight Procedures',
+        help_text='Procedures for oversight and quality assurance'
+    )
+    
+    # Publication and Dissemination
+    publication_plan = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        label='Publication Plan',
+        help_text='Plan for publication and dissemination of results'
+    )
+    data_sharing_plan = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        label='Data Sharing Plan',
+        help_text='Plan for sharing data with other researchers or repositories'
+    )
+    participant_access_to_results = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+        label='Participant Access to Results',
+        help_text='How participants can access study results (if applicable)'
+    )
+    
+    # Appendices
+    appendices_notes = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+        label='Appendices Notes',
+        help_text='Notes about supporting documents, instruments, or analysis plans (files can be uploaded separately)'
+    )
+    
+    # Additional Contact Information
+    study_contact_name = forms.CharField(
+        required=False,
+        max_length=200,
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        label='Study Contact Name',
+        help_text='Contact person name (if different from PI)'
+    )
+    study_contact_email = forms.EmailField(
+        required=False,
+        widget=forms.EmailInput(attrs={'class': 'form-control'}),
+        label='Study Contact Email',
+        help_text='Study contact email address'
+    )
+    study_contact_phone = forms.CharField(
+        required=False,
+        max_length=50,
+        widget=forms.TextInput(attrs={'class': 'form-control'}),
+        label='Study Contact Phone',
+        help_text='Study contact phone number'
+    )
+    irb_contact_notes = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+        label='IRB Contact Notes',
+        help_text='Additional IRB contact information or notes'
+    )
+    
     class Meta:
         model = ProtocolSubmission
         fields = [
@@ -351,5 +523,38 @@ class ProtocolSubmissionForm(forms.ModelForm):
             'funding_source',
             'continuation_of_previous',
             'previous_protocol_number',
+            # Investigator Information
+            'pi_name',
+            'pi_title',
+            'pi_department',
+            'pi_email',
+            'pi_phone',
+            'co_investigators',
+            'citi_training_completion',
+            # Vulnerable Populations
+            'involves_vulnerable_populations',
+            'vulnerable_populations_description',
+            'vulnerable_population_protections',
+            # International Research
+            'involves_international_research',
+            'international_research_locations',
+            'cultural_considerations',
+            # Financial Interests
+            'financial_interest_disclosure',
+            'financial_interest_none',
+            # Study Monitoring
+            'data_monitoring_plan',
+            'oversight_procedures',
+            # Publication and Dissemination
+            'publication_plan',
+            'data_sharing_plan',
+            'participant_access_to_results',
+            # Appendices
+            'appendices_notes',
+            # Additional Contact Information
+            'study_contact_name',
+            'study_contact_email',
+            'study_contact_phone',
+            'irb_contact_notes',
         ]
         # Note: 'use_ai_review' is not a model field, handled separately in view

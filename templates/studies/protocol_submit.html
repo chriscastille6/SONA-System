@@ -472,6 +472,263 @@
                     </div>
                 </div>
                 
+                <!-- Section 9: Investigator Information -->
+                <div class="card mb-4">
+                    <div class="card-header" style="background-color: #7C858E; color: white;">
+                        <h4 class="mb-0">9. Investigator Information</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.pi_name.id_for_label }}" class="form-label">
+                                        {{ form.pi_name.label }}
+                                    </label>
+                                    {{ form.pi_name }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.pi_title.id_for_label }}" class="form-label">
+                                        {{ form.pi_title.label }}
+                                    </label>
+                                    {{ form.pi_title }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.pi_department.id_for_label }}" class="form-label">
+                                        {{ form.pi_department.label }}
+                                    </label>
+                                    {{ form.pi_department }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.pi_email.id_for_label }}" class="form-label">
+                                        {{ form.pi_email.label }}
+                                    </label>
+                                    {{ form.pi_email }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.pi_phone.id_for_label }}" class="form-label">
+                                {{ form.pi_phone.label }}
+                            </label>
+                            {{ form.pi_phone }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.co_investigators.id_for_label }}" class="form-label">
+                                {{ form.co_investigators.label }}
+                            </label>
+                            {{ form.co_investigators }}
+                            <small class="form-text text-muted">{{ form.co_investigators.help_text }}</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.citi_training_completion.id_for_label }}" class="form-label">
+                                {{ form.citi_training_completion.label }}
+                            </label>
+                            {{ form.citi_training_completion }}
+                            <small class="form-text text-muted">{{ form.citi_training_completion.help_text }}</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 10: Vulnerable Populations -->
+                <div class="card mb-4">
+                    <div class="card-header" style="background-color: #7C858E; color: white;">
+                        <h4 class="mb-0">10. Vulnerable Populations</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-check mb-3">
+                            {{ form.involves_vulnerable_populations }}
+                            <label class="form-check-label" for="{{ form.involves_vulnerable_populations.id_for_label }}">
+                                {{ form.involves_vulnerable_populations.label }}
+                            </label>
+                            <small class="d-block text-muted">{{ form.involves_vulnerable_populations.help_text }}</small>
+                        </div>
+                        <div class="mb-3" id="vulnerable-populations-fields" style="display: none;">
+                            <label for="{{ form.vulnerable_populations_description.id_for_label }}" class="form-label">
+                                {{ form.vulnerable_populations_description.label }}
+                            </label>
+                            {{ form.vulnerable_populations_description }}
+                        </div>
+                        <div class="mb-3" id="vulnerable-protections-field" style="display: none;">
+                            <label for="{{ form.vulnerable_population_protections.id_for_label }}" class="form-label">
+                                {{ form.vulnerable_population_protections.label }}
+                            </label>
+                            {{ form.vulnerable_population_protections }}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 11: International Research -->
+                <div class="card mb-4">
+                    <div class="card-header" style="background-color: #7C858E; color: white;">
+                        <h4 class="mb-0">11. International Research</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-check mb-3">
+                            {{ form.involves_international_research }}
+                            <label class="form-check-label" for="{{ form.involves_international_research.id_for_label }}">
+                                {{ form.involves_international_research.label }}
+                            </label>
+                            <small class="d-block text-muted">{{ form.involves_international_research.help_text }}</small>
+                        </div>
+                        <div class="mb-3" id="international-fields" style="display: none;">
+                            <label for="{{ form.international_research_locations.id_for_label }}" class="form-label">
+                                {{ form.international_research_locations.label }}
+                            </label>
+                            {{ form.international_research_locations }}
+                        </div>
+                        <div class="mb-3" id="cultural-field" style="display: none;">
+                            <label for="{{ form.cultural_considerations.id_for_label }}" class="form-label">
+                                {{ form.cultural_considerations.label }}
+                            </label>
+                            {{ form.cultural_considerations }}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 12: Financial Interests -->
+                <div class="card mb-4">
+                    <div class="card-header" style="background-color: #7C858E; color: white;">
+                        <h4 class="mb-0">12. Financial Interests and Conflicts of Interest</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-check mb-3">
+                            {{ form.financial_interest_none }}
+                            <label class="form-check-label" for="{{ form.financial_interest_none.id_for_label }}">
+                                {{ form.financial_interest_none.label }}
+                            </label>
+                        </div>
+                        <div class="mb-3" id="financial-disclosure-field" style="display: none;">
+                            <label for="{{ form.financial_interest_disclosure.id_for_label }}" class="form-label">
+                                {{ form.financial_interest_disclosure.label }}
+                            </label>
+                            {{ form.financial_interest_disclosure }}
+                            <small class="form-text text-muted">{{ form.financial_interest_disclosure.help_text }}</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 13: Study Monitoring -->
+                <div class="card mb-4">
+                    <div class="card-header" style="background-color: #7C858E; color: white;">
+                        <h4 class="mb-0">13. Study Monitoring and Oversight</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="{{ form.data_monitoring_plan.id_for_label }}" class="form-label">
+                                {{ form.data_monitoring_plan.label }}
+                            </label>
+                            {{ form.data_monitoring_plan }}
+                            <small class="form-text text-muted">{{ form.data_monitoring_plan.help_text }}</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.oversight_procedures.id_for_label }}" class="form-label">
+                                {{ form.oversight_procedures.label }}
+                            </label>
+                            {{ form.oversight_procedures }}
+                            <small class="form-text text-muted">{{ form.oversight_procedures.help_text }}</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 14: Publication and Dissemination -->
+                <div class="card mb-4">
+                    <div class="card-header" style="background-color: #7C858E; color: white;">
+                        <h4 class="mb-0">14. Publication and Dissemination</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="{{ form.publication_plan.id_for_label }}" class="form-label">
+                                {{ form.publication_plan.label }}
+                            </label>
+                            {{ form.publication_plan }}
+                            <small class="form-text text-muted">{{ form.publication_plan.help_text }}</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.data_sharing_plan.id_for_label }}" class="form-label">
+                                {{ form.data_sharing_plan.label }}
+                            </label>
+                            {{ form.data_sharing_plan }}
+                            <small class="form-text text-muted">{{ form.data_sharing_plan.help_text }}</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.participant_access_to_results.id_for_label }}" class="form-label">
+                                {{ form.participant_access_to_results.label }}
+                            </label>
+                            {{ form.participant_access_to_results }}
+                            <small class="form-text text-muted">{{ form.participant_access_to_results.help_text }}</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 15: Appendices and Additional Information -->
+                <div class="card mb-4">
+                    <div class="card-header" style="background-color: #7C858E; color: white;">
+                        <h4 class="mb-0">15. Appendices and Additional Information</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="{{ form.appendices_notes.id_for_label }}" class="form-label">
+                                {{ form.appendices_notes.label }}
+                            </label>
+                            {{ form.appendices_notes }}
+                            <small class="form-text text-muted">{{ form.appendices_notes.help_text }}</small>
+                        </div>
+                        <div class="alert alert-info">
+                            <strong>Note:</strong> Supporting documents (consent forms, surveys, recruitment materials, etc.) can be uploaded separately through the study management interface or attached to your submission.
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 16: Additional Contact Information -->
+                <div class="card mb-4">
+                    <div class="card-header" style="background-color: #7C858E; color: white;">
+                        <h4 class="mb-0">16. Additional Contact Information</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="{{ form.study_contact_name.id_for_label }}" class="form-label">
+                                        {{ form.study_contact_name.label }}
+                                    </label>
+                                    {{ form.study_contact_name }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="{{ form.study_contact_email.id_for_label }}" class="form-label">
+                                        {{ form.study_contact_email.label }}
+                                    </label>
+                                    {{ form.study_contact_email }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="{{ form.study_contact_phone.id_for_label }}" class="form-label">
+                                        {{ form.study_contact_phone.label }}
+                                    </label>
+                                    {{ form.study_contact_phone }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.irb_contact_notes.id_for_label }}" class="form-label">
+                                {{ form.irb_contact_notes.label }}
+                            </label>
+                            {{ form.irb_contact_notes }}
+                            <small class="form-text text-muted">{{ form.irb_contact_notes.help_text }}</small>
+                        </div>
+                    </div>
+                </div>
+                
                 <!-- Submit Button -->
                 <div class="card mb-4">
                     <div class="card-body">
@@ -501,18 +758,60 @@
 </div>
 
 <script>
-// Show/hide previous protocol number field based on continuation checkbox
+// Show/hide conditional fields based on checkboxes
 document.addEventListener('DOMContentLoaded', function() {
+    // Previous protocol number
     const continuationCheckbox = document.getElementById('{{ form.continuation_of_previous.id_for_label }}');
     const previousProtocolField = document.getElementById('previous-protocol-field');
     
     if (continuationCheckbox) {
-        function toggleField() {
+        function togglePreviousProtocol() {
             previousProtocolField.style.display = continuationCheckbox.checked ? 'block' : 'none';
         }
-        
-        continuationCheckbox.addEventListener('change', toggleField);
-        toggleField(); // Initial state
+        continuationCheckbox.addEventListener('change', togglePreviousProtocol);
+        togglePreviousProtocol();
+    }
+    
+    // Vulnerable populations
+    const vulnerableCheckbox = document.getElementById('{{ form.involves_vulnerable_populations.id_for_label }}');
+    const vulnerableFields = document.getElementById('vulnerable-populations-fields');
+    const vulnerableProtections = document.getElementById('vulnerable-protections-field');
+    
+    if (vulnerableCheckbox) {
+        function toggleVulnerableFields() {
+            const show = vulnerableCheckbox.checked;
+            vulnerableFields.style.display = show ? 'block' : 'none';
+            vulnerableProtections.style.display = show ? 'block' : 'none';
+        }
+        vulnerableCheckbox.addEventListener('change', toggleVulnerableFields);
+        toggleVulnerableFields();
+    }
+    
+    // International research
+    const internationalCheckbox = document.getElementById('{{ form.involves_international_research.id_for_label }}');
+    const internationalFields = document.getElementById('international-fields');
+    const culturalField = document.getElementById('cultural-field');
+    
+    if (internationalCheckbox) {
+        function toggleInternationalFields() {
+            const show = internationalCheckbox.checked;
+            internationalFields.style.display = show ? 'block' : 'none';
+            culturalField.style.display = show ? 'block' : 'none';
+        }
+        internationalCheckbox.addEventListener('change', toggleInternationalFields);
+        toggleInternationalFields();
+    }
+    
+    // Financial interests
+    const financialNoneCheckbox = document.getElementById('{{ form.financial_interest_none.id_for_label }}');
+    const financialDisclosureField = document.getElementById('financial-disclosure-field');
+    
+    if (financialNoneCheckbox) {
+        function toggleFinancialDisclosure() {
+            financialDisclosureField.style.display = financialNoneCheckbox.checked ? 'none' : 'block';
+        }
+        financialNoneCheckbox.addEventListener('change', toggleFinancialDisclosure);
+        toggleFinancialDisclosure();
     }
 });
 </script>
