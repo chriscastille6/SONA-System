@@ -461,6 +461,15 @@
                     <p><strong>CITI Training Completion:</strong></p>
                     <p class="ms-3">{{ submission.citi_training_completion|linebreaks }}</p>
                     {% endif %}
+                    {% if submission.citi_training_certificate %}
+                    <p><strong>CITI Training Certificate:</strong></p>
+                    <p class="ms-3">
+                        <a href="{{ submission.citi_training_certificate.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-download"></i> Download CITI Certificate
+                        </a>
+                        <small class="text-muted d-block mt-1">{{ submission.citi_training_certificate.name }}</small>
+                    </p>
+                    {% endif %}
                 </div>
                 
                 <!-- Section 10: Vulnerable Populations -->
