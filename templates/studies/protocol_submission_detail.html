@@ -233,6 +233,308 @@
         </div>
         {% endif %}
         
+        <!-- Full Protocol Details -->
+        <div class="card mb-3">
+            <div class="card-header" style="background-color: #A6192E; color: white;">
+                <h5 class="mb-0">Complete Protocol Information</h5>
+            </div>
+            <div class="card-body">
+                <!-- Section 1: Review Type and Basic Information -->
+                <div class="mb-4">
+                    <h6 class="text-primary border-bottom pb-2">1. Review Type and Basic Information</h6>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p><strong>Estimated Start Date:</strong> {{ submission.estimated_start_date|default:"Not provided" }}</p>
+                            <p><strong>Estimated Completion Date:</strong> {{ submission.estimated_completion_date|default:"Not provided" }}</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p><strong>Funding Source:</strong> {{ submission.funding_source|default:"Not provided"|linebreaks }}</p>
+                            {% if submission.continuation_of_previous %}
+                            <p><strong>Continuation:</strong> Yes - Previous Protocol #{{ submission.previous_protocol_number|default:"Not provided" }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 2: Protocol Description -->
+                <div class="mb-4">
+                    <h6 class="text-primary border-bottom pb-2">2. Description of Project or Proposal</h6>
+                    {% if submission.protocol_description %}
+                    <p><strong>Protocol Description:</strong></p>
+                    <p class="ms-3">{{ submission.protocol_description|linebreaks }}</p>
+                    {% endif %}
+                    {% if submission.population_description %}
+                    <p><strong>Population of Human Subjects:</strong></p>
+                    <p class="ms-3">{{ submission.population_description|linebreaks }}</p>
+                    {% endif %}
+                    {% if submission.research_procedures %}
+                    <p><strong>Research Procedures and Data Collection:</strong></p>
+                    <p class="ms-3">{{ submission.research_procedures|linebreaks }}</p>
+                    {% endif %}
+                    {% if submission.research_objectives %}
+                    <p><strong>Research Objectives:</strong></p>
+                    <p class="ms-3">{{ submission.research_objectives|linebreaks }}</p>
+                    {% endif %}
+                    {% if submission.research_questions %}
+                    <p><strong>Research Questions or Hypotheses:</strong></p>
+                    <p class="ms-3">{{ submission.research_questions|linebreaks }}</p>
+                    {% endif %}
+                    {% if submission.educational_justification %}
+                    <p><strong>Educational Justification:</strong></p>
+                    <p class="ms-3">{{ submission.educational_justification|linebreaks }}</p>
+                    {% endif %}
+                </div>
+                
+                <!-- Section 3: Recruitment -->
+                <div class="mb-4">
+                    <h6 class="text-primary border-bottom pb-2">3. Recruitment</h6>
+                    {% if submission.recruitment_method %}
+                    <p><strong>Recruitment Method:</strong></p>
+                    <p class="ms-3">{{ submission.recruitment_method|linebreaks }}</p>
+                    {% endif %}
+                    {% if submission.recruitment_script %}
+                    <p><strong>Recruitment Script:</strong></p>
+                    <p class="ms-3">{{ submission.recruitment_script|linebreaks }}</p>
+                    {% endif %}
+                    {% if submission.inclusion_criteria %}
+                    <p><strong>Inclusion Criteria:</strong></p>
+                    <p class="ms-3">{{ submission.inclusion_criteria|linebreaks }}</p>
+                    {% endif %}
+                    {% if submission.exclusion_criteria %}
+                    <p><strong>Exclusion Criteria:</strong></p>
+                    <p class="ms-3">{{ submission.exclusion_criteria|linebreaks }}</p>
+                    {% endif %}
+                </div>
+                
+                <!-- Section 4: Benefits and Costs -->
+                <div class="mb-4">
+                    <h6 class="text-primary border-bottom pb-2">4. Subject Benefits and Costs</h6>
+                    {% if submission.benefits_to_subjects %}
+                    <p><strong>Benefits to Human Subjects:</strong></p>
+                    <p class="ms-3">{{ submission.benefits_to_subjects|linebreaks }}</p>
+                    {% endif %}
+                    {% if submission.benefits_to_others %}
+                    <p><strong>Benefits to Others:</strong></p>
+                    <p class="ms-3">{{ submission.benefits_to_others|linebreaks }}</p>
+                    {% endif %}
+                    {% if submission.benefits_to_society %}
+                    <p><strong>Benefits to Society:</strong></p>
+                    <p class="ms-3">{{ submission.benefits_to_society|linebreaks }}</p>
+                    {% endif %}
+                    {% if submission.payment_compensation %}
+                    <p><strong>Payment or Compensation:</strong></p>
+                    <p class="ms-3">{{ submission.payment_compensation|linebreaks }}</p>
+                    {% endif %}
+                    {% if submission.costs_to_subjects %}
+                    <p><strong>Costs to Subjects:</strong></p>
+                    <p class="ms-3">{{ submission.costs_to_subjects|linebreaks }}</p>
+                    {% endif %}
+                </div>
+                
+                <!-- Section 5: Review Type Justification -->
+                <div class="mb-4">
+                    <h6 class="text-primary border-bottom pb-2">5. Basis of Request for Exemption or Expedited Review</h6>
+                    {% if submission.review_type_justification %}
+                    <p><strong>Justification for Review Type:</strong></p>
+                    <p class="ms-3">{{ submission.review_type_justification|linebreaks }}</p>
+                    {% endif %}
+                    {% if submission.exemption_category %}
+                    <p><strong>Exemption Category:</strong> {{ submission.exemption_category }}</p>
+                    {% endif %}
+                    {% if submission.expedited_category %}
+                    <p><strong>Expedited Review Category:</strong> {{ submission.expedited_category }}</p>
+                    {% endif %}
+                </div>
+                
+                <!-- Section 6: Risks -->
+                <div class="mb-4">
+                    <h6 class="text-primary border-bottom pb-2">6. Statement of Risk</h6>
+                    {% if submission.risk_statement %}
+                    <p><strong>Statement of Risk:</strong></p>
+                    <p class="ms-3">{{ submission.risk_statement|linebreaks }}</p>
+                    {% endif %}
+                    {% if submission.risk_mitigation %}
+                    <p><strong>Risk Mitigation Strategies:</strong></p>
+                    <p class="ms-3">{{ submission.risk_mitigation|linebreaks }}</p>
+                    {% endif %}
+                </div>
+                
+                <!-- Section 7: Data Handling -->
+                <div class="mb-4">
+                    <h6 class="text-primary border-bottom pb-2">7. Data Handling and Confidentiality</h6>
+                    {% if submission.data_collection_methods %}
+                    <p><strong>Data Collection Methods:</strong></p>
+                    <p class="ms-3">{{ submission.data_collection_methods|linebreaks }}</p>
+                    {% endif %}
+                    {% if submission.data_storage %}
+                    <p><strong>Data Storage:</strong></p>
+                    <p class="ms-3">{{ submission.data_storage|linebreaks }}</p>
+                    {% endif %}
+                    {% if submission.confidentiality_procedures %}
+                    <p><strong>Confidentiality Procedures:</strong></p>
+                    <p class="ms-3">{{ submission.confidentiality_procedures|linebreaks }}</p>
+                    {% endif %}
+                    {% if submission.data_retention %}
+                    <p><strong>Data Retention Policy:</strong></p>
+                    <p class="ms-3">{{ submission.data_retention|linebreaks }}</p>
+                    {% endif %}
+                    {% if submission.data_access %}
+                    <p><strong>Data Access:</strong></p>
+                    <p class="ms-3">{{ submission.data_access|linebreaks }}</p>
+                    {% endif %}
+                </div>
+                
+                <!-- Section 8: Consent Procedures -->
+                <div class="mb-4">
+                    <h6 class="text-primary border-bottom pb-2">8. Consent Procedures</h6>
+                    {% if submission.consent_procedures %}
+                    <p class="ms-3">{{ submission.consent_procedures|linebreaks }}</p>
+                    {% else %}
+                    <p class="text-muted ms-3">Not provided</p>
+                    {% endif %}
+                </div>
+                
+                <!-- Section 9: Investigator Information -->
+                <div class="mb-4">
+                    <h6 class="text-primary border-bottom pb-2">9. Investigator Information</h6>
+                    <div class="row">
+                        <div class="col-md-6">
+                            {% if submission.pi_name %}
+                            <p><strong>PI Name:</strong> {{ submission.pi_name }}</p>
+                            {% endif %}
+                            {% if submission.pi_title %}
+                            <p><strong>PI Title:</strong> {{ submission.pi_title }}</p>
+                            {% endif %}
+                            {% if submission.pi_department %}
+                            <p><strong>PI Department:</strong> {{ submission.pi_department }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6">
+                            {% if submission.pi_email %}
+                            <p><strong>PI Email:</strong> {{ submission.pi_email }}</p>
+                            {% endif %}
+                            {% if submission.pi_phone %}
+                            <p><strong>PI Phone:</strong> {{ submission.pi_phone }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% if submission.co_investigators %}
+                    <p><strong>Co-Investigators:</strong></p>
+                    <p class="ms-3">{{ submission.co_investigators|linebreaks }}</p>
+                    {% endif %}
+                    {% if submission.citi_training_completion %}
+                    <p><strong>CITI Training Completion:</strong></p>
+                    <p class="ms-3">{{ submission.citi_training_completion|linebreaks }}</p>
+                    {% endif %}
+                </div>
+                
+                <!-- Section 10: Vulnerable Populations -->
+                {% if submission.involves_vulnerable_populations %}
+                <div class="mb-4">
+                    <h6 class="text-primary border-bottom pb-2">10. Vulnerable Populations</h6>
+                    {% if submission.vulnerable_populations_description %}
+                    <p><strong>Vulnerable Populations Description:</strong></p>
+                    <p class="ms-3">{{ submission.vulnerable_populations_description|linebreaks }}</p>
+                    {% endif %}
+                    {% if submission.vulnerable_population_protections %}
+                    <p><strong>Vulnerable Population Protections:</strong></p>
+                    <p class="ms-3">{{ submission.vulnerable_population_protections|linebreaks }}</p>
+                    {% endif %}
+                </div>
+                {% endif %}
+                
+                <!-- Section 11: International Research -->
+                {% if submission.involves_international_research %}
+                <div class="mb-4">
+                    <h6 class="text-primary border-bottom pb-2">11. International Research</h6>
+                    {% if submission.international_research_locations %}
+                    <p><strong>International Research Locations:</strong></p>
+                    <p class="ms-3">{{ submission.international_research_locations|linebreaks }}</p>
+                    {% endif %}
+                    {% if submission.cultural_considerations %}
+                    <p><strong>Cultural Considerations:</strong></p>
+                    <p class="ms-3">{{ submission.cultural_considerations|linebreaks }}</p>
+                    {% endif %}
+                </div>
+                {% endif %}
+                
+                <!-- Section 12: Financial Interests -->
+                <div class="mb-4">
+                    <h6 class="text-primary border-bottom pb-2">12. Financial Interests and Conflicts of Interest</h6>
+                    {% if submission.financial_interest_none %}
+                    <p><span class="badge bg-success">No Financial Interests to Disclose</span></p>
+                    {% elif submission.financial_interest_disclosure %}
+                    <p><strong>Financial Interest Disclosure:</strong></p>
+                    <p class="ms-3">{{ submission.financial_interest_disclosure|linebreaks }}</p>
+                    {% endif %}
+                </div>
+                
+                <!-- Section 13: Study Monitoring -->
+                <div class="mb-4">
+                    <h6 class="text-primary border-bottom pb-2">13. Study Monitoring and Oversight</h6>
+                    {% if submission.data_monitoring_plan %}
+                    <p><strong>Data Monitoring Plan:</strong></p>
+                    <p class="ms-3">{{ submission.data_monitoring_plan|linebreaks }}</p>
+                    {% endif %}
+                    {% if submission.oversight_procedures %}
+                    <p><strong>Oversight Procedures:</strong></p>
+                    <p class="ms-3">{{ submission.oversight_procedures|linebreaks }}</p>
+                    {% endif %}
+                </div>
+                
+                <!-- Section 14: Publication and Dissemination -->
+                <div class="mb-4">
+                    <h6 class="text-primary border-bottom pb-2">14. Publication and Dissemination</h6>
+                    {% if submission.publication_plan %}
+                    <p><strong>Publication Plan:</strong></p>
+                    <p class="ms-3">{{ submission.publication_plan|linebreaks }}</p>
+                    {% endif %}
+                    {% if submission.data_sharing_plan %}
+                    <p><strong>Data Sharing Plan:</strong></p>
+                    <p class="ms-3">{{ submission.data_sharing_plan|linebreaks }}</p>
+                    {% endif %}
+                    {% if submission.participant_access_to_results %}
+                    <p><strong>Participant Access to Results:</strong></p>
+                    <p class="ms-3">{{ submission.participant_access_to_results|linebreaks }}</p>
+                    {% endif %}
+                </div>
+                
+                <!-- Section 15: Appendices -->
+                {% if submission.appendices_notes %}
+                <div class="mb-4">
+                    <h6 class="text-primary border-bottom pb-2">15. Appendices and Additional Information</h6>
+                    <p class="ms-3">{{ submission.appendices_notes|linebreaks }}</p>
+                </div>
+                {% endif %}
+                
+                <!-- Section 16: Additional Contact Information -->
+                <div class="mb-4">
+                    <h6 class="text-primary border-bottom pb-2">16. Additional Contact Information</h6>
+                    <div class="row">
+                        <div class="col-md-4">
+                            {% if submission.study_contact_name %}
+                            <p><strong>Study Contact Name:</strong> {{ submission.study_contact_name }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-4">
+                            {% if submission.study_contact_email %}
+                            <p><strong>Study Contact Email:</strong> {{ submission.study_contact_email }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-4">
+                            {% if submission.study_contact_phone %}
+                            <p><strong>Study Contact Phone:</strong> {{ submission.study_contact_phone }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% if submission.irb_contact_notes %}
+                    <p><strong>IRB Contact Notes:</strong></p>
+                    <p class="ms-3">{{ submission.irb_contact_notes|linebreaks }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
         <!-- Study Link -->
         <div class="card">
             <div class="card-body">
