@@ -799,17 +799,17 @@
                             <p class="mb-0">Your information will be saved as a draft. You can return to edit it anytime. When you're ready, you can submit it for IRB review from your study dashboard.</p>
                         </div>
                         
-                        <div class="d-flex gap-2">
+                        <div class="d-flex gap-2 flex-wrap">
                             <button type="submit" id="submit-protocol-btn" class="btn btn-primary btn-lg" style="background-color: #A6192E; border-color: #A6192E;">
                                 <span id="submit-text"><i class="bi bi-save"></i> Save Draft</span>
                                 <span id="submit-spinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                             </button>
-                            <a href="{% url 'studies:edit' study.id %}" class="btn btn-outline-secondary btn-lg" id="cancel-btn">Cancel</a>
                             {% if draft_submission %}
                             <a href="{% url 'studies:protocol_submit' study.id %}" class="btn btn-success btn-lg">
                                 <i class="bi bi-send"></i> Submit for Review
                             </a>
                             {% endif %}
+                            <a href="{% url 'studies:edit' study.id %}" class="btn btn-outline-secondary btn-lg" id="cancel-btn">Cancel</a>
                         </div>
                     </div>
                 </div>
