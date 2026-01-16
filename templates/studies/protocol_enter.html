@@ -596,21 +596,23 @@
                             {{ form.citi_training_completion }}
                             <small class="form-text text-muted">{{ form.citi_training_completion.help_text }}</small>
                         </div>
-                        <div class="mb-3">
-                            <label for="{{ form.citi_training_certificate.id_for_label }}" class="form-label">
-                                {{ form.citi_training_certificate.label }}
+                        <div class="mb-3 border rounded p-3" style="background-color: #f8f9fa;">
+                            <label for="{{ form.citi_training_certificate.id_for_label }}" class="form-label fw-bold">
+                                <i class="bi bi-upload"></i> {{ form.citi_training_certificate.label }}
                             </label>
                             {{ form.citi_training_certificate }}
                             {% if draft_submission and draft_submission.citi_training_certificate %}
-                                <div class="mt-2">
-                                    <small class="text-muted">Current file: 
-                                        <a href="{{ draft_submission.citi_training_certificate.url }}" target="_blank">
-                                            {{ draft_submission.citi_training_certificate.name|slice:"30:" }}
+                                <div class="mt-2 p-2 bg-white rounded border">
+                                    <small class="text-success">
+                                        <i class="bi bi-check-circle"></i> Current file uploaded: 
+                                        <a href="{{ draft_submission.citi_training_certificate.url }}" target="_blank" class="text-decoration-none">
+                                            <strong>{{ draft_submission.citi_training_certificate.name|slice:"30:" }}</strong>
+                                            <i class="bi bi-download"></i>
                                         </a>
                                     </small>
                                 </div>
                             {% endif %}
-                            <small class="form-text text-muted">{{ form.citi_training_certificate.help_text }}</small>
+                            <small class="form-text text-muted d-block mt-2">{{ form.citi_training_certificate.help_text }}</small>
                         </div>
                     </div>
                 </div>
