@@ -833,7 +833,10 @@ def protocol_submit(request, study_id):
         draft_submission.status = 'submitted'
         draft_submission.submitted_by = request.user
         draft_submission.review_type = draft_submission.pi_suggested_review_type  # Initial, may change
-        draft_submission.save()
+        draft_submission.save()  # This will generate submission_number and set submitted_at
+        
+        # Refresh from database to get the generated submission_number
+        draft_submission.refresh_from_db()
         
         # Update study deception flag
         study.involves_deception = draft_submission.involves_deception
@@ -873,6 +876,7 @@ def protocol_submit(request, study_id):
         
         submission_detail_url = reverse('studies:protocol_submission_detail', args=[draft_submission.id])
         dashboard_url = reverse('studies:researcher_dashboard')
+        submission_number = draft_submission.submission_number or 'Pending'
         messages.success(
             request,
             format_html(
@@ -880,7 +884,7 @@ def protocol_submit(request, study_id):
                 '<small>Your college representative will review it within 5-7 business days. '
                 '<a href="{}" class="alert-link">View submission details</a> or return to your '
                 '<a href="{}" class="alert-link">dashboard</a>.</small>',
-                draft_submission.submission_number,
+                submission_number,
                 submission_detail_url,
                 dashboard_url
             )
