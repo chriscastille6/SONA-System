@@ -45,13 +45,16 @@ as measured by Raven's Progressive Matrices (RPM). We are testing whether there 
 emotional intelligence that is separate and distinct from crystallized IQ.
 
 The study involves:
+- Self-estimates of EI abilities (pre-test assessments)
 - Emotional Intelligence assessment (video-based scenarios)
 - Raven's Progressive Matrices (fluid intelligence test)
-- Self-assessment measures
+- Comparison of self-perceptions with actual performance
 - Demographic and background questions
 
-This research aims to understand whether emotional intelligence represents a distinct form of 
-fluid intelligence or is more closely related to crystallized knowledge and experience.
+This research aims to understand:
+1. Whether emotional intelligence represents a distinct form of fluid intelligence separate from crystallized IQ
+2. The relationship between self-assessed EI abilities and actual EI performance
+3. How fluid intelligence (RPM) relates to emotional intelligence abilities
 
 Duration: Approximately 30-40 minutes
             '''.strip(),
@@ -80,9 +83,14 @@ Duration: Approximately 30-40 minutes
             # Consent
             consent_text='''
 I understand that this study examines emotional intelligence and cognitive abilities. 
-I will be asked to complete assessments of emotional intelligence and fluid intelligence, 
-as well as provide some background information. My responses will be kept confidential 
-and used only for research purposes.
+I will be asked to:
+- Estimate my emotional intelligence abilities before testing
+- Complete an emotional intelligence assessment (video-based scenarios)
+- Complete a fluid intelligence test (Raven's Progressive Matrices)
+- Receive feedback comparing my self-estimates with my actual performance
+- Provide demographic and background information
+
+My responses will be kept confidential and used only for research purposes.
 
 I understand that:
 - Participation is voluntary

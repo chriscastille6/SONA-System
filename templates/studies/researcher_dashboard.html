@@ -71,22 +71,19 @@
                                     {% endwith %}
                                 </div>
                                 
-                                <div class="btn-group btn-group-sm mb-2" role="group">
-                                    <a href="{% url 'studies:status' study.slug %}" class="btn btn-outline-success">Status</a>
-                                    <a href="{% url 'studies:manage_timeslots' study.id %}" class="btn btn-outline-primary">Timeslots</a>
-                                    <a href="{% url 'studies:roster' study.id %}" class="btn btn-outline-primary">Roster</a>
-                                    <a href="{% url 'studies:edit' study.id %}" class="btn btn-outline-secondary">Edit</a>
-                                </div>
-                                
-                                <div class="btn-group btn-group-sm" role="group">
-                                    <a href="{% url 'studies:protocol_submit' study.id %}" class="btn btn-outline-primary">
+                                <div class="d-flex flex-wrap gap-2 mb-2">
+                                    <a href="{% url 'studies:status' study.slug %}" class="btn btn-outline-success btn-sm">Status</a>
+                                    <a href="{% url 'studies:manage_timeslots' study.id %}" class="btn btn-outline-primary btn-sm">Timeslots</a>
+                                    <a href="{% url 'studies:roster' study.id %}" class="btn btn-outline-primary btn-sm">Roster</a>
+                                    <a href="{% url 'studies:edit' study.id %}" class="btn btn-outline-secondary btn-sm">Edit</a>
+                                    <a href="{% url 'studies:protocol_submit' study.id %}" class="btn btn-outline-primary btn-sm">
                                         <i class="bi bi-file-earmark-check"></i> Submit Protocol
                                     </a>
-                                    <a href="{% url 'studies:irb_review_create' study.id %}" class="btn btn-outline-warning">
+                                    <a href="{% url 'studies:irb_review_create' study.id %}" class="btn btn-outline-warning btn-sm">
                                         <i class="bi bi-robot"></i> AI IRB Review
                                     </a>
                                     {% if study.latest_irb_review %}
-                                    <a href="{% url 'studies:irb_review_history' study.id %}" class="btn btn-outline-info">
+                                    <a href="{% url 'studies:irb_review_history' study.id %}" class="btn btn-outline-info btn-sm">
                                         History ({{ study.irb_reviews.count }})
                                     </a>
                                     {% endif %}

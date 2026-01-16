@@ -185,7 +185,9 @@ class Study(models.Model):
     
     @property
     def available_slots(self):
-        """Count available slots across all timeslots."""
+        """Count available slots across all timeslots. Returns 'N/A' for online studies."""
+        if self.mode == 'online':
+            return 'N/A'
         now = timezone.now()
         return sum(
             ts.available_capacity
