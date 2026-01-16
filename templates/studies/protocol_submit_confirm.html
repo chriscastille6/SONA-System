@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}Submit Protocol for IRB Review - {{ study.title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'studies:researcher_dashboard' %}">My Studies</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'studies:detail' study.id %}">{{ study.title }}</a></li>
+                    <li class="breadcrumb-item active">Submit Protocol</li>
+                </ol>
+            </nav>
+            
+            <div class="card">
+                <div class="card-header" style="background-color: #A6192E; color: white;">
+                    <h2 class="mb-0">Submit Protocol for IRB Review</h2>
+                </div>
+                <div class="card-body">
+                    <p class="lead">Review your protocol information before submitting:</p>
+                    
+                    <div class="alert alert-warning">
+                        <strong>Important:</strong> Once submitted, your protocol will be sent to your college representative for review. 
+                        You will not be able to edit it after submission (you can create a new version if revisions are needed).
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h5>Protocol Summary</h5>
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <strong>Study:</strong> {{ study.title }}
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Suggested Review Type:</strong> {{ draft_submission.get_pi_suggested_review_type_display }}
+                            </li>
+                            {% if draft_submission.involves_deception %}
+                            <li class="list-group-item">
+                                <span class="badge bg-danger">Involves Deception</span>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        {% if ai_review_enabled %}
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" name="use_ai_review" id="use_ai_review" value="1">
+                            <label class="form-check-label" for="use_ai_review">
+                                <strong>Request AI-Assisted Review</strong>
+                                <small class="d-block text-muted">An AI review will be generated to help identify potential issues before IRB review.</small>
+                            </label>
+                        </div>
+                        {% endif %}
+                        
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg" style="background-color: #A6192E; border-color: #A6192E;">
+                                <i class="bi bi-send"></i> Submit for IRB Review
+                            </button>
+                            <a href="{% url 'studies:protocol_enter' study.id %}" class="btn btn-outline-secondary btn-lg">
+                                <i class="bi bi-pencil"></i> Edit Protocol Information
+                            </a>
+                            <a href="{% url 'studies:detail' study.id %}" class="btn btn-outline-secondary btn-lg">
+                                Cancel
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

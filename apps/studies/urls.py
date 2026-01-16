@@ -39,6 +39,7 @@ urlpatterns = [
     path('committee/', views.committee_dashboard, name='committee_dashboard'),
     
     # Protocol Submission
+    path('<uuid:study_id>/protocol/enter/', views.protocol_enter, name='protocol_enter'),
     path('<uuid:study_id>/protocol/submit/', views.protocol_submit, name='protocol_submit'),
     path('protocol/submissions/', views.protocol_submission_list, name='protocol_submission_list'),
     path('protocol/submissions/<uuid:submission_id>/', views.protocol_submission_detail, name='protocol_submission_detail'),

@@ -12,7 +12,8 @@
         
         {% if studies %}
             <div class="row">
-                {% for study in studies %}
+                {% for item in studies_with_protocols %}
+                {% with study=item.study draft=item.draft_protocol submitted=item.submitted_protocol %}
                     <div class="col-md-6 mb-3">
                         <div class="card">
                             <div class="card-body">
@@ -74,9 +75,22 @@
                                 <div class="d-flex flex-wrap gap-2 mb-2 align-items-center">
                                     <a href="{% url 'studies:status' study.slug %}" class="btn btn-outline-success btn-sm">Status</a>
                                     <a href="{% url 'studies:edit' study.id %}" class="btn btn-outline-secondary btn-sm">Edit</a>
-                                    <a href="{% url 'studies:protocol_submit' study.id %}" class="btn btn-outline-primary btn-sm">
-                                        <i class="bi bi-file-earmark-check"></i> Submit Protocol
+                                    {% if draft %}
+                                    <a href="{% url 'studies:protocol_enter' study.id %}" class="btn btn-outline-info btn-sm">
+                                        <i class="bi bi-file-earmark-text"></i> Edit Protocol (Draft)
                                     </a>
+                                    <a href="{% url 'studies:protocol_submit' study.id %}" class="btn btn-outline-primary btn-sm">
+                                        <i class="bi bi-send"></i> Submit for Review
+                                    </a>
+                                    {% elif submitted %}
+                                    <a href="{% url 'studies:protocol_submission_detail' submitted.id %}" class="btn btn-outline-primary btn-sm">
+                                        <i class="bi bi-file-earmark-check"></i> View Submission
+                                    </a>
+                                    {% else %}
+                                    <a href="{% url 'studies:protocol_enter' study.id %}" class="btn btn-outline-primary btn-sm">
+                                        <i class="bi bi-file-earmark-text"></i> Enter Protocol Information
+                                    </a>
+                                    {% endif %}
                                     <a href="{% url 'studies:irb_review_create' study.id %}" class="btn btn-outline-warning btn-sm">
                                         <i class="bi bi-robot"></i> AI IRB Review
                                     </a>
@@ -86,11 +100,11 @@
                                     </a>
                                     {% endif %}
                                 </div>
-                                {% if study.protocol_submissions.exists %}
+                                {% if submitted %}
                                 <div class="mt-2">
                                     <small class="text-muted">
-                                        <a href="{% url 'studies:protocol_submission_detail' study.protocol_submissions.first.id %}">
-                                            Latest Submission: {{ study.protocol_submissions.first.submission_number }}
+                                        <a href="{% url 'studies:protocol_submission_detail' submitted.id %}">
+                                            Latest Submission: {{ submitted.submission_number }}
                                         </a>
                                     </small>
                                 </div>
@@ -98,6 +112,7 @@
                             </div>
                         </div>
                     </div>
+                {% endwith %}
                 {% endfor %}
             </div>
         {% else %}

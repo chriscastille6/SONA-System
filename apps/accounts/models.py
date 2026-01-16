@@ -160,6 +160,8 @@ class EmailVerificationToken(models.Model):
     
     class Meta:
         db_table = 'email_verification_tokens'
+        verbose_name = 'Email Verification Token'
+        verbose_name_plural = 'Email Verification Tokens'
         ordering = ['-created_at']
     
     def __str__(self):

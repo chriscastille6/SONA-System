@@ -68,8 +68,8 @@ class Enrollment(models.Model):
     
     class Meta:
         db_table = 'course_enrollments'
-        verbose_name = 'Enrollment'
-        verbose_name_plural = 'Enrollments'
+        verbose_name = 'Course Enrollment'
+        verbose_name_plural = 'Course Enrollments'
         unique_together = [['course', 'participant']]
         indexes = [
             models.Index(fields=['course', 'participant']),

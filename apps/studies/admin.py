@@ -1,5 +1,6 @@
 """
 Admin configuration for studies app.
+Organizes models for the PRAMS (Participant Recruitment and Management System) admin panel.
 """
 from django.contrib import admin
 from django.utils import timezone
@@ -17,6 +18,11 @@ from .models import (
     ProtocolSubmission,
     CollegeRepresentative,
 )
+
+
+# ============================================================================
+# INLINE ADMIN CLASSES
+# ============================================================================
 
 
 class IRBReviewerAssignmentInline(admin.TabularInline):
@@ -50,6 +56,10 @@ class StudyUpdateInline(admin.StackedInline):
         'updated_at',
     ]
 
+
+# ============================================================================
+# CORE RESEARCH STUDY MANAGEMENT
+# ============================================================================
 
 @admin.register(Study)
 class StudyAdmin(admin.ModelAdmin):
@@ -157,6 +167,10 @@ class StudyAdmin(admin.ModelAdmin):
     mark_irb_reviewed.short_description = "Mark as IRB reviewed"
 
 
+# ============================================================================
+# TIMESLOTS & SIGNUPS
+# ============================================================================
+
 @admin.register(Timeslot)
 class TimeslotAdmin(admin.ModelAdmin):
     list_display = ['study', 'starts_at', 'capacity', 'current_signups', 'is_cancelled']
@@ -196,6 +210,10 @@ class ResponseAdmin(admin.ModelAdmin):
         }),
     )
 
+
+# ============================================================================
+# IRB OVERSIGHT & PROTOCOL MANAGEMENT
+# ============================================================================
 
 @admin.register(IRBReview)
 class IRBReviewAdmin(admin.ModelAdmin):

@@ -1,0 +1,1016 @@
+{% extends 'base.html' %}
+
+{% block title %}Enter Protocol Information - {{ study.title }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <!-- Section Navigation Sidebar (hidden on mobile, fixed position) -->
+    <div class="d-none d-lg-block position-fixed" style="right: 5%; top: 100px; max-height: calc(100vh - 120px); overflow-y: auto; z-index: 99; width: 250px;">
+        <div class="card">
+            <div class="card-header" style="background-color: #A6192E; color: white;">
+                <h6 class="mb-0">Navigation</h6>
+            </div>
+            <div class="list-group list-group-flush" id="section-nav">
+                <a href="#section-1" class="list-group-item list-group-item-action section-nav-link" data-section="1">
+                    <small>1. Review Type & Basic Info</small>
+                </a>
+                <a href="#section-2" class="list-group-item list-group-item-action section-nav-link" data-section="2">
+                    <small>2. Project Description</small>
+                </a>
+                <a href="#section-3" class="list-group-item list-group-item-action section-nav-link" data-section="3">
+                    <small>3. Recruitment</small>
+                </a>
+                <a href="#section-4" class="list-group-item list-group-item-action section-nav-link" data-section="4">
+                    <small>4. Benefits & Costs</small>
+                </a>
+                <a href="#section-5" class="list-group-item list-group-item-action section-nav-link" data-section="5">
+                    <small>5. Review Type Justification</small>
+                </a>
+                <a href="#section-6" class="list-group-item list-group-item-action section-nav-link" data-section="6">
+                    <small>6. Statement of Risk</small>
+                </a>
+                <a href="#section-7" class="list-group-item list-group-item-action section-nav-link" data-section="7">
+                    <small>7. Data Handling</small>
+                </a>
+                <a href="#section-8" class="list-group-item list-group-item-action section-nav-link" data-section="8">
+                    <small>8. Consent Procedures</small>
+                </a>
+                <a href="#section-9" class="list-group-item list-group-item-action section-nav-link" data-section="9">
+                    <small>9. Investigator Information</small>
+                </a>
+                <a href="#section-10" class="list-group-item list-group-item-action section-nav-link" data-section="10">
+                    <small>10. Vulnerable Populations</small>
+                </a>
+                <a href="#section-11" class="list-group-item list-group-item-action section-nav-link" data-section="11">
+                    <small>11. International Research</small>
+                </a>
+                <a href="#section-12" class="list-group-item list-group-item-action section-nav-link" data-section="12">
+                    <small>12. Financial Interests</small>
+                </a>
+                <a href="#section-13" class="list-group-item list-group-item-action section-nav-link" data-section="13">
+                    <small>13. Study Monitoring</small>
+                </a>
+                <a href="#section-14" class="list-group-item list-group-item-action section-nav-link" data-section="14">
+                    <small>14. Publication & Dissemination</small>
+                </a>
+                <a href="#section-15" class="list-group-item list-group-item-action section-nav-link" data-section="15">
+                    <small>15. Appendices</small>
+                </a>
+                <a href="#section-16" class="list-group-item list-group-item-action section-nav-link" data-section="16">
+                    <small>16. Contact Information</small>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-10 offset-md-1 col-lg-7">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'studies:researcher_dashboard' %}">My Studies</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'studies:detail' study.id %}">{{ study.title }}</a></li>
+                    <li class="breadcrumb-item active">Enter Protocol Information</li>
+                </ol>
+            </nav>
+            
+            <h2>Enter Protocol Information</h2>
+            <p class="lead">{{ study.title }}</p>
+            
+            {% if draft_submission %}
+            <div class="alert alert-info">
+                <strong>Draft Saved:</strong> You have a draft protocol. Continue editing below or 
+                <a href="{% url 'studies:protocol_submit' study.id %}" class="alert-link">submit for IRB review</a> when ready.
+            </div>
+            {% else %}
+            <div class="alert alert-warning">
+                <strong>Draft Mode:</strong> This information will be saved as a draft. You can edit it anytime before submitting for IRB review.
+            </div>
+            {% endif %}
+            
+            <form method="post" id="protocol-submission-form">
+                {% csrf_token %}
+                
+                {% if form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        {{ form.non_field_errors }}
+                    </div>
+                {% endif %}
+                
+                <!-- Progress Indicator -->
+                <div class="card mb-3 sticky-top" style="top: 20px; z-index: 100; background-color: #f8f9fa;">
+                    <div class="card-body py-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="flex-grow-1">
+                                <div class="progress" style="height: 25px;">
+                                    <div id="progress-bar" class="progress-bar" role="progressbar" 
+                                         style="background-color: #A6192E; width: 6.25%;" 
+                                         aria-valuenow="1" aria-valuemin="0" aria-valuemax="16">
+                                        <span id="progress-text" class="fw-bold text-white">Section 1 of 16</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 1: Review Type and Basic Information -->
+                <div class="card mb-4 protocol-section" id="section-1" data-section="1">
+                    <div class="card-header" style="background-color: #A6192E; color: white;">
+                        <h4 class="mb-0">1. Review Type Suggestion & Basic Information</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label"><strong>Review Type Suggestion <span class="text-danger">*</span></strong></label>
+                            <p class="text-muted small">Based on your protocol, suggest which review type you believe is appropriate. Your college representative will make the final determination.</p>
+                            {% for choice in form.pi_suggested_review_type.field.choices %}
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" name="{{ form.pi_suggested_review_type.name }}" 
+                                           id="review_{{ choice.0 }}" value="{{ choice.0 }}" 
+                                           {% if form.pi_suggested_review_type.value == choice.0 %}checked{% endif %} required>
+                                    <label class="form-check-label" for="review_{{ choice.0 }}">
+                                        <strong>{{ choice.1 }}</strong>
+                                        {% if choice.0 == 'exempt' %}
+                                            <small class="d-block text-muted">- Educational settings, anonymous surveys, public observation</small>
+                                        {% elif choice.0 == 'expedited' %}
+                                            <small class="d-block text-muted">- Minimal risk, standard behavioral methodologies</small>
+                                        {% elif choice.0 == 'full' %}
+                                            <small class="d-block text-muted">- More than minimal risk, vulnerable populations, sensitive topics</small>
+                                        {% endif %}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                            {% if form.pi_suggested_review_type.errors %}
+                                <div class="text-danger small">{{ form.pi_suggested_review_type.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.estimated_start_date.id_for_label }}" class="form-label">
+                                        {{ form.estimated_start_date.label }} <span class="text-danger">*</span>
+                                    </label>
+                                    {{ form.estimated_start_date }}
+                                    {% if form.estimated_start_date.errors %}
+                                        <div class="text-danger small">{{ form.estimated_start_date.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.estimated_completion_date.id_for_label }}" class="form-label">
+                                        {{ form.estimated_completion_date.label }} <span class="text-danger">*</span>
+                                    </label>
+                                    {{ form.estimated_completion_date }}
+                                    {% if form.estimated_completion_date.errors %}
+                                        <div class="text-danger small">{{ form.estimated_completion_date.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.funding_source.id_for_label }}" class="form-label">
+                                {{ form.funding_source.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.funding_source }}
+                            {% if form.funding_source.errors %}
+                                <div class="text-danger small">{{ form.funding_source.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-check mb-3">
+                            {{ form.continuation_of_previous }}
+                            <label class="form-check-label" for="{{ form.continuation_of_previous.id_for_label }}">
+                                {{ form.continuation_of_previous.label }}
+                            </label>
+                        </div>
+                        
+                        <div class="mb-3" id="previous-protocol-field" style="display: none;">
+                            <label for="{{ form.previous_protocol_number.id_for_label }}" class="form-label">
+                                {{ form.previous_protocol_number.label }}
+                            </label>
+                            {{ form.previous_protocol_number }}
+                            {% if form.previous_protocol_number.errors %}
+                                <div class="text-danger small">{{ form.previous_protocol_number.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="form-check mb-3">
+                            {{ form.involves_deception }}
+                            <label class="form-check-label" for="{{ form.involves_deception.id_for_label }}">
+                                {{ form.involves_deception.label }}
+                            </label>
+                            <small class="d-block text-muted">{{ form.involves_deception.help_text }}</small>
+                        </div>
+                        
+                    </div>
+                </div>
+                
+                <!-- Section 2: Protocol Description -->
+                <div class="card mb-4 protocol-section" id="section-2" data-section="2">
+                    <div class="card-header" style="background-color: #7C858E; color: white;">
+                        <h4 class="mb-0">2. Description of Project or Proposal</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="{{ form.protocol_description.id_for_label }}" class="form-label">
+                                {{ form.protocol_description.label }}
+                            </label>
+                            {{ form.protocol_description }}
+                            {% if form.protocol_description.errors %}
+                                <div class="text-danger small">{{ form.protocol_description.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.population_description.id_for_label }}" class="form-label">
+                                {{ form.population_description.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.population_description }}
+                            {% if form.population_description.errors %}
+                                <div class="text-danger small">{{ form.population_description.errors.0 }}</div>
+                            {% endif %}
+                            <small class="form-text text-muted">{{ form.population_description.help_text }}</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.research_procedures.id_for_label }}" class="form-label">
+                                {{ form.research_procedures.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.research_procedures }}
+                            {% if form.research_procedures.errors %}
+                                <div class="text-danger small">{{ form.research_procedures.errors.0 }}</div>
+                            {% endif %}
+                            <small class="form-text text-muted">{{ form.research_procedures.help_text }}</small>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.research_objectives.id_for_label }}" class="form-label">
+                                {{ form.research_objectives.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.research_objectives }}
+                            {% if form.research_objectives.errors %}
+                                <div class="text-danger small">{{ form.research_objectives.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.research_questions.id_for_label }}" class="form-label">
+                                {{ form.research_questions.label }}
+                            </label>
+                            {{ form.research_questions }}
+                            {% if form.research_questions.errors %}
+                                <div class="text-danger small">{{ form.research_questions.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.educational_justification.id_for_label }}" class="form-label">
+                                {{ form.educational_justification.label }}
+                            </label>
+                            {{ form.educational_justification }}
+                            {% if form.educational_justification.errors %}
+                                <div class="text-danger small">{{ form.educational_justification.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 3: Recruitment -->
+                <div class="card mb-4 protocol-section" id="section-3" data-section="3">
+                    <div class="card-header" style="background-color: #7C858E; color: white;">
+                        <h4 class="mb-0">3. Recruitment</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="{{ form.recruitment_method.id_for_label }}" class="form-label">
+                                {{ form.recruitment_method.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.recruitment_method }}
+                            {% if form.recruitment_method.errors %}
+                                <div class="text-danger small">{{ form.recruitment_method.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.recruitment_script.id_for_label }}" class="form-label">
+                                {{ form.recruitment_script.label }}
+                            </label>
+                            {{ form.recruitment_script }}
+                            {% if form.recruitment_script.errors %}
+                                <div class="text-danger small">{{ form.recruitment_script.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.inclusion_criteria.id_for_label }}" class="form-label">
+                                {{ form.inclusion_criteria.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.inclusion_criteria }}
+                            {% if form.inclusion_criteria.errors %}
+                                <div class="text-danger small">{{ form.inclusion_criteria.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.exclusion_criteria.id_for_label }}" class="form-label">
+                                {{ form.exclusion_criteria.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.exclusion_criteria }}
+                            {% if form.exclusion_criteria.errors %}
+                                <div class="text-danger small">{{ form.exclusion_criteria.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 4: Benefits and Costs -->
+                <div class="card mb-4 protocol-section" id="section-4" data-section="4">
+                    <div class="card-header" style="background-color: #7C858E; color: white;">
+                        <h4 class="mb-0">4. Subject Benefits and Costs</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="{{ form.benefits_to_subjects.id_for_label }}" class="form-label">
+                                {{ form.benefits_to_subjects.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.benefits_to_subjects }}
+                            {% if form.benefits_to_subjects.errors %}
+                                <div class="text-danger small">{{ form.benefits_to_subjects.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.benefits_to_others.id_for_label }}" class="form-label">
+                                {{ form.benefits_to_others.label }}
+                            </label>
+                            {{ form.benefits_to_others }}
+                            {% if form.benefits_to_others.errors %}
+                                <div class="text-danger small">{{ form.benefits_to_others.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.benefits_to_society.id_for_label }}" class="form-label">
+                                {{ form.benefits_to_society.label }}
+                            </label>
+                            {{ form.benefits_to_society }}
+                            {% if form.benefits_to_society.errors %}
+                                <div class="text-danger small">{{ form.benefits_to_society.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.payment_compensation.id_for_label }}" class="form-label">
+                                {{ form.payment_compensation.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.payment_compensation }}
+                            {% if form.payment_compensation.errors %}
+                                <div class="text-danger small">{{ form.payment_compensation.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.costs_to_subjects.id_for_label }}" class="form-label">
+                                {{ form.costs_to_subjects.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.costs_to_subjects }}
+                            {% if form.costs_to_subjects.errors %}
+                                <div class="text-danger small">{{ form.costs_to_subjects.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 5: Review Type Justification -->
+                <div class="card mb-4 protocol-section" id="section-5" data-section="5">
+                    <div class="card-header" style="background-color: #7C858E; color: white;">
+                        <h4 class="mb-0">5. Basis of Request for Exemption or Expedited Review</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="{{ form.review_type_justification.id_for_label }}" class="form-label">
+                                {{ form.review_type_justification.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.review_type_justification }}
+                            {% if form.review_type_justification.errors %}
+                                <div class="text-danger small">{{ form.review_type_justification.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.exemption_category.id_for_label }}" class="form-label">
+                                        {{ form.exemption_category.label }}
+                                    </label>
+                                    {{ form.exemption_category }}
+                                    {% if form.exemption_category.errors %}
+                                        <div class="text-danger small">{{ form.exemption_category.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.expedited_category.id_for_label }}" class="form-label">
+                                        {{ form.expedited_category.label }}
+                                    </label>
+                                    {{ form.expedited_category }}
+                                    {% if form.expedited_category.errors %}
+                                        <div class="text-danger small">{{ form.expedited_category.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 6: Risks -->
+                <div class="card mb-4 protocol-section" id="section-6" data-section="6">
+                    <div class="card-header" style="background-color: #7C858E; color: white;">
+                        <h4 class="mb-0">6. Statement of Risk</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="{{ form.risk_statement.id_for_label }}" class="form-label">
+                                {{ form.risk_statement.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.risk_statement }}
+                            {% if form.risk_statement.errors %}
+                                <div class="text-danger small">{{ form.risk_statement.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.risk_mitigation.id_for_label }}" class="form-label">
+                                {{ form.risk_mitigation.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.risk_mitigation }}
+                            {% if form.risk_mitigation.errors %}
+                                <div class="text-danger small">{{ form.risk_mitigation.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 7: Data Handling -->
+                <div class="card mb-4 protocol-section" id="section-7" data-section="7">
+                    <div class="card-header" style="background-color: #7C858E; color: white;">
+                        <h4 class="mb-0">7. Data Handling and Confidentiality</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="{{ form.data_collection_methods.id_for_label }}" class="form-label">
+                                {{ form.data_collection_methods.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.data_collection_methods }}
+                            {% if form.data_collection_methods.errors %}
+                                <div class="text-danger small">{{ form.data_collection_methods.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.data_storage.id_for_label }}" class="form-label">
+                                {{ form.data_storage.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.data_storage }}
+                            {% if form.data_storage.errors %}
+                                <div class="text-danger small">{{ form.data_storage.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.confidentiality_procedures.id_for_label }}" class="form-label">
+                                {{ form.confidentiality_procedures.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.confidentiality_procedures }}
+                            {% if form.confidentiality_procedures.errors %}
+                                <div class="text-danger small">{{ form.confidentiality_procedures.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.data_retention.id_for_label }}" class="form-label">
+                                {{ form.data_retention.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.data_retention }}
+                            {% if form.data_retention.errors %}
+                                <div class="text-danger small">{{ form.data_retention.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="{{ form.data_access.id_for_label }}" class="form-label">
+                                {{ form.data_access.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.data_access }}
+                            {% if form.data_access.errors %}
+                                <div class="text-danger small">{{ form.data_access.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 8: Consent Procedures -->
+                <div class="card mb-4 protocol-section" id="section-8" data-section="8">
+                    <div class="card-header" style="background-color: #7C858E; color: white;">
+                        <h4 class="mb-0">8. Consent Procedures</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="{{ form.consent_procedures.id_for_label }}" class="form-label">
+                                {{ form.consent_procedures.label }} <span class="text-danger">*</span>
+                            </label>
+                            {{ form.consent_procedures }}
+                            {% if form.consent_procedures.errors %}
+                                <div class="text-danger small">{{ form.consent_procedures.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="alert alert-info">
+                            <strong>Note:</strong> Your consent form text is already stored in the study record. This section describes <em>how</em> consent will be obtained.
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 9: Investigator Information -->
+                <div class="card mb-4 protocol-section" id="section-9" data-section="9">
+                    <div class="card-header" style="background-color: #7C858E; color: white;">
+                        <h4 class="mb-0">9. Investigator Information</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.pi_name.id_for_label }}" class="form-label">
+                                        {{ form.pi_name.label }}
+                                    </label>
+                                    {{ form.pi_name }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.pi_title.id_for_label }}" class="form-label">
+                                        {{ form.pi_title.label }}
+                                    </label>
+                                    {{ form.pi_title }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.pi_department.id_for_label }}" class="form-label">
+                                        {{ form.pi_department.label }}
+                                    </label>
+                                    {{ form.pi_department }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="{{ form.pi_email.id_for_label }}" class="form-label">
+                                        {{ form.pi_email.label }}
+                                    </label>
+                                    {{ form.pi_email }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.pi_phone.id_for_label }}" class="form-label">
+                                {{ form.pi_phone.label }}
+                            </label>
+                            {{ form.pi_phone }}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.co_investigators.id_for_label }}" class="form-label">
+                                {{ form.co_investigators.label }}
+                            </label>
+                            {{ form.co_investigators }}
+                            <small class="form-text text-muted">{{ form.co_investigators.help_text }}</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.citi_training_completion.id_for_label }}" class="form-label">
+                                {{ form.citi_training_completion.label }}
+                            </label>
+                            {{ form.citi_training_completion }}
+                            <small class="form-text text-muted">{{ form.citi_training_completion.help_text }}</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 10: Vulnerable Populations -->
+                <div class="card mb-4 protocol-section" id="section-10" data-section="10">
+                    <div class="card-header" style="background-color: #7C858E; color: white;">
+                        <h4 class="mb-0">10. Vulnerable Populations</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-check mb-3">
+                            {{ form.involves_vulnerable_populations }}
+                            <label class="form-check-label" for="{{ form.involves_vulnerable_populations.id_for_label }}">
+                                {{ form.involves_vulnerable_populations.label }}
+                            </label>
+                            <small class="d-block text-muted">{{ form.involves_vulnerable_populations.help_text }}</small>
+                        </div>
+                        <div class="mb-3" id="vulnerable-populations-fields" style="display: none;">
+                            <label for="{{ form.vulnerable_populations_description.id_for_label }}" class="form-label">
+                                {{ form.vulnerable_populations_description.label }}
+                            </label>
+                            {{ form.vulnerable_populations_description }}
+                        </div>
+                        <div class="mb-3" id="vulnerable-protections-field" style="display: none;">
+                            <label for="{{ form.vulnerable_population_protections.id_for_label }}" class="form-label">
+                                {{ form.vulnerable_population_protections.label }}
+                            </label>
+                            {{ form.vulnerable_population_protections }}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 11: International Research -->
+                <div class="card mb-4 protocol-section" id="section-11" data-section="11">
+                    <div class="card-header" style="background-color: #7C858E; color: white;">
+                        <h4 class="mb-0">11. International Research</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-check mb-3">
+                            {{ form.involves_international_research }}
+                            <label class="form-check-label" for="{{ form.involves_international_research.id_for_label }}">
+                                {{ form.involves_international_research.label }}
+                            </label>
+                            <small class="d-block text-muted">{{ form.involves_international_research.help_text }}</small>
+                        </div>
+                        <div class="mb-3" id="international-fields" style="display: none;">
+                            <label for="{{ form.international_research_locations.id_for_label }}" class="form-label">
+                                {{ form.international_research_locations.label }}
+                            </label>
+                            {{ form.international_research_locations }}
+                        </div>
+                        <div class="mb-3" id="cultural-field" style="display: none;">
+                            <label for="{{ form.cultural_considerations.id_for_label }}" class="form-label">
+                                {{ form.cultural_considerations.label }}
+                            </label>
+                            {{ form.cultural_considerations }}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 12: Financial Interests -->
+                <div class="card mb-4 protocol-section" id="section-12" data-section="12">
+                    <div class="card-header" style="background-color: #7C858E; color: white;">
+                        <h4 class="mb-0">12. Financial Interests and Conflicts of Interest</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-check mb-3">
+                            {{ form.financial_interest_none }}
+                            <label class="form-check-label" for="{{ form.financial_interest_none.id_for_label }}">
+                                {{ form.financial_interest_none.label }}
+                            </label>
+                        </div>
+                        <div class="mb-3" id="financial-disclosure-field" style="display: none;">
+                            <label for="{{ form.financial_interest_disclosure.id_for_label }}" class="form-label">
+                                {{ form.financial_interest_disclosure.label }}
+                            </label>
+                            {{ form.financial_interest_disclosure }}
+                            <small class="form-text text-muted">{{ form.financial_interest_disclosure.help_text }}</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 13: Study Monitoring -->
+                <div class="card mb-4 protocol-section" id="section-13" data-section="13">
+                    <div class="card-header" style="background-color: #7C858E; color: white;">
+                        <h4 class="mb-0">13. Study Monitoring and Oversight</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="{{ form.data_monitoring_plan.id_for_label }}" class="form-label">
+                                {{ form.data_monitoring_plan.label }}
+                            </label>
+                            {{ form.data_monitoring_plan }}
+                            <small class="form-text text-muted">{{ form.data_monitoring_plan.help_text }}</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.oversight_procedures.id_for_label }}" class="form-label">
+                                {{ form.oversight_procedures.label }}
+                            </label>
+                            {{ form.oversight_procedures }}
+                            <small class="form-text text-muted">{{ form.oversight_procedures.help_text }}</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 14: Publication and Dissemination -->
+                <div class="card mb-4 protocol-section" id="section-14" data-section="14">
+                    <div class="card-header" style="background-color: #7C858E; color: white;">
+                        <h4 class="mb-0">14. Publication and Dissemination</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="{{ form.publication_plan.id_for_label }}" class="form-label">
+                                {{ form.publication_plan.label }}
+                            </label>
+                            {{ form.publication_plan }}
+                            <small class="form-text text-muted">{{ form.publication_plan.help_text }}</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.data_sharing_plan.id_for_label }}" class="form-label">
+                                {{ form.data_sharing_plan.label }}
+                            </label>
+                            {{ form.data_sharing_plan }}
+                            <small class="form-text text-muted">{{ form.data_sharing_plan.help_text }}</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.participant_access_to_results.id_for_label }}" class="form-label">
+                                {{ form.participant_access_to_results.label }}
+                            </label>
+                            {{ form.participant_access_to_results }}
+                            <small class="form-text text-muted">{{ form.participant_access_to_results.help_text }}</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 15: Appendices and Additional Information -->
+                <div class="card mb-4 protocol-section" id="section-15" data-section="15">
+                    <div class="card-header" style="background-color: #7C858E; color: white;">
+                        <h4 class="mb-0">15. Appendices and Additional Information</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="{{ form.appendices_notes.id_for_label }}" class="form-label">
+                                {{ form.appendices_notes.label }}
+                            </label>
+                            {{ form.appendices_notes }}
+                            <small class="form-text text-muted">{{ form.appendices_notes.help_text }}</small>
+                        </div>
+                        <div class="alert alert-info">
+                            <strong>Note:</strong> Supporting documents (consent forms, surveys, recruitment materials, etc.) can be uploaded separately through the study management interface or attached to your submission.
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Section 16: Additional Contact Information -->
+                <div class="card mb-4 protocol-section" id="section-16" data-section="16">
+                    <div class="card-header" style="background-color: #7C858E; color: white;">
+                        <h4 class="mb-0">16. Additional Contact Information</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="{{ form.study_contact_name.id_for_label }}" class="form-label">
+                                        {{ form.study_contact_name.label }}
+                                    </label>
+                                    {{ form.study_contact_name }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="{{ form.study_contact_email.id_for_label }}" class="form-label">
+                                        {{ form.study_contact_email.label }}
+                                    </label>
+                                    {{ form.study_contact_email }}
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="{{ form.study_contact_phone.id_for_label }}" class="form-label">
+                                        {{ form.study_contact_phone.label }}
+                                    </label>
+                                    {{ form.study_contact_phone }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.irb_contact_notes.id_for_label }}" class="form-label">
+                                {{ form.irb_contact_notes.label }}
+                            </label>
+                            {{ form.irb_contact_notes }}
+                            <small class="form-text text-muted">{{ form.irb_contact_notes.help_text }}</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Submit Button -->
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <div class="alert alert-info">
+                            <h6>Save as Draft</h6>
+                            <p class="mb-0">Your information will be saved as a draft. You can return to edit it anytime. When you're ready, you can submit it for IRB review from your study dashboard.</p>
+                        </div>
+                        
+                        <div class="d-flex gap-2">
+                            <button type="submit" id="submit-protocol-btn" class="btn btn-primary btn-lg" style="background-color: #A6192E; border-color: #A6192E;">
+                                <span id="submit-text"><i class="bi bi-save"></i> Save Draft</span>
+                                <span id="submit-spinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                            </button>
+                            <a href="{% url 'studies:edit' study.id %}" class="btn btn-outline-secondary btn-lg" id="cancel-btn">Cancel</a>
+                            {% if draft_submission %}
+                            <a href="{% url 'studies:protocol_submit' study.id %}" class="btn btn-success btn-lg">
+                                <i class="bi bi-send"></i> Submit for Review
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </form>
+            
+            <!-- Loading Overlay -->
+            <div id="loading-overlay" class="d-none" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 9999; display: flex; align-items: center; justify-content: center;">
+                <div class="card" style="max-width: 400px;">
+                    <div class="card-body text-center">
+                        <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <h5>Saving Draft...</h5>
+                        <p class="text-muted mb-0">Please wait while we save your protocol information.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Show/hide conditional fields based on checkboxes
+document.addEventListener('DOMContentLoaded', function() {
+    // Previous protocol number
+    const continuationCheckbox = document.getElementById('{{ form.continuation_of_previous.id_for_label }}');
+    const previousProtocolField = document.getElementById('previous-protocol-field');
+    
+    if (continuationCheckbox) {
+        function togglePreviousProtocol() {
+            previousProtocolField.style.display = continuationCheckbox.checked ? 'block' : 'none';
+        }
+        continuationCheckbox.addEventListener('change', togglePreviousProtocol);
+        togglePreviousProtocol();
+    }
+    
+    // Vulnerable populations
+    const vulnerableCheckbox = document.getElementById('{{ form.involves_vulnerable_populations.id_for_label }}');
+    const vulnerableFields = document.getElementById('vulnerable-populations-fields');
+    const vulnerableProtections = document.getElementById('vulnerable-protections-field');
+    
+    if (vulnerableCheckbox) {
+        function toggleVulnerableFields() {
+            const show = vulnerableCheckbox.checked;
+            vulnerableFields.style.display = show ? 'block' : 'none';
+            vulnerableProtections.style.display = show ? 'block' : 'none';
+        }
+        vulnerableCheckbox.addEventListener('change', toggleVulnerableFields);
+        toggleVulnerableFields();
+    }
+    
+    // International research
+    const internationalCheckbox = document.getElementById('{{ form.involves_international_research.id_for_label }}');
+    const internationalFields = document.getElementById('international-fields');
+    const culturalField = document.getElementById('cultural-field');
+    
+    if (internationalCheckbox) {
+        function toggleInternationalFields() {
+            const show = internationalCheckbox.checked;
+            internationalFields.style.display = show ? 'block' : 'none';
+            culturalField.style.display = show ? 'block' : 'none';
+        }
+        internationalCheckbox.addEventListener('change', toggleInternationalFields);
+        toggleInternationalFields();
+    }
+    
+    // Financial interests
+    const financialNoneCheckbox = document.getElementById('{{ form.financial_interest_none.id_for_label }}');
+    const financialDisclosureField = document.getElementById('financial-disclosure-field');
+    
+    if (financialNoneCheckbox) {
+        function toggleFinancialDisclosure() {
+            financialDisclosureField.style.display = financialNoneCheckbox.checked ? 'none' : 'block';
+        }
+        financialNoneCheckbox.addEventListener('change', toggleFinancialDisclosure);
+        toggleFinancialDisclosure();
+    }
+    
+    // Progress bar update based on scroll position
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+    const sections = document.querySelectorAll('.protocol-section');
+    const totalSections = sections.length;
+    
+    // Only proceed if elements exist
+    if (!progressBar || !progressText || sections.length === 0) {
+        console.warn('Progress bar elements not found');
+    } else {
+    
+    function updateProgress() {
+        let currentSection = 1;
+        const scrollPosition = window.scrollY + window.innerHeight / 3; // Trigger when section is 1/3 into viewport
+        
+        sections.forEach((section, index) => {
+            const rect = section.getBoundingClientRect();
+            const sectionTop = rect.top + window.scrollY;
+            const sectionBottom = sectionTop + rect.height;
+            
+            if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                currentSection = index + 1;
+            }
+        });
+        
+        // Update progress bar
+        const percentage = (currentSection / totalSections) * 100;
+        progressBar.style.width = percentage + '%';
+        progressBar.setAttribute('aria-valuenow', currentSection);
+        progressText.textContent = `Section ${currentSection} of ${totalSections}`;
+    }
+    
+    // Update on scroll and on load
+    window.addEventListener('scroll', updateProgress);
+    window.addEventListener('resize', updateProgress);
+    updateProgress(); // Initial update
+    }
+    
+    // Section navigation sidebar
+    const navLinks = document.querySelectorAll('.section-nav-link');
+    
+    // Smooth scroll to section when nav link is clicked
+    if (navLinks.length > 0) {
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                if (targetSection) {
+                    const offset = 100; // Offset for sticky header
+                    const targetPosition = targetSection.getBoundingClientRect().top + window.scrollY - offset;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Highlight current section in navigation
+        function updateNavHighlight() {
+        const scrollPosition = window.scrollY + window.innerHeight / 3;
+        let currentSection = 1;
+        
+        sections.forEach((section, index) => {
+            const rect = section.getBoundingClientRect();
+            const sectionTop = rect.top + window.scrollY;
+            const sectionBottom = sectionTop + rect.height;
+            
+            if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                currentSection = index + 1;
+            }
+        });
+        
+        // Update nav links
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (parseInt(link.getAttribute('data-section')) === currentSection) {
+                link.classList.add('active');
+                link.style.backgroundColor = '#f0f0f0';
+                link.style.fontWeight = 'bold';
+            } else {
+                link.style.backgroundColor = '';
+                link.style.fontWeight = '';
+            }
+        });
+    }
+    
+        // Update nav highlight on scroll
+        window.addEventListener('scroll', updateNavHighlight);
+        updateNavHighlight(); // Initial update
+    }
+    
+    // Loading state on form submission
+    const form = document.getElementById('protocol-submission-form');
+    const submitBtn = document.getElementById('submit-protocol-btn');
+    const submitText = document.getElementById('submit-text');
+    const submitSpinner = document.getElementById('submit-spinner');
+    const loadingOverlay = document.getElementById('loading-overlay');
+    const cancelBtn = document.getElementById('cancel-btn');
+    let isSubmitting = false;
+    
+    if (form && submitBtn && submitText && submitSpinner && loadingOverlay) {
+        form.addEventListener('submit', function(e) {
+        if (isSubmitting) {
+            e.preventDefault();
+            return false;
+        }
+        
+        isSubmitting = true;
+        submitBtn.disabled = true;
+        submitText.innerHTML = '<i class="bi bi-hourglass-split"></i> Saving...';
+        submitSpinner.classList.remove('d-none');
+        loadingOverlay.classList.remove('d-none');
+        if (cancelBtn) {
+            cancelBtn.style.pointerEvents = 'none';
+            cancelBtn.style.opacity = '0.5';
+        }
+        
+            // Allow form to submit normally
+            return true;
+        });
+    }
+});
+</script>
+{% endblock %}

@@ -163,9 +163,23 @@ def researcher_dashboard(request):
     # Get ALL studies by this researcher (not just those with protocol submissions)
     studies = Study.objects.filter(
         researcher=request.user
-    ).order_by('-created_at')
+    ).prefetch_related('protocol_submissions').order_by('-created_at')
     
-    return render(request, 'studies/researcher_dashboard.html', {'studies': studies})
+    # Annotate each study with draft and submitted protocol info
+    studies_with_protocols = []
+    for study in studies:
+        draft = study.protocol_submissions.filter(status='draft').first()
+        submitted = study.protocol_submissions.filter(status='submitted').order_by('-submitted_at').first()
+        studies_with_protocols.append({
+            'study': study,
+            'draft_protocol': draft,
+            'submitted_protocol': submitted,
+        })
+    
+    return render(request, 'studies/researcher_dashboard.html', {
+        'studies': studies,
+        'studies_with_protocols': studies_with_protocols,
+    })
 
 
 @login_required
@@ -703,80 +717,56 @@ def irb_member_dashboard(request):
 # ========== PROTOCOL SUBMISSION VIEWS ==========
 
 @login_required
-def protocol_submit(request, study_id):
-    """PI submits protocol for IRB review."""
+def protocol_enter(request, study_id):
+    """Enter or edit protocol information (draft mode)."""
     from .forms import ProtocolSubmissionForm
     
     study = get_object_or_404(Study, id=study_id)
     
-    # Only study owner can submit (or admin/staff)
+    # Only study owner can enter/edit protocol info (or admin/staff)
     if not (request.user.is_researcher and study.researcher == request.user) and not (request.user.is_admin or request.user.is_staff):
-        messages.error(request, 'Only the study owner can submit protocols.')
+        messages.error(request, 'Only the study owner can enter protocol information.')
         return redirect('studies:detail', pk=study.id)
     
-    existing_submission = ProtocolSubmission.objects.filter(study=study).order_by('-version').first()
+    # Get or create draft submission
+    draft_submission = ProtocolSubmission.objects.filter(
+        study=study,
+        status='draft'
+    ).order_by('-version').first()
     
     if request.method == 'POST':
-        form = ProtocolSubmissionForm(request.POST)
+        form = ProtocolSubmissionForm(request.POST, instance=draft_submission)
         if form.is_valid():
-            # Get AI review preference before saving
-            use_ai_review = form.cleaned_data.pop('use_ai_review', False)
-            
-            # Create submission with all form data
+            # Save as draft
             submission = form.save(commit=False)
             submission.study = study
+            submission.status = 'draft'  # Always save as draft
             submission.submitted_by = request.user
-            submission.review_type = submission.pi_suggested_review_type  # Initial, may change
+            if not submission.review_type:
+                submission.review_type = submission.pi_suggested_review_type  # Initial, may change
             submission.save()
             
             # Update study deception flag
             study.involves_deception = submission.involves_deception
             study.save(update_fields=['involves_deception'])
             
-            # Assign college rep
-            assign_college_rep(submission)
-            
-            # Route submission
-            route_submission(submission)
-            
-            # Optionally trigger AI review
-            if use_ai_review:
-                if getattr(settings, 'AI_REVIEW_ENABLED', False):
-                    # Create AI review
-                    ai_review = IRBReview.objects.create(
-                        study=study,
-                        initiated_by=request.user,
-                    )
-                    submission.ai_review = ai_review
-                    submission.save(update_fields=['ai_review'])
-                    run_irb_ai_review.delay(str(ai_review.id))
-                    messages.info(request, 'AI review initiated. You will be notified when complete.')
-                else:
-                    messages.warning(request, 'AI review is not currently enabled. Protocol submitted without AI review.')
-            
-            submission_detail_url = reverse('studies:protocol_submission_detail', args=[submission.id])
-            dashboard_url = reverse('studies:researcher_dashboard')
             messages.success(
                 request,
                 format_html(
-                    'Protocol submitted successfully! <strong>Submission #{}</strong><br>'
-                    '<small>Your college representative will review it within 5-7 business days. '
-                    '<a href="{}" class="alert-link">View submission details</a> or return to your '
-                    '<a href="{}" class="alert-link">dashboard</a>.</small>',
-                    submission.submission_number,
-                    submission_detail_url,
-                    dashboard_url
+                    'Protocol information saved as draft!<br>'
+                    '<small>You can continue editing or <a href="{}" class="alert-link">submit for IRB review</a> when ready.</small>',
+                    reverse('studies:protocol_submit', args=[study.id])
                 )
             )
-            return redirect('studies:protocol_submission_detail', submission_id=submission.id)
+            return redirect('studies:protocol_enter', study_id=study.id)
     else:
-        # Pre-fill form with existing submission data if available
+        # Pre-fill form with existing draft data if available
         initial_data = {}
-        if existing_submission:
+        if draft_submission:
             for field in ProtocolSubmissionForm.Meta.fields:
-                if hasattr(existing_submission, field):
-                    value = getattr(existing_submission, field)
-                    if value:  # Only include non-empty values
+                if hasattr(draft_submission, field):
+                    value = getattr(draft_submission, field)
+                    if value is not None and value != '':  # Only include non-empty values
                         initial_data[field] = value
         
         # Auto-fill PI information from logged-in user profile
@@ -789,14 +779,98 @@ def protocol_submit(request, study_id):
             if hasattr(request.user, 'profile') and request.user.profile.department:
                 initial_data['pi_department'] = request.user.profile.department
         
-        form = ProtocolSubmissionForm(initial=initial_data)
+        form = ProtocolSubmissionForm(initial=initial_data, instance=draft_submission)
     
-    return render(request, 'studies/protocol_submit.html', {
+    return render(request, 'studies/protocol_enter.html', {
         'study': study,
         'form': form,
-        'existing_submission': existing_submission,
-        'ai_review_enabled': getattr(settings, 'AI_REVIEW_ENABLED', False),
+        'draft_submission': draft_submission,
     })
+
+
+@login_required
+def protocol_submit(request, study_id):
+    """Submit protocol for IRB review (final submission)."""
+    from .forms import ProtocolSubmissionForm
+    
+    study = get_object_or_404(Study, id=study_id)
+    
+    # Only study owner can submit (or admin/staff)
+    if not (request.user.is_researcher and study.researcher == request.user) and not (request.user.is_admin or request.user.is_staff):
+        messages.error(request, 'Only the study owner can submit protocols.')
+        return redirect('studies:detail', pk=study.id)
+    
+    # Get draft submission
+    draft_submission = ProtocolSubmission.objects.filter(
+        study=study,
+        status='draft'
+    ).order_by('-version').first()
+    
+    if not draft_submission:
+        messages.warning(
+            request,
+            format_html(
+                'No protocol information found. Please <a href="{}" class="alert-link">enter protocol information</a> first.',
+                reverse('studies:protocol_enter', args=[study.id])
+            )
+        )
+        return redirect('studies:protocol_enter', study_id=study.id)
+    
+    if request.method == 'POST':
+        # Mark draft as submitted
+        draft_submission.status = 'submitted'
+        draft_submission.submitted_by = request.user
+        draft_submission.review_type = draft_submission.pi_suggested_review_type  # Initial, may change
+        draft_submission.save()
+        
+        # Update study deception flag
+        study.involves_deception = draft_submission.involves_deception
+        study.save(update_fields=['involves_deception'])
+        
+        # Assign college rep
+        assign_college_rep(draft_submission)
+        
+        # Route submission
+        route_submission(draft_submission)
+        
+        # Check if AI review was requested (from form if present)
+        use_ai_review = request.POST.get('use_ai_review', False)
+        if use_ai_review:
+            if getattr(settings, 'AI_REVIEW_ENABLED', False):
+                # Create AI review
+                ai_review = IRBReview.objects.create(
+                    study=study,
+                    initiated_by=request.user,
+                )
+                draft_submission.ai_review = ai_review
+                draft_submission.save(update_fields=['ai_review'])
+                run_irb_ai_review.delay(str(ai_review.id))
+                messages.info(request, 'AI review initiated. You will be notified when complete.')
+            else:
+                messages.warning(request, 'AI review is not currently enabled. Protocol submitted without AI review.')
+        
+        submission_detail_url = reverse('studies:protocol_submission_detail', args=[draft_submission.id])
+        dashboard_url = reverse('studies:researcher_dashboard')
+        messages.success(
+            request,
+            format_html(
+                'Protocol submitted successfully! <strong>Submission #{}</strong><br>'
+                '<small>Your college representative will review it within 5-7 business days. '
+                '<a href="{}" class="alert-link">View submission details</a> or return to your '
+                '<a href="{}" class="alert-link">dashboard</a>.</small>',
+                draft_submission.submission_number,
+                submission_detail_url,
+                dashboard_url
+            )
+        )
+        return redirect('studies:protocol_submission_detail', submission_id=draft_submission.id)
+    else:
+        # Show confirmation page before submitting
+        return render(request, 'studies/protocol_submit_confirm.html', {
+            'study': study,
+            'draft_submission': draft_submission,
+            'ai_review_enabled': getattr(settings, 'AI_REVIEW_ENABLED', False),
+        })
 
 
 @login_required

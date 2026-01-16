@@ -152,8 +152,8 @@ class Study(models.Model):
     
     class Meta:
         db_table = 'studies'
-        verbose_name = 'Study'
-        verbose_name_plural = 'Studies'
+        verbose_name = 'Research Study'
+        verbose_name_plural = 'Research Studies'
         ordering = ['-created_at']
         indexes = [
             models.Index(fields=['mode', 'is_active']),
@@ -367,8 +367,8 @@ class Timeslot(models.Model):
     
     class Meta:
         db_table = 'timeslots'
-        verbose_name = 'Timeslot'
-        verbose_name_plural = 'Timeslots'
+        verbose_name = 'Study Timeslot'
+        verbose_name_plural = 'Study Timeslots'
         ordering = ['starts_at']
         indexes = [
             models.Index(fields=['study', 'starts_at']),
@@ -447,8 +447,8 @@ class Signup(models.Model):
     
     class Meta:
         db_table = 'signups'
-        verbose_name = 'Signup'
-        verbose_name_plural = 'Signups'
+        verbose_name = 'Participant Signup'
+        verbose_name_plural = 'Participant Signups'
         ordering = ['-booked_at']
         unique_together = [['timeslot', 'participant']]
         indexes = [
@@ -504,8 +504,8 @@ class Response(models.Model):
     
     class Meta:
         db_table = 'responses'
-        verbose_name = 'Protocol Response'
-        verbose_name_plural = 'Protocol Responses'
+        verbose_name = 'Study Response'
+        verbose_name_plural = 'Study Responses'
         ordering = ['-created_at']
         indexes = [
             models.Index(fields=['study', 'created_at']),
@@ -633,8 +633,8 @@ class IRBReview(models.Model):
     
     class Meta:
         db_table = 'irb_reviews'
-        verbose_name = 'IRB Review'
-        verbose_name_plural = 'IRB Reviews'
+        verbose_name = 'AI IRB Review'
+        verbose_name_plural = 'AI IRB Reviews'
         ordering = ['-initiated_at']
         indexes = [
             models.Index(fields=['study', '-version']),
@@ -701,8 +701,8 @@ class ReviewDocument(models.Model):
     
     class Meta:
         db_table = 'review_documents'
-        verbose_name = 'Review Document'
-        verbose_name_plural = 'Review Documents'
+        verbose_name = 'IRB Review Document'
+        verbose_name_plural = 'IRB Review Documents'
         ordering = ['file_type', 'uploaded_at']
     
     def __str__(self):
@@ -775,17 +775,31 @@ class ProtocolSubmission(models.Model):
         ('rejected', 'Rejected'),
     ]
     
+    STATUS_CHOICES = [
+        ('draft', 'Draft'),
+        ('submitted', 'Submitted'),
+    ]
+    
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     study = models.ForeignKey(
         Study,
         on_delete=models.CASCADE,
         related_name='protocol_submissions'
     )
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='draft',
+        db_index=True,
+        help_text="Whether this is a draft or has been submitted"
+    )
     submission_number = models.CharField(
         max_length=50,
         unique=True,
+        null=True,
+        blank=True,
         db_index=True,
-        help_text="Auto-generated submission number"
+        help_text="Auto-generated submission number (only for submitted protocols)"
     )
     version = models.IntegerField(default=1, help_text="Submission version number")
     
@@ -1173,7 +1187,7 @@ class ProtocolSubmission(models.Model):
     )
     
     # Timestamps
-    submitted_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    submitted_at = models.DateTimeField(null=True, blank=True, db_index=True, help_text="When protocol was submitted (not when draft was created)")
     reviewed_at = models.DateTimeField(null=True, blank=True)
     decided_at = models.DateTimeField(null=True, blank=True)
     
@@ -1198,8 +1212,8 @@ class ProtocolSubmission(models.Model):
     
     class Meta:
         db_table = 'protocol_submissions'
-        verbose_name = 'Protocol Submission'
-        verbose_name_plural = 'Protocol Submissions'
+        verbose_name = 'IRB Protocol Submission'
+        verbose_name_plural = 'IRB Protocol Submissions'
         ordering = ['-submitted_at']
         indexes = [
             models.Index(fields=['study', '-version']),
@@ -1210,17 +1224,24 @@ class ProtocolSubmission(models.Model):
         unique_together = [['study', 'version']]
     
     def __str__(self):
-        return f"Submission {self.submission_number} - {self.study.title} (v{self.version})"
+        if self.submission_number:
+            return f"Submission {self.submission_number} - {self.study.title} (v{self.version})"
+        return f"Draft Protocol - {self.study.title} (v{self.version})"
     
     def save(self, *args, **kwargs):
-        """Auto-generate submission number and increment version."""
-        if not self.submission_number:
+        """Auto-generate submission number (only when submitting) and increment version."""
+        # Only generate submission number when status is 'submitted' and it doesn't exist
+        if self.status == 'submitted' and not self.submission_number:
             # Generate submission number: SUB-YYYY-NNN
             year = timezone.now().year
             count = ProtocolSubmission.objects.filter(
                 submission_number__startswith=f'SUB-{year}'
             ).count() + 1
             self.submission_number = f'SUB-{year}-{count:03d}'
+        
+        # Set submitted_at when status changes to 'submitted'
+        if self.status == 'submitted' and not self.submitted_at:
+            self.submitted_at = timezone.now()
         
         if not self.version or self.version == 1:
             # Get the max version for this study
@@ -1231,8 +1252,8 @@ class ProtocolSubmission(models.Model):
             )['max_ver']
             self.version = (max_version or 0) + 1
         
-        # If deception is involved, route to chair
-        if self.involves_deception and not self.chair_reviewer:
+        # If deception is involved, route to chair (only for submitted protocols)
+        if self.status == 'submitted' and self.involves_deception and not self.chair_reviewer:
             chair = CollegeRepresentative.objects.filter(is_chair=True, active=True).first()
             if chair and chair.representative:
                 self.chair_reviewer = chair.representative
