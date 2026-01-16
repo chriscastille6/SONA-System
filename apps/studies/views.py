@@ -833,6 +833,16 @@ def protocol_submit(request, study_id):
         # Route submission
         route_submission(draft_submission)
         
+        # Send email notification to college rep
+        from .tasks import notify_college_rep_about_submission
+        try:
+            notify_result = notify_college_rep_about_submission(draft_submission)
+            if notify_result and 'Failed' not in notify_result:
+                messages.info(request, f'College representative has been notified via email.')
+        except Exception as e:
+            # Don't fail submission if email fails
+            pass
+        
         # Check if AI review was requested (from form if present)
         use_ai_review = request.POST.get('use_ai_review', False)
         if use_ai_review:
@@ -991,6 +1001,17 @@ def protocol_assign_reviewers(request, submission_id):
     )
     
     submission.reviewers.set(reviewers)
+    
+    # Send email notifications to assigned reviewers
+    from .tasks import notify_reviewers_about_assignment
+    try:
+        notify_result = notify_reviewers_about_assignment(submission)
+        if notify_result and 'Failed' not in notify_result:
+            messages.info(request, f'Reviewers have been notified via email.')
+    except Exception as e:
+        # Don't fail assignment if email fails
+        pass
+    
     messages.success(request, f'Assigned {reviewers.count()} reviewers.')
     
     return redirect('studies:protocol_submission_detail', submission_id=submission.id)
@@ -1059,6 +1080,16 @@ def protocol_make_decision(request, submission_id):
         messages.warning(request, 'Protocol rejected.')
     
     submission.save()
+    
+    # Send email notification to PI about decision
+    from .tasks import notify_pi_about_decision
+    try:
+        notify_result = notify_pi_about_decision(submission)
+        if notify_result and 'Failed' not in notify_result:
+            messages.info(request, 'Principal Investigator has been notified via email.')
+    except Exception as e:
+        # Don't fail decision if email fails
+        pass
     
     return redirect('studies:protocol_submission_detail', submission_id=submission.id)
 

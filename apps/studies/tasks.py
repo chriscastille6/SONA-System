@@ -8,7 +8,7 @@ from django.conf import settings
 from datetime import timedelta
 from typing import Tuple
 
-from .models import Signup, Study, Response, IRBReviewerAssignment, StudyUpdate
+from .models import Signup, Study, Response, IRBReviewerAssignment, StudyUpdate, ProtocolSubmission
 import importlib
 
 
@@ -104,6 +104,189 @@ Thank you for keeping this protocol compliant.
 """
     count, response = _notify_irb_reviewers(study, subject, message)
     return response
+
+
+def notify_college_rep_about_submission(submission: ProtocolSubmission) -> str:
+    """Email college representative when a protocol is submitted."""
+    if not submission.college_rep or not submission.college_rep.email:
+        return "No college representative assigned or no email address."
+    
+    if not getattr(settings, 'EMAIL_HOST', ''):
+        return "Email not configured; college representative was not notified."
+    
+    study = submission.study
+    link = f"{settings.SITE_URL}/studies/protocol/submissions/{submission.id}/"
+    
+    subject = f"New Protocol Submission: {study.title}"
+    suggested_reviewers_text = ""
+    if submission.suggested_reviewers:
+        suggested_reviewers_text = f"\nPI Suggested Reviewers:\n{submission.suggested_reviewers}\n"
+    
+    message = f"""
+Hello {submission.college_rep.get_full_name() or 'College Representative'},
+
+A new protocol submission has been assigned to you for review:
+
+Study: {study.title}
+Submission Number: {submission.submission_number}
+PI Suggested Review Type: {submission.get_pi_suggested_review_type_display()}
+Submitted By: {submission.submitted_by.get_full_name() if submission.submitted_by else 'Unknown'}
+Submitted At: {submission.submitted_at.strftime('%B %d, %Y at %I:%M %p') if submission.submitted_at else 'N/A'}{suggested_reviewers_text}
+Please review the submission and make your determination:
+{link}
+
+Thank you,
+{settings.SITE_NAME}
+"""
+    
+    try:
+        send_mail(
+            subject=subject,
+            message=message.strip(),
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[submission.college_rep.email],
+            fail_silently=False,
+        )
+        return f"Notified {submission.college_rep.email}"
+    except Exception as exc:
+        return f"Failed to notify college representative: {exc}"
+
+
+def notify_reviewers_about_assignment(submission: ProtocolSubmission) -> str:
+    """Email reviewers when they are assigned to a protocol."""
+    if not submission.reviewers.exists():
+        return "No reviewers assigned."
+    
+    if not getattr(settings, 'EMAIL_HOST', ''):
+        return "Email not configured; reviewers were not notified."
+    
+    study = submission.study
+    link = f"{settings.SITE_URL}/studies/protocol/submissions/{submission.id}/"
+    
+    recipients = []
+    for reviewer in submission.reviewers.all():
+        if reviewer.email:
+            recipients.append(reviewer.email)
+    
+    if not recipients:
+        return "No reviewers with email addresses."
+    
+    subject = f"Protocol Review Assignment: {study.title}"
+    message = f"""
+Hello IRB Reviewer,
+
+You have been assigned to review a protocol submission:
+
+Study: {study.title}
+Submission Number: {submission.submission_number}
+Review Type: {submission.get_review_type_display()}
+Submitted By: {submission.submitted_by.get_full_name() if submission.submitted_by else 'Unknown'}
+
+Please review the submission:
+{link}
+
+Thank you,
+{settings.SITE_NAME}
+"""
+    
+    try:
+        send_mail(
+            subject=subject,
+            message=message.strip(),
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=recipients,
+            fail_silently=False,
+        )
+        return f"Notified {len(recipients)} reviewer(s)"
+    except Exception as exc:
+        return f"Failed to notify reviewers: {exc}"
+
+
+def notify_pi_about_decision(submission: ProtocolSubmission) -> str:
+    """Email PI when a decision is made on their protocol."""
+    if not submission.submitted_by or not submission.submitted_by.email:
+        return "No PI email address available."
+    
+    if not getattr(settings, 'EMAIL_HOST', ''):
+        return "Email not configured; PI was not notified."
+    
+    study = submission.study
+    link = f"{settings.SITE_URL}/studies/protocol/submissions/{submission.id}/"
+    
+    decision_text = submission.get_decision_display()
+    if submission.decision == 'approved':
+        approval_notes_text = ""
+        if submission.approval_notes:
+            approval_notes_text = f"\nApproval Notes:\n{submission.approval_notes}\n"
+        
+        subject = f"Protocol Approved: {study.title}"
+        message = f"""
+Hello {submission.submitted_by.get_full_name() or 'Researcher'},
+
+Your protocol submission has been APPROVED:
+
+Study: {study.title}
+Submission Number: {submission.submission_number}
+Protocol Number: {submission.protocol_number}
+Approved By: {submission.decided_by.get_full_name() if submission.decided_by else 'Unknown'}
+Approved At: {submission.decided_at.strftime('%B %d, %Y at %I:%M %p') if submission.decided_at else 'N/A'}{approval_notes_text}
+View submission details: {link}
+
+Thank you,
+{settings.SITE_NAME}
+"""
+    elif submission.decision == 'revise_resubmit':
+        subject = f"Protocol Revision Requested: {study.title}"
+        message = f"""
+Hello {submission.submitted_by.get_full_name() or 'Researcher'},
+
+Your protocol submission requires REVISION AND RESUBMISSION:
+
+Study: {study.title}
+Submission Number: {submission.submission_number}
+Reviewed By: {submission.decided_by.get_full_name() if submission.decided_by else 'Unknown'}
+
+Required Revisions:
+{submission.rnr_notes}
+
+Please revise and resubmit your protocol:
+{link}
+
+Thank you,
+{settings.SITE_NAME}
+"""
+    else:  # rejected
+        rejection_grounds_text = ""
+        if submission.rejection_grounds:
+            rejection_grounds_text = f"\nRejection Grounds:\n{submission.rejection_grounds}\n"
+        
+        subject = f"Protocol Decision: {study.title}"
+        message = f"""
+Hello {submission.submitted_by.get_full_name() or 'Researcher'},
+
+A decision has been made on your protocol submission:
+
+Study: {study.title}
+Submission Number: {submission.submission_number}
+Decision: {decision_text}
+Decided By: {submission.decided_by.get_full_name() if submission.decided_by else 'Unknown'}{rejection_grounds_text}
+View submission details: {link}
+
+Thank you,
+{settings.SITE_NAME}
+"""
+    
+    try:
+        send_mail(
+            subject=subject,
+            message=message.strip(),
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[submission.submitted_by.email],
+            fail_silently=False,
+        )
+        return f"Notified PI: {submission.submitted_by.email}"
+    except Exception as exc:
+        return f"Failed to notify PI: {exc}"
 
 
 def send_irb_test_email(study, subject=None, message=None) -> Tuple[int, str]:
