@@ -1051,6 +1051,12 @@ class ProtocolSubmission(models.Model):
         blank=True,
         help_text="CITI training completion dates and certificate numbers for all investigators"
     )
+    citi_training_certificate = models.FileField(
+        upload_to='protocol_submissions/citi_certificates/%Y/%m/',
+        blank=True,
+        null=True,
+        help_text="Upload CITI training certificate(s) for all investigators"
+    )
     
     # Vulnerable Populations
     involves_vulnerable_populations = models.BooleanField(

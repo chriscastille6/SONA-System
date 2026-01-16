@@ -377,6 +377,12 @@ class ProtocolSubmissionForm(forms.ModelForm):
         label='CITI Training Completion',
         help_text='CITI training completion dates and certificate numbers for all investigators'
     )
+    citi_training_certificate = forms.FileField(
+        required=False,
+        widget=forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf,.doc,.docx,.png,.jpg,.jpeg'}),
+        label='Upload CITI Training Certificate(s)',
+        help_text='Upload CITI training certificate(s) for all investigators (PDF, Word, or image formats)'
+    )
     
     # Vulnerable Populations
     involves_vulnerable_populations = forms.BooleanField(
@@ -563,6 +569,7 @@ class ProtocolSubmissionForm(forms.ModelForm):
             'pi_phone',
             'co_investigators',
             'citi_training_completion',
+            'citi_training_certificate',
             # Vulnerable Populations
             'involves_vulnerable_populations',
             'vulnerable_populations_description',

@@ -87,7 +87,7 @@
             </div>
             {% endif %}
             
-            <form method="post" id="protocol-submission-form">
+            <form method="post" id="protocol-submission-form" enctype="multipart/form-data">
                 {% csrf_token %}
                 
                 {% if form.non_field_errors %}
@@ -595,6 +595,22 @@
                             </label>
                             {{ form.citi_training_completion }}
                             <small class="form-text text-muted">{{ form.citi_training_completion.help_text }}</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.citi_training_certificate.id_for_label }}" class="form-label">
+                                {{ form.citi_training_certificate.label }}
+                            </label>
+                            {{ form.citi_training_certificate }}
+                            {% if draft_submission and draft_submission.citi_training_certificate %}
+                                <div class="mt-2">
+                                    <small class="text-muted">Current file: 
+                                        <a href="{{ draft_submission.citi_training_certificate.url }}" target="_blank">
+                                            {{ draft_submission.citi_training_certificate.name|slice:"30:" }}
+                                        </a>
+                                    </small>
+                                </div>
+                            {% endif %}
+                            <small class="form-text text-muted">{{ form.citi_training_certificate.help_text }}</small>
                         </div>
                     </div>
                 </div>
