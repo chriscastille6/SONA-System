@@ -735,7 +735,7 @@ def protocol_enter(request, study_id):
     ).order_by('-version').first()
     
     if request.method == 'POST':
-        form = ProtocolSubmissionForm(request.POST, instance=draft_submission)
+        form = ProtocolSubmissionForm(request.POST, request.FILES, instance=draft_submission)
         if form.is_valid():
             # Save as draft
             submission = form.save(commit=False)
