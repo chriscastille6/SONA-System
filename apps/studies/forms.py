@@ -27,7 +27,7 @@ class StudyForm(forms.ModelForm):
             }),
             'description': forms.Textarea(attrs={
                 'class': 'form-control',
-                'rows': 4,
+                'rows': 8,
                 'placeholder': 'Describe what participants will do, time requirements, etc.'
             }),
             'mode': forms.Select(attrs={'class': 'form-select'}),
@@ -40,7 +40,7 @@ class StudyForm(forms.ModelForm):
             }),
             'consent_text': forms.Textarea(attrs={
                 'class': 'form-control',
-                'rows': 6,
+                'rows': 10,
                 'placeholder': 'Enter the consent form text that participants must agree to...'
             }),
             'is_classroom_based': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
@@ -112,37 +112,37 @@ class ProtocolSubmissionForm(forms.ModelForm):
     # Protocol Description
     protocol_description = forms.CharField(
         required=False,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 8}),
         label='Protocol Description',
         help_text='Detailed description of the research project or proposal'
     )
     population_description = forms.CharField(
         required=True,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
         label='Population of Human Subjects',
         help_text='Describe the population for this study (e.g., undergraduate students, age requirements, etc.)'
     )
     research_procedures = forms.CharField(
         required=True,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 6}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
         label='Research Procedures and Data Collection',
         help_text='Step-by-step description of what participants will do, time required, and data collection methods'
     )
     research_objectives = forms.CharField(
         required=True,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 8}),
         label='Research Objectives',
         help_text='Primary research objectives and goals'
     )
     research_questions = forms.CharField(
         required=False,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
         label='Research Questions or Hypotheses',
         help_text='Research questions or hypotheses (if applicable)'
     )
     educational_justification = forms.CharField(
         required=False,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
         label='Educational Justification',
         help_text='If this is an educational exercise, explain why it is specifically designed for this educational context'
     )
@@ -150,25 +150,25 @@ class ProtocolSubmissionForm(forms.ModelForm):
     # Recruitment
     recruitment_method = forms.CharField(
         required=True,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
         label='How will you recruit subjects?',
         help_text='Describe your recruitment methods'
     )
     recruitment_script = forms.CharField(
         required=False,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
         label='Recruitment Script',
         help_text='Exact script or materials used for recruitment'
     )
     inclusion_criteria = forms.CharField(
         required=True,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
         label='Criteria for Including Subjects',
         help_text='Specific criteria for who can participate'
     )
     exclusion_criteria = forms.CharField(
         required=True,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
         label='Criteria for Excluding Subjects',
         help_text='Specific criteria for who cannot participate'
     )
@@ -176,31 +176,31 @@ class ProtocolSubmissionForm(forms.ModelForm):
     # Benefits and Costs
     benefits_to_subjects = forms.CharField(
         required=True,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
         label='Benefits to Human Subjects',
         help_text='Benefits to the human subjects involved in the research'
     )
     benefits_to_others = forms.CharField(
         required=False,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
         label='Benefits to Others',
         help_text='Benefits to individuals who are not subjects but may have similar problems'
     )
     benefits_to_society = forms.CharField(
         required=False,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
         label='Benefits to Society',
         help_text='Benefits to society in general'
     )
     payment_compensation = forms.CharField(
         required=True,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
         label='Payment or Compensation',
         help_text='Describe any payment, compensation, or course credit provided to participants'
     )
     costs_to_subjects = forms.CharField(
         required=True,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
         label='Costs to Subjects',
         help_text='Time required, any monetary costs, repeated testing, etc.'
     )
@@ -208,7 +208,7 @@ class ProtocolSubmissionForm(forms.ModelForm):
     # Review Type Justification
     review_type_justification = forms.CharField(
         required=True,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 8}),
         label='Justification for Review Type',
         help_text='Explain why your protocol qualifies for the requested review type (exempt/expedited/full)'
     )
@@ -230,13 +230,13 @@ class ProtocolSubmissionForm(forms.ModelForm):
     # Risks
     risk_statement = forms.CharField(
         required=True,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 8}),
         label='Statement of Risk',
         help_text='Describe any physical, emotional, social, or legal risks to participants'
     )
     risk_mitigation = forms.CharField(
         required=True,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
         label='Risk Mitigation Strategies',
         help_text='Describe protections and strategies to minimize risks'
     )
@@ -244,31 +244,31 @@ class ProtocolSubmissionForm(forms.ModelForm):
     # Data Handling
     data_collection_methods = forms.CharField(
         required=True,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
         label='Data Collection Methods',
         help_text='Detailed description of data collection methods and instruments'
     )
     data_storage = forms.CharField(
         required=True,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
         label='Data Storage',
         help_text='How data will be stored and secured'
     )
     confidentiality_procedures = forms.CharField(
         required=True,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
         label='Confidentiality Procedures',
         help_text='Procedures for maintaining confidentiality or anonymity'
     )
     data_retention = forms.CharField(
         required=True,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
         label='Data Retention Policy',
         help_text='How long data will be retained and when it will be destroyed'
     )
     data_access = forms.CharField(
         required=True,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
         label='Data Access',
         help_text='Who will have access to the data'
     )
@@ -276,7 +276,7 @@ class ProtocolSubmissionForm(forms.ModelForm):
     # Consent Procedures
     consent_procedures = forms.CharField(
         required=True,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
         label='Consent Procedures',
         help_text='How informed consent will be obtained from participants'
     )
@@ -298,7 +298,7 @@ class ProtocolSubmissionForm(forms.ModelForm):
     )
     funding_source = forms.CharField(
         required=True,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
         label='Source of Project Funds',
         help_text='Describe funding source (e.g., no external funding, grant name, etc.)'
     )
@@ -352,13 +352,13 @@ class ProtocolSubmissionForm(forms.ModelForm):
     )
     co_investigators = forms.CharField(
         required=False,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
         label='Co-Investigators',
         help_text='List all co-investigators (name, title, department, email)'
     )
     citi_training_completion = forms.CharField(
         required=False,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
         label='CITI Training Completion',
         help_text='CITI training completion dates and certificate numbers for all investigators'
     )
@@ -372,13 +372,13 @@ class ProtocolSubmissionForm(forms.ModelForm):
     )
     vulnerable_populations_description = forms.CharField(
         required=False,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
         label='Vulnerable Populations Description',
         help_text='Describe which vulnerable populations are involved'
     )
     vulnerable_population_protections = forms.CharField(
         required=False,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
         label='Vulnerable Population Protections',
         help_text='Specific protections and safeguards for vulnerable populations'
     )
@@ -392,13 +392,13 @@ class ProtocolSubmissionForm(forms.ModelForm):
     )
     international_research_locations = forms.CharField(
         required=False,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
         label='International Research Locations',
         help_text='Geographic locations where research will be conducted'
     )
     cultural_considerations = forms.CharField(
         required=False,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
         label='Cultural Considerations',
         help_text='Cultural considerations and adaptations for international research'
     )
@@ -406,7 +406,7 @@ class ProtocolSubmissionForm(forms.ModelForm):
     # Financial Interests
     financial_interest_disclosure = forms.CharField(
         required=False,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
         label='Financial Interest Disclosure',
         help_text='Disclose any financial interests or conflicts of interest related to this research'
     )
@@ -420,13 +420,13 @@ class ProtocolSubmissionForm(forms.ModelForm):
     # Study Monitoring
     data_monitoring_plan = forms.CharField(
         required=False,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
         label='Data Monitoring Plan',
         help_text='Plan for monitoring data collection and quality assurance'
     )
     oversight_procedures = forms.CharField(
         required=False,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
         label='Oversight Procedures',
         help_text='Procedures for oversight and quality assurance'
     )
@@ -434,19 +434,19 @@ class ProtocolSubmissionForm(forms.ModelForm):
     # Publication and Dissemination
     publication_plan = forms.CharField(
         required=False,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
         label='Publication Plan',
         help_text='Plan for publication and dissemination of results'
     )
     data_sharing_plan = forms.CharField(
         required=False,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
         label='Data Sharing Plan',
         help_text='Plan for sharing data with other researchers or repositories'
     )
     participant_access_to_results = forms.CharField(
         required=False,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
         label='Participant Access to Results',
         help_text='How participants can access study results (if applicable)'
     )
@@ -454,7 +454,7 @@ class ProtocolSubmissionForm(forms.ModelForm):
     # Appendices
     appendices_notes = forms.CharField(
         required=False,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
         label='Appendices Notes',
         help_text='Notes about supporting documents, instruments, or analysis plans (files can be uploaded separately)'
     )
@@ -482,7 +482,7 @@ class ProtocolSubmissionForm(forms.ModelForm):
     )
     irb_contact_notes = forms.CharField(
         required=False,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 2}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
         label='IRB Contact Notes',
         help_text='Additional IRB contact information or notes'
     )
@@ -490,7 +490,7 @@ class ProtocolSubmissionForm(forms.ModelForm):
     # PI's reviewer suggestions
     suggested_reviewers = forms.CharField(
         required=False,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
         label='Suggested Reviewers (Optional)',
         help_text='You may suggest reviewers for your protocol. The college representative will make the final assignment, but your suggestions will be considered. Example: "I recommend Jon Murphy (CBA rep) and Julianne Allen as reviewers."'
     )
