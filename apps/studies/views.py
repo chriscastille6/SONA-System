@@ -744,6 +744,18 @@ def protocol_enter(request, study_id):
             submission.submitted_by = request.user
             if not submission.review_type:
                 submission.review_type = submission.pi_suggested_review_type  # Initial, may change
+            
+            # Handle selected IRB reviewers - format into suggested_reviewers
+            selected_reviewers = form.cleaned_data.get('selected_irb_reviewers', [])
+            if selected_reviewers:
+                reviewer_names = [f"{r.get_full_name()} ({r.email})" for r in selected_reviewers]
+                reviewer_text = "Selected IRB Reviewers:\n" + "\n".join(f"- {name}" for name in reviewer_names)
+                # Append to existing suggested_reviewers if it exists
+                if submission.suggested_reviewers:
+                    submission.suggested_reviewers = f"{submission.suggested_reviewers}\n\n{reviewer_text}"
+                else:
+                    submission.suggested_reviewers = reviewer_text
+            
             submission.save()
             
             # Update study deception flag

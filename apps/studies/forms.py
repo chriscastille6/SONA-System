@@ -72,6 +72,21 @@ class ProtocolSubmissionForm(forms.ModelForm):
         ('full', 'Full Board Review'),
     ]
     
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Set queryset for IRB members
+        from apps.accounts.models import User
+        self.fields['selected_irb_reviewers'].queryset = User.objects.filter(
+            role='irb_member',
+            is_active=True
+        ).order_by('last_name', 'first_name')
+        
+        # If editing an existing submission, pre-select reviewers from suggested_reviewers
+        if self.instance and self.instance.pk:
+            # Try to parse suggested_reviewers to pre-select if it contains user names/emails
+            # For now, we'll just show the text field value
+            pass
+    
     EXEMPTION_CATEGORIES = [
         ('', 'Not applicable'),
         ('A', 'Educational settings with normal educational practices'),
@@ -487,12 +502,21 @@ class ProtocolSubmissionForm(forms.ModelForm):
         help_text='Additional IRB contact information or notes'
     )
     
-    # PI's reviewer suggestions
+    # PI's reviewer suggestions - text field
     suggested_reviewers = forms.CharField(
         required=False,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
-        label='Suggested Reviewers (Optional)',
-        help_text='You may suggest reviewers for your protocol. The college representative will make the final assignment, but your suggestions will be considered. Example: "I recommend Jon Murphy (CBA rep) and Julianne Allen as reviewers."'
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+        label='Suggested Reviewers Notes (Optional)',
+        help_text='Additional notes about reviewer suggestions (e.g., "I recommend Jon Murphy as the CBA rep").'
+    )
+    
+    # PI's selected IRB members (multi-select)
+    selected_irb_reviewers = forms.ModelMultipleChoiceField(
+        queryset=None,  # Will be set in __init__
+        required=False,
+        widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input'}),
+        label='Select IRB Reviewers (Optional)',
+        help_text='Select specific IRB members you would like to review your protocol. The college representative will consider your selections but will make the final assignment.'
     )
     
     class Meta:
