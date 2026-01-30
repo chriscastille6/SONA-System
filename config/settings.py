@@ -128,12 +128,18 @@ USE_TZ = True
 FORCE_SCRIPT_NAME = config('FORCE_SCRIPT_NAME', default=None)
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = '/static/'
+# Auto-detect if we're on campus server and adjust URLs
+if 'bayoupal.nicholls.edu' in ALLOWED_HOSTS:
+    STATIC_URL = '/hsirb/static/'
+    MEDIA_URL = '/hsirb/media/'
+else:
+    STATIC_URL = '/static/'
+    MEDIA_URL = '/media/'
+
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # AI IRB Review Configuration
