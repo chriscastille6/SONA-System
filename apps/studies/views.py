@@ -163,13 +163,37 @@ def researcher_dashboard(request):
     # Get ALL studies by this researcher (not just those with protocol submissions)
     studies = Study.objects.filter(
         researcher=request.user
-    ).prefetch_related('protocol_submissions').order_by('-created_at')
+    ).order_by('-created_at')
     
     # Annotate each study with draft and submitted protocol info
+    # Defer detailed protocol fields that may not exist in the database yet
+    from apps.studies.models import ProtocolSubmission
+    detailed_fields = [
+        'protocol_description', 'population_description', 'research_procedures', 'research_objectives',
+        'data_collection_methods', 'recruitment_methods', 'informed_consent_procedures',
+        'risks_and_benefits', 'confidentiality_procedures', 'data_storage', 'data_retention',
+        'debriefing_procedures', 'compensation_details', 'pi_name', 'pi_title', 'pi_department',
+        'pi_email', 'pi_phone', 'co_investigators', 'previous_protocol_number', 'suggested_reviewers',
+        'citi_training_certificate'
+    ]
+    
     studies_with_protocols = []
     for study in studies:
-        draft = study.protocol_submissions.filter(status='draft').first()
-        submitted = study.protocol_submissions.filter(status='submitted').order_by('-submitted_at').first()
+        try:
+            draft = ProtocolSubmission.objects.filter(
+                study=study, 
+                status='draft'
+            ).defer(*detailed_fields).first()
+        except Exception:
+            draft = None
+        
+        try:
+            submitted = ProtocolSubmission.objects.filter(
+                study=study,
+                status='submitted'
+            ).defer(*detailed_fields).order_by('-submitted_at').first()
+        except Exception:
+            submitted = None
         studies_with_protocols.append({
             'study': study,
             'draft_protocol': draft,

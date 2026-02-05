@@ -39,37 +39,36 @@ class Command(BaseCommand):
         )
         
         if study_created:
-            # Set researcher to Christopher Castille (the user deploying this)
-            # PI will still be Martin Meder in the protocol submission
-            researcher, _ = User.objects.get_or_create(
-                email='christopher.castille@nicholls.edu',
+            # Set researcher to Martin Meder (PI)
+            pi_researcher, _ = User.objects.get_or_create(
+                email='martin.meder@nicholls.edu',
                 defaults={
-                    'first_name': 'Christopher',
-                    'last_name': 'Castille',
+                    'first_name': 'Martin',
+                    'last_name': 'Meder',
                     'role': 'researcher',
                     'is_active': True,
                 }
             )
-            study.researcher = researcher
+            study.researcher = pi_researcher
             study.save()
             self.stdout.write(self.style.SUCCESS(f'✓ Created study: {study.title}'))
-            self.stdout.write(self.style.SUCCESS(f'  Researcher: {researcher.get_full_name()}'))
+            self.stdout.write(self.style.SUCCESS(f'  Researcher (PI): {pi_researcher.get_full_name()}'))
         else:
             self.stdout.write(self.style.SUCCESS(f'✓ Found study: {study.title}'))
-            # Update researcher if needed
-            if study.researcher.email != 'christopher.castille@nicholls.edu':
-                researcher, _ = User.objects.get_or_create(
-                    email='christopher.castille@nicholls.edu',
+            # Ensure Martin Meder is the researcher (PI)
+            if not study.researcher or study.researcher.email != 'martin.meder@nicholls.edu':
+                pi_researcher, _ = User.objects.get_or_create(
+                    email='martin.meder@nicholls.edu',
                     defaults={
-                        'first_name': 'Christopher',
-                        'last_name': 'Castille',
+                        'first_name': 'Martin',
+                        'last_name': 'Meder',
                         'role': 'researcher',
                         'is_active': True,
                     }
                 )
-                study.researcher = researcher
+                study.researcher = pi_researcher
                 study.save()
-                self.stdout.write(self.style.SUCCESS(f'  Updated researcher to: {researcher.get_full_name()}'))
+                self.stdout.write(self.style.SUCCESS(f'  Updated researcher (PI) to: {pi_researcher.get_full_name()}'))
 
         # Get or create PI (Dr. Martin Meder)
         pi, pi_created = User.objects.get_or_create(
@@ -230,6 +229,8 @@ class Command(BaseCommand):
                     benefits_to_others='',
                     benefits_to_subjects='',
                     benefits_to_society='',
+                    # Include co-investigator information so Christopher Castille can see the study
+                    co_investigators=f'Dr. Christopher Castille, {co_i.email}',
                 )
                 self.stdout.write(self.style.SUCCESS('✓ Created new protocol submission via ORM'))
             except Exception as e:
@@ -254,7 +255,8 @@ class Command(BaseCommand):
                         submitted_at_str, reviewed_at_str, decided_at_str,
                         str(jon_murphy.id).replace('-', ''), str(jon_murphy.id).replace('-', ''), 
                         str(pi.id).replace('-', ''), 'submitted',
-                        '', '', ''  # Required text fields
+                        '', '', '',  # Required text fields (benefits_to_others, benefits_to_subjects, benefits_to_society)
+                        f'Dr. Christopher Castille, {co_i.email}'  # co_investigators
                     ))
                 # Get the created submission
                 submission = ProtocolSubmission.objects.raw(
