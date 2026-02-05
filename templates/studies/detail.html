@@ -37,15 +37,7 @@
             </div>
         </div>
         
-        {% if study.irb_status == 'pending' %}
-            <div class="alert alert-warning mt-3">
-                <h5><i class="bi bi-clock"></i> Coming Soon</h5>
-                <p class="mb-0">
-                    This study is currently pending IRB approval. Once the protocol has been reviewed and approved, 
-                    this study will be available for participation. Please check back soon!
-                </p>
-            </div>
-        {% elif study.is_classroom_based %}
+        {% if study.is_classroom_based %}
             <div class="alert alert-info mt-3">
                 <strong>Classroom-Based Study:</strong> This study is conducted in specific classrooms and is not available for general signup. IRB monitoring information is available to authorized personnel.
             </div>

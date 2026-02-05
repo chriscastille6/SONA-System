@@ -33,11 +33,7 @@
                                 </p>
                                 
                                 <div class="d-flex gap-2">
-                                    {% if study.irb_status == 'pending' %}
-                                        <button class="btn btn-secondary btn-sm" disabled>
-                                            <i class="bi bi-lock"></i> Pending IRB Approval
-                                        </button>
-                                    {% elif study.mode == 'online' and study.external_link %}
+                                    {% if study.mode == 'online' and study.external_link %}
                                         <a href="{{ study.external_link }}" target="_blank" class="btn btn-success btn-sm">
                                             <i class="bi bi-play-circle"></i> Start Study
                                         </a>

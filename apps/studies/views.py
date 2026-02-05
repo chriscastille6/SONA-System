@@ -765,6 +765,30 @@ def protocol_enter(request, study_id):
         status='draft'
     ).order_by('-version').first()
     
+    # Use latest submitted/approved protocol to pre-fill when no draft or draft is empty
+    existing_submitted = ProtocolSubmission.objects.filter(
+        study=study,
+        status='submitted'
+    ).order_by('-submitted_at', '-version').first()
+    if not existing_submitted:
+        # Fallback: any non-draft submission with a protocol or submission number
+        existing_submitted = ProtocolSubmission.objects.filter(
+            study=study
+        ).exclude(status='draft').filter(
+            Q(protocol_number__gt='') | Q(submission_number__gt='')
+        ).order_by('-submitted_at', '-version').first()
+    # If draft exists but has no content, prefer showing the approved protocol
+    draft_has_content = (
+        draft_submission
+        and (
+            (getattr(draft_submission, 'protocol_description', None) or '').strip()
+            or (getattr(draft_submission, 'population_description', None) or '').strip()
+        )
+    )
+    if draft_submission and not draft_has_content and existing_submitted:
+        # Show approved protocol in form; don't bind to empty draft so initial data displays
+        draft_submission = None
+    
     if request.method == 'POST':
         form = ProtocolSubmissionForm(request.POST, request.FILES, instance=draft_submission)
         if form.is_valid():
@@ -803,16 +827,17 @@ def protocol_enter(request, study_id):
             )
             return redirect('studies:protocol_enter', study_id=study.id)
     else:
-        # Pre-fill form with existing draft data if available
+        # Pre-fill form with existing draft data, or from latest submitted protocol if no draft
         initial_data = {}
-        if draft_submission:
+        source_submission = draft_submission or existing_submitted
+        if source_submission:
             for field in ProtocolSubmissionForm.Meta.fields:
-                if hasattr(draft_submission, field):
-                    value = getattr(draft_submission, field)
+                if hasattr(source_submission, field):
+                    value = getattr(source_submission, field)
                     if value is not None and value != '':  # Only include non-empty values
                         initial_data[field] = value
         
-        # Auto-fill PI information from logged-in user profile
+        # Auto-fill PI information from logged-in user profile when nothing loaded
         if not initial_data.get('pi_name'):
             initial_data['pi_name'] = request.user.get_full_name()
         if not initial_data.get('pi_email'):
@@ -828,6 +853,7 @@ def protocol_enter(request, study_id):
         'study': study,
         'form': form,
         'draft_submission': draft_submission,
+        'existing_submitted': existing_submitted,
     })
 
 
@@ -936,11 +962,17 @@ def protocol_submission_detail(request, submission_id):
     submission = get_object_or_404(ProtocolSubmission, id=submission_id)
     study = submission.study
     
-    # Check access
+    # Check access (include co-investigators listed on the submission)
+    is_co_i = bool(
+        request.user.email
+        and submission.co_investigators
+        and request.user.email.lower() in submission.co_investigators.lower()
+    )
     can_view = (
         request.user.is_staff or
         getattr(request.user, 'is_admin', False) or
         (request.user.is_researcher and study.researcher == request.user) or
+        is_co_i or
         submission.college_rep == request.user or
         submission.chair_reviewer == request.user or
         submission.reviewers.filter(id=request.user.id).exists()
@@ -960,6 +992,7 @@ def protocol_submission_detail(request, submission_id):
         'submission': submission,
         'study': study,
         'is_pi': request.user.is_researcher and study.researcher == request.user,
+        'is_co_i': is_co_i,
         'is_college_rep': submission.college_rep == request.user,
         'is_chair': submission.chair_reviewer == request.user,
         'is_reviewer': submission.reviewers.filter(id=request.user.id).exists(),

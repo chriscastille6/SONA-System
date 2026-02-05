@@ -144,6 +144,11 @@ class Command(BaseCommand):
             "- Students not enrolled in the Labor Economics course"
         )
 
+        submission.recruitment_script = (
+            "This exercise is part of your Labor Economics course. Your participation is voluntary. "
+            "You may withdraw at any time without penalty. All responses are anonymous."
+        )
+
         # 3. Benefits and Costs (Section 4)
         submission.benefits_to_subjects = (
             "Students will gain hands-on experience with conjoint analysis methodology, which is widely "
@@ -180,7 +185,8 @@ class Command(BaseCommand):
             "than minimal risk to participants."
         )
 
-        submission.exemption_category = "Category 1: Normal educational practices"
+        submission.exemption_category = "Category 1 (A): Research conducted in established or commonly accepted educational settings"
+        submission.expedited_category = ""
 
         # 5. Risks (Section 6)
         submission.risk_statement = (
@@ -261,8 +267,19 @@ class Command(BaseCommand):
             "Department of Management, Nicholls State University"
         )
 
+        # Vulnerable Populations (Section 10)
+        submission.involves_vulnerable_populations = False
+        submission.vulnerable_populations_description = ""
+        submission.vulnerable_population_protections = ""
+
+        # International Research (Section 11)
+        submission.involves_international_research = False
+        submission.international_research_locations = ""
+        submission.cultural_considerations = ""
+
         # Financial Interests (Section 12)
         submission.financial_interest_none = True
+        submission.financial_interest_disclosure = ""
 
         # Study Monitoring (Section 13)
         submission.data_monitoring_plan = (
@@ -270,6 +287,12 @@ class Command(BaseCommand):
             "Conjoint analysis: preference pattern visualization. "
             "Turnover cost calculations based on student retention predictions. "
             "ROI analysis: cost-benefit analysis of different benefit packages."
+        )
+
+        submission.oversight_procedures = (
+            "The PI (Dr. Martin Meder) and Co-I (Dr. Christopher Castille) will oversee data collection "
+            "and quality. The exercise is conducted within normal educational settings with no external "
+            "data transmission; all responses are anonymous and stored locally."
         )
 
         # Publication and Dissemination (Section 14)
@@ -282,6 +305,11 @@ class Command(BaseCommand):
         submission.data_sharing_plan = (
             "Anonymous aggregate data may be shared via OSF (Open Science Framework) repository "
             "for research transparency and replication purposes."
+        )
+
+        submission.participant_access_to_results = (
+            "Aggregated class results are displayed during the exercise. Participants may request "
+            "a summary of study findings from the PI once analysis is complete."
         )
 
         # Appendices (Section 15)

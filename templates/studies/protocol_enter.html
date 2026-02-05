@@ -81,9 +81,21 @@
                 <strong>Draft Saved:</strong> You have a draft protocol. Continue editing below or 
                 <a href="{% url 'studies:protocol_submit' study.id %}" class="alert-link">submit for IRB review</a> when ready.
             </div>
+            {% elif existing_submitted %}
+            <div class="alert alert-info d-flex align-items-center justify-content-between flex-wrap gap-2">
+                <span>
+                    <strong>Existing protocol loaded:</strong> The form below is pre-filled from your current submission
+                    {% if existing_submitted.protocol_number %}({{ existing_submitted.protocol_number }}){% endif %}.
+                    Saving will create a new draft.
+                </span>
+                <a href="{% url 'studies:protocol_submission_detail' existing_submitted.id %}" class="btn btn-outline-primary btn-sm">
+                    View full submission
+                </a>
+            </div>
             {% else %}
             <div class="alert alert-warning">
                 <strong>Draft Mode:</strong> This information will be saved as a draft. You can edit it anytime before submitting for IRB review.
+                <br><small>If this study already has an approved protocol, go to <a href="{% url 'studies:researcher_dashboard' %}">My Studies</a> and click <strong>View Submission</strong> to see the full protocol.</small>
             </div>
             {% endif %}
             

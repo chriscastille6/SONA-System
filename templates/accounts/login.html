@@ -11,10 +11,10 @@
                 
                 <form method="post">
                     {% csrf_token %}
-                    
+                    <p class="text-muted small">Use the email address for your own account. Login is by email only.</p>
                     <div class="mb-3">
                         <label for="id_username" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="id_username" name="username" required autofocus>
+                        <input type="email" class="form-control" id="id_username" name="username" required autofocus placeholder="you@example.edu">
                     </div>
                     
                     <div class="mb-3">

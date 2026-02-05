@@ -41,7 +41,7 @@
                             <li class="nav-item"><a class="nav-link" href="{% url 'studies:my_bookings' %}">My Bookings</a></li>
                             <li class="nav-item"><a class="nav-link" href="{% url 'credits:my_credits' %}">My Credits</a></li>
                         {% endif %}
-                        {% if user.is_researcher %}
+                        {% if user.is_researcher or user.is_instructor or user.is_staff or user.is_admin %}
                             <li class="nav-item"><a class="nav-link" href="{% url 'studies:researcher_dashboard' %}">My Studies</a></li>
                         {% endif %}
                         {% if user.is_irb_member %}
@@ -50,11 +50,9 @@
                             <li class="nav-item"><a class="nav-link" href="{% url 'studies:committee_dashboard' %}">Committee</a></li>
                         {% endif %}
                         {% if user.is_instructor %}
-                            <li class="nav-item"><a class="nav-link" href="{% url 'studies:researcher_dashboard' %}">My Studies</a></li>
                             <li class="nav-item"><a class="nav-link" href="{% url 'reporting:home' %}">Reports</a></li>
                         {% endif %}
                         {% if user.is_staff or user.is_admin %}
-                            <li class="nav-item"><a class="nav-link" href="{% url 'studies:researcher_dashboard' %}">My Studies</a></li>
                             <li class="nav-item"><a class="nav-link" href="{% url 'admin:index' %}">Admin Panel</a></li>
                         {% endif %}
                         <li class="nav-item"><a class="nav-link" href="{% url 'accounts:profile' %}">Profile</a></li>
