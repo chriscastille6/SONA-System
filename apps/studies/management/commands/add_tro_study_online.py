@@ -208,13 +208,6 @@ class Command(BaseCommand):
                     str(pi.id).replace('-', ''), 'submitted'
                 ))
             
-            # Get the created submission
-            submission = ProtocolSubmission.objects.raw(
-                "SELECT * FROM protocol_submissions WHERE id = %s",
-                [submission_id]
-            )
-            submission = list(submission)[0] if submission else None
-            self.stdout.write(self.style.SUCCESS('✓ Created new protocol submission'))
 
         # Copy approval PDF to media directory
         base_dir = Path(settings.BASE_DIR)
