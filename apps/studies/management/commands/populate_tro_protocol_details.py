@@ -267,6 +267,13 @@ class Command(BaseCommand):
             "Department of Management, Nicholls State University"
         )
 
+        # CITI Training (Section 9) – certificate can be linked via protocol form upload or link_tro_citi_certificate
+        submission.citi_training_completion = (
+            "Dr. Martin Meder (PI) and Dr. Christopher Castille (Co-I) have completed CITI Program training "
+            "in Human Research (Social-Behavioral-Educational). Completion certificates are on file and "
+            "linked to this submission."
+        )
+
         # Vulnerable Populations (Section 10)
         submission.involves_vulnerable_populations = False
         submission.vulnerable_populations_description = ""

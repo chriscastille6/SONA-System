@@ -175,6 +175,12 @@ class ProtocolSubmissionForm(forms.ModelForm):
         label='Recruitment Script',
         help_text='Exact script or materials used for recruitment'
     )
+    recruitment_flyer = forms.FileField(
+        required=False,
+        widget=forms.FileInput(attrs={'class': 'form-control', 'accept': '.pdf,.png,.jpg,.jpeg,.doc,.docx'}),
+        label='Recruitment Flyer (if applicable)',
+        help_text='Upload a flyer or poster used for recruitment (PDF or image). Optional.'
+    )
     inclusion_criteria = forms.CharField(
         required=True,
         widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
@@ -538,6 +544,7 @@ class ProtocolSubmissionForm(forms.ModelForm):
             'educational_justification',
             'recruitment_method',
             'recruitment_script',
+            'recruitment_flyer',
             'inclusion_criteria',
             'exclusion_criteria',
             'benefits_to_subjects',

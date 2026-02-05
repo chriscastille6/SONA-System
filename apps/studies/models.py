@@ -906,6 +906,12 @@ class ProtocolSubmission(models.Model):
         blank=True,
         help_text="Recruitment script or materials"
     )
+    recruitment_flyer = models.FileField(
+        upload_to='protocol_submissions/recruitment_flyers/%Y/%m/',
+        blank=True,
+        null=True,
+        help_text="Upload a recruitment flyer or poster if applicable (PDF or image)"
+    )
     inclusion_criteria = models.TextField(
         blank=True,
         help_text="Criteria for including subjects"

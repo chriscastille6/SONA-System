@@ -316,6 +316,17 @@
                         </div>
                         
                         <div class="mb-3">
+                            <label for="{{ form.recruitment_flyer.id_for_label }}" class="form-label">
+                                {{ form.recruitment_flyer.label }}
+                            </label>
+                            {{ form.recruitment_flyer }}
+                            <div class="form-text">{{ form.recruitment_flyer.help_text }}</div>
+                            {% if form.recruitment_flyer.errors %}
+                                <div class="text-danger small">{{ form.recruitment_flyer.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="mb-3">
                             <label for="{{ form.inclusion_criteria.id_for_label }}" class="form-label">
                                 {{ form.inclusion_criteria.label }} <span class="text-danger">*</span>
                             </label>
@@ -1024,9 +1035,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 link.classList.add('active');
                 link.style.backgroundColor = '#f0f0f0';
                 link.style.fontWeight = 'bold';
+                link.style.color = '#000';
             } else {
                 link.style.backgroundColor = '';
                 link.style.fontWeight = '';
+                link.style.color = '';
             }
         });
     }

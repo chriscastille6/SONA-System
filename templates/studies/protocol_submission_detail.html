@@ -331,6 +331,10 @@
                     <p><strong>Recruitment Script:</strong></p>
                     <p class="ms-3">{{ submission.recruitment_script|linebreaks }}</p>
                     {% endif %}
+                    {% if submission.recruitment_flyer %}
+                    <p><strong>Recruitment Flyer:</strong></p>
+                    <p class="ms-3"><a href="{{ submission.recruitment_flyer.url }}" target="_blank" rel="noopener">View recruitment flyer</a></p>
+                    {% endif %}
                     {% if submission.inclusion_criteria %}
                     <p><strong>Inclusion Criteria:</strong></p>
                     <p class="ms-3">{{ submission.inclusion_criteria|linebreaks }}</p>
