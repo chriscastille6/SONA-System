@@ -188,6 +188,7 @@ class Command(BaseCommand):
             decided_at_str = timezone.make_aware(datetime(2025, 10, 31, 12, 0, 0)).isoformat()
             
             with connection.cursor() as cursor:
+                # Use CAST for boolean in PostgreSQL, or False for Django ORM compatibility
                 cursor.execute("""
                     INSERT INTO protocol_submissions (
                         id, study_id, submission_number, version,
@@ -196,11 +197,11 @@ class Command(BaseCommand):
                         rejection_grounds, rnr_notes, approval_notes,
                         submitted_at, reviewed_at, decided_at,
                         college_rep_id, decided_by_id, submitted_by_id, status
-                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s::boolean, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                 """, (
                     submission_id, str(study.id).replace('-', ''), 'SUB-2025-001', 1,
                     'exempt', 'exempt', 'exempt',
-                    0, 'approved', protocol_number,
+                    False, 'approved', protocol_number,
                     '', '', approval_notes_text,
                     submitted_at_str, reviewed_at_str, decided_at_str,
                     str(jon_murphy.id).replace('-', ''), str(jon_murphy.id).replace('-', ''), 
