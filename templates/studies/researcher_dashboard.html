@@ -52,7 +52,13 @@
                                         <span class="badge bg-info">IRB: {{ study.get_irb_status_display }}</span>
                                     {% endif %}
                                     {% if study.osf_enabled %}
-                                        <span class="badge bg-info">OSF</span>
+                                        {% if study.osf_link %}
+                                            <a href="{{ study.osf_link }}" target="_blank" class="badge bg-info text-decoration-none">
+                                                <i class="bi bi-box-arrow-up-right"></i> OSF
+                                            </a>
+                                        {% else %}
+                                            <span class="badge bg-info">OSF</span>
+                                        {% endif %}
                                     {% endif %}
                                 </div>
                                 
