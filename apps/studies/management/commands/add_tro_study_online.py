@@ -19,14 +19,41 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write(self.style.SUCCESS('🚀 Adding TRO Study to Online Database...\n'))
         
-        # Get the study
-        try:
-            study = Study.objects.get(slug='conjoint-analysis')
+        # Get or create the study
+        study, study_created = Study.objects.get_or_create(
+            slug='conjoint-analysis',
+            defaults={
+                'title': 'Teaching the Theory of Optimal Fringe Benefits Using Conjoint Analysis',
+                'description': (
+                    'Educational conjoint-analysis exercise for Labor Economics students. '
+                    'Participants review consent materials, complete an intake survey, work '
+                    'through eight job-package choice tasks, and collaborate on designing an '
+                    'optimal fringe benefits package under budget constraints.'
+                ),
+                'mode': 'online',
+                'credit_value': 0,
+                'is_active': True,
+                'is_approved': True,
+                'irb_status': 'pending',  # Will be updated to approved below
+            }
+        )
+        
+        if study_created:
+            # Need to set researcher - get or create PI first
+            pi_temp, _ = User.objects.get_or_create(
+                email='martin.meder@nicholls.edu',
+                defaults={
+                    'first_name': 'Martin',
+                    'last_name': 'Meder',
+                    'role': 'researcher',
+                    'is_active': True,
+                }
+            )
+            study.researcher = pi_temp
+            study.save()
+            self.stdout.write(self.style.SUCCESS(f'✓ Created study: {study.title}'))
+        else:
             self.stdout.write(self.style.SUCCESS(f'✓ Found study: {study.title}'))
-        except Study.DoesNotExist:
-            self.stdout.write(self.style.ERROR('✗ Study with slug "conjoint-analysis" not found'))
-            self.stdout.write(self.style.WARNING('   You may need to create the study first.'))
-            return
 
         # Get or create PI (Dr. Martin Meder)
         pi, pi_created = User.objects.get_or_create(
