@@ -1323,11 +1323,8 @@ def amendment_detail(request, amendment_id):
         messages.error(request, 'Access denied.')
         return redirect('home')
 
-    is_reviewer = (
-        amendment.reviewer == request.user or
-        request.user.is_staff or
-        getattr(request.user, 'is_admin', False)
-    )
+    # Only the assigned reviewer can approve/revise/reject (not PI, co-I, or other staff)
+    is_reviewer = amendment.reviewer and amendment.reviewer == request.user
 
     return render(request, 'studies/amendment_detail.html', {
         'amendment': amendment,
@@ -1341,14 +1338,11 @@ def amendment_detail(request, amendment_id):
 @login_required
 @require_http_methods(["POST"])
 def amendment_review(request, amendment_id):
-    """Review and make decision on an amendment."""
+    """Review and make decision on an amendment. Only the assigned reviewer may submit."""
     amendment = get_object_or_404(ProtocolAmendment, id=amendment_id)
 
-    can_review = (
-        amendment.reviewer == request.user or
-        request.user.is_staff or
-        getattr(request.user, 'is_admin', False)
-    )
+    # Only the assigned reviewer can submit a decision (not PI, co-I, or other staff)
+    can_review = amendment.reviewer and amendment.reviewer == request.user
 
     if not can_review:
         messages.error(request, 'You do not have permission to review this amendment.')

@@ -585,15 +585,18 @@
         
         <!-- Amendments Section -->
         <div class="card mb-3">
-            <div class="card-header d-flex justify-content-between align-items-center">
+            <div class="card-header d-flex justify-content-between align-items-center flex-wrap gap-2">
                 <h5 class="mb-0">Protocol Amendments</h5>
-                {% if submission.decision == 'approved' and is_pi %}
-                <a href="{% url 'studies:amendment_create' submission.id %}" class="btn btn-sm btn-primary" style="background-color: #A6192E; border-color: #A6192E;">
-                    Create Amendment
+                {% if submission.decision == 'approved' and is_pi or submission.decision == 'approved' and is_co_i %}
+                <a href="{% url 'studies:amendment_create' submission.id %}" class="btn btn-primary" style="background-color: #A6192E; border-color: #A6192E;">
+                    <i class="bi bi-plus-circle"></i> Submit amendment
                 </a>
                 {% endif %}
             </div>
             <div class="card-body">
+                {% if submission.decision == 'approved' and is_pi or submission.decision == 'approved' and is_co_i %}
+                <p class="text-muted small mb-3">To request a change to this approved protocol (new measures, procedures, etc.), submit an amendment for IRB review.</p>
+                {% endif %}
                 {% if submission.amendments.exists %}
                 <div class="table-responsive">
                     <table class="table table-hover mb-0">
@@ -653,6 +656,11 @@
                 <a href="{% url 'studies:amendment_list' submission.id %}" class="btn btn-outline-secondary">
                     View All Amendments
                 </a>
+                {% if submission.decision == 'approved' and is_pi or submission.decision == 'approved' and is_co_i %}
+                <a href="{% url 'studies:amendment_create' submission.id %}" class="btn btn-primary" style="background-color: #A6192E; border-color: #A6192E;">
+                    Submit amendment
+                </a>
+                {% endif %}
             </div>
         </div>
     </div>
