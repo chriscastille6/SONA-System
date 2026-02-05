@@ -187,26 +187,65 @@ class Command(BaseCommand):
             reviewed_at_str = timezone.make_aware(datetime(2025, 10, 31, 12, 0, 0)).isoformat()
             decided_at_str = timezone.make_aware(datetime(2025, 10, 31, 12, 0, 0)).isoformat()
             
-            with connection.cursor() as cursor:
-                # Use CAST for boolean in PostgreSQL, or False for Django ORM compatibility
-                cursor.execute("""
-                    INSERT INTO protocol_submissions (
-                        id, study_id, submission_number, version,
-                        pi_suggested_review_type, review_type, college_rep_determination,
-                        involves_deception, decision, protocol_number,
-                        rejection_grounds, rnr_notes, approval_notes,
-                        submitted_at, reviewed_at, decided_at,
-                        college_rep_id, decided_by_id, submitted_by_id, status
-                    ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s::boolean, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
-                """, (
-                    submission_id, str(study.id).replace('-', ''), 'SUB-2025-001', 1,
-                    'exempt', 'exempt', 'exempt',
-                    False, 'approved', protocol_number,
-                    '', '', approval_notes_text,
-                    submitted_at_str, reviewed_at_str, decided_at_str,
-                    str(jon_murphy.id).replace('-', ''), str(jon_murphy.id).replace('-', ''), 
-                    str(pi.id).replace('-', ''), 'submitted'
-                ))
+            # Use Django ORM to handle all required fields automatically
+            try:
+                submission = ProtocolSubmission.objects.create(
+                    id=submission_id,
+                    study=study,
+                    submission_number='SUB-2025-001',
+                    version=1,
+                    pi_suggested_review_type='exempt',
+                    review_type='exempt',
+                    college_rep_determination='exempt',
+                    involves_deception=False,
+                    decision='approved',
+                    protocol_number=protocol_number,
+                    rejection_grounds='',
+                    rnr_notes='',
+                    approval_notes=approval_notes_text,
+                    submitted_at=timezone.make_aware(datetime(2025, 10, 15, 12, 0, 0)),
+                    reviewed_at=timezone.make_aware(datetime(2025, 10, 31, 12, 0, 0)),
+                    decided_at=timezone.make_aware(datetime(2025, 10, 31, 12, 0, 0)),
+                    college_rep=jon_murphy,
+                    decided_by=jon_murphy,
+                    submitted_by=pi,
+                    status='submitted',
+                    # Set required text fields to empty strings
+                    benefits_to_others='',
+                    benefits_to_subjects='',
+                    benefits_to_society='',
+                )
+                self.stdout.write(self.style.SUCCESS('✓ Created new protocol submission via ORM'))
+            except Exception as e:
+                # Fallback to raw SQL if ORM fails
+                self.stdout.write(self.style.WARNING(f'ORM failed: {e}. Using raw SQL with all required fields...'))
+                with connection.cursor() as cursor:
+                    cursor.execute("""
+                        INSERT INTO protocol_submissions (
+                            id, study_id, submission_number, version,
+                            pi_suggested_review_type, review_type, college_rep_determination,
+                            involves_deception, decision, protocol_number,
+                            rejection_grounds, rnr_notes, approval_notes,
+                            submitted_at, reviewed_at, decided_at,
+                            college_rep_id, decided_by_id, submitted_by_id, status,
+                            benefits_to_others, benefits_to_subjects, benefits_to_society
+                        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s::boolean, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    """, (
+                        submission_id, str(study.id).replace('-', ''), 'SUB-2025-001', 1,
+                        'exempt', 'exempt', 'exempt',
+                        False, 'approved', protocol_number,
+                        '', '', approval_notes_text,
+                        submitted_at_str, reviewed_at_str, decided_at_str,
+                        str(jon_murphy.id).replace('-', ''), str(jon_murphy.id).replace('-', ''), 
+                        str(pi.id).replace('-', ''), 'submitted',
+                        '', '', ''  # Required text fields
+                    ))
+                # Get the created submission
+                submission = ProtocolSubmission.objects.raw(
+                    "SELECT * FROM protocol_submissions WHERE id = %s",
+                    [submission_id]
+                )
+                submission = list(submission)[0] if submission else None
             
 
         # Copy approval PDF to media directory
