@@ -92,12 +92,13 @@ class Command(BaseCommand):
         else:
             self.stdout.write(f'✓ Found Co-I: {co_i.get_full_name()}')
 
-        # Get Jon Murphy (college rep)
+        # Get or create Jon Murphy (college rep)
         jon_murphy = User.objects.filter(
             email__icontains='murphy'
         ).filter(role='irb_member').first()
         
         if not jon_murphy:
+            # Try to get from college rep assignment
             college_rep = CollegeRepresentative.objects.filter(
                 college='business',
                 active=True
@@ -105,8 +106,43 @@ class Command(BaseCommand):
             if college_rep and college_rep.representative:
                 jon_murphy = college_rep.representative
             else:
-                self.stdout.write(self.style.ERROR('✗ Jon Murphy (college rep) not found'))
-                return
+                # Create Jon Murphy if he doesn't exist
+                self.stdout.write(self.style.WARNING('⚠ Jon Murphy not found, creating...'))
+                jon_murphy, created = User.objects.get_or_create(
+                    email='jon.murphy@nicholls.edu',
+                    defaults={
+                        'first_name': 'Jon',
+                        'last_name': 'Murphy',
+                        'role': 'irb_member',
+                        'is_active': True,
+                        'is_staff': True,
+                    }
+                )
+                if created:
+                    jon_murphy.set_password('temp_password_change_me')
+                    jon_murphy.save()
+                    # Create profile
+                    profile, _ = Profile.objects.get_or_create(user=jon_murphy)
+                    profile.department = 'Business Administration'
+                    profile.save()
+                    self.stdout.write(self.style.SUCCESS(f'✓ Created Jon Murphy: {jon_murphy.get_full_name()}'))
+                
+                # Assign as college rep
+                college_rep, rep_created = CollegeRepresentative.objects.get_or_create(
+                    college='business',
+                    defaults={
+                        'representative': jon_murphy,
+                        'is_chair': False,
+                        'active': True,
+                    }
+                )
+                if rep_created:
+                    self.stdout.write(self.style.SUCCESS('✓ Assigned Jon Murphy as College Representative for Business'))
+                else:
+                    college_rep.representative = jon_murphy
+                    college_rep.active = True
+                    college_rep.save()
+                    self.stdout.write(self.style.SUCCESS('✓ Updated college representative assignment'))
 
         self.stdout.write(f'✓ Found college rep: {jon_murphy.get_full_name()}')
 
