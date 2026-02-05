@@ -35,8 +35,21 @@ class Command(BaseCommand):
                 'is_active': True,
                 'is_approved': True,
                 'irb_status': 'pending',  # Will be updated to approved below
+                # OSF fields
+                'osf_enabled': True,
+                'osf_project_id': 'j9ghr',
+                'osf_link': 'https://osf.io/j9ghr/',
             }
         )
+        
+        # Update OSF fields if study already exists
+        if not study_created:
+            if not study.osf_enabled or study.osf_link != 'https://osf.io/j9ghr/':
+                study.osf_enabled = True
+                study.osf_project_id = 'j9ghr'
+                study.osf_link = 'https://osf.io/j9ghr/'
+                study.save(update_fields=['osf_enabled', 'osf_project_id', 'osf_link'])
+                self.stdout.write(self.style.SUCCESS('✓ Updated OSF link: https://osf.io/j9ghr/'))
         
         if study_created:
             # Set researcher to Martin Meder (PI)
