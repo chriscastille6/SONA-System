@@ -45,6 +45,11 @@
                                 </p>
                                 
                                 <div class="mb-2">
+                                    {% if not draft and not submitted and study.irb_status == 'pending' %}
+                                        <span class="badge bg-warning text-dark">
+                                            <i class="bi bi-clock"></i> Coming Soon - IRB Protocol Pending
+                                        </span>
+                                    {% endif %}
                                     {% if study.monitoring_enabled %}
                                         <span class="badge bg-success">Monitoring On</span>
                                     {% endif %}
