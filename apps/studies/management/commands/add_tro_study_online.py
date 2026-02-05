@@ -245,8 +245,8 @@ class Command(BaseCommand):
                             rejection_grounds, rnr_notes, approval_notes,
                             submitted_at, reviewed_at, decided_at,
                             college_rep_id, decided_by_id, submitted_by_id, status,
-                            benefits_to_others, benefits_to_subjects, benefits_to_society
-                        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s::boolean, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                            benefits_to_others, benefits_to_subjects, benefits_to_society, co_investigators
+                        ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s::boolean, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                     """, (
                         submission_id, str(study.id).replace('-', ''), 'SUB-2025-001', 1,
                         'exempt', 'exempt', 'exempt',
