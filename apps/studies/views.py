@@ -28,6 +28,7 @@ from .models import (
     StudyUpdate,
     ProtocolSubmission,
     CollegeRepresentative,
+    ProtocolAmendment,
 )
 from .irb_utils import assign_college_rep, route_submission, get_irb_chair
 from .tasks import (
@@ -1164,11 +1165,231 @@ def protocol_submission_list(request):
     
     submissions = submissions.select_related('study', 'study__researcher', 'college_rep', 'chair_reviewer').prefetch_related('reviewers').order_by('-submitted_at')
     
+    # Get pending amendments for the user
+    if request.user.is_staff or getattr(request.user, 'is_admin', False):
+        pending_amendments = ProtocolAmendment.objects.filter(decision='pending')
+    else:
+        pending_amendments = ProtocolAmendment.objects.filter(
+            reviewer=request.user, decision='pending'
+        )
+    pending_amendments = pending_amendments.select_related(
+        'protocol_submission', 'protocol_submission__study', 'submitted_by'
+    ).order_by('-submitted_at')
+
     return render(request, 'studies/protocol_submission_list.html', {
         'submissions': submissions,
         'decision_choices': ProtocolSubmission.DECISION_CHOICES,
         'selected_decision': decision_filter,
+        'pending_amendments': pending_amendments,
     })
 
 
+# ========== PROTOCOL AMENDMENT VIEWS ==========
+
+@login_required
+def amendment_create(request, submission_id):
+    """Create an amendment for an approved protocol submission."""
+    submission = get_object_or_404(ProtocolSubmission, id=submission_id)
+    study = submission.study
+
+    # Only PI or admin/staff can create amendments
+    is_pi = request.user.is_researcher and study.researcher == request.user
+    is_co_i = request.user.email and submission.co_investigators and request.user.email in submission.co_investigators
+    if not (is_pi or is_co_i or request.user.is_staff or getattr(request.user, 'is_admin', False)):
+        messages.error(request, 'Only the study PI or co-investigators can create amendments.')
+        return redirect('studies:protocol_submission_detail', submission_id=submission.id)
+
+    if submission.decision != 'approved':
+        messages.error(request, 'Amendments can only be created for approved protocols.')
+        return redirect('studies:protocol_submission_detail', submission_id=submission.id)
+
+    if request.method == 'POST':
+        title = request.POST.get('title', '').strip()
+        description = request.POST.get('description', '').strip()
+        justification = request.POST.get('justification', '').strip()
+        amendment_type = request.POST.get('amendment_type', 'minor')
+        impact_on_risk = request.POST.get('impact_on_risk', '').strip()
+        impact_on_consent = request.POST.get('impact_on_consent', '').strip()
+        new_instruments = request.POST.get('new_instruments', '').strip()
+        instrument_url = request.POST.get('instrument_url', '').strip()
+        supporting_document = request.FILES.get('supporting_document')
+
+        if not title or not description or not justification:
+            messages.error(request, 'Title, description, and justification are required.')
+        else:
+            amendment = ProtocolAmendment.objects.create(
+                protocol_submission=submission,
+                title=title,
+                description=description,
+                justification=justification,
+                amendment_type=amendment_type,
+                impact_on_risk=impact_on_risk,
+                impact_on_consent=impact_on_consent,
+                new_instruments=new_instruments,
+                instrument_url=instrument_url,
+                supporting_document=supporting_document,
+                submitted_by=request.user,
+                reviewer=submission.college_rep,  # Auto-assign to same college rep
+            )
+            messages.success(request, f'Amendment {amendment.amendment_number} created and submitted for review.')
+
+            # Send email notification to reviewer
+            if amendment.reviewer:
+                from django.core.mail import send_mail
+                try:
+                    send_mail(
+                        subject=f'Protocol Amendment Submitted: {amendment.title}',
+                        message=(
+                            f'A protocol amendment has been submitted for your review.\n\n'
+                            f'Protocol: {submission.protocol_number}\n'
+                            f'Study: {study.title}\n'
+                            f'Amendment: {amendment.amendment_number}\n'
+                            f'Title: {amendment.title}\n'
+                            f'Submitted by: {request.user.get_full_name()}\n\n'
+                            f'Please log in to review this amendment.'
+                        ),
+                        from_email=None,
+                        recipient_list=[amendment.reviewer.email],
+                        fail_silently=True,
+                    )
+                except Exception:
+                    pass
+
+            return redirect('studies:amendment_detail', amendment_id=amendment.id)
+
+    return render(request, 'studies/amendment_create.html', {
+        'submission': submission,
+        'study': study,
+    })
+
+
+@login_required
+def amendment_detail(request, amendment_id):
+    """View amendment details."""
+    amendment = get_object_or_404(
+        ProtocolAmendment.objects.select_related(
+            'protocol_submission', 'protocol_submission__study',
+            'protocol_submission__study__researcher',
+            'submitted_by', 'reviewer',
+        ),
+        id=amendment_id,
+    )
+    submission = amendment.protocol_submission
+    study = submission.study
+
+    can_view = (
+        request.user.is_staff or
+        getattr(request.user, 'is_admin', False) or
+        (request.user.is_researcher and study.researcher == request.user) or
+        amendment.reviewer == request.user or
+        submission.college_rep == request.user or
+        (request.user.email and submission.co_investigators and request.user.email in submission.co_investigators)
+    )
+
+    if not can_view:
+        messages.error(request, 'Access denied.')
+        return redirect('home')
+
+    is_reviewer = (
+        amendment.reviewer == request.user or
+        request.user.is_staff or
+        getattr(request.user, 'is_admin', False)
+    )
+
+    return render(request, 'studies/amendment_detail.html', {
+        'amendment': amendment,
+        'submission': submission,
+        'study': study,
+        'is_reviewer': is_reviewer,
+        'is_pi': request.user.is_researcher and study.researcher == request.user,
+    })
+
+
+@login_required
+@require_http_methods(["POST"])
+def amendment_review(request, amendment_id):
+    """Review and make decision on an amendment."""
+    amendment = get_object_or_404(ProtocolAmendment, id=amendment_id)
+
+    can_review = (
+        amendment.reviewer == request.user or
+        request.user.is_staff or
+        getattr(request.user, 'is_admin', False)
+    )
+
+    if not can_review:
+        messages.error(request, 'You do not have permission to review this amendment.')
+        return redirect('studies:amendment_detail', amendment_id=amendment.id)
+
+    if amendment.decision != 'pending':
+        messages.error(request, 'This amendment has already been reviewed.')
+        return redirect('studies:amendment_detail', amendment_id=amendment.id)
+
+    decision = request.POST.get('decision')
+    notes = request.POST.get('notes', '').strip()
+
+    if decision not in ['approved', 'revise_resubmit', 'rejected']:
+        messages.error(request, 'Invalid decision.')
+        return redirect('studies:amendment_detail', amendment_id=amendment.id)
+
+    amendment.decision = decision
+    amendment.review_notes = notes
+    amendment.reviewed_at = timezone.now()
+    amendment.save()
+
+    if decision == 'approved':
+        messages.success(request, f'Amendment {amendment.amendment_number} approved.')
+    elif decision == 'revise_resubmit':
+        messages.info(request, 'Amendment marked for revision and resubmission.')
+    elif decision == 'rejected':
+        messages.warning(request, 'Amendment rejected.')
+
+    # Notify PI
+    if amendment.submitted_by:
+        from django.core.mail import send_mail
+        try:
+            send_mail(
+                subject=f'Amendment {amendment.amendment_number}: {amendment.get_decision_display()}',
+                message=(
+                    f'Your amendment has been reviewed.\n\n'
+                    f'Amendment: {amendment.amendment_number}\n'
+                    f'Title: {amendment.title}\n'
+                    f'Decision: {amendment.get_decision_display()}\n'
+                    f'Notes: {notes or "None"}\n'
+                ),
+                from_email=None,
+                recipient_list=[amendment.submitted_by.email],
+                fail_silently=True,
+            )
+        except Exception:
+            pass
+
+    return redirect('studies:amendment_detail', amendment_id=amendment.id)
+
+
+@login_required
+def amendment_list(request, submission_id):
+    """List all amendments for a protocol submission."""
+    submission = get_object_or_404(ProtocolSubmission, id=submission_id)
+    study = submission.study
+
+    can_view = (
+        request.user.is_staff or
+        getattr(request.user, 'is_admin', False) or
+        (request.user.is_researcher and study.researcher == request.user) or
+        submission.college_rep == request.user or
+        (request.user.email and submission.co_investigators and request.user.email in submission.co_investigators)
+    )
+
+    if not can_view:
+        messages.error(request, 'Access denied.')
+        return redirect('home')
+
+    amendments = submission.amendments.select_related('submitted_by', 'reviewer').order_by('-submitted_at')
+
+    return render(request, 'studies/amendment_list.html', {
+        'submission': submission,
+        'study': study,
+        'amendments': amendments,
+    })
 

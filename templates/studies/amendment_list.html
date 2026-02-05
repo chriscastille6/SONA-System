@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}Amendments - {{ submission.protocol_number }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-10 offset-md-1">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'studies:protocol_submission_detail' submission.id %}">{{ submission.protocol_number }}</a></li>
+                <li class="breadcrumb-item active">Amendments</li>
+            </ol>
+        </nav>
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h2>Protocol Amendments</h2>
+                <p class="text-muted mb-0">{{ study.title }} &middot; Protocol: <strong>{{ submission.protocol_number }}</strong></p>
+            </div>
+            {% if submission.decision == 'approved' %}
+            <a href="{% url 'studies:amendment_create' submission.id %}" class="btn btn-primary" style="background-color: #A6192E; border-color: #A6192E;">
+                Create Amendment
+            </a>
+            {% endif %}
+        </div>
+
+        {% if amendments %}
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Amendment #</th>
+                                <th>Title</th>
+                                <th>Type</th>
+                                <th>Submitted By</th>
+                                <th>Submitted</th>
+                                <th>Status</th>
+                                <th>Reviewer</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for amend in amendments %}
+                            <tr>
+                                <td><strong>{{ amend.amendment_number }}</strong></td>
+                                <td>{{ amend.title|truncatewords:8 }}</td>
+                                <td><span class="badge bg-secondary">{{ amend.get_amendment_type_display }}</span></td>
+                                <td>{{ amend.submitted_by.get_full_name|default:"Unknown" }}</td>
+                                <td>{{ amend.submitted_at|date:"M d, Y" }}</td>
+                                <td>
+                                    {% if amend.decision == 'pending' %}
+                                    <span class="badge bg-warning text-dark">Pending</span>
+                                    {% elif amend.decision == 'approved' %}
+                                    <span class="badge bg-success">Approved</span>
+                                    {% elif amend.decision == 'revise_resubmit' %}
+                                    <span class="badge bg-info">R&R</span>
+                                    {% elif amend.decision == 'rejected' %}
+                                    <span class="badge bg-danger">Rejected</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ amend.reviewer.get_full_name|default:"Not assigned" }}</td>
+                                <td>
+                                    <a href="{% url 'studies:amendment_detail' amend.id %}" class="btn btn-sm btn-outline-primary">View</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            No amendments have been submitted for this protocol.
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Amendment - {{ submission.protocol_number }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-10 offset-md-1">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'studies:researcher_dashboard' %}">My Studies</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'studies:protocol_submission_detail' submission.id %}">{{ submission.protocol_number }}</a></li>
+                <li class="breadcrumb-item active">Create Amendment</li>
+            </ol>
+        </nav>
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h2>Create Protocol Amendment</h2>
+                <p class="lead mb-0">{{ study.title }}</p>
+                <p class="text-muted">Protocol: <strong>{{ submission.protocol_number }}</strong></p>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header" style="background-color: #A6192E; color: white;">
+                <h5 class="mb-0">Amendment Details</h5>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="title" class="form-label"><strong>Amendment Title</strong> <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="title" name="title" required
+                               placeholder="e.g., Addition of Loss Aversion Inventory measures">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="amendment_type" class="form-label"><strong>Amendment Type</strong></label>
+                        <select class="form-select" id="amendment_type" name="amendment_type">
+                            <option value="minor">Minor Amendment</option>
+                            <option value="major">Major Amendment</option>
+                        </select>
+                        <div class="form-text">Minor: no change to risk level. Major: changes risk level or study design.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label"><strong>Description of Proposed Changes</strong> <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="description" name="description" rows="6" required
+                                  placeholder="Describe in detail what changes are being proposed to the approved protocol..."></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="justification" class="form-label"><strong>Justification</strong> <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="justification" name="justification" rows="5" required
+                                  placeholder="Explain why these changes are needed and how they benefit the research..."></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="new_instruments" class="form-label"><strong>New Instruments / Measures</strong></label>
+                        <textarea class="form-control" id="new_instruments" name="new_instruments" rows="5"
+                                  placeholder="Describe any new instruments, scales, or assessments being added..."></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="instrument_url" class="form-label"><strong>Instrument URL</strong></label>
+                        <input type="url" class="form-control" id="instrument_url" name="instrument_url"
+                               placeholder="https://bayoupal.nicholls.edu/platform/assessment-flow.html?assessment=lai">
+                        <div class="form-text">Link to the instrument or assessment platform, if applicable.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="impact_on_risk" class="form-label"><strong>Impact on Risk Level</strong></label>
+                        <textarea class="form-control" id="impact_on_risk" name="impact_on_risk" rows="3"
+                                  placeholder="Does this amendment change the risk level? Explain..."></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="impact_on_consent" class="form-label"><strong>Impact on Consent Form</strong></label>
+                        <textarea class="form-control" id="impact_on_consent" name="impact_on_consent" rows="3"
+                                  placeholder="Does the consent form need to be updated? If so, describe changes..."></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="supporting_document" class="form-label"><strong>Supporting Document</strong></label>
+                        <input type="file" class="form-control" id="supporting_document" name="supporting_document" accept=".pdf,.doc,.docx">
+                        <div class="form-text">Upload any supporting documentation (updated protocol, new instrument, etc.)</div>
+                    </div>
+
+                    <div class="d-flex gap-2 justify-content-end">
+                        <a href="{% url 'studies:protocol_submission_detail' submission.id %}" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary" style="background-color: #A6192E; border-color: #A6192E;">
+                            Submit Amendment for Review
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

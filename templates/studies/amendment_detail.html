@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+
+{% block title %}Amendment {{ amendment.amendment_number }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-10 offset-md-1">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                {% if is_pi %}
+                <li class="breadcrumb-item"><a href="{% url 'studies:researcher_dashboard' %}">My Studies</a></li>
+                {% else %}
+                <li class="breadcrumb-item"><a href="{% url 'studies:protocol_submission_list' %}">Protocol Submissions</a></li>
+                {% endif %}
+                <li class="breadcrumb-item"><a href="{% url 'studies:protocol_submission_detail' submission.id %}">{{ submission.protocol_number }}</a></li>
+                <li class="breadcrumb-item active">Amendment {{ amendment.amendment_number }}</li>
+            </ol>
+        </nav>
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h2>Amendment {{ amendment.amendment_number }}</h2>
+                <p class="lead mb-0">{{ amendment.title }}</p>
+                <p class="text-muted">Protocol: <strong>{{ submission.protocol_number }}</strong> &middot; {{ study.title }}</p>
+            </div>
+            <div>
+                {% if amendment.decision == 'pending' %}
+                <span class="badge bg-warning text-dark fs-6">Pending Review</span>
+                {% elif amendment.decision == 'approved' %}
+                <span class="badge bg-success fs-6">Approved</span>
+                {% elif amendment.decision == 'revise_resubmit' %}
+                <span class="badge bg-info fs-6">Revise & Resubmit</span>
+                {% elif amendment.decision == 'rejected' %}
+                <span class="badge bg-danger fs-6">Rejected</span>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Amendment Info -->
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5 class="mb-0">Amendment Information</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Amendment Number:</strong> {{ amendment.amendment_number }}</p>
+                        <p><strong>Type:</strong> {{ amendment.get_amendment_type_display }}</p>
+                        <p><strong>Submitted By:</strong> {{ amendment.submitted_by.get_full_name|default:"Unknown" }}</p>
+                        <p><strong>Submitted:</strong> {{ amendment.submitted_at|date:"F d, Y g:i A" }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Reviewer:</strong> {{ amendment.reviewer.get_full_name|default:"Not assigned" }}</p>
+                        {% if amendment.reviewed_at %}
+                        <p><strong>Reviewed:</strong> {{ amendment.reviewed_at|date:"F d, Y g:i A" }}</p>
+                        {% endif %}
+                        {% if amendment.instrument_url %}
+                        <p><strong>Instrument URL:</strong> <a href="{{ amendment.instrument_url }}" target="_blank">{{ amendment.instrument_url }}</a></p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description -->
+        <div class="card mb-3">
+            <div class="card-header" style="background-color: #A6192E; color: white;">
+                <h5 class="mb-0">Proposed Changes</h5>
+            </div>
+            <div class="card-body">
+                <h6 class="text-primary border-bottom pb-2">Description</h6>
+                <div class="ms-3 mb-4">{{ amendment.description|linebreaks }}</div>
+
+                <h6 class="text-primary border-bottom pb-2">Justification</h6>
+                <div class="ms-3 mb-4">{{ amendment.justification|linebreaks }}</div>
+
+                {% if amendment.new_instruments %}
+                <h6 class="text-primary border-bottom pb-2">New Instruments / Measures</h6>
+                <div class="ms-3 mb-4">{{ amendment.new_instruments|linebreaks }}</div>
+                {% endif %}
+
+                {% if amendment.impact_on_risk %}
+                <h6 class="text-primary border-bottom pb-2">Impact on Risk Level</h6>
+                <div class="ms-3 mb-4">{{ amendment.impact_on_risk|linebreaks }}</div>
+                {% endif %}
+
+                {% if amendment.impact_on_consent %}
+                <h6 class="text-primary border-bottom pb-2">Impact on Consent Form</h6>
+                <div class="ms-3 mb-4">{{ amendment.impact_on_consent|linebreaks }}</div>
+                {% endif %}
+
+                {% if amendment.supporting_document %}
+                <h6 class="text-primary border-bottom pb-2">Supporting Document</h6>
+                <p class="ms-3">
+                    <a href="{{ amendment.supporting_document.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                        <i class="bi bi-download"></i> Download Supporting Document
+                    </a>
+                    <small class="text-muted d-block mt-1">{{ amendment.supporting_document.name }}</small>
+                </p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Decision Info (if already decided) -->
+        {% if amendment.decision != 'pending' %}
+        <div class="card mb-3">
+            <div class="card-header">
+                <h5 class="mb-0">Review Decision</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Decision:</strong> <strong>{{ amendment.get_decision_display }}</strong></p>
+                {% if amendment.review_notes %}
+                <div class="alert {% if amendment.decision == 'approved' %}alert-success{% elif amendment.decision == 'rejected' %}alert-danger{% else %}alert-info{% endif %}">
+                    <strong>Reviewer Notes:</strong><br>
+                    {{ amendment.review_notes|linebreaks }}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Reviewer Action Form -->
+        {% if is_reviewer and amendment.decision == 'pending' %}
+        <div class="card mb-3">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">Review Amendment</h5>
+            </div>
+            <div class="card-body">
+                <form method="post" action="{% url 'studies:amendment_review' amendment.id %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label"><strong>Decision:</strong></label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="decision" id="dec_approved" value="approved" required>
+                            <label class="form-check-label" for="dec_approved">
+                                <strong>Approve</strong> — Amendment is acceptable
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="decision" id="dec_rnr" value="revise_resubmit" required>
+                            <label class="form-check-label" for="dec_rnr">
+                                <strong>Revise & Resubmit</strong> — Changes needed before approval
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="decision" id="dec_rejected" value="rejected" required>
+                            <label class="form-check-label" for="dec_rejected">
+                                <strong>Reject</strong> — Amendment not acceptable
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="notes" class="form-label"><strong>Review Notes</strong></label>
+                        <textarea class="form-control" id="notes" name="notes" rows="4"
+                                  placeholder="Enter approval conditions, required revisions, or rejection rationale..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-success">Submit Review</button>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Back link -->
+        <div class="card">
+            <div class="card-body">
+                <a href="{% url 'studies:protocol_submission_detail' submission.id %}" class="btn btn-outline-primary">
+                    Back to Protocol
+                </a>
+                <a href="{% url 'studies:amendment_list' submission.id %}" class="btn btn-outline-secondary">
+                    All Amendments
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

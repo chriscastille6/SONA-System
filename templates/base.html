@@ -15,6 +15,12 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+    </style>
+    
     {% block extra_css %}{% endblock %}
 </head>
 <body>
@@ -40,6 +46,7 @@
                         {% endif %}
                         {% if user.is_irb_member %}
                             <li class="nav-item"><a class="nav-link" href="{% url 'studies:irb_member_dashboard' %}">IRB Dashboard</a></li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'studies:protocol_submission_list' %}">Protocol Submissions</a></li>
                             <li class="nav-item"><a class="nav-link" href="{% url 'studies:committee_dashboard' %}">Committee</a></li>
                         {% endif %}
                         {% if user.is_instructor %}

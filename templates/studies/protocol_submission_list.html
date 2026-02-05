@@ -28,6 +28,49 @@
             </div>
         </div>
         
+        <!-- Pending Amendments -->
+        {% if pending_amendments %}
+        <div class="card mb-3 border-warning">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0">Pending Amendments Requiring Review</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>Amendment #</th>
+                                <th>Title</th>
+                                <th>Protocol</th>
+                                <th>Study</th>
+                                <th>Submitted By</th>
+                                <th>Submitted</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for amend in pending_amendments %}
+                            <tr>
+                                <td><strong>{{ amend.amendment_number }}</strong></td>
+                                <td>{{ amend.title|truncatewords:6 }}</td>
+                                <td>{{ amend.protocol_submission.protocol_number }}</td>
+                                <td>{{ amend.protocol_submission.study.title|truncatewords:5 }}</td>
+                                <td>{{ amend.submitted_by.get_full_name|default:"Unknown" }}</td>
+                                <td>{{ amend.submitted_at|date:"M d, Y" }}</td>
+                                <td>
+                                    <a href="{% url 'studies:amendment_detail' amend.id %}" class="btn btn-sm btn-warning">
+                                        Review
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
         <!-- Submissions Table -->
         <div class="card">
             <div class="card-body">

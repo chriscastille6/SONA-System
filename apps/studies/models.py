@@ -1309,3 +1309,129 @@ class ProtocolSubmission(models.Model):
             self.reviewers.count() < 2
         )
 
+
+class ProtocolAmendment(models.Model):
+    """Amendment to an approved IRB protocol submission."""
+
+    AMENDMENT_TYPE_CHOICES = [
+        ('minor', 'Minor Amendment'),
+        ('major', 'Major Amendment'),
+    ]
+
+    DECISION_CHOICES = [
+        ('pending', 'Pending Review'),
+        ('approved', 'Approved'),
+        ('revise_resubmit', 'Revise & Resubmit'),
+        ('rejected', 'Rejected'),
+    ]
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    protocol_submission = models.ForeignKey(
+        ProtocolSubmission,
+        on_delete=models.CASCADE,
+        related_name='amendments',
+        help_text="The approved protocol being amended"
+    )
+
+    # Amendment metadata
+    amendment_number = models.CharField(
+        max_length=50,
+        unique=True,
+        null=True,
+        blank=True,
+        db_index=True,
+        help_text="Auto-generated amendment number"
+    )
+    amendment_type = models.CharField(
+        max_length=20,
+        choices=AMENDMENT_TYPE_CHOICES,
+        default='minor',
+        help_text="Type of amendment"
+    )
+    title = models.CharField(
+        max_length=300,
+        help_text="Brief title of the amendment"
+    )
+
+    # Amendment details
+    description = models.TextField(
+        help_text="Detailed description of the proposed changes"
+    )
+    justification = models.TextField(
+        help_text="Justification for the proposed changes"
+    )
+    impact_on_risk = models.TextField(
+        blank=True,
+        help_text="How does this amendment impact the risk level of the study?"
+    )
+    impact_on_consent = models.TextField(
+        blank=True,
+        help_text="Does this amendment require changes to the consent form?"
+    )
+    new_instruments = models.TextField(
+        blank=True,
+        help_text="Description of any new instruments, measures, or assessments being added"
+    )
+    instrument_url = models.URLField(
+        blank=True,
+        help_text="URL to the instrument or assessment (if applicable)"
+    )
+
+    # Supporting documents
+    supporting_document = models.FileField(
+        upload_to='protocol_submissions/amendments/%Y/%m/',
+        blank=True,
+        null=True,
+        help_text="Supporting document (e.g., updated protocol, new instrument)"
+    )
+
+    # Review workflow
+    decision = models.CharField(
+        max_length=20,
+        choices=DECISION_CHOICES,
+        default='pending',
+        db_index=True,
+    )
+    reviewer = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='amendment_reviews',
+        limit_choices_to={'role': 'irb_member'},
+        help_text="IRB reviewer assigned to this amendment"
+    )
+    review_notes = models.TextField(
+        blank=True,
+        help_text="Reviewer notes / approval conditions"
+    )
+
+    # Timestamps
+    submitted_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='submitted_amendments',
+    )
+    submitted_at = models.DateTimeField(auto_now_add=True)
+    reviewed_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        db_table = 'protocol_amendments'
+        verbose_name = 'Protocol Amendment'
+        verbose_name_plural = 'Protocol Amendments'
+        ordering = ['-submitted_at']
+
+    def __str__(self):
+        return f"Amendment {self.amendment_number or 'Draft'}: {self.title}"
+
+    def save(self, *args, **kwargs):
+        if not self.amendment_number:
+            parent = self.protocol_submission
+            count = ProtocolAmendment.objects.filter(
+                protocol_submission=parent
+            ).count() + 1
+            base = parent.protocol_number or parent.submission_number or 'AMEND'
+            self.amendment_number = f'{base}-AMD-{count:02d}'
+        super().save(*args, **kwargs)
+
