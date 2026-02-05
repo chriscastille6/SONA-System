@@ -161,9 +161,19 @@ def researcher_dashboard(request):
         return redirect('home')
     
     # Get ALL studies by this researcher (not just those with protocol submissions)
-    studies = Study.objects.filter(
+    # Also include studies where user is listed as co-investigator in protocol submissions
+    studies_as_researcher = Study.objects.filter(
         researcher=request.user
-    ).order_by('-created_at')
+    )
+    
+    # Also get studies where user is a co-investigator (check protocol submissions)
+    from apps.studies.models import ProtocolSubmission
+    co_i_studies = Study.objects.filter(
+        protocol_submissions__co_investigators__icontains=request.user.email
+    ).distinct()
+    
+    # Combine both querysets
+    studies = (studies_as_researcher | co_i_studies).distinct().order_by('-created_at')
     
     # Annotate each study with draft and submitted protocol info
     # Defer detailed protocol fields that may not exist in the database yet
