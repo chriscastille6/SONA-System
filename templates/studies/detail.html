@@ -13,11 +13,6 @@
                     <span class="badge bg-info">{{ study.get_mode_display }}</span>
                     <span class="badge bg-success">{{ study.credit_value }} credits</span>
                     <span class="badge bg-secondary">{{ study.duration_minutes }} minutes</span>
-                    {% if study.irb_status == 'pending' %}
-                        <span class="badge bg-warning text-dark fs-6">
-                            <i class="bi bi-clock"></i> Coming Soon - IRB Protocol Pending
-                        </span>
-                    {% endif %}
                 </div>
                 
                 <h5>Description</h5>

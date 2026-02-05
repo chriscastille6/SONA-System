@@ -26,11 +26,6 @@
                                     <span class="badge bg-info">{{ study.get_mode_display }}</span>
                                     <span class="badge bg-success">{{ study.credit_value }} credits</span>
                                     <span class="badge bg-secondary">{{ study.duration_minutes }} min</span>
-                                    {% if study.irb_status == 'pending' %}
-                                        <span class="badge bg-warning text-dark">
-                                            <i class="bi bi-clock"></i> Coming Soon
-                                        </span>
-                                    {% endif %}
                                 </div>
                                 
                                 <p class="text-muted small">
