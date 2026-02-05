@@ -39,21 +39,37 @@ class Command(BaseCommand):
         )
         
         if study_created:
-            # Need to set researcher - get or create PI first
-            pi_temp, _ = User.objects.get_or_create(
-                email='martin.meder@nicholls.edu',
+            # Set researcher to Christopher Castille (the user deploying this)
+            # PI will still be Martin Meder in the protocol submission
+            researcher, _ = User.objects.get_or_create(
+                email='christopher.castille@nicholls.edu',
                 defaults={
-                    'first_name': 'Martin',
-                    'last_name': 'Meder',
+                    'first_name': 'Christopher',
+                    'last_name': 'Castille',
                     'role': 'researcher',
                     'is_active': True,
                 }
             )
-            study.researcher = pi_temp
+            study.researcher = researcher
             study.save()
             self.stdout.write(self.style.SUCCESS(f'✓ Created study: {study.title}'))
+            self.stdout.write(self.style.SUCCESS(f'  Researcher: {researcher.get_full_name()}'))
         else:
             self.stdout.write(self.style.SUCCESS(f'✓ Found study: {study.title}'))
+            # Update researcher if needed
+            if study.researcher.email != 'christopher.castille@nicholls.edu':
+                researcher, _ = User.objects.get_or_create(
+                    email='christopher.castille@nicholls.edu',
+                    defaults={
+                        'first_name': 'Christopher',
+                        'last_name': 'Castille',
+                        'role': 'researcher',
+                        'is_active': True,
+                    }
+                )
+                study.researcher = researcher
+                study.save()
+                self.stdout.write(self.style.SUCCESS(f'  Updated researcher to: {researcher.get_full_name()}'))
 
         # Get or create PI (Dr. Martin Meder)
         pi, pi_created = User.objects.get_or_create(
