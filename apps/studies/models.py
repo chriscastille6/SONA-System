@@ -1284,16 +1284,38 @@ class ProtocolSubmission(models.Model):
         
         super().save(*args, **kwargs)
     
+    def get_college_code(self):
+        """Get college code identifier for protocol number."""
+        if not self.college_rep:
+            return 'GEN'
+        college_rep_obj = CollegeRepresentative.objects.filter(
+            representative=self.college_rep, active=True
+        ).first()
+        if not college_rep_obj:
+            return 'GEN'
+        college_code_map = {
+            'business': 'CBA',
+            'education': 'CEBS',
+            'liberal_arts': 'COLA',
+            'sciences': 'CST',
+            'nursing': 'NURS',
+        }
+        return college_code_map.get(college_rep_obj.college, 'GEN')
+
     def generate_protocol_number(self):
-        """Generate protocol number: HSIRB-YYYY-NNN"""
+        """Generate protocol number: IRBEYYYYMMDD-NNNCollegeCode (e.g. IRBE20260206-001CBA)."""
         if self.protocol_number:
             return self.protocol_number
-        
-        year = timezone.now().year
-        count = ProtocolSubmission.objects.filter(
-            protocol_number__startswith=f'HSIRB-{year}'
-        ).exclude(protocol_number='').count() + 1
-        self.protocol_number = f'HSIRB-{year}-{count:03d}'
+        college_code = self.get_college_code()
+        date_obj = self.submitted_at if self.submitted_at else timezone.now()
+        date_str = date_obj.strftime('%Y%m%d')
+        year = date_obj.year
+        existing = ProtocolSubmission.objects.filter(
+            protocol_number__startswith=f'IRBE{year}',
+            protocol_number__endswith=college_code,
+        ).exclude(protocol_number='').exclude(id=self.id)
+        count = existing.count() + 1
+        self.protocol_number = f'IRBE{date_str}-{count:03d}{college_code}'
         self.save(update_fields=['protocol_number'])
         return self.protocol_number
     
