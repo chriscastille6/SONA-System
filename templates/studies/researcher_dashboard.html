@@ -13,7 +13,7 @@
         {% if studies %}
             <div class="row">
                 {% for item in studies_with_protocols %}
-                {% with study=item.study draft=item.draft_protocol submitted=item.submitted_protocol %}
+                {% with study=item.study draft=item.draft_protocol submitted=item.submitted_protocol pending_amendment=item.pending_amendment %}
                     <div class="col-md-6 mb-3">
                         <div class="card">
                             <div class="card-body">
@@ -50,6 +50,9 @@
                                     {% endif %}
                                     {% if study.irb_status != 'not_required' %}
                                         <span class="badge bg-info">IRB: {{ study.get_irb_status_display }}</span>
+                                    {% endif %}
+                                    {% if pending_amendment %}
+                                        <span class="badge bg-warning text-dark">Addendum pending</span>
                                     {% endif %}
                                     {% if study.osf_enabled %}
                                         {% if study.osf_link %}
