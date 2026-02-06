@@ -557,22 +557,30 @@
                     <div class="mb-3">
                         <label class="form-label"><strong>Decision:</strong></label>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="decision" id="dec_approved" value="approved" required>
+                            <input class="form-check-input" type="radio" name="decision" id="dec_approved" value="approved" required onchange="toggleProtocolNumber()">
                             <label class="form-check-label" for="dec_approved">
                                 <strong>Approve</strong> - Issue protocol number
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="decision" id="dec_rnr" value="revise_resubmit" required>
+                            <input class="form-check-input" type="radio" name="decision" id="dec_rnr" value="revise_resubmit" required onchange="toggleProtocolNumber()">
                             <label class="form-check-label" for="dec_rnr">
                                 <strong>Revise & Resubmit</strong> - Request changes
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="decision" id="dec_rejected" value="rejected" required>
+                            <input class="form-check-input" type="radio" name="decision" id="dec_rejected" value="rejected" required onchange="toggleProtocolNumber()">
                             <label class="form-check-label" for="dec_rejected">
                                 <strong>Reject</strong> - Protocol rejected
                             </label>
+                        </div>
+                    </div>
+                    <div class="mb-3" id="protocol_number_field" style="display: none;">
+                        <label for="custom_protocol_number" class="form-label"><strong>Protocol Number (Optional)</strong></label>
+                        <input type="text" class="form-control" id="custom_protocol_number" name="protocol_number" placeholder="e.g., IRBE20251031-005CBA or leave blank for auto-generation">
+                        <div class="form-text">
+                            Leave blank to auto-generate: <code id="auto_protocol_preview">HSIRB-2026-001</code> (based on year and submission count)
+                            <br>Or enter a custom protocol number (e.g., IRBE20251031-005CBA)
                         </div>
                     </div>
                     <div class="mb-3">
@@ -580,6 +588,22 @@
                         <textarea class="form-control" id="decision_notes" name="notes" rows="5" required></textarea>
                         <div class="form-text">Required. Explain your decision, approval conditions, required revisions, or rejection grounds.</div>
                     </div>
+                    <script>
+                        function toggleProtocolNumber() {
+                            const approved = document.getElementById('dec_approved').checked;
+                            const field = document.getElementById('protocol_number_field');
+                            if (approved) {
+                                field.style.display = 'block';
+                            } else {
+                                field.style.display = 'none';
+                                document.getElementById('custom_protocol_number').value = '';
+                            }
+                        }
+                        // Set initial state
+                        document.addEventListener('DOMContentLoaded', function() {
+                            toggleProtocolNumber();
+                        });
+                    </script>
                     <button type="submit" class="btn btn-success">Submit Decision</button>
                 </form>
             </div>

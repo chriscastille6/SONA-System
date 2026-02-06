@@ -1159,8 +1159,21 @@ def protocol_make_decision(request, submission_id):
     submission.decided_at = timezone.now()
     
     if decision == 'approved':
-        # Generate protocol number
-        protocol_number = submission.generate_protocol_number()
+        # Use custom protocol number if provided, otherwise auto-generate
+        custom_protocol_number = request.POST.get('protocol_number', '').strip()
+        if custom_protocol_number:
+            # Validate that it doesn't already exist
+            existing = ProtocolSubmission.objects.filter(
+                protocol_number=custom_protocol_number
+            ).exclude(id=submission.id).exists()
+            if existing:
+                messages.error(request, f'Protocol number {custom_protocol_number} already exists. Please use a different number.')
+                return redirect('studies:protocol_submission_detail', submission_id=submission.id)
+            protocol_number = custom_protocol_number
+            submission.protocol_number = protocol_number
+        else:
+            # Auto-generate protocol number
+            protocol_number = submission.generate_protocol_number()
         submission.approval_notes = notes
         
         # Update study
