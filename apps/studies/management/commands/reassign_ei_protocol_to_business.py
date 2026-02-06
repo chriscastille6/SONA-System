@@ -1,5 +1,6 @@
 """
-Management command to reassign EI protocol to Business college rep (Jon Murphy).
+Management command to reassign EI protocol to Business college rep (Jon Murphy)
+and assign Julianne Allen as reviewer for oversight.
 """
 from django.core.management.base import BaseCommand
 from apps.accounts.models import User
@@ -7,7 +8,7 @@ from apps.studies.models import Study, ProtocolSubmission, CollegeRepresentative
 
 
 class Command(BaseCommand):
-    help = 'Reassign EI protocol submission to Business college rep (Jon Murphy)'
+    help = 'Reassign EI protocol to Business college rep (Jon Murphy) and assign Julianne Allen as reviewer'
 
     def handle(self, *args, **options):
         self.stdout.write('🔄 Reassigning EI Protocol to Business College Rep...\n')
@@ -38,6 +39,20 @@ class Command(BaseCommand):
 
         self.stdout.write(f'✓ Found Business college rep: {jon_murphy.get_full_name()} ({jon_murphy.email})')
 
+        # Find Julianne Allen (for reviewer assignment)
+        julianne_allen = User.objects.filter(email='juliann.allen@nicholls.edu').first()
+        if not julianne_allen:
+            julianne_allen = User.objects.filter(
+                email__icontains='allen', 
+                first_name__icontains='juliann',
+                role='irb_member'
+            ).first()
+        
+        if not julianne_allen:
+            self.stdout.write(self.style.WARNING('⚠ Julianne Allen not found - will skip reviewer assignment'))
+        else:
+            self.stdout.write(f'✓ Found reviewer: {julianne_allen.get_full_name()} ({julianne_allen.email})')
+
         # Find all protocol submissions for EI study
         submissions = ProtocolSubmission.objects.filter(study=study).order_by('-version')
         
@@ -62,8 +77,28 @@ class Command(BaseCommand):
             submission.save(update_fields=['college_rep'])
             
             self.stdout.write(self.style.SUCCESS(
-                f'    ✓ Reassigned to: {jon_murphy.get_full_name()} (Business)'
+                f'    ✓ Reassigned college rep to: {jon_murphy.get_full_name()} (Business)'
             ))
+            
+            # Assign Julianne Allen as reviewer (for oversight)
+            if julianne_allen:
+                current_reviewers = list(submission.reviewers.all())
+                if julianne_allen not in current_reviewers:
+                    submission.reviewers.add(julianne_allen)
+                    self.stdout.write(self.style.SUCCESS(
+                        f'    ✓ Added reviewer: {julianne_allen.get_full_name()}'
+                    ))
+                else:
+                    self.stdout.write(
+                        f'    → Reviewer already assigned: {julianne_allen.get_full_name()}'
+                    )
+                # Show all reviewers
+                all_reviewers = list(submission.reviewers.all())
+                if all_reviewers:
+                    self.stdout.write(f'    Reviewers: {", ".join([r.get_full_name() for r in all_reviewers])}')
 
-        self.stdout.write(self.style.SUCCESS('\n✅ EI protocol(s) reassigned to Business college rep!'))
-        self.stdout.write(f'\nJon Murphy can now review and approve the EI protocol.')
+        self.stdout.write(self.style.SUCCESS('\n✅ EI protocol(s) reassigned!'))
+        self.stdout.write(f'\n  College Rep: {jon_murphy.get_full_name()} (can approve exempt protocols)')
+        if julianne_allen:
+            self.stdout.write(f'  Reviewer: {julianne_allen.get_full_name()} (can review and approve expedited/full)')
+        self.stdout.write(f'\nBoth can now oversee and approve the EI protocol.')
