@@ -21,6 +21,7 @@ def get_college_from_department(department):
     department_lower = department.lower()
     
     # College of Business Administration
+    # Includes: Business, Accounting, Finance, Marketing, Management (including "Management and Marketing")
     if any(term in department_lower for term in ['business', 'accounting', 'finance', 'marketing', 'management', 'economics']):
         return 'business'
     
