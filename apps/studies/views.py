@@ -217,11 +217,10 @@ def researcher_dashboard(request):
             ).defer(*detailed_fields).order_by('-submitted_at').first()
         except Exception:
             submitted = None
-        pending_amendment = False
-        if submitted:
-            pending_amendment = ProtocolAmendment.objects.filter(
-                protocol_submission=submitted, decision='pending'
-            ).exists()
+        # Show "Addendum pending" if this study has any protocol submission with a pending amendment
+        pending_amendment = ProtocolAmendment.objects.filter(
+            protocol_submission__study=study, decision='pending'
+        ).exists()
         studies_with_protocols.append({
             'study': study,
             'draft_protocol': draft,
