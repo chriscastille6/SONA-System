@@ -13,7 +13,7 @@ flowchart TD
     F --> G[get_college_from_department]
     
     G --> H{Department contains?}
-    H -->|business, accounting, finance,<br/>marketing, management, economics| I[college='business']
+    H -->|business, accounting, finance,<br/>marketing, management,<br/>Management and Marketing, economics| I[college='business']
     H -->|education, psychology,<br/>counseling, behavioral| J[college='education']
     H -->|liberal arts, english,<br/>history, philosophy| K[college='liberal_arts']
     H -->|science, technology,<br/>computer, engineering| L[college='sciences']
