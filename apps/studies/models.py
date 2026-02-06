@@ -1227,6 +1227,11 @@ class ProtocolSubmission(models.Model):
         related_name='decided_protocols',
         help_text="IRB member who made the decision"
     )
+    is_archived = models.BooleanField(
+        default=False,
+        db_index=True,
+        help_text="If True, submission is archived (e.g. duplicate); hidden from default lists but preserved."
+    )
     
     class Meta:
         db_table = 'protocol_submissions'

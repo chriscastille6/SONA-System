@@ -22,6 +22,13 @@
                             {% endfor %}
                         </select>
                     </div>
+                    <div>
+                        <label class="form-label">&nbsp;</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="show_archived" id="show_archived" value="1" {% if show_archived %}checked{% endif %}>
+                            <label class="form-check-label" for="show_archived">Show archived</label>
+                        </div>
+                    </div>
                     <button type="submit" class="btn btn-primary">Filter</button>
                     <a href="{% url 'studies:protocol_submission_list' %}" class="btn btn-outline-secondary">Clear</a>
                 </form>
@@ -93,7 +100,12 @@
                         <tbody>
                             {% for submission in submissions %}
                             <tr>
-                                <td><strong>{{ submission.submission_number }}</strong></td>
+                                <td>
+                                    <strong>{{ submission.submission_number }}</strong>
+                                    {% if submission.is_archived %}
+                                    <span class="badge bg-secondary ms-1">Archived</span>
+                                    {% endif %}
+                                </td>
                                 <td>{{ submission.study.title|truncatewords:5 }}</td>
                                 <td>{{ submission.submitted_by.get_full_name|default:"Unknown" }}</td>
                                 <td>

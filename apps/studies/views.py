@@ -213,7 +213,8 @@ def researcher_dashboard(request):
         try:
             submitted = ProtocolSubmission.objects.filter(
                 study=study,
-                status='submitted'
+                status='submitted',
+                is_archived=False
             ).defer(*detailed_fields).order_by('-submitted_at').first()
         except Exception:
             submitted = None
@@ -1196,6 +1197,68 @@ def protocol_make_decision(request, submission_id):
 
 
 @login_required
+@require_http_methods(["POST"])
+def protocol_archive(request, submission_id):
+    """Archive a protocol submission (hide from default lists, preserve history)."""
+    submission = get_object_or_404(ProtocolSubmission, id=submission_id)
+    study = submission.study
+    
+    # Only PI, co-investigator, or admin/staff can archive
+    is_co_i = bool(
+        request.user.email
+        and submission.co_investigators
+        and request.user.email.lower() in submission.co_investigators.lower()
+    )
+    can_archive = (
+        request.user.is_staff or
+        getattr(request.user, 'is_admin', False) or
+        (request.user.is_researcher and study.researcher == request.user) or
+        is_co_i
+    )
+    
+    if not can_archive:
+        messages.error(request, 'You do not have permission to archive this submission.')
+        return redirect('studies:protocol_submission_detail', submission_id=submission.id)
+    
+    submission.is_archived = True
+    submission.save(update_fields=['is_archived'])
+    
+    messages.success(request, f'Submission {submission.submission_number or "Draft"} archived. It will be hidden from default lists but preserved for history.')
+    return redirect('studies:protocol_submission_detail', submission_id=submission.id)
+
+
+@login_required
+@require_http_methods(["POST"])
+def protocol_unarchive(request, submission_id):
+    """Unarchive a protocol submission."""
+    submission = get_object_or_404(ProtocolSubmission, id=submission_id)
+    study = submission.study
+    
+    # Only PI, co-investigator, or admin/staff can unarchive
+    is_co_i = bool(
+        request.user.email
+        and submission.co_investigators
+        and request.user.email.lower() in submission.co_investigators.lower()
+    )
+    can_unarchive = (
+        request.user.is_staff or
+        getattr(request.user, 'is_admin', False) or
+        (request.user.is_researcher and study.researcher == request.user) or
+        is_co_i
+    )
+    
+    if not can_unarchive:
+        messages.error(request, 'You do not have permission to unarchive this submission.')
+        return redirect('studies:protocol_submission_detail', submission_id=submission.id)
+    
+    submission.is_archived = False
+    submission.save(update_fields=['is_archived'])
+    
+    messages.success(request, f'Submission {submission.submission_number or "Draft"} unarchived.')
+    return redirect('studies:protocol_submission_detail', submission_id=submission.id)
+
+
+@login_required
 def protocol_submission_list(request):
     """List protocol submissions (for IRB members)."""
     if not (getattr(request.user, 'is_irb_member', False) or request.user.is_staff or getattr(request.user, 'is_admin', False)):
@@ -1211,6 +1274,11 @@ def protocol_submission_list(request):
             Q(chair_reviewer=request.user) |
             Q(reviewers=request.user)
         ).distinct()
+    
+    # By default hide archived (duplicates); allow ?show_archived=1 to include them
+    show_archived = request.GET.get('show_archived') == '1'
+    if not show_archived:
+        submissions = submissions.filter(is_archived=False)
     
     # Filter by status
     decision_filter = request.GET.get('decision', '')
@@ -1234,6 +1302,7 @@ def protocol_submission_list(request):
         'submissions': submissions,
         'decision_choices': ProtocolSubmission.DECISION_CHOICES,
         'selected_decision': decision_filter,
+        'show_archived': show_archived,
         'pending_amendments': pending_amendments,
     })
 
