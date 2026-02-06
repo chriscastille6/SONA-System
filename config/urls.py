@@ -6,10 +6,14 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
+from apps.studies import views as studies_views
 
 urlpatterns = [
     # Home (must be first to avoid conflicts)
     path('', TemplateView.as_view(template_name='home.html'), name='home'),
+    
+    # Participant information (also under studies/ for consistency)
+    path('participant-information/', studies_views.participant_information_consent, name='participant_information_consent_root'),
     
     # Admin
     path('admin/', admin.site.urls),

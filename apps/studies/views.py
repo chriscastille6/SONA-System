@@ -49,6 +49,22 @@ def user_can_access_study(user, study):
     return study.is_assigned_reviewer(user)
 
 
+def participant_information_consent(request):
+    """Serve the full participant information and consent document. Linked from the assessment platform 'Your Rights and Options' page."""
+    return render(request, 'studies/participant_information_consent.html', {
+        'platform_name': getattr(settings, 'PLATFORM_NAME', None) or settings.SITE_NAME,
+        'institution_name': getattr(settings, 'INSTITUTION_NAME', ''),
+        'irb_protocol_number': getattr(settings, 'IRB_PROTOCOL_NUMBER', 'To be assigned'),
+        'platform_support_email': getattr(settings, 'PLATFORM_SUPPORT_EMAIL', ''),
+        'pi_name': getattr(settings, 'PARTICIPANT_INFO_PI_NAME', ''),
+        'pi_email': getattr(settings, 'PARTICIPANT_INFO_PI_EMAIL', ''),
+        'pi_phone': getattr(settings, 'PARTICIPANT_INFO_PI_PHONE', ''),
+        'irb_office_name': getattr(settings, 'IRB_OFFICE_NAME', ''),
+        'irb_office_phone': getattr(settings, 'IRB_OFFICE_PHONE', ''),
+        'irb_office_email': getattr(settings, 'IRB_OFFICE_EMAIL', ''),
+    })
+
+
 def study_list(request):
     """Browse available studies."""
     studies = Study.objects.filter(is_active=True, is_approved=True)

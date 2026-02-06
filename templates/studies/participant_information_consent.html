@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+{% block title %}Participant Information and Consent – {{ SITE_NAME }}{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-10 offset-md-1">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="card-title h2">Participant Information and Consent</h1>
+                <p class="text-muted small mb-4">Psychological Assessment Platform</p>
+                <hr>
+
+                <p><strong>Platform Name:</strong> {{ platform_name }}</p>
+                <p><strong>Institution:</strong> {{ institution_name }}</p>
+                <p><strong>IRB Protocol Number:</strong> {{ irb_protocol_number }}</p>
+                <hr>
+
+                <h2 class="h5 mt-4">Overview</h2>
+                <p>This platform provides access to psychological assessments for educational and self-reflection purposes. This document explains your options for using the platform and, separately, your options for participating in research.</p>
+                <p><strong>Important:</strong> Your use of the platform's assessments and tools is completely separate from any decision to participate in research. You may use all platform features without participating in research, and you may participate in research without using all platform features.</p>
+
+                <h2 class="h5 mt-4">Platform Features</h2>
+                <h3 class="h6 mt-3">1. Psychological Assessments</h3>
+                <p>The platform offers standardized psychological assessments, including:</p>
+                <ul>
+                    <li><strong>Emotional Intelligence Assessment:</strong> Measures your ability to recognize, understand, regulate, and manage emotions through situational judgment tasks and facial recognition exercises.</li>
+                    <li><strong>Raven's Progressive Matrices:</strong> Measures fluid intelligence and pattern recognition abilities through abstract reasoning tasks.</li>
+                </ul>
+                <p><strong>Assessment Results:</strong></p>
+                <ul>
+                    <li>All assessment results are <strong>non-diagnostic</strong> and are not used for academic, employment, or evaluative decisions.</li>
+                    <li>Results are <strong>probabilistic and descriptive</strong>, intended for self-reflection and learning.</li>
+                    <li>Results should not be interpreted as fixed traits or comprehensive evaluations of your abilities.</li>
+                    <li>Results may vary across time and contexts.</li>
+                </ul>
+
+                <h3 class="h6 mt-3">2. Standardized Feedback</h3>
+                <p>After completing an assessment, you will receive standardized feedback that:</p>
+                <ul>
+                    <li>Provides descriptive information about your performance relative to normative samples</li>
+                    <li>Explains what your scores mean in practical terms</li>
+                    <li>Offers general guidance for self-reflection and development</li>
+                    <li>Does not provide clinical, diagnostic, or therapeutic interpretations</li>
+                </ul>
+
+                <h3 class="h6 mt-3">3. Optional AI-Based Coaching Tool (Forthcoming)</h3>
+                <p>A forthcoming optional tool will provide AI-generated coaching focused on:</p>
+                <ul>
+                    <li>Personal effectiveness and self-management</li>
+                    <li>Career development guidance</li>
+                    <li>Self-reflection exercises</li>
+                </ul>
+                <p><strong>Important Limitations:</strong></p>
+                <ul>
+                    <li>This tool is <strong>not</strong> mental health treatment, clinical advice, or diagnosis</li>
+                    <li>This tool does <strong>not</strong> provide therapeutic services</li>
+                    <li>AI-generated feedback includes appropriate uncertainty and should not be treated as authoritative psychological judgment</li>
+                    <li>Access to this tool requires a personalized account and may involve fees</li>
+                </ul>
+                <p><strong>Your Choice:</strong> You may use assessments and feedback without using the AI coaching tool. Your decision to use or not use the AI coaching tool has no effect on your access to assessments, feedback, or any other platform features.</p>
+
+                <h2 class="h5 mt-4">Platform Access Options</h2>
+                <h3 class="h6 mt-3">Option 1: Anonymous Access</h3>
+                <p>You may use the platform completely anonymously:</p>
+                <ul>
+                    <li>No account creation required</li>
+                    <li>No personal information collected</li>
+                    <li>Assessment results are not saved</li>
+                    <li>You receive immediate feedback but cannot access results later</li>
+                </ul>
+
+                <h3 class="h6 mt-3">Option 2: Personalized Account</h3>
+                <p>You may create a personalized account to:</p>
+                <ul>
+                    <li>Save and access your assessment results over time</li>
+                    <li>Track your progress across multiple assessments</li>
+                    <li>Access the forthcoming AI coaching tool (may require fees)</li>
+                    <li>Control what data is shared for research purposes</li>
+                </ul>
+                <p><strong>Your Choice:</strong> You may use the platform anonymously or with a personalized account. This choice has no effect on your access to assessments, feedback, or research participation options.</p>
+
+                <h2 class="h5 mt-4">Research Participation (Separate and Voluntary)</h2>
+                <h3 class="h6 mt-3">What is Research Participation?</h3>
+                <p>Research participation means allowing your anonymized assessment data to be used for scientific research purposes. This is <strong>completely separate</strong> from using the platform's assessments and tools.</p>
+
+                <h3 class="h6 mt-3">Your Options</h3>
+                <p>You have four independent choices:</p>
+                <ol>
+                    <li>Use platform features AND participate in research</li>
+                    <li>Use platform features WITHOUT participating in research</li>
+                    <li>Participate in research WITHOUT using all platform features</li>
+                    <li>Neither use platform features nor participate in research</li>
+                </ol>
+                <p><strong>No penalties or consequences:</strong> Your choices have no effect on: your access to assessments; your access to feedback; your access to AI coaching tools (if available); any compensation you may receive; any pricing or fees; any services provided.</p>
+
+                <h3 class="h6 mt-3">What Research Participation Involves</h3>
+                <p>If you choose to participate in research:</p>
+                <ul>
+                    <li>Your assessment responses will be de-identified using randomized participant IDs</li>
+                    <li>No names, email addresses, or direct identifiers will be stored with your assessment data</li>
+                    <li>Only data from participants who explicitly consent will be included in research datasets</li>
+                    <li>Research data will be used to advance scientific understanding of psychological assessment and human behavior</li>
+                </ul>
+
+                <h3 class="h6 mt-3">Consent for Research</h3>
+                <p>If you choose to participate in research, you will be asked to provide separate, explicit consent for each assessment. This consent process:</p>
+                <ul>
+                    <li>Occurs separately from assessment completion</li>
+                    <li>Occurs separately from tool usage decisions</li>
+                    <li>Clearly explains what data will be used for research</li>
+                    <li>Allows you to consent for some assessments but not others</li>
+                </ul>
+                <p><strong>Your Right to Withdraw:</strong> You may withdraw your research participation at any time without penalty. Withdrawing from research does not affect your access to platform features.</p>
+
+                <h2 class="h5 mt-4">Data Governance and Privacy</h2>
+                <h3 class="h6 mt-3">For Platform Use</h3>
+                <p><strong>Anonymous Access:</strong> No personal information is collected; assessment responses are not stored; no data retention.</p>
+                <p><strong>Personalized Account:</strong> Account information is stored securely; assessment results are stored and linked to your account; you control what data is shared for research purposes; data is encrypted in transit and at rest.</p>
+
+                <h3 class="h6 mt-3">For Research Participation</h3>
+                <p><strong>De-Identification:</strong> All research data is de-identified using randomized participant IDs; no names, email addresses, or direct identifiers are stored with research data; participant IDs cannot be linked back to your identity.</p>
+                <p><strong>Data Storage:</strong> Research data is stored securely on encrypted servers; access is limited to authorized research team members; data retention follows institutional policies.</p>
+                <p><strong>Data Sharing:</strong> De-identified research data may be shared with other researchers for replication and scientific advancement; no personally identifiable information will ever be shared.</p>
+
+                <h2 class="h5 mt-4">Your Rights</h2>
+                <p>You have the right to:</p>
+                <ul>
+                    <li>Use or not use any platform features without penalty</li>
+                    <li>Participate or not participate in research without penalty</li>
+                    <li>Withdraw from research participation at any time</li>
+                    <li>Access your assessment results (if using a personalized account)</li>
+                    <li>Control what data is shared for research purposes</li>
+                    <li>Ask questions about the platform or research</li>
+                    <li>Receive support if you have concerns</li>
+                </ul>
+
+                <h2 class="h5 mt-4">Questions and Contact</h2>
+                <p>If you have questions about:</p>
+                <ul>
+                    <li><strong>Platform features:</strong> Contact {{ platform_support_email }}</li>
+                    <li><strong>Research participation:</strong> Contact {{ pi_name }}, {{ pi_email }}, {{ pi_phone }}</li>
+                    <li><strong>Your rights as a participant:</strong> Contact {{ irb_office_name }}, {{ irb_office_phone }}, {{ irb_office_email }}</li>
+                </ul>
+
+                <h2 class="h5 mt-4">Agreement</h2>
+                <p>By proceeding, you acknowledge that:</p>
+                <ul>
+                    <li>You have read and understood this information</li>
+                    <li>You understand the difference between platform use and research participation</li>
+                    <li>You understand that these are separate, independent choices</li>
+                    <li>You understand that your choices have no negative consequences</li>
+                    <li>You understand your rights as described above</li>
+                </ul>
+                <p><strong>You may proceed to use the platform regardless of your research participation decision.</strong></p>
+
+                <hr class="mt-4">
+                <p class="small text-muted">This platform and associated research activities have been reviewed and approved by the {{ institution_name }} Institutional Review Board (IRB Protocol #{{ irb_protocol_number }}). If you have questions about your rights as a research participant, please contact the IRB Office.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

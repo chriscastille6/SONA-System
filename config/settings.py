@@ -143,10 +143,14 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # AI IRB Review Configuration
-IRB_AI_PROVIDER = config('IRB_AI_PROVIDER', default='openai')  # 'anthropic' or 'openai'
+# Provider: 'openai' | 'anthropic' | 'ollama' (local/server LLM, no API key)
+IRB_AI_PROVIDER = config('IRB_AI_PROVIDER', default='openai')
 ANTHROPIC_API_KEY = config('ANTHROPIC_API_KEY', default='')
 OPENAI_API_KEY = config('OPENAI_API_KEY', default='')
-IRB_AI_MODEL = config('IRB_AI_MODEL', default='gpt-4o')  # or 'claude-3-5-sonnet-20241022'
+# For provider='ollama': base URL of Ollama server (e.g. http://localhost:11434 or http://bayoupal:11434)
+IRB_AI_OLLAMA_BASE_URL = config('IRB_AI_OLLAMA_BASE_URL', default='http://localhost:11434')
+# Model: for OpenAI/Anthropic use their model IDs; for Ollama use the Ollama model name (e.g. llama3.2, mistral)
+IRB_AI_MODEL = config('IRB_AI_MODEL', default='gpt-4o')
 IRB_REVIEW_STORAGE = 'media/irb_reviews/'
 
 # Default primary key field type
@@ -195,6 +199,18 @@ CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default='http://localhost:
 SITE_NAME = config('SITE_NAME', default='Participant Recruitment and Management System')
 SITE_URL = config('SITE_URL', default='http://localhost:8000')
 INSTITUTION_NAME = config('INSTITUTION_NAME', default='Nicholls State University')
+
+# Participant Information & Consent document (full doc at /studies/participant-information/)
+# Used on the assessment platform "Your Rights and Options" page → "Read full participant information document"
+PLATFORM_NAME = config('PLATFORM_NAME', default=None)  # Defaults to SITE_NAME in view
+IRB_PROTOCOL_NUMBER = config('IRB_PROTOCOL_NUMBER', default='To be assigned')
+PLATFORM_SUPPORT_EMAIL = config('PLATFORM_SUPPORT_EMAIL', default='Christopher Castille (christopher.castille@nicholls.edu)')
+PARTICIPANT_INFO_PI_NAME = config('PARTICIPANT_INFO_PI_NAME', default='Christopher Castille')
+PARTICIPANT_INFO_PI_EMAIL = config('PARTICIPANT_INFO_PI_EMAIL', default='christopher.castille@nicholls.edu')
+PARTICIPANT_INFO_PI_PHONE = config('PARTICIPANT_INFO_PI_PHONE', default='')
+IRB_OFFICE_NAME = config('IRB_OFFICE_NAME', default='Dr. Alaina Daigle, Chair of the Committee, 168 Ayo Hall')
+IRB_OFFICE_PHONE = config('IRB_OFFICE_PHONE', default='985-448-4697')
+IRB_OFFICE_EMAIL = config('IRB_OFFICE_EMAIL', default='alania.daigle@nicholls.edu')
 
 # Policy Settings
 CANCELLATION_WINDOW_HOURS = config('CANCELLATION_WINDOW_HOURS', default=2, cast=int)

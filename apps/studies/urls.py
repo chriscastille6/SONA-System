@@ -7,6 +7,8 @@ from . import views
 app_name = 'studies'
 
 urlpatterns = [
+    # Participant information document (full consent/info for psychological assessment platform)
+    path('participant-information/', views.participant_information_consent, name='participant_information_consent'),
     # Browse studies
     path('', views.study_list, name='list'),
     path('<uuid:pk>/', views.study_detail, name='detail'),
