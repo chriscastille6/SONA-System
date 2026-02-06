@@ -1198,12 +1198,23 @@ def protocol_make_decision(request, submission_id):
     
     # Send email notification to PI about decision
     from .tasks import notify_pi_about_decision
+    import logging
+    logger = logging.getLogger(__name__)
     try:
         notify_result = notify_pi_about_decision(submission)
-        if notify_result and 'Failed' not in notify_result:
+        if notify_result and notify_result.startswith('Notified PI:'):
             messages.info(request, 'Principal Investigator has been notified via email.')
+        elif notify_result:
+            # Email not sent (not configured, no PI email, or send failed) – log for debugging
+            logger.warning('PI decision notification skipped: %s', notify_result)
+            if 'not configured' in notify_result.lower():
+                messages.warning(request, 'Decision saved. PI was not emailed (outgoing email is not configured on this server).')
+            elif 'No PI email' in notify_result:
+                messages.warning(request, 'Decision saved. PI could not be notified (no email address on file).')
+            else:
+                messages.warning(request, 'Decision saved. PI notification could not be sent.')
     except Exception as e:
-        # Don't fail decision if email fails
+        logger.exception('PI decision notification failed')
         pass
     
     return redirect('studies:protocol_submission_detail', submission_id=submission.id)

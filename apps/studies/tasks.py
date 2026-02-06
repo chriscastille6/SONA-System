@@ -204,10 +204,13 @@ Thank you,
 
 def notify_pi_about_decision(submission: ProtocolSubmission) -> str:
     """Email PI when a decision is made on their protocol."""
+    import logging
+    logger = logging.getLogger(__name__)
     if not submission.submitted_by or not submission.submitted_by.email:
+        logger.info('PI notification skipped: no submitted_by or email for submission %s', submission.id)
         return "No PI email address available."
-    
     if not getattr(settings, 'EMAIL_HOST', ''):
+        logger.info('PI notification skipped: EMAIL_HOST not set (submission %s)', submission.id)
         return "Email not configured; PI was not notified."
     
     study = submission.study
