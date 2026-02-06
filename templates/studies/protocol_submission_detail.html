@@ -230,47 +230,6 @@
         </div>
         {% endif %}
         
-        <!-- Decision Form -->
-        {% if submission.decision == 'pending' and is_college_rep or submission.decision == 'pending' and is_chair or submission.decision == 'pending' and is_reviewer %}
-        <div class="card mb-3">
-            <div class="card-header bg-success text-white">
-                <h5 class="mb-0">Make Decision</h5>
-            </div>
-            <div class="card-body">
-                <form method="post" action="{% url 'studies:protocol_make_decision' submission.id %}">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <label class="form-label"><strong>Decision:</strong></label>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="decision" id="dec_approved" value="approved" required>
-                            <label class="form-check-label" for="dec_approved">
-                                <strong>Approve</strong> - Issue protocol number
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="decision" id="dec_rnr" value="revise_resubmit" required>
-                            <label class="form-check-label" for="dec_rnr">
-                                <strong>Revise & Resubmit</strong> - Request changes
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="decision" id="dec_rejected" value="rejected" required>
-                            <label class="form-check-label" for="dec_rejected">
-                                <strong>Reject</strong> - Protocol rejected
-                            </label>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="decision_notes" class="form-label">Notes / Grounds</label>
-                        <textarea class="form-control" id="decision_notes" name="notes" rows="5" required></textarea>
-                        <div class="form-text">Required. Explain your decision, approval conditions, required revisions, or rejection grounds.</div>
-                    </div>
-                    <button type="submit" class="btn btn-success">Submit Decision</button>
-                </form>
-            </div>
-        </div>
-        {% endif %}
-        
         <!-- Full Protocol Details -->
         <div class="card mb-3">
             <div class="card-header" style="background-color: #A6192E; color: white;">
@@ -585,6 +544,47 @@
                 </div>
             </div>
         </div>
+        
+        <!-- Decision Form (moved after Complete Protocol Information) -->
+        {% if submission.decision == 'pending' and is_college_rep or submission.decision == 'pending' and is_chair or submission.decision == 'pending' and is_reviewer %}
+        <div class="card mb-3">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">Make Decision</h5>
+            </div>
+            <div class="card-body">
+                <form method="post" action="{% url 'studies:protocol_make_decision' submission.id %}">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label"><strong>Decision:</strong></label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="decision" id="dec_approved" value="approved" required>
+                            <label class="form-check-label" for="dec_approved">
+                                <strong>Approve</strong> - Issue protocol number
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="decision" id="dec_rnr" value="revise_resubmit" required>
+                            <label class="form-check-label" for="dec_rnr">
+                                <strong>Revise & Resubmit</strong> - Request changes
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="decision" id="dec_rejected" value="rejected" required>
+                            <label class="form-check-label" for="dec_rejected">
+                                <strong>Reject</strong> - Protocol rejected
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="decision_notes" class="form-label">Notes / Grounds</label>
+                        <textarea class="form-control" id="decision_notes" name="notes" rows="5" required></textarea>
+                        <div class="form-text">Required. Explain your decision, approval conditions, required revisions, or rejection grounds.</div>
+                    </div>
+                    <button type="submit" class="btn btn-success">Submit Decision</button>
+                </form>
+            </div>
+        </div>
+        {% endif %}
         
         <!-- Amendments Section -->
         <div class="card mb-3">
