@@ -9,7 +9,7 @@
 SITE_NAME="hsirb"
 SITE_PATH="/var/www/html/${SITE_NAME}"
 CONFIG_FILE="/etc/httpd/conf.d/${SITE_NAME}.conf"
-SOCKET_PATH="/var/www/html/${SITE_NAME}/hsirb-system.sock"
+GUNICORN_PORT="8001"
 
 # ============================================================================
 # COLORS
@@ -60,8 +60,8 @@ LoadModule rewrite_module modules/mod_rewrite.so
     ProxyPreserveHost On
     ProxyPass /${SITE_NAME}/static/ !
     ProxyPass /${SITE_NAME}/media/ !
-    ProxyPass /${SITE_NAME}/ http://unix:${SOCKET_PATH}/
-    ProxyPassReverse /${SITE_NAME}/ http://unix:${SOCKET_PATH}/
+    ProxyPass /${SITE_NAME}/ http://127.0.0.1:${GUNICORN_PORT}/
+    ProxyPassReverse /${SITE_NAME}/ http://127.0.0.1:${GUNICORN_PORT}/
     
     # Static files
     Alias /${SITE_NAME}/static ${SITE_PATH}/static

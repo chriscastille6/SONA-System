@@ -1,0 +1,10 @@
+{
+  "slug": "whole-person-fit",
+  "title": "Whole Person Fit",
+  "description": "Study description for participants. Replace with full description.",
+  "researcher_email": "christopher.castille@nicholls.edu",
+  "credit_value": 1,
+  "mode": "online",
+  "consent_text": "Short consent text or placeholder. Replace with full consent before submission.",
+  "irb_status": "pending"
+}

@@ -7,7 +7,7 @@ User=ccastille
 Group=ccastille
 WorkingDirectory=/home/ccastille/hsirb-system
 Environment=PATH=/home/ccastille/hsirb-system/venv/bin
-ExecStart=/home/ccastille/hsirb-system/venv/bin/gunicorn --workers 3 --bind unix:/var/www/html/hsirb/hsirb-system.sock --timeout 120 config.wsgi:application
+ExecStart=/home/ccastille/hsirb-system/venv/bin/gunicorn --workers 3 --bind 127.0.0.1:8001 --timeout 120 config.wsgi:application
 Restart=always
 RestartSec=10
 

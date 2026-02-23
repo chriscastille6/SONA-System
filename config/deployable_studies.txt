@@ -1,0 +1,7 @@
+# Deployable studies: slug: management_command(s)
+# One or more commands comma-separated; run in order on server after git pull / migrate.
+# Used by: scripts/deploy-study.sh
+tro:add_tro_study_online
+conjoint-analysis:add_tro_study_online
+ei-rpm:create_ei_rpm_study,enter_ei_rpm_protocol
+whole-person-fit:add_whole_person_fit_study_online

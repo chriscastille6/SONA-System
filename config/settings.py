@@ -3,36 +3,43 @@ Django settings for Research Participant Recruitment System.
 """
 import os
 from pathlib import Path
-from decouple import config, Csv
+from decouple import config, Csv, Config, RepositoryEnv
 import dj_database_url
 
 # Build paths inside the project
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Load .env from project root so it's used regardless of CWD (e.g. systemd/gunicorn)
+_env_file = BASE_DIR / ".env"
+if _env_file.exists():
+    _config = Config(RepositoryEnv(str(_env_file)))
+else:
+    _config = config
+
 # Security
-DEBUG = config('DEBUG', default=False, cast=bool)
-_SECRET_KEY = config('SECRET_KEY', default=None)
+DEBUG = _config('DEBUG', default=False, cast=bool)
+_SECRET_KEY = _config('SECRET_KEY', default=None)
 if not DEBUG and not _SECRET_KEY:
     raise RuntimeError('SECRET_KEY must be set in environment (e.g. .env) for production.')
 SECRET_KEY = _SECRET_KEY or 'django-insecure-change-me-in-production'
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=Csv())
+ALLOWED_HOSTS = _config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=Csv())
 
 # Railway.app deployment support
-RAILWAY_ENVIRONMENT = config('RAILWAY_ENVIRONMENT', default=None)
+RAILWAY_ENVIRONMENT = _config('RAILWAY_ENVIRONMENT', default=None)
 if RAILWAY_ENVIRONMENT:
     ALLOWED_HOSTS.append('.railway.app')
     # Trust Railway's proxy headers
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Render.com deployment support
-RENDER_ENVIRONMENT = config('RENDER', default=None)
+RENDER_ENVIRONMENT = _config('RENDER', default=None)
 if RENDER_ENVIRONMENT:
     ALLOWED_HOSTS.append('.onrender.com')
     # Trust Render's proxy headers
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # AI Review Feature Gating
-AI_REVIEW_ENABLED = config('AI_REVIEW_ENABLED', default='False', cast=bool)
+AI_REVIEW_ENABLED = _config('AI_REVIEW_ENABLED', default='False', cast=bool)
 
 # Application definition
 INSTALLED_APPS = [
@@ -97,7 +104,7 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 DATABASES = {
     'default': dj_database_url.config(
-        default=config('DATABASE_URL', default='postgresql://postgres:postgres@localhost:5432/recruitment_db'),
+        default=_config('DATABASE_URL', default='postgresql://postgres:postgres@localhost:5432/recruitment_db'),
         conn_max_age=600
     )
 }
@@ -128,7 +135,7 @@ USE_TZ = True
 
 # URL Prefix (for deployment behind /hsirb/ path)
 # Only set if explicitly configured (for campus server deployment)
-FORCE_SCRIPT_NAME = config('FORCE_SCRIPT_NAME', default=None)
+FORCE_SCRIPT_NAME = _config('FORCE_SCRIPT_NAME', default=None)
 
 # Static files (CSS, JavaScript, Images)
 # Auto-detect if we're on campus server and adjust URLs
@@ -147,30 +154,30 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 # AI IRB Review Configuration
 # Provider: 'openai' | 'anthropic' | 'ollama' (local/server LLM, no API key)
-IRB_AI_PROVIDER = config('IRB_AI_PROVIDER', default='openai')
-ANTHROPIC_API_KEY = config('ANTHROPIC_API_KEY', default='')
-OPENAI_API_KEY = config('OPENAI_API_KEY', default='')
+IRB_AI_PROVIDER = _config('IRB_AI_PROVIDER', default='openai')
+ANTHROPIC_API_KEY = _config('ANTHROPIC_API_KEY', default='')
+OPENAI_API_KEY = _config('OPENAI_API_KEY', default='')
 # For provider='ollama': base URL of Ollama server (e.g. http://localhost:11434 or http://bayoupal:11434)
-IRB_AI_OLLAMA_BASE_URL = config('IRB_AI_OLLAMA_BASE_URL', default='http://localhost:11434')
+IRB_AI_OLLAMA_BASE_URL = _config('IRB_AI_OLLAMA_BASE_URL', default='http://localhost:11434')
 # Model: for OpenAI/Anthropic use their model IDs; for Ollama use the Ollama model name (e.g. llama3.2, mistral)
-IRB_AI_MODEL = config('IRB_AI_MODEL', default='gpt-4o')
+IRB_AI_MODEL = _config('IRB_AI_MODEL', default='gpt-4o')
 IRB_REVIEW_STORAGE = 'media/irb_reviews/'
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Email Configuration
-EMAIL_BACKEND = config('EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
-EMAIL_HOST = config('EMAIL_HOST', default='')
-EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
-EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
-EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
-DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default='noreply@university.edu')
+EMAIL_BACKEND = _config('EMAIL_BACKEND', default='django.core.mail.backends.console.EmailBackend')
+EMAIL_HOST = _config('EMAIL_HOST', default='')
+EMAIL_PORT = _config('EMAIL_PORT', default=587, cast=int)
+EMAIL_USE_TLS = _config('EMAIL_USE_TLS', default=True, cast=bool)
+EMAIL_HOST_USER = _config('EMAIL_HOST_USER', default='')
+EMAIL_HOST_PASSWORD = _config('EMAIL_HOST_PASSWORD', default='')
+DEFAULT_FROM_EMAIL = _config('DEFAULT_FROM_EMAIL', default='noreply@university.edu')
 
 # Celery Configuration
-CELERY_BROKER_URL = config('CELERY_BROKER_URL', default='django://')
-CELERY_RESULT_BACKEND = config('CELERY_RESULT_BACKEND', default='django-db')
+CELERY_BROKER_URL = _config('CELERY_BROKER_URL', default='django://')
+CELERY_RESULT_BACKEND = _config('CELERY_RESULT_BACKEND', default='django-db')
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -196,44 +203,44 @@ REST_FRAMEWORK = {
 
 # CORS Settings
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default='http://localhost:3000', cast=Csv())
+CORS_ALLOWED_ORIGINS = _config('CORS_ALLOWED_ORIGINS', default='http://localhost:3000', cast=Csv())
 
 # Site Configuration
-SITE_NAME = config('SITE_NAME', default='Participant Recruitment and Management System')
-SITE_URL = config('SITE_URL', default='http://localhost:8000')
-INSTITUTION_NAME = config('INSTITUTION_NAME', default='Nicholls State University')
+SITE_NAME = _config('SITE_NAME', default='Participant Recruitment and Management System')
+SITE_URL = _config('SITE_URL', default='http://localhost:8000')
+INSTITUTION_NAME = _config('INSTITUTION_NAME', default='Nicholls State University')
 
 # Participant Information & Consent document (full doc at /studies/participant-information/)
 # Used on the assessment platform "Your Rights and Options" page → "Read full participant information document"
-PLATFORM_NAME = config('PLATFORM_NAME', default=None)  # Defaults to SITE_NAME in view
-IRB_PROTOCOL_NUMBER = config('IRB_PROTOCOL_NUMBER', default='To be assigned')
-PLATFORM_SUPPORT_EMAIL = config('PLATFORM_SUPPORT_EMAIL', default='Christopher Castille (christopher.castille@nicholls.edu)')
-PARTICIPANT_INFO_PI_NAME = config('PARTICIPANT_INFO_PI_NAME', default='Christopher Castille')
-PARTICIPANT_INFO_PI_EMAIL = config('PARTICIPANT_INFO_PI_EMAIL', default='christopher.castille@nicholls.edu')
-PARTICIPANT_INFO_PI_PHONE = config('PARTICIPANT_INFO_PI_PHONE', default='')
-IRB_OFFICE_NAME = config('IRB_OFFICE_NAME', default='Dr. Alaina Daigle, Chair of the Committee, 168 Ayo Hall')
-IRB_OFFICE_PHONE = config('IRB_OFFICE_PHONE', default='985-448-4697')
-IRB_OFFICE_EMAIL = config('IRB_OFFICE_EMAIL', default='alania.daigle@nicholls.edu')
+PLATFORM_NAME = _config('PLATFORM_NAME', default=None)  # Defaults to SITE_NAME in view
+IRB_PROTOCOL_NUMBER = _config('IRB_PROTOCOL_NUMBER', default='To be assigned')
+PLATFORM_SUPPORT_EMAIL = _config('PLATFORM_SUPPORT_EMAIL', default='Christopher Castille (christopher.castille@nicholls.edu)')
+PARTICIPANT_INFO_PI_NAME = _config('PARTICIPANT_INFO_PI_NAME', default='Christopher Castille')
+PARTICIPANT_INFO_PI_EMAIL = _config('PARTICIPANT_INFO_PI_EMAIL', default='christopher.castille@nicholls.edu')
+PARTICIPANT_INFO_PI_PHONE = _config('PARTICIPANT_INFO_PI_PHONE', default='')
+IRB_OFFICE_NAME = _config('IRB_OFFICE_NAME', default='Dr. Alaina Daigle, Chair of the Committee, 168 Ayo Hall')
+IRB_OFFICE_PHONE = _config('IRB_OFFICE_PHONE', default='985-448-4697')
+IRB_OFFICE_EMAIL = _config('IRB_OFFICE_EMAIL', default='alania.daigle@nicholls.edu')
 
 # Research exports: system-specific salt for anonymized participant IDs (prevents cross-database linkage)
-PARTICIPANT_EXPORT_SALT = config('PARTICIPANT_EXPORT_SALT', default=None)
+PARTICIPANT_EXPORT_SALT = _config('PARTICIPANT_EXPORT_SALT', default=None)
 
 # Policy Settings
-CANCELLATION_WINDOW_HOURS = config('CANCELLATION_WINDOW_HOURS', default=2, cast=int)
-MAX_WEEKLY_SIGNUPS = config('MAX_WEEKLY_SIGNUPS', default=3, cast=int)
-NO_SHOW_LIMIT = config('NO_SHOW_LIMIT', default=2, cast=int)
-REMINDER_HOURS_BEFORE = config('REMINDER_HOURS_BEFORE', default='24,2', cast=Csv(cast=int))
+CANCELLATION_WINDOW_HOURS = _config('CANCELLATION_WINDOW_HOURS', default=2, cast=int)
+MAX_WEEKLY_SIGNUPS = _config('MAX_WEEKLY_SIGNUPS', default=3, cast=int)
+NO_SHOW_LIMIT = _config('NO_SHOW_LIMIT', default=2, cast=int)
+REMINDER_HOURS_BEFORE = _config('REMINDER_HOURS_BEFORE', default='24,2', cast=Csv(cast=int))
 
 # CSRF Settings
-CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='http://localhost:8000', cast=Csv())
+CSRF_TRUSTED_ORIGINS = _config('CSRF_TRUSTED_ORIGINS', default='http://localhost:8000', cast=Csv())
 CSRF_COOKIE_HTTPONLY = True
 CSRF_USE_SESSIONS = False
 
 # Security Settings (Production)
 if not DEBUG:
-    SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=True, cast=bool)
-    SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=True, cast=bool)
-    CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=True, cast=bool)
+    SECURE_SSL_REDIRECT = _config('SECURE_SSL_REDIRECT', default=True, cast=bool)
+    SESSION_COOKIE_SECURE = _config('SESSION_COOKIE_SECURE', default=True, cast=bool)
+    CSRF_COOKIE_SECURE = _config('CSRF_COOKIE_SECURE', default=True, cast=bool)
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = 'DENY'
