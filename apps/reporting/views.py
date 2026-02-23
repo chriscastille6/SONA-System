@@ -2,7 +2,10 @@
 Views for reporting app.
 """
 import csv
+import logging
 from django.shortcuts import render, get_object_or_404, redirect
+
+logger = logging.getLogger(__name__)
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpResponse
@@ -23,9 +26,12 @@ def reports_home(request):
 
 @login_required
 def course_credits_csv(request, course_id):
-    """Export course credits as CSV."""
+    """Export course credits as CSV. Contains FERPA data; access restricted to instructor/admin."""
     course = get_object_or_404(Course, pk=course_id)
-    
+    logger.info(
+        'course_credits_csv accessed',
+        extra={'course_id': str(course_id), 'user_id': str(request.user.id)},
+    )
     # Check permission
     if not (request.user.is_admin or course.instructor == request.user):
         messages.error(request, 'Access denied.')

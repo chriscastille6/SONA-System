@@ -1,16 +1,17 @@
 # AI IRB Review - Configuration Guide
 
-**Last Updated**: October 22, 2025
+**Last Updated**: February 2026
 
 ---
 
 ## AI Provider Options
 
-The system supports **two AI providers**:
-- **OpenAI** (GPT-4, GPT-4 Turbo, GPT-4o) - DEFAULT
-- **Anthropic** (Claude 3.5 Sonnet, Claude 3 Opus)
+The system supports **three AI providers**:
+- **OpenAI** (GPT-4, GPT-4o) - DEFAULT, paid
+- **Anthropic** (Claude 3.5 Sonnet, Claude 3 Opus) - paid
+- **Ollama** - **free**, runs on your own server (e.g. Bayoupal); no API key required
 
-Choose the one where you have an API key!
+Use Ollama when you want zero per-review cost and data to stay on your server.
 
 ---
 
@@ -86,7 +87,53 @@ python manage.py runserver 8002
 
 ---
 
-## Option C: No API Key (Testing Mode)
+## Option C: Ollama (free, local/server)
+
+Run a local LLM (e.g. on Bayoupal) with [Ollama](https://ollama.com). No API key or subscription; data stays on your server.
+
+### Step 1: Install and run Ollama on your server
+
+On the machine that will run the LLM (same server as SONA or another host):
+
+```bash
+# Install Ollama (Linux example)
+curl -fsSL https://ollama.com/install.sh | sh
+ollama serve   # or run as a service
+ollama pull llama3.2   # or: mistral, phi3, llama3.1:8b, etc.
+```
+
+### Step 2: Configure SONA
+
+In `.env` (use the host your Django app can reach):
+
+```bash
+IRB_AI_PROVIDER=ollama
+IRB_AI_OLLAMA_BASE_URL=http://localhost:11434
+IRB_AI_MODEL=llama3.2
+```
+
+If Ollama runs on another host (e.g. same server, different container):
+
+```bash
+IRB_AI_OLLAMA_BASE_URL=http://bayoupal.nicholls.edu:11434
+# or http://127.0.0.1:11434 if on same host
+```
+
+### Step 3: Restart SONA
+
+Restart the Django/Celery processes so they pick up the new provider.
+
+### Ollama model suggestions
+
+- **`llama3.2`** or **`llama3.2:3b`** – smaller, faster; good for lighter reviews
+- **`llama3.1:8b`** or **`mistral`** – better quality, more RAM
+- **`llama3.1:70b`** – best quality if the server has enough RAM/GPU
+
+Quality will be lower than GPT-4/Claude for complex protocols; use for first-pass review or when cost/privacy are priorities.
+
+---
+
+## Option D: No API Key (Testing Mode)
 
 The system works **without any API key** for testing:
 
@@ -255,6 +302,12 @@ Since you don't currently have an API key:
 - ✅ You prefer Claude's analysis style
 - ✅ You want longer context windows
 - ✅ You need specific Claude capabilities
+
+### Choose Ollama if:
+- ✅ You want **no per-review cost** and data on your server
+- ✅ You can run Ollama on Bayoupal (or same network)
+- ✅ You're okay with somewhat lower quality than GPT-4/Claude for complex protocols
+- ✅ You want one free backend for both IRB review and future apps (e.g. coaching)
 
 ### Use Testing Mode if:
 - ✅ You want to test the interface first

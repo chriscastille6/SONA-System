@@ -64,3 +64,15 @@ The app was updated so that:
 - Server logs record when a PI notification is skipped (e.g. `PI notification skipped: EMAIL_HOST not set`).
 
 Once `EMAIL_HOST` (and credentials) are set in `.env` and the app is restarted, future approvals will send the automatic “Protocol Approved” email to the PI.
+
+## Email verification (registration / profile "Resend")
+
+The same SMTP settings are used for **account verification emails**. When a user registers or clicks "Resend" on their profile to verify their email, the app only sends the email if `EMAIL_HOST` is set. If it is not set, the user sees a message that the verification email could not be sent and to contact an administrator.
+
+**To test verification email delivery** (after configuring SMTP above):
+
+```bash
+python manage.py send_verification_email user@example.edu
+```
+
+The user must already exist. Check your inbox (and spam); the message contains a link that marks the account as verified when clicked.

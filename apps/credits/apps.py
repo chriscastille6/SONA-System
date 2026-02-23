@@ -6,6 +6,9 @@ class CreditsConfig(AppConfig):
     name = 'apps.credits'
     verbose_name = 'Participation Credits'
 
+    def ready(self):
+        import apps.credits.signals  # noqa: F401
+
 
 
 

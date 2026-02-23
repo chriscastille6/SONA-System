@@ -2,10 +2,13 @@
 Base Agent for IRB Review
 
 Provides common functionality for all specialized agents.
+Supports Anthropic, OpenAI, and Ollama (local/server-hosted LLM).
 """
 
 import json
 import os
+import urllib.request
+import urllib.error
 from pathlib import Path
 from typing import Dict, List, Any
 from django.conf import settings
@@ -13,13 +16,15 @@ from django.conf import settings
 
 class BaseAgent:
     """Base class for all IRB review agents."""
-    
+
     def __init__(self):
         self.criteria = self.load_criteria()
-        self.provider = getattr(settings, 'IRB_AI_PROVIDER', 'anthropic')  # 'anthropic' or 'openai'
+        self.provider = getattr(settings, 'IRB_AI_PROVIDER', 'anthropic')  # 'anthropic' | 'openai' | 'ollama'
         self.model = getattr(settings, 'IRB_AI_MODEL', 'claude-3-5-sonnet-20241022')
         self.agent_name = self.__class__.__name__
         self.client = self._initialize_client()
+        # For Ollama: base URL (e.g. http://localhost:11434 or http://bayoupal:11434)
+        self.ollama_base_url = getattr(settings, 'IRB_AI_OLLAMA_BASE_URL', 'http://localhost:11434').rstrip('/')
     
     def load_criteria(self) -> Dict[str, Any]:
         """
@@ -152,23 +157,48 @@ class BaseAgent:
             if api_key:
                 from openai import OpenAI
                 return OpenAI(api_key=api_key)
-        
+        elif self.provider == 'ollama':
+            # No API key; we call Ollama by HTTP. Use truthy sentinel.
+            return 'ollama'
+
         return None  # No API configured
     
+    def _call_ollama_sync(self, prompt: str) -> str:
+        """Call Ollama /api/generate (sync). Used from async via to_thread."""
+        url = f"{self.ollama_base_url}/api/generate"
+        body = json.dumps({
+            "model": self.model,
+            "prompt": prompt,
+            "stream": False,
+            "options": {"num_predict": 4096},
+        }).encode("utf-8")
+        req = urllib.request.Request(
+            url,
+            data=body,
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=300) as resp:
+                data = json.loads(resp.read().decode())
+                return data.get("response", "")
+        except urllib.error.URLError as e:
+            raise ValueError(f"Ollama request failed: {e}") from e
+
     async def _call_ai_api(self, prompt: str) -> str:
         """
         Call the AI API with the constructed prompt.
-        Supports both Anthropic and OpenAI.
-        
+        Supports Anthropic, OpenAI, and Ollama (local/server LLM).
+
         Args:
             prompt: The full prompt to send
-        
+
         Returns:
             API response text
         """
         if not self.client:
-            raise ValueError("AI client not initialized - check API key configuration")
-        
+            raise ValueError("AI client not initialized - check API key or Ollama URL configuration")
+
         if self.provider == 'anthropic':
             message = self.client.messages.create(
                 model=self.model,
@@ -179,7 +209,7 @@ class BaseAgent:
                 }]
             )
             return message.content[0].text
-        
+
         elif self.provider == 'openai':
             response = self.client.chat.completions.create(
                 model=self.model,
@@ -190,7 +220,12 @@ class BaseAgent:
                 }]
             )
             return response.choices[0].message.content
-        
+
+        elif self.provider == 'ollama':
+            import asyncio
+            loop = asyncio.get_event_loop()
+            return await loop.run_in_executor(None, self._call_ollama_sync, prompt)
+
         else:
             raise ValueError(f"Unsupported provider: {self.provider}")
     

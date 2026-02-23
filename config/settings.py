@@ -10,8 +10,11 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Security
-SECRET_KEY = config('SECRET_KEY', default='django-insecure-change-me-in-production')
 DEBUG = config('DEBUG', default=False, cast=bool)
+_SECRET_KEY = config('SECRET_KEY', default=None)
+if not DEBUG and not _SECRET_KEY:
+    raise RuntimeError('SECRET_KEY must be set in environment (e.g. .env) for production.')
+SECRET_KEY = _SECRET_KEY or 'django-insecure-change-me-in-production'
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=Csv())
 
 # Railway.app deployment support
@@ -211,6 +214,9 @@ PARTICIPANT_INFO_PI_PHONE = config('PARTICIPANT_INFO_PI_PHONE', default='')
 IRB_OFFICE_NAME = config('IRB_OFFICE_NAME', default='Dr. Alaina Daigle, Chair of the Committee, 168 Ayo Hall')
 IRB_OFFICE_PHONE = config('IRB_OFFICE_PHONE', default='985-448-4697')
 IRB_OFFICE_EMAIL = config('IRB_OFFICE_EMAIL', default='alania.daigle@nicholls.edu')
+
+# Research exports: system-specific salt for anonymized participant IDs (prevents cross-database linkage)
+PARTICIPANT_EXPORT_SALT = config('PARTICIPANT_EXPORT_SALT', default=None)
 
 # Policy Settings
 CANCELLATION_WINDOW_HOURS = config('CANCELLATION_WINDOW_HOURS', default=2, cast=int)

@@ -5,12 +5,40 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
+from django.core.mail import send_mail
 from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse_lazy
+from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.utils.http import url_has_allowed_host_and_scheme
 from datetime import timedelta
 from .models import User, EmailVerificationToken
+
+
+def _send_verification_email(request, user, token):
+    """Send email with verification link. Returns True if sent, False if email not configured."""
+    if not getattr(settings, 'EMAIL_HOST', ''):
+        return False
+    verify_url = request.build_absolute_uri(
+        reverse('accounts:verify_email', kwargs={'token': token.token})
+    )
+    subject = 'Verify your email - ' + getattr(settings, 'SITE_NAME', 'PRAMS')
+    message = (
+        f'Hi {user.get_full_name()},\n\n'
+        f'Please verify your email by clicking the link below:\n\n'
+        f'{verify_url}\n\n'
+        f'This link expires in 7 days. If you did not create an account, you can ignore this email.\n'
+    )
+    try:
+        send_mail(
+            subject=subject,
+            message=message,
+            from_email=None,
+            recipient_list=[user.email],
+            fail_silently=True,
+        )
+        return True
+    except Exception:
+        return False
 
 
 def register(request):
@@ -21,7 +49,7 @@ def register(request):
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         password = request.POST.get('password')
-        role = request.POST.get('role', 'participant')
+        role = 'participant'  # Self-registration is participant only; other roles via admin/invite only.
         
         if email and first_name and last_name and password:
             try:
@@ -39,9 +67,14 @@ def register(request):
                     expires_at=timezone.now() + timedelta(days=7)
                 )
                 
-                # TODO: Send verification email
-                
-                messages.success(request, 'Registration successful! Please check your email to verify your account.')
+                if _send_verification_email(request, user, token):
+                    messages.success(request, 'Registration successful! Please check your email to verify your account.')
+                else:
+                    messages.warning(
+                        request,
+                        'Registration successful! Verification email could not be sent (email not configured). '
+                        'You can request a new verification link from your profile after logging in.'
+                    )
                 return redirect('accounts:login')
             except Exception as e:
                 messages.error(request, f'Registration failed: {str(e)}')
@@ -84,10 +117,15 @@ def resend_verification(request):
             expires_at=timezone.now() + timedelta(days=7)
         )
         
-        # TODO: Send verification email
-        
-        messages.success(request, 'Verification email sent! Please check your inbox.')
-        return redirect('home')
+        if _send_verification_email(request, request.user, token):
+            messages.success(request, 'Verification email sent! Please check your inbox and click the link.')
+        else:
+            messages.warning(
+                request,
+                'Verification email could not be sent (outgoing email is not configured on this server). '
+                'Please contact an administrator to verify your email.'
+            )
+        return redirect('accounts:profile')
     
     return render(request, 'accounts/resend_verification.html')
 

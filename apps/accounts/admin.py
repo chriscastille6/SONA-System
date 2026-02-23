@@ -3,6 +3,7 @@ Admin configuration for accounts app.
 """
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from django.utils import timezone
 from .models import User, Profile, EmailVerificationToken
 
 
@@ -14,6 +15,7 @@ class UserAdmin(BaseUserAdmin):
     list_filter = ['role', 'is_active', 'created_at']
     search_fields = ['email', 'first_name', 'last_name']
     ordering = ['-created_at']
+    actions = ['mark_email_verified']
     
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
@@ -30,6 +32,11 @@ class UserAdmin(BaseUserAdmin):
     )
     
     readonly_fields = ['created_at', 'last_login']
+    
+    @admin.action(description="Mark email as verified")
+    def mark_email_verified(self, request, queryset):
+        updated = queryset.filter(email_verified_at__isnull=True).update(email_verified_at=timezone.now())
+        self.message_user(request, f'{updated} user(s) marked as email verified.')
 
 
 @admin.register(Profile)

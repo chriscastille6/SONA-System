@@ -4,13 +4,11 @@ Views for studies app.
 from django.db.models import Prefetch, Q
 from django.db import models
 from django.shortcuts import render, get_object_or_404, redirect
+from django.http import JsonResponse, Http404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils import timezone
-from django.utils.html import format_html
 from django.urls import reverse
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_http_methods
 from django.template.loader import get_template
 from django.template import TemplateDoesNotExist
@@ -260,17 +258,12 @@ def create_study(request):
                 counter += 1
             study.slug = slug
             study.save()
-            protocol_url = reverse('studies:protocol_submit', args=[study.id])
+            protocol_url = request.build_absolute_uri(reverse('studies:protocol_submit', args=[study.id]))
+            dashboard_url = request.build_absolute_uri(reverse('studies:researcher_dashboard'))
             messages.success(
                 request,
-                format_html(
-                    'Study "<strong>{}</strong>" created successfully! '
-                    '<a href="{}" class="alert-link">Submit for IRB review</a> or return to your '
-                    '<a href="{}" class="alert-link">dashboard</a>.',
-                    study.title,
-                    protocol_url,
-                    reverse('studies:researcher_dashboard')
-                )
+                f'Study "{study.title}" created successfully! '
+                f'Submit for IRB review: {protocol_url} or return to dashboard: {dashboard_url}'
             )
             return redirect('studies:researcher_dashboard')
     else:
@@ -332,11 +325,9 @@ def study_roster(request, pk):
 def mark_attendance(request, pk):
     """Mark attendance for signup."""
     signup = get_object_or_404(Signup, pk=pk)
-    
-    # Check permission
-    if signup.timeslot.study.researcher != request.user and not request.user.is_admin:
-        messages.error(request, 'Access denied.')
-        return redirect('studies:researcher_dashboard')
+    study = signup.timeslot.study
+    if study.researcher != request.user and not getattr(request.user, 'is_admin', False):
+        raise Http404()
     
     if request.method == 'POST':
         status = request.POST.get('status')
@@ -377,7 +368,6 @@ def run_protocol(request, slug):
         })
 
 
-@csrf_exempt
 @require_http_methods(["POST"])
 def submit_response(request, study_id):
     """
@@ -386,10 +376,9 @@ def submit_response(request, study_id):
     Expected POST body: JSON with response data
     Optional query param: session_id (otherwise generated)
     """
-    try:
-        study = Study.objects.get(id=study_id)
-    except Study.DoesNotExist:
-        return JsonResponse({'error': 'Study not found'}, status=404)
+    study = get_object_or_404(Study, pk=study_id)
+    if not study.is_active or not study.is_approved:
+        return JsonResponse({'error': 'Study not available for submissions'}, status=403)
     
     # Parse JSON payload
     try:
@@ -839,13 +828,10 @@ def protocol_enter(request, study_id):
             study.involves_deception = submission.involves_deception
             study.save(update_fields=['involves_deception'])
             
+            submit_url = request.build_absolute_uri(reverse('studies:protocol_submit', args=[study.id]))
             messages.success(
                 request,
-                format_html(
-                    'Protocol information saved as draft!<br>'
-                    '<small>You can continue editing or <a href="{}" class="alert-link">submit for IRB review</a> when ready.</small>',
-                    reverse('studies:protocol_submit', args=[study.id])
-                )
+                f'Protocol information saved as draft! You can continue editing or submit for IRB review when ready: {submit_url}'
             )
             return redirect('studies:protocol_enter', study_id=study.id)
     else:
@@ -898,12 +884,10 @@ def protocol_submit(request, study_id):
     ).order_by('-version').first()
     
     if not draft_submission:
+        enter_url = request.build_absolute_uri(reverse('studies:protocol_enter', args=[study.id]))
         messages.warning(
             request,
-            format_html(
-                'No protocol information found. Please <a href="{}" class="alert-link">enter protocol information</a> first.',
-                reverse('studies:protocol_enter', args=[study.id])
-            )
+            f'No protocol information found. Please enter protocol information first: {enter_url}'
         )
         return redirect('studies:protocol_enter', study_id=study.id)
     
@@ -953,20 +937,16 @@ def protocol_submit(request, study_id):
             else:
                 messages.warning(request, 'AI review is not currently enabled. Protocol submitted without AI review.')
         
-        submission_detail_url = reverse('studies:protocol_submission_detail', args=[draft_submission.id])
-        dashboard_url = reverse('studies:researcher_dashboard')
+        submission_detail_url = request.build_absolute_uri(
+            reverse('studies:protocol_submission_detail', args=[draft_submission.id])
+        )
+        dashboard_url = request.build_absolute_uri(reverse('studies:researcher_dashboard'))
         submission_number = draft_submission.submission_number or 'Pending'
         messages.success(
             request,
-            format_html(
-                'Protocol submitted successfully! <strong>Submission #{}</strong><br>'
-                '<small>Your college representative will review it within 5-7 business days. '
-                '<a href="{}" class="alert-link">View submission details</a> or return to your '
-                '<a href="{}" class="alert-link">dashboard</a>.</small>',
-                submission_number,
-                submission_detail_url,
-                dashboard_url
-            )
+            f'Protocol submitted successfully! Submission #{submission_number}. '
+            f'Your college representative will review it within 5-7 business days. '
+            f'View submission details: {submission_detail_url} or return to dashboard: {dashboard_url}'
         )
         return redirect('studies:protocol_submission_detail', submission_id=draft_submission.id)
     else:
@@ -1341,7 +1321,11 @@ def amendment_create(request, submission_id):
 
     # Only PI or admin/staff can create amendments
     is_pi = request.user.is_researcher and study.researcher == request.user
-    is_co_i = request.user.email and submission.co_investigators and request.user.email in submission.co_investigators
+    is_co_i = bool(
+        request.user.email
+        and submission.co_investigators
+        and request.user.email.lower() in submission.co_investigators.lower()
+    )
     if not (is_pi or is_co_i or request.user.is_staff or getattr(request.user, 'is_admin', False)):
         messages.error(request, 'Only the study PI or co-investigators can create amendments.')
         return redirect('studies:protocol_submission_detail', submission_id=submission.id)
@@ -1424,13 +1408,18 @@ def amendment_detail(request, amendment_id):
     submission = amendment.protocol_submission
     study = submission.study
 
+    is_co_i = bool(
+        request.user.email
+        and submission.co_investigators
+        and request.user.email.lower() in submission.co_investigators.lower()
+    )
     can_view = (
         request.user.is_staff or
         getattr(request.user, 'is_admin', False) or
         (request.user.is_researcher and study.researcher == request.user) or
         amendment.reviewer == request.user or
         submission.college_rep == request.user or
-        (request.user.email and submission.co_investigators and request.user.email in submission.co_investigators)
+        is_co_i
     )
 
     if not can_view:
@@ -1514,12 +1503,17 @@ def amendment_list(request, submission_id):
     submission = get_object_or_404(ProtocolSubmission, id=submission_id)
     study = submission.study
 
+    is_co_i = bool(
+        request.user.email
+        and submission.co_investigators
+        and request.user.email.lower() in submission.co_investigators.lower()
+    )
     can_view = (
         request.user.is_staff or
         getattr(request.user, 'is_admin', False) or
         (request.user.is_researcher and study.researcher == request.user) or
         submission.college_rep == request.user or
-        (request.user.email and submission.co_investigators and request.user.email in submission.co_investigators)
+        is_co_i
     )
 
     if not can_view:

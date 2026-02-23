@@ -1,10 +1,15 @@
 """
 Signal handlers for IRB audit logging.
+
+Note: Signal-created AuditLog entries do not include ip_address or user_agent
+because signals have no request context. For view-created audit entries,
+pass request.META.get('REMOTE_ADDR') and request.META.get('HTTP_USER_AGENT', '')
+when creating AuditLog from a view.
 """
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 from django.utils import timezone
-from .models import Study
+from .models import Study, Signup
 from apps.credits.models import AuditLog
 
 
@@ -78,4 +83,20 @@ def log_irb_changes(sender, instance, created, **kwargs):
                     'irb_number': instance.irb_number,
                 }
             )
+
+
+@receiver(post_save, sender=Signup)
+def log_participant_consent(sender, instance, created, **kwargs):
+    """Log participant consent when a signup is created (IRB / 45 CFR 46)."""
+    if created:
+        AuditLog.objects.create(
+            actor=instance.participant,
+            action='participant_consent',
+            entity='signup',
+            entity_id=instance.id,
+            metadata={
+                'study_id': str(instance.timeslot.study_id),
+                'consented_at': instance.consented_at.isoformat() if instance.consented_at else None,
+            },
+        )
 

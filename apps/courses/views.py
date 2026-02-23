@@ -6,12 +6,14 @@ from django.contrib.auth.decorators import login_required
 from .models import Course, Enrollment
 
 
+@login_required
 def course_list(request):
-    """List all active courses."""
+    """List all active courses. Requires authentication (FERPA)."""
     courses = Course.objects.filter(is_active=True).order_by('-term', 'code')
     return render(request, 'courses/list.html', {'courses': courses})
 
 
+@login_required
 def course_detail(request, pk):
     """Course detail view."""
     course = get_object_or_404(Course, pk=pk)

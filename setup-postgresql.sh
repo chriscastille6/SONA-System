@@ -25,20 +25,20 @@ echo -e "${GREEN}🗄️  Setting up PostgreSQL database for HSIRB System${NC}\n
 # CHECK POSTGRESQL
 # ============================================================================
 echo -e "${BLUE}📋 Checking PostgreSQL installation...${NC}"
+# Use subshell so sudo -S reads only the password, not the rest of the heredoc
 ssh bayoupal << 'CHECK_POSTGRES'
+    SUDO_PASS="nsutemppasswd123"
     if ! command -v psql &> /dev/null; then
         echo "PostgreSQL not found. Installing..."
-        echo "nsutemppasswd123" | sudo -S dnf install postgresql15-server postgresql15-contrib -y
-        echo "nsutemppasswd123" | sudo -S postgresql-setup --initdb
-        echo "nsutemppasswd123" | sudo -S systemctl start postgresql
-        echo "nsutemppasswd123" | sudo -S systemctl enable postgresql
+        ( echo "$SUDO_PASS" | sudo -S dnf install postgresql15-server postgresql15-contrib -y )
+        ( echo "$SUDO_PASS" | sudo -S postgresql-setup --initdb )
+        ( echo "$SUDO_PASS" | sudo -S systemctl start postgresql )
+        ( echo "$SUDO_PASS" | sudo -S systemctl enable postgresql )
     else
         echo "PostgreSQL is installed."
         psql --version
     fi
-    
-    # Ensure PostgreSQL is running
-    echo "nsutemppasswd123" | sudo -S systemctl start postgresql
+    ( echo "$SUDO_PASS" | sudo -S systemctl start postgresql )
 CHECK_POSTGRES
 
 # ============================================================================
@@ -48,8 +48,9 @@ echo -e "${BLUE}📦 Creating database and user...${NC}"
 echo -e "${YELLOW}⚠️  Generated password: ${DB_PASSWORD}${NC}"
 echo -e "${YELLOW}⚠️  SAVE THIS PASSWORD - you'll need it for .env file!${NC}\n"
 
-# Create SQL script and execute it
+# Create SQL script and execute it (subshell so sudo -S gets only the password)
 ssh bayoupal << EOF
+    SUDO_PASS="nsutemppasswd123"
     cat > /tmp/setup_hsirb_db.sql << SQLSCRIPT
 -- Create database
 CREATE DATABASE ${DB_NAME};
@@ -64,18 +65,11 @@ ALTER ROLE ${DB_USER} SET timezone TO 'UTC';
 GRANT ALL PRIVILEGES ON DATABASE ${DB_NAME} TO ${DB_USER};
 SQLSCRIPT
 
-    # Execute as postgres user
-    echo "nsutemppasswd123" | sudo -S -u postgres psql -f /tmp/setup_hsirb_db.sql
-    
-    # Grant schema permissions
-    echo "nsutemppasswd123" | sudo -S -u postgres psql -d ${DB_NAME} << SCHEMA_SCRIPT
-GRANT ALL ON SCHEMA public TO ${DB_USER};
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO ${DB_USER};
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO ${DB_USER};
-SCHEMA_SCRIPT
-    
-    # Clean up
-    rm /tmp/setup_hsirb_db.sql
+    ( echo \$SUDO_PASS | sudo -S -u postgres psql -f /tmp/setup_hsirb_db.sql )
+
+    ( echo \$SUDO_PASS | sudo -S -u postgres psql -d ${DB_NAME} -c "GRANT ALL ON SCHEMA public TO ${DB_USER}; ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO ${DB_USER}; ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO ${DB_USER};" )
+
+    rm -f /tmp/setup_hsirb_db.sql
 EOF
 
 if [ $? -eq 0 ]; then

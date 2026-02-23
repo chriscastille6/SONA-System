@@ -29,6 +29,7 @@ echo -e "${GREEN}🚀 Deploying HSIRB Study Management System to ${SERVER_HOST}.
 # ============================================================================
 echo -e "${BLUE}📦 Step 1: Cloning/updating repository on server...${NC}"
 ssh bayoupal << 'DEPLOY_SCRIPT'
+    SUDO_PASS="nsutemppasswd123"
     # Create directory if it doesn't exist
     mkdir -p ~/hsirb-system
     
@@ -70,15 +71,16 @@ ssh bayoupal << 'DEPLOY_SCRIPT'
     echo "Collecting static files..."
     python manage.py collectstatic --noinput
     
-    # Copy static files to web directory
+    # Copy static files to web directory (subshell so sudo -S gets only the password)
     echo "Copying static files to web directory..."
-    echo "nsutemppasswd123" | sudo -S mkdir -p /var/www/html/hsirb/static
-    echo "nsutemppasswd123" | sudo -S cp -r staticfiles/* /var/www/html/hsirb/static/
-    echo "nsutemppasswd123" | sudo -S chown -R apache:apache /var/www/html/hsirb/static
+    SUDO_PASS="nsutemppasswd123"
+    ( echo "$SUDO_PASS" | sudo -S mkdir -p /var/www/html/hsirb/static )
+    ( echo "$SUDO_PASS" | sudo -S cp -r staticfiles/* /var/www/html/hsirb/static/ )
+    ( echo "$SUDO_PASS" | sudo -S chown -R apache:apache /var/www/html/hsirb/static )
     
     # Restart Gunicorn service
     echo "Restarting Gunicorn service..."
-    echo "nsutemppasswd123" | sudo -S systemctl restart hsirb-system || echo "Service not running yet (first deployment)"
+    ( echo "$SUDO_PASS" | sudo -S systemctl restart hsirb-system ) || echo "Service not running yet (first deployment)"
     
     echo "✅ Deployment complete on server!"
 DEPLOY_SCRIPT
