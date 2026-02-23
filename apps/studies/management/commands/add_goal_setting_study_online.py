@@ -193,12 +193,17 @@ class Command(BaseCommand):
 
         if approval_pdf_source:
             media_dir = Path(settings.MEDIA_ROOT) / 'protocol_submissions' / 'approvals' / '2024' / '07'
-            media_dir.mkdir(parents=True, exist_ok=True)
-            approval_pdf_dest = media_dir / 'chris_castille_goal_setting_approval_july_2024.pdf'
-            shutil.copy2(approval_pdf_source, approval_pdf_dest)
-            self.stdout.write(self.style.SUCCESS(
-                f'✓ Copied approval PDF to: {approval_pdf_dest.relative_to(settings.MEDIA_ROOT)}'
-            ))
+            try:
+                media_dir.mkdir(parents=True, exist_ok=True)
+                approval_pdf_dest = media_dir / 'chris_castille_goal_setting_approval_july_2024.pdf'
+                shutil.copy2(approval_pdf_source, approval_pdf_dest)
+                self.stdout.write(self.style.SUCCESS(
+                    f'✓ Copied approval PDF to: {approval_pdf_dest.relative_to(settings.MEDIA_ROOT)}'
+                ))
+            except (PermissionError, OSError) as e:
+                self.stdout.write(self.style.WARNING(
+                    f'⚠ Could not copy approval PDF (check MEDIA_ROOT permissions): {e}'
+                ))
         else:
             self.stdout.write(self.style.WARNING(
                 '⚠ Approval PDF not found. Copy to apps/studies/assets/irb/goal-setting/'
@@ -207,10 +212,13 @@ class Command(BaseCommand):
         # Copy addendum PDF if present
         addendum_source = base_dir / 'apps' / 'studies' / 'assets' / 'irb' / 'goal-setting' / 'addendum_1_procedural_modifications.pdf'
         if addendum_source.exists():
-            media_dir = Path(settings.MEDIA_ROOT) / 'protocol_submissions' / 'amendments' / '2024' / '07'
-            media_dir.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(addendum_source, media_dir / 'addendum_1_procedural_modifications.pdf')
-            self.stdout.write(self.style.SUCCESS('✓ Copied Addendum 1 PDF'))
+            try:
+                media_dir = Path(settings.MEDIA_ROOT) / 'protocol_submissions' / 'amendments' / '2024' / '07'
+                media_dir.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(addendum_source, media_dir / 'addendum_1_procedural_modifications.pdf')
+                self.stdout.write(self.style.SUCCESS('✓ Copied Addendum 1 PDF'))
+            except (PermissionError, OSError) as e:
+                self.stdout.write(self.style.WARNING(f'⚠ Could not copy addendum PDF: {e}'))
 
         # Update study IRB status
         with connection.cursor() as cursor:
