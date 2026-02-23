@@ -232,4 +232,24 @@ Then commit, push, and run `./deploy-to-server.sh` again so the server runs the 
 If the DB password has `=` (e.g. from openssl rand -base64), URL-encode it in `.env`: use `%3D` for `=`, `%2F` for `/`, etc. Example:  
 `postgresql://hsirb_user:bMUl4RK4BfUj8vB0C3M6VnnvBNtPS3mD%2Fx8qT%2B%2BjGss%3D@localhost:5432/hsirb_db`
 
+**5. hsirb-system.service fails with "Permission denied" / status 203/EXEC (SELinux)**  
+On RHEL/CentOS/Fedora with SELinux enforcing, systemd may be blocked from executing the venv in your home directory. Fix it on the server:
+
+```bash
+# One-time: install SELinux tools if needed
+sudo dnf install -y policycoreutils-python-utils   # or yum on older systems
+
+# Run the fix (from the repo on the server)
+cd ~/hsirb-system
+sudo bash scripts/fix-selinux-venv.sh
+
+# Re-enable SELinux if you had set it to permissive for testing
+sudo setenforce 1
+sudo systemctl restart hsirb-system
+```
+
+Remove any temporary override that runs the service unconfined:  
+`sudo rm /etc/systemd/system/hsirb-system.service.d/selinux.conf`  
+(and `override.conf` if you only added it for this issue).
+
 For more detail (troubleshooting, Apache, permissions), see **HSIRB_DEPLOYMENT_GUIDE.md**.
