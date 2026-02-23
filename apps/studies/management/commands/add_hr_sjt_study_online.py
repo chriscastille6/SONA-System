@@ -10,6 +10,7 @@ from pathlib import Path
 from django.core.management.base import BaseCommand
 from django.contrib.auth import get_user_model
 from apps.studies.models import Study
+from apps.studies.irb_utils import create_or_update_protocol_from_json
 
 User = get_user_model()
 
@@ -96,3 +97,14 @@ class Command(BaseCommand):
         self.stdout.write(
             f"  Assessment URL: https://bayoupal.nicholls.edu/hr-sjt-assessment/index.html?study={study.id}"
         )
+
+        # Create/update draft protocol so reviewers can see details
+        protocol_path = config_dir / "protocol.json"
+        if protocol_path.exists():
+            submission = create_or_update_protocol_from_json(study, protocol_path, researcher)
+            if submission:
+                self.stdout.write(self.style.SUCCESS(f"  ✓ Protocol draft created/updated (ID: {submission.id})"))
+        else:
+            self.stdout.write(self.style.WARNING(
+                f"  No protocol.json at {protocol_path} - protocol details not loaded. Add protocol.json for IRB review."
+            ))

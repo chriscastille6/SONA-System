@@ -43,22 +43,22 @@ Format: `slug:command1,command2` (one or more commands, comma-separated).
 To add a new study:
 
 1. Add a line to `config/deployable_studies.txt`: `my-study:add_my_study_online`
-2. Implement `apps/studies/management/commands/add_my_study_online.py` (create/update the study and optionally protocol).
-3. Run `./scripts/deploy-study.sh my-study`.
+2. Create `apps/studies/assets/irb/my-study/study_config.json` (study basics)
+3. Create `apps/studies/assets/irb/my-study/protocol.json` (full IRB protocol – so reviewers can see details; see `add_whole_person_fit_study_online` or `add_hr_sjt_study_online` for the JSON structure)
+4. Implement `apps/studies/management/commands/add_my_study_online.py` (create study + call `create_or_update_protocol_from_json` from `apps.studies.irb_utils`)
+5. Run `./scripts/deploy-study.sh my-study`
 
 ## Whole Person Fit
 
 The command `add_whole_person_fit_study_online` reads from:
 
-**`apps/studies/assets/irb/whole-person-fit/study_config.json`**
+**`apps/studies/assets/irb/whole-person-fit/study_config.json`** – Study basics (slug, title, description, PI, credit, etc.)
 
-If that file is missing, the command prints where to create it and exits. Copy from:
+**`apps/studies/assets/irb/whole-person-fit/protocol.json`** – Full IRB protocol (all 16 sections). If present, the command creates a draft ProtocolSubmission so reviewers can see the protocol details in PRAMS without manual entry.
 
-**`apps/studies/assets/irb/whole-person-fit/study_config.json.example`**
+If `study_config.json` is missing, the command prints where to create it and exits. Copy from `study_config.json.example` and fill in at least: `slug`, `title`, `description`, `researcher_email`, `credit_value`, `mode`.
 
-and fill in at least: `slug`, `title`, `description`, `researcher_email`, `credit_value`, `mode`. Optionally `consent_text`, `irb_status`.
-
-After the study exists on the server, you can enter the full protocol in PRAMS (Researcher Dashboard → study → protocol) and submit for approval to Jon Murphy and Juliann Allen (see `docs/IRB_AGENT_GUIDE.md`).
+After deployment, the study and protocol draft appear in PRAMS. The researcher can submit for approval to Jon Murphy and Juliann Allen (see `docs/IRB_AGENT_GUIDE.md`).
 
 ## Requirements
 
