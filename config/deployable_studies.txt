@@ -5,3 +5,4 @@ tro:add_tro_study_online
 conjoint-analysis:add_tro_study_online
 ei-rpm:create_ei_rpm_study,enter_ei_rpm_protocol
 whole-person-fit:add_whole_person_fit_study_online
+hr-sjt:add_hr_sjt_study_online

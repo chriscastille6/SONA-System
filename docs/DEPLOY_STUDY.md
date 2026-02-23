@@ -38,6 +38,7 @@ Format: `slug:command1,command2` (one or more commands, comma-separated).
 | `conjoint-analysis`  | `add_tro_study_online` |
 | `ei-rpm`             | `create_ei_rpm_study`, `enter_ei_rpm_protocol` |
 | `whole-person-fit`   | `add_whole_person_fit_study_online` |
+| `hr-sjt`             | `add_hr_sjt_study_online` |
 
 To add a new study:
 
@@ -71,5 +72,10 @@ You can say:
 
 - “Deploy the whole-person-fit study to bayoupal” → run `./scripts/deploy-study.sh whole-person-fit`
 - “Deploy the ei-rpm study” → run `./scripts/deploy-study.sh ei-rpm`
+- “Deploy the hr-sjt study” → run `./scripts/deploy-study.sh hr-sjt`
+
+## HR Situational Judgment Test (hr-sjt)
+
+The HR SJT study is from the MNGT 425 – HR Analytics teaching project. The assessment is hosted at `https://bayoupal.nicholls.edu/hr-sjt-assessment/`. The command `add_hr_sjt_study_online` reads from **`apps/studies/assets/irb/hr-sjt/study_config.json`**. After deployment, the study URL for participants is `https://bayoupal.nicholls.edu/hr-sjt-assessment/index.html?study={study-id}` (use the study UUID from the database).
 
 The agent should run the script from the SONA System repo root. If the study slug is unknown, run `./scripts/deploy-study.sh` with no arguments to list available slugs.
