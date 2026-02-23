@@ -1,0 +1,16 @@
+[Unit]
+Description=HSIRB Gunicorn
+After=network.target postgresql.service
+
+[Service]
+User=apache
+Group=apache
+WorkingDirectory=/home/ccastille/hsirb-system
+Environment=PATH=/home/ccastille/hsirb-system/venv/bin
+EnvironmentFile=/home/ccastille/hsirb-system/.env
+ExecStart=/home/ccastille/hsirb-system/venv/bin/gunicorn --workers 3 --bind unix:/var/www/html/hsirb/hsirb-system.sock --timeout 120 config.wsgi:application
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
