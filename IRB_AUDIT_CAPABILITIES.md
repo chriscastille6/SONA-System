@@ -51,6 +51,20 @@ Every sensitive action in the system is automatically logged with:
    - Timestamp
    - Note: Each signup stores the exact consent version shown
 
+6. **Protocol Amendment (Addendum) Submission**
+   - Who submitted the amendment
+   - Amendment number and title
+   - Protocol number
+   - Timestamp
+   - IP address and user agent
+
+7. **Protocol Amendment (Addendum) Review**
+   - Who reviewed the amendment
+   - Amendment number, title, and decision (approved/rejected/R&R)
+   - Protocol number
+   - Timestamp
+   - IP address and user agent
+
 ---
 
 ## IRB Audit Fields (Per Study)

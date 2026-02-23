@@ -34,6 +34,7 @@ from .tasks import (
     run_irb_ai_review,
     notify_irb_members_about_update,
 )
+from apps.credits.models import AuditLog
 
 
 def user_can_access_study(user, study):
@@ -1362,6 +1363,25 @@ def amendment_create(request, submission_id):
                 submitted_by=request.user,
                 reviewer=submission.college_rep,  # Auto-assign to same college rep
             )
+            # Audit log for addendum tracking (audit trail for IRB compliance)
+            try:
+                ip = request.META.get('REMOTE_ADDR')
+                AuditLog.objects.create(
+                    actor=request.user,
+                    action='amendment_submitted',
+                    entity='amendment',
+                    entity_id=amendment.id,
+                    ip_address=ip if ip and len(str(ip)) < 45 else None,
+                    user_agent=(request.META.get('HTTP_USER_AGENT') or '')[:500],
+                    metadata={
+                        'amendment_number': amendment.amendment_number,
+                        'title': amendment.title,
+                        'protocol_number': submission.protocol_number,
+                        'study_id': str(study.id),
+                    },
+                )
+            except Exception:
+                pass  # Don't fail amendment submission if audit log fails
             messages.success(request, f'Amendment {amendment.amendment_number} created and submitted for review.')
 
             # Send email notification to reviewer
@@ -1466,6 +1486,27 @@ def amendment_review(request, amendment_id):
     amendment.review_notes = notes
     amendment.reviewed_at = timezone.now()
     amendment.save()
+
+    # Audit log for addendum review (audit trail for IRB compliance)
+    try:
+        ip = request.META.get('REMOTE_ADDR')
+        AuditLog.objects.create(
+            actor=request.user,
+            action='amendment_reviewed',
+            entity='amendment',
+            entity_id=amendment.id,
+            ip_address=ip if ip and len(str(ip)) < 45 else None,
+            user_agent=(request.META.get('HTTP_USER_AGENT') or '')[:500],
+            metadata={
+                'amendment_number': amendment.amendment_number,
+                'title': amendment.title,
+                'decision': decision,
+                'protocol_number': amendment.protocol_submission.protocol_number,
+                'study_id': str(amendment.protocol_submission.study_id),
+            },
+        )
+    except Exception:
+        pass  # Don't fail amendment review if audit log fails
 
     if decision == 'approved':
         messages.success(request, f'Amendment {amendment.amendment_number} approved.')
