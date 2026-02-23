@@ -43,7 +43,8 @@ ssh bayoupal "DEPLOY_STUDY_COMMANDS='$COMMANDS' bash -s" << 'REMOTE'
     set -e
     cd ~/hsirb-system
     echo "📦 Pulling latest..."
-    git pull origin main
+    git fetch origin
+    git reset --hard origin/main
     source venv/bin/activate
     pip install -q -r requirements.txt
     echo "🔄 Migrating..."
