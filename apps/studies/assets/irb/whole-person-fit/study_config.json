@@ -1,0 +1,10 @@
+{
+  "slug": "whole-person-fit",
+  "title": "Whole-Person Fit Assessment",
+  "description": "Compare your interests, values, knowledge, skills, and personality to 867 O*NET occupations. Get fit scores and personalized feedback. Online at bayoupal.nicholls.edu. Takes approximately 15–20 minutes. Free and confidential.",
+  "researcher_email": "christopher.castille@nicholls.edu",
+  "credit_value": 1,
+  "mode": "online",
+  "consent_text": "You will complete online assessments comparing your interests, values, knowledge, skills, and personality to occupational profiles. You may receive course credit via the PRAMS system. Feedback reports are made available. You can withdraw at any time. Contact Dr. Christopher Castille with questions.",
+  "irb_status": "pending"
+}
