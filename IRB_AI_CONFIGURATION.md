@@ -6,12 +6,13 @@
 
 ## AI Provider Options
 
-The system supports **three AI providers**:
+The system supports **four AI providers**:
 - **OpenAI** (GPT-4, GPT-4o) - DEFAULT, paid
 - **Anthropic** (Claude 3.5 Sonnet, Claude 3 Opus) - paid
+- **Google Gemini** (Gemini 2.5 Flash, Pro) - **free tier** available
 - **Ollama** - **free**, runs on your own server (e.g. Bayoupal); no API key required
 
-Use Ollama when you want zero per-review cost and data to stay on your server.
+Use Gemini Free Tier for zero-cost AI review with rate limits. Use Ollama when you want data to stay on your server.
 
 ---
 
@@ -87,7 +88,54 @@ python manage.py runserver 8002
 
 ---
 
-## Option C: Ollama (free, local/server)
+## Option C: Google Gemini (Free Tier available)
+
+Use [Google AI Studio](https://aistudio.google.com/) to get a free API key. Free Tier limits: Gemini 2.5 Flash (10 RPM), Flash-Lite (15 RPM), Pro (2 RPM). The system adds a configurable delay between agent calls to avoid 429 errors.
+
+### Step 1: Get API Key
+
+1. Go to https://aistudio.google.com/apikey
+2. Sign in with Google
+3. Create API key
+4. Copy the key
+
+### Step 2: Configure in SONA
+
+Add to your `.env` file:
+
+```bash
+IRB_AI_PROVIDER=gemini
+GEMINI_API_KEY=your-key-here
+IRB_AI_MODEL=gemini-2.5-flash
+
+# Optional: seconds between agent calls (default 6 for Flash 10 RPM)
+# Use 30 for Pro (2 RPM), 4 for Flash-Lite (15 RPM)
+IRB_AI_GEMINI_RATE_LIMIT_DELAY=6
+```
+
+### Step 3: Test Connection
+
+```bash
+python scripts/test_gemini_connection.py
+```
+
+### Step 4: Restart Server
+
+Restart Django and Celery so they pick up the new provider.
+
+### Gemini Model Options (Free Tier)
+
+- **`gemini-2.5-flash`** (recommended): 10 RPM, 250 RPD – best balance
+- **`gemini-2.5-flash-lite`**: 15 RPM, 1000 RPD – higher throughput
+- **`gemini-2.5-pro`**: 2 RPM, 50 RPD – most capable, use `IRB_AI_GEMINI_RATE_LIMIT_DELAY=30`
+
+### Rate Limit Notes
+
+The IRB review runs 5 agents sequentially. With default 6-second delay, a full review takes ~30 seconds and stays under 10 RPM. For Pro (2 RPM), set delay to 30 seconds.
+
+---
+
+## Option D: Ollama (free, local/server)
 
 Run a local LLM (e.g. on Bayoupal) with [Ollama](https://ollama.com). No API key or subscription; data stays on your server.
 
@@ -133,7 +181,7 @@ Quality will be lower than GPT-4/Claude for complex protocols; use for first-pas
 
 ---
 
-## Option D: No API Key (Testing Mode)
+## Option E: No API Key (Testing Mode)
 
 The system works **without any API key** for testing:
 
@@ -211,6 +259,7 @@ print('Provider:', settings.IRB_AI_PROVIDER)
 print('Model:', settings.IRB_AI_MODEL)
 print('OpenAI Key:', 'Configured' if settings.OPENAI_API_KEY else 'Not configured')
 print('Anthropic Key:', 'Configured' if settings.ANTHROPIC_API_KEY else 'Not configured')
+print('Gemini Key:', 'Configured' if settings.GEMINI_API_KEY else 'Not configured')
 "
 ```
 

@@ -2,7 +2,7 @@
 Base Agent for IRB Review
 
 Provides common functionality for all specialized agents.
-Supports Anthropic, OpenAI, and Ollama (local/server-hosted LLM).
+Supports Anthropic, OpenAI, Ollama (local/server-hosted LLM), and Google Gemini.
 """
 
 import json
@@ -19,7 +19,7 @@ class BaseAgent:
 
     def __init__(self):
         self.criteria = self.load_criteria()
-        self.provider = getattr(settings, 'IRB_AI_PROVIDER', 'anthropic')  # 'anthropic' | 'openai' | 'ollama'
+        self.provider = getattr(settings, 'IRB_AI_PROVIDER', 'anthropic')  # 'anthropic' | 'openai' | 'ollama' | 'gemini'
         self.model = getattr(settings, 'IRB_AI_MODEL', 'claude-3-5-sonnet-20241022')
         self.agent_name = self.__class__.__name__
         self.client = self._initialize_client()
@@ -157,6 +157,11 @@ class BaseAgent:
             if api_key:
                 from openai import OpenAI
                 return OpenAI(api_key=api_key)
+        elif self.provider == 'gemini':
+            api_key = getattr(settings, 'GEMINI_API_KEY', '')
+            if api_key:
+                from google import genai
+                return genai.Client(api_key=api_key)
         elif self.provider == 'ollama':
             # No API key; we call Ollama by HTTP. Use truthy sentinel.
             return 'ollama'
@@ -188,7 +193,7 @@ class BaseAgent:
     async def _call_ai_api(self, prompt: str) -> str:
         """
         Call the AI API with the constructed prompt.
-        Supports Anthropic, OpenAI, and Ollama (local/server LLM).
+        Supports Anthropic, OpenAI, Ollama (local/server LLM), and Google Gemini.
 
         Args:
             prompt: The full prompt to send
@@ -220,6 +225,13 @@ class BaseAgent:
                 }]
             )
             return response.choices[0].message.content
+
+        elif self.provider == 'gemini':
+            response = self.client.models.generate_content(
+                model=self.model,
+                contents=prompt,
+            )
+            return response.text or ""
 
         elif self.provider == 'ollama':
             import asyncio
@@ -290,7 +302,7 @@ class BaseAgent:
                 'severity': 'minor',
                 'category': 'configuration',
                 'description': 'AI analysis not configured - placeholder results',
-                'recommendation': 'Configure ANTHROPIC_API_KEY to enable AI analysis',
+                'recommendation': 'Configure OPENAI_API_KEY, ANTHROPIC_API_KEY, GEMINI_API_KEY, or Ollama to enable AI analysis',
                 'affected_section': 'N/A'
             }],
             'summary': f'{self.agent_name} analysis requires API configuration',

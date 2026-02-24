@@ -96,6 +96,11 @@
                             </div>
                             
                             <div class="d-flex gap-2 flex-wrap">
+                                {% if ai_review_enabled %}
+                                <a href="{% url 'studies:irb_review_create' item.study.id %}" class="btn btn-sm btn-warning">
+                                    <i class="bi bi-robot"></i> Run AI Review
+                                </a>
+                                {% endif %}
                                 {% if show_admin_links %}
                                 <a href="{% url 'admin:studies_irbreview_change' item.latest_review.id %}" 
                                    class="btn btn-sm btn-primary">
@@ -118,9 +123,18 @@
                         {% else %}
                             <div class="alert alert-light mb-0">
                                 <p class="mb-2">No AI review has been run for this study yet.</p>
-                                <small class="text-muted">Researchers can initiate AI reviews from their dashboard.</small>
+                                {% if ai_review_enabled %}
+                                <small class="text-muted">Run an AI review when needed.</small>
+                                {% else %}
+                                <small class="text-muted">Enable AI review in settings to run reviews.</small>
+                                {% endif %}
                             </div>
                             <div class="d-flex gap-2 mt-3">
+                                {% if ai_review_enabled %}
+                                <a href="{% url 'studies:irb_review_create' item.study.id %}" class="btn btn-sm btn-warning">
+                                    <i class="bi bi-robot"></i> Run AI Review
+                                </a>
+                                {% endif %}
                                 <a href="{% url 'studies:status' item.study.slug %}" class="btn btn-sm btn-outline-secondary">
                                     View Study Status
                                 </a>

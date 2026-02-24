@@ -194,29 +194,28 @@ class IRBAnalyzer:
     
     async def _run_agents(self) -> Dict[str, Dict]:
         """
-        Run all agents in parallel.
+        Run all agents sequentially (with optional rate-limit delay for Gemini Free Tier).
         
         Returns:
             Dict mapping agent names to their results
         """
-        # Create tasks for all agents
-        tasks = {
-            name: agent.analyze(self.materials)
-            for name, agent in self.agents.items()
-        }
-        
-        # Run concurrently
+        from django.conf import settings
+        provider = getattr(settings, 'IRB_AI_PROVIDER', 'openai')
+        rate_limit_delay = getattr(settings, 'IRB_AI_GEMINI_RATE_LIMIT_DELAY', 6) if provider == 'gemini' else 0
+
         results = {}
-        for name, task in tasks.items():
+        for name, agent in self.agents.items():
+            if rate_limit_delay and results:
+                await asyncio.sleep(rate_limit_delay)
             try:
-                results[name] = await task
+                results[name] = await agent.analyze(self.materials)
             except Exception as e:
                 results[name] = {
                     'error': str(e),
                     'agent': name,
                     'findings': []
                 }
-        
+
         return results
     
     def _categorize_findings(self, agent_results: Dict[str, Dict]):

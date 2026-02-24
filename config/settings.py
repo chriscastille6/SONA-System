@@ -39,7 +39,7 @@ if RENDER_ENVIRONMENT:
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # AI Review Feature Gating
-AI_REVIEW_ENABLED = _config('AI_REVIEW_ENABLED', default='False', cast=bool)
+AI_REVIEW_ENABLED = _config('AI_REVIEW_ENABLED', default='True', cast=bool)
 
 # Application definition
 INSTALLED_APPS = [
@@ -153,13 +153,16 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # AI IRB Review Configuration
-# Provider: 'openai' | 'anthropic' | 'ollama' (local/server LLM, no API key)
+# Provider: 'openai' | 'anthropic' | 'ollama' | 'gemini'
 IRB_AI_PROVIDER = _config('IRB_AI_PROVIDER', default='openai')
 ANTHROPIC_API_KEY = _config('ANTHROPIC_API_KEY', default='')
 OPENAI_API_KEY = _config('OPENAI_API_KEY', default='')
+GEMINI_API_KEY = _config('GEMINI_API_KEY', default='')
 # For provider='ollama': base URL of Ollama server (e.g. http://localhost:11434 or http://bayoupal:11434)
 IRB_AI_OLLAMA_BASE_URL = _config('IRB_AI_OLLAMA_BASE_URL', default='http://localhost:11434')
-# Model: for OpenAI/Anthropic use their model IDs; for Ollama use the Ollama model name (e.g. llama3.2, mistral)
+# For provider='gemini': seconds to wait between agent calls (Free Tier: Flash 10 RPM, Pro 2 RPM)
+IRB_AI_GEMINI_RATE_LIMIT_DELAY = _config('IRB_AI_GEMINI_RATE_LIMIT_DELAY', default='6', cast=int)
+# Model: provider-specific model IDs (e.g. gpt-4o, claude-3-5-sonnet, gemini-2.5-flash)
 IRB_AI_MODEL = _config('IRB_AI_MODEL', default='gpt-4o')
 IRB_REVIEW_STORAGE = 'media/irb_reviews/'
 

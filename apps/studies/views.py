@@ -231,6 +231,7 @@ def researcher_dashboard(request):
     return render(request, 'studies/researcher_dashboard.html', {
         'studies': studies,
         'studies_with_protocols': studies_with_protocols,
+        'ai_review_enabled': getattr(settings, 'AI_REVIEW_ENABLED', False),
     })
 
 
@@ -510,8 +511,18 @@ def study_status(request, slug):
 
 @login_required
 def irb_review_create(request, study_id):
-    """Create a new AI-assisted IRB review."""
-    study = get_object_or_404(Study, id=study_id, researcher=request.user)
+    """Create a new AI-assisted IRB review. Researchers can review their studies; staff/committee can review any study."""
+    study = get_object_or_404(Study, id=study_id)
+    # Access: study owner, staff, admin, or IRB member assigned to this study
+    can_create = (
+        study.researcher == request.user or
+        request.user.is_staff or
+        getattr(request.user, 'is_admin', False) or
+        (getattr(request.user, 'is_irb_member', False) and study.reviewer_assignments.filter(reviewer=request.user).exists())
+    )
+    if not can_create:
+        messages.error(request, 'Access denied: only the study owner or IRB committee can initiate AI review.')
+        return redirect('home')
     
     if request.method == 'POST':
         # Create new review
@@ -674,6 +685,7 @@ def committee_dashboard(request):
         'irb_status_choices': Study.IRB_STATUS_CHOICES,
         'selected_status': irb_status_filter,
         'show_admin_links': request.user.is_staff or getattr(request.user, 'is_admin', False),
+        'ai_review_enabled': getattr(settings, 'AI_REVIEW_ENABLED', False),
     })
 
 

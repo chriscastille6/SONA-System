@@ -1,7 +1,7 @@
 """
 Test IRB AI Review System
 
-Creates a test review for the EI × DK study.
+Creates a test review for any study in the database.
 """
 
 from django.core.management.base import BaseCommand
@@ -11,17 +11,30 @@ from apps.studies.tasks import run_irb_ai_review
 
 
 class Command(BaseCommand):
-    help = 'Create a test IRB review for the EI × DK study'
+    help = 'Create a test IRB review for any study (use --slug to pick one)'
     
+    def add_arguments(self, parser):
+        parser.add_argument(
+            '--slug',
+            type=str,
+            help='Study slug to use (default: most recently created study)',
+        )
+
     def handle(self, *args, **options):
         User = get_user_model()
         
-        # Get the EI × DK study
-        try:
-            study = Study.objects.get(slug='ei-dk')
-        except Study.DoesNotExist:
-            self.stdout.write(self.style.ERROR('EI × DK study not found. Create it first.'))
-            return
+        slug = options.get('slug')
+        if slug:
+            try:
+                study = Study.objects.get(slug=slug)
+            except Study.DoesNotExist:
+                self.stdout.write(self.style.ERROR(f'Study with slug "{slug}" not found.'))
+                return
+        else:
+            study = Study.objects.order_by('-created_at').first()
+            if not study:
+                self.stdout.write(self.style.ERROR('No studies in database. Create a study first.'))
+                return
         
         # Get researcher
         researcher = study.researcher
@@ -45,7 +58,7 @@ class Command(BaseCommand):
         
         # Trigger review (synchronously for testing)
         self.stdout.write('\nTriggering AI review...')
-        self.stdout.write(self.style.WARNING('Note: This requires ANTHROPIC_API_KEY to be configured'))
+        self.stdout.write(self.style.WARNING('Note: Requires OPENAI_API_KEY, ANTHROPIC_API_KEY, GEMINI_API_KEY, or Ollama'))
         
         # Run the task
         result = run_irb_ai_review(str(review.id))
