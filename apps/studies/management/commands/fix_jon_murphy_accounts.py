@@ -113,4 +113,8 @@ class Command(BaseCommand):
         subs = ProtocolSubmission.objects.filter(college_rep=real_jon)
         self.stdout.write(f'  Protocol Assignments: {subs.count()}')
         for sub in subs:
-            self.stdout.write(f'    - {sub.submission_number or "Draft"}: {sub.study.title} ({sub.get_decision_display()})')
+            try:
+                title = sub.study.title if sub.study_id else '(no study)'
+            except Exception:
+                title = '(study deleted)'
+            self.stdout.write(f'    - {sub.submission_number or "Draft"}: {title} ({sub.get_decision_display()})')
