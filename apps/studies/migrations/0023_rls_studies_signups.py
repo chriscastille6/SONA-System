@@ -21,8 +21,8 @@ def reverse_rls(apps, schema_editor):
                 cursor.execute(reverse_sql)
 
 
-# UUID cast helper - CAST avoids :: parsing issues on some PostgreSQL versions
-_U = "CAST(NULLIF(trim(current_setting('app.current_user_id', true)), '') AS uuid)"
+# User ID as text - compare researcher_id/participant_id::text to avoid ::uuid cast issues in RLS
+_U = "NULLIF(trim(current_setting('app.current_user_id', true)), '')"
 
 # (forward_sql, reverse_sql)
 # Use separate policies per role to avoid complex nesting that fails on some PostgreSQL versions
@@ -34,7 +34,7 @@ _RLS_OPERATIONS = [
         "DROP POLICY IF EXISTS studies_select_admin ON studies",
     ),
     (
-        "CREATE POLICY studies_select_researcher ON studies FOR SELECT USING (current_setting('app.current_user_role', true) IN ('researcher', 'irb_member', 'instructor') AND researcher_id IS NOT NULL AND researcher_id = " + _U + ")",
+        "CREATE POLICY studies_select_researcher ON studies FOR SELECT USING (current_setting('app.current_user_role', true) IN ('researcher', 'irb_member', 'instructor') AND researcher_id IS NOT NULL AND researcher_id::text = " + _U + ")",
         "DROP POLICY IF EXISTS studies_select_researcher ON studies",
     ),
     (
@@ -47,11 +47,12 @@ _RLS_OPERATIONS = [
         "DROP POLICY IF EXISTS studies_insert_policy ON studies",
     ),
     (
-        "CREATE POLICY studies_update_policy ON studies FOR UPDATE USING ("
-        "(current_setting('app.current_user_role', true) = 'admin') "
-        "OR ((current_setting('app.current_user_role', true) IN ('researcher', 'irb_member', 'instructor') "
-        "AND researcher_id IS NOT NULL AND researcher_id = " + _U + "))",
-        "DROP POLICY IF EXISTS studies_update_policy ON studies",
+        "CREATE POLICY studies_update_admin ON studies FOR UPDATE USING (current_setting('app.current_user_role', true) = 'admin')",
+        "DROP POLICY IF EXISTS studies_update_admin ON studies",
+    ),
+    (
+        "CREATE POLICY studies_update_researcher ON studies FOR UPDATE USING (current_setting('app.current_user_role', true) IN ('researcher', 'irb_member', 'instructor') AND researcher_id IS NOT NULL AND researcher_id::text = " + _U + ")",
+        "DROP POLICY IF EXISTS studies_update_researcher ON studies",
     ),
     (
         "CREATE POLICY studies_delete_policy ON studies FOR DELETE USING "
@@ -61,12 +62,16 @@ _RLS_OPERATIONS = [
     ("ALTER TABLE signups ENABLE ROW LEVEL SECURITY", "ALTER TABLE signups DISABLE ROW LEVEL SECURITY"),
     ("ALTER TABLE signups FORCE ROW LEVEL SECURITY", migrations.RunSQL.noop),
     (
-        "CREATE POLICY signups_select_policy ON signups FOR SELECT USING ("
-        "(current_setting('app.current_user_role', true) = 'admin') "
-        "OR (participant_id = " + _U + ") "
-        "OR EXISTS (SELECT 1 FROM timeslots t JOIN studies s ON t.study_id = s.id "
-        "WHERE t.id = signups.timeslot_id AND s.researcher_id = " + _U + ")",
-        "DROP POLICY IF EXISTS signups_select_policy ON signups",
+        "CREATE POLICY signups_select_admin ON signups FOR SELECT USING (current_setting('app.current_user_role', true) = 'admin')",
+        "DROP POLICY IF EXISTS signups_select_admin ON signups",
+    ),
+    (
+        "CREATE POLICY signups_select_participant ON signups FOR SELECT USING (participant_id::text = " + _U + ")",
+        "DROP POLICY IF EXISTS signups_select_participant ON signups",
+    ),
+    (
+        "CREATE POLICY signups_select_researcher ON signups FOR SELECT USING (EXISTS (SELECT 1 FROM timeslots t JOIN studies s ON t.study_id = s.id WHERE t.id = signups.timeslot_id AND s.researcher_id::text = " + _U + "))",
+        "DROP POLICY IF EXISTS signups_select_researcher ON signups",
     ),
     ("CREATE POLICY signups_insert_policy ON signups FOR INSERT WITH CHECK (true)", "DROP POLICY IF EXISTS signups_insert_policy ON signups"),
     ("CREATE POLICY signups_update_policy ON signups FOR UPDATE USING (true)", "DROP POLICY IF EXISTS signups_update_policy ON signups"),
