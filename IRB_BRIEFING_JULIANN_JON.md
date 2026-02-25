@@ -5,6 +5,18 @@
 
 ---
 
+## Project Documents (IRB Applications)
+
+| Study | Document | Location |
+|-------|----------|----------|
+| **Conjoint Analysis** | PDF, DOCX | `Total Rewards Optimization/cnjoint analysis/IRB files/Conjoint_Analysis_NonExempt_IRB_Application.pdf` |
+| **Conjoint Analysis** | R Markdown source | `.../IRB files/Conjoint_Analysis_NonExempt_IRB_Application.Rmd` |
+| **HR SJT** | Protocol JSON | `apps/studies/assets/irb/hr-sjt/protocol.json` |
+| **Whole-Person Fit** | Protocol JSON | `apps/studies/assets/irb/whole-person-fit/protocol.json` |
+| **EI × RPM** | Entered via PRAMS | `docs/IRB_AGENT_GUIDE.md` (submission workflow) |
+
+---
+
 ## Studies Proposed for Review
 
 ### 1. Conjoint Analysis — Protocol Modification *(Exempt, already approved)*
@@ -78,6 +90,14 @@
 
 - **Admin:** https://bayoupal.nicholls.edu/hsirb/admin/
 - **Researcher dashboard:** https://bayoupal.nicholls.edu/hsirb/studies/researcher/
+
+---
+
+## Full IRB Documents (for review)
+
+- **Conjoint:** `Conjoint_Analysis_NonExempt_IRB_Application.pdf` / `.docx` (Total Rewards Optimization project)
+- **HR SJT:** `apps/studies/assets/irb/hr-sjt/HR_SJT_PROTOCOL_PRAMS.md` + `protocol.json`
+- **Whole-Person Fit:** `apps/studies/assets/irb/whole-person-fit/protocol.json`
 
 ---
 

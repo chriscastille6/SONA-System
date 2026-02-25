@@ -71,18 +71,26 @@ ssh bayoupal << 'DEPLOY_SCRIPT'
     echo "Collecting static files..."
     python manage.py collectstatic --noinput
     
-    # Copy static files to web directory (subshell so sudo -S gets only the password)
+    # Copy static files to web directory (requires sudo)
     echo "Copying static files to web directory..."
     SUDO_PASS="nsutemppasswd123"
-    ( echo "$SUDO_PASS" | sudo -S mkdir -p /var/www/html/hsirb/static )
-    ( echo "$SUDO_PASS" | sudo -S cp -r staticfiles/* /var/www/html/hsirb/static/ )
-    ( echo "$SUDO_PASS" | sudo -S chown -R apache:apache /var/www/html/hsirb/static )
+    if echo "$SUDO_PASS" | sudo -S true 2>/dev/null; then
+        echo "$SUDO_PASS" | sudo -S mkdir -p /var/www/html/hsirb/static
+        echo "$SUDO_PASS" | sudo -S cp -r staticfiles/* /var/www/html/hsirb/static/
+        echo "$SUDO_PASS" | sudo -S chown -R apache:apache /var/www/html/hsirb/static
+        echo "Restarting Gunicorn service..."
+        echo "$SUDO_PASS" | sudo -S systemctl restart hsirb-system 2>/dev/null || true
+    else
+        echo "⚠ sudo failed (wrong password or not available). Run these manually on the server:"
+        echo "  cd ~/hsirb-system && source venv/bin/activate"
+        echo "  python manage.py collectstatic --noinput"
+        echo "  sudo mkdir -p /var/www/html/hsirb/static"
+        echo "  sudo cp -r staticfiles/* /var/www/html/hsirb/static/"
+        echo "  sudo chown -R apache:apache /var/www/html/hsirb/static"
+        echo "  sudo systemctl restart hsirb-system"
+    fi
     
-    # Restart Gunicorn service
-    echo "Restarting Gunicorn service..."
-    ( echo "$SUDO_PASS" | sudo -S systemctl restart hsirb-system ) || echo "Service not running yet (first deployment)"
-    
-    echo "✅ Deployment complete on server!"
+    echo "✅ Code deployed! (Static copy and restart may need manual sudo)"
 DEPLOY_SCRIPT
 
 if [ $? -ne 0 ]; then

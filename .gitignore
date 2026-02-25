@@ -53,3 +53,7 @@ celerybeat-schedule
 
 # Documentation
 docs/_build/
+
+# Node (for scripts/generate_irb_briefing_pdf.js)
+node_modules/
+scripts/node_modules/

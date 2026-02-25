@@ -137,7 +137,7 @@ class Command(BaseCommand):
                 # Create Jon Murphy if he doesn't exist
                 self.stdout.write(self.style.WARNING('⚠ Jon Murphy not found, creating...'))
                 jon_murphy, created = User.objects.get_or_create(
-                    email='jon.murphy@nicholls.edu',
+                    email='jonathan.murphy@nicholls.edu',
                     defaults={
                         'first_name': 'Jon',
                         'last_name': 'Murphy',

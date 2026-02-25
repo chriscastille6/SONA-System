@@ -9,6 +9,24 @@ from django.conf import settings
 from django.core.validators import MinValueValidator
 
 
+class ActiveApprovedStudyManager(models.Manager):
+    """
+    Manager for studies that are active, approved, and not expired.
+    Mirrors the active_approved_studies PostgreSQL view for IRB compliance.
+    """
+    def get_queryset(self):
+        from django.db.models import Q
+        from django.utils import timezone
+        return super().get_queryset().filter(
+            is_active=True,
+            is_approved=True,
+            is_classroom_based=False,
+            irb_status__in=['approved', 'exempt', 'not_required'],
+        ).filter(
+            Q(irb_expiration__isnull=True) | Q(irb_expiration__gte=timezone.now().date())
+        )
+
+
 class Study(models.Model):
     """Research study that participants can sign up for."""
     
@@ -149,6 +167,9 @@ class Study(models.Model):
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    objects = models.Manager()
+    active_approved = ActiveApprovedStudyManager()
     
     class Meta:
         db_table = 'studies'

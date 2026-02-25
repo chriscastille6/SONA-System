@@ -38,5 +38,20 @@ def debug_task(self):
     print(f'Request: {self.request!r}')
 
 
+from celery.signals import task_prerun
+
+
+@task_prerun.connect
+def set_rls_context_for_celery_task(sender=None, **kwargs):
+    """Set PostgreSQL session variables for Celery tasks so RLS policies allow access."""
+    try:
+        from django.db import connection
+        with connection.cursor() as cursor:
+            cursor.execute("SET app.current_user_role = %s", ['admin'])
+            cursor.execute("SET app.current_user_id = %s", [''])
+    except Exception:
+        pass
+
+
 
 

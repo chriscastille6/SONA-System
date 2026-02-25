@@ -1,0 +1,124 @@
+{
+  "meta": {
+    "title": "IRB Briefing for Juliann Allen & Jon Murphy",
+    "date": "February 24, 2026",
+    "purpose": "Pre-meeting summary of studies proposed for review",
+    "contact": {
+      "name": "Dr. Christopher Castille",
+      "email": "christopher.castille@nicholls.edu",
+      "phone": "985-449-7015"
+    }
+  },
+  "project_documents": [
+    {"study": "Conjoint Analysis", "document": "Protocol modification (add LAI)", "link": "https://bayoupal.nicholls.edu/hsirb/studies/protocol/submissions/", "link_text": "Protocol submissions"},
+    {"study": "HR SJT", "document": "Protocol & materials", "link": "https://bayoupal.nicholls.edu/hsirb/studies/protocol/submissions/", "link_text": "Protocol submissions"},
+    {"study": "Whole-Person Fit", "document": "Protocol & materials", "link": "https://bayoupal.nicholls.edu/hsirb/studies/protocol/submissions/", "link_text": "Protocol submissions"},
+    {"study": "EI × RPM", "document": "Protocol & materials", "link": "https://bayoupal.nicholls.edu/hsirb/studies/protocol/submissions/", "link_text": "Protocol submissions"},
+    {"study": "Goal Setting", "document": "Protocol & materials", "link": "https://bayoupal.nicholls.edu/hsirb/studies/protocol/submissions/", "link_text": "Protocol submissions"}
+  ],
+  "studies": [
+    {
+      "id": 1,
+      "name": "Conjoint Analysis",
+      "subtitle": "Protocol Modification",
+      "status": "Exempt, already approved",
+      "fields": [
+        {"label": "Protocol", "value": "IRBE20251031-005CBA"},
+        {"label": "PI", "value": "Dr. Martin Meder"},
+        {"label": "Co-I", "value": "Dr. Christopher Castille"},
+        {"label": "Status", "value": "Approved Oct 31, 2025"}
+      ],
+      "request": "Add the Loss Aversion Inventory (LAI) to the existing protocol.",
+      "change": "Minimal — one additional measure; no change to core procedures or risk level.",
+      "lai_link": "https://bayoupal.nicholls.edu/platform/assessment-flow.html?assessment=lai"
+    },
+    {
+      "id": 2,
+      "name": "Emotional Intelligence & Fluid Intelligence Study",
+      "subtitle": "New study",
+      "status": null,
+      "fields": [
+        {"label": "Purpose", "value": "Test whether fluid EI is distinct from crystallized IQ"},
+        {"label": "Participants", "value": "Undergrads (psychology/business), 18+"},
+        {"label": "Duration", "value": "30–40 minutes"}
+      ],
+      "procedures": "Self-estimates → video-based EI assessment → Raven's Progressive Matrices → immediate feedback (percentiles, bias visualization, radar charts).",
+      "note": "Feedback reports will be provided for review before approval."
+    },
+    {
+      "id": 3,
+      "name": "HR Situational Judgment Test",
+      "subtitle": "Pending",
+      "status": null,
+      "fields": [
+        {"label": "Purpose", "value": "Compare student vs. HR professional ratings of HR tactics across 27 scenarios"},
+        {"label": "Participants", "value": "MNGT 425 students + HR professionals (recruited via networks)"},
+        {"label": "Duration", "value": "45–60 minutes"},
+        {"label": "Review type", "value": "Exempt (Category D)"}
+      ],
+      "suggested_reviewers": "Jon Murphy (CBA), Juliann Allen"
+    },
+    {
+      "id": 4,
+      "name": "Whole-Person Fit Assessment",
+      "subtitle": "Pending",
+      "status": null,
+      "fields": [
+        {"label": "Purpose", "value": "Compare interests, values, skills, personality to 867 O*NET occupations"},
+        {"label": "Participants", "value": "Nicholls undergrads (PRAMS recruitment)"},
+{"label": "Duration", "value": "15–20 minutes"},
+    {"label": "Review type", "value": "Exempt (Category D)"}
+      ],
+      "suggested_reviewers": "Jon Murphy (CBA), Juliann Allen"
+    },
+    {
+      "id": 5,
+      "name": "Goal Setting (A Study in Decision Making)",
+      "subtitle": "Approved",
+      "status": "Approved July 2024",
+      "fields": [
+        {"label": "Protocol", "value": "IRB 2024-07-30-001 CBA"},
+        {"label": "PI", "value": "Dr. Christopher Castille"},
+        {"label": "Purpose", "value": "Replication of Schweitzer et al. (2004) — goal setting and unethical behavior"},
+        {"label": "Participants", "value": "Undergrads (18+); ARIM-sponsored"},
+        {"label": "Duration", "value": "~1 hour"},
+        {"label": "Mode", "value": "Lab"}
+      ],
+      "suggested_reviewers": "Jon Murphy (CBA), Juliann Allen"
+    }
+  ],
+  "issues": [
+    {"study": "All", "issue": "Minimal risk; anonymized data (PRAMS IDs only); electronic consent"},
+    {"study": "HR SJT", "issue": "HR professionals enter first/last name for ID generation; names not stored with research data"},
+    {"study": "EI × RPM", "issue": "Feedback includes Dunning–Kruger–style bias comparison; debrief materials available for review"},
+    {"study": "Whole-Person Fit", "issue": "Standard career-assessment feedback"},
+    {"study": "Goal Setting", "issue": "Lab study; anagram tasks; optional cash reward (up to $14) per approved protocol"}
+  ],
+  "access": {
+    "admin": "https://bayoupal.nicholls.edu/hsirb/admin/",
+    "researcher_dashboard": "https://bayoupal.nicholls.edu/hsirb/studies/researcher/"
+  },
+  "full_documents": [
+    {"label": "Protocol submissions", "link": "https://bayoupal.nicholls.edu/hsirb/studies/protocol/submissions/", "link_text": "View all submissions"},
+    {"label": "IRB member dashboard", "link": "https://bayoupal.nicholls.edu/hsirb/studies/irb/member/dashboard/", "link_text": "IRB dashboard"},
+    {"label": "Researcher dashboard", "link": "https://bayoupal.nicholls.edu/hsirb/studies/researcher/", "link_text": "Study list"}
+  ],
+  "federal_audit": {
+    "context": "SONA/PRAMS is live but shadow IT. We will not use course credit or monitor bonus points. What is required to survive a federal audit?",
+    "why_no_credit": "Without credit/bonus, participation is voluntary research—not used for grading. Per Cornell IRB and case law (Owasso v. Falvo, Hardin County Schools v. Foster), voluntary research data not used for institutional decisions is not FERPA-protected education records.",
+    "requirements": [
+      {"area": "45 CFR 46 (Common Rule)", "items": ["IRB oversight for all studies", "Informed consent documented", "Risk minimization; data security (TLS, access controls)"]},
+      {"area": "FERPA", "items": ["Greatly reduced without credit/bonus", "Keep research data anonymous or de-identified", "No link between participation and grades"]},
+      {"area": "Data Security", "items": ["TLS/HTTPS", "Role-based access", "Audit logging for protocol submissions, IRB decisions, exports"]},
+      {"area": "Audit Trail", "items": ["Who submitted, when, decision", "Who approved, when", "Log data exports; log AI API calls (hash only)"]},
+      {"area": "Data Retention", "items": ["Document policy (e.g., 5 years post-study)", "Purge or anonymize when no longer needed"]}
+    ],
+    "disable_without_credit": ["CreditTransaction — disable", "Bonus-point tracking — disable", "Student ID for research participants — don't collect"],
+    "formalization_options": [
+      {"option": "Keep as shadow IT", "cost": "$0", "posture": "Higher risk"},
+      {"option": "Localize/formalize", "cost": "Dev time", "posture": "Better: documented controls"},
+      {"option": "Purchase SONA (~$2K)", "cost": "$2K", "posture": "Best: vendor-assessed"}
+    ],
+    "recommended_minimum": ["Disable credit allocation and bonus-point features", "Use anonymous participation (session_id, no participant FK)", "Document that participation is voluntary and not used for grades", "Maintain IRB approval for all studies", "Add audit logging for protocol submissions, IRB decisions, exports", "Restrict self-registration to participant role only", "Retain consent records and protocol documentation per IRB"]
+  }
+}

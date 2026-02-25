@@ -1,0 +1,8 @@
+{
+  "name": "sona-scripts",
+  "private": true,
+  "description": "SONA System PDF and document generation scripts",
+  "dependencies": {
+    "puppeteer": "^24.25.0"
+  }
+}

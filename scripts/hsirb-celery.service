@@ -1,0 +1,16 @@
+[Unit]
+Description=HSIRB Celery Worker (AI IRB Review, email reminders)
+After=network.target postgresql.service hsirb-system.service
+
+[Service]
+User=ccastille
+Group=ccastille
+WorkingDirectory=/home/ccastille/hsirb-system
+Environment=PATH=/home/ccastille/hsirb-system/venv/bin
+EnvironmentFile=/home/ccastille/hsirb-system/.env
+ExecStart=/home/ccastille/hsirb-system/venv/bin/celery -A config worker -l info
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

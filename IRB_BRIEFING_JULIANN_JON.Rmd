@@ -1,0 +1,106 @@
+---
+title: "IRB Briefing for Juliann Allen & Jon Murphy"
+author: "Dr. Christopher Castille"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+output:
+  pdf_document:
+    toc: false
+    number_sections: false
+    latex_engine: xelatex
+header-includes:
+  - \usepackage[margin=1in]{geometry}
+  - \usepackage{fontspec}
+  - \setmainfont{Times New Roman}
+  - \usepackage{setspace}
+  - \singlespacing
+  - \setlength{\parindent}{0pt}
+  - \setlength{\parskip}{6pt}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+library(jsonlite)
+# Read JSON (same directory as this Rmd)
+json_path <- "IRB_BRIEFING_JULIANN_JON.json"
+b <- read_json(json_path, simplifyVector = FALSE)
+```
+
+# `r b$meta$title`
+
+**Date:** `r b$meta$date`  
+**Purpose:** `r b$meta$purpose`
+
+---
+
+## Project Documents (IRB Applications)
+
+```{r project-docs}
+for (row in b$project_documents) {
+  cat("**", row$study, "** | ", row$document, " | ", row$location, "\n\n", sep = "")
+}
+```
+
+---
+
+## Studies Proposed for Review
+
+```{r studies}
+for (s in b$studies) {
+  cat("### ", s$id, ". ", s$name, " — ", s$subtitle)
+  if (!is.null(s$status)) cat(" *(", s$status, ")*", sep = "")
+  cat("\n\n")
+  for (f in s$fields) {
+    cat("- **", f$label, ":** ", f$value, "\n", sep = "")
+  }
+  if (!is.null(s$request)) {
+    cat("\n**Request:** ", s$request, "\n\n", sep = "")
+  }
+  if (!is.null(s$change)) {
+    cat("**Change:** ", s$change, "\n\n", sep = "")
+  }
+  if (!is.null(s$lai_link)) {
+    cat("**LAI link:** ", s$lai_link, "\n\n", sep = "")
+  }
+  if (!is.null(s$procedures)) {
+    cat("**Procedures:** ", s$procedures, "\n\n", sep = "")
+  }
+  if (!is.null(s$note)) {
+    cat("**Note:** ", s$note, "\n\n", sep = "")
+  }
+  if (!is.null(s$suggested_reviewers)) {
+    cat("**Suggested reviewers:** ", s$suggested_reviewers, "\n\n", sep = "")
+  }
+  cat("---\n\n")
+}
+```
+
+---
+
+## Issues to Be Aware Of
+
+```{r issues}
+for (row in b$issues) {
+  cat("- **", row$study, ":** ", row$issue, "\n", sep = "")
+}
+```
+
+---
+
+## Access
+
+- **Admin:** `r b$access$admin`
+- **Researcher dashboard:** `r b$access$researcher_dashboard`
+
+---
+
+## Full IRB Documents (for review)
+
+```{r full-docs}
+for (d in b$full_documents) {
+  cat("- ", d, "\n", sep = "")
+}
+```
+
+---
+
+*Contact: `r b$meta$contact$name` — `r b$meta$contact$email` | `r b$meta$contact$phone`*

@@ -2,7 +2,7 @@
 
 ## Login Credentials
 
-**Email:** `jon.murphy@nicholls.edu`  
+**Email:** `jonathan.murphy@nicholls.edu`  
 **Password:** `temp_password_change_me`
 
 ⚠️ **Important:** Jon should change this password after first login!
@@ -13,7 +13,7 @@
    - URL: https://bayoupal.nicholls.edu/hsirb/accounts/login/
 
 2. **Enter credentials:**
-   - Email: `jon.murphy@nicholls.edu`
+   - Email: `jonathan.murphy@nicholls.edu`
    - Password: `temp_password_change_me`
 
 3. **After login:**
@@ -49,7 +49,7 @@
    # On server, run:
    python manage.py shell -c "
    from apps.accounts.models import User
-   jon = User.objects.filter(email='jon.murphy@nicholls.edu').first()
+   jon = User.objects.filter(email='jonathan.murphy@nicholls.edu').first()
    if jon:
        print(f'✓ Account exists: {jon.get_full_name()}')
        print(f'  Email: {jon.email}')
@@ -66,7 +66,7 @@
    # On server, run:
    python manage.py shell -c "
    from apps.accounts.models import User
-   jon = User.objects.filter(email='jon.murphy@nicholls.edu').first()
+   jon = User.objects.filter(email='jonathan.murphy@nicholls.edu').first()
    if jon:
        jon.set_password('temp_password_change_me')
        jon.save()
@@ -77,7 +77,7 @@
 3. **Check account status:**
    - Ensure `is_active = True`
    - Ensure `role = 'irb_member'`
-   - Ensure email is exactly `jon.murphy@nicholls.edu`
+   - Ensure email is exactly `jonathan.murphy@nicholls.edu`
 
 ### If Redirect Doesn't Work
 

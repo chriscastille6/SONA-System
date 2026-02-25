@@ -3,7 +3,7 @@
 ## Jon Murphy's Access
 
 ### Login Credentials
-- **Email**: `jon.murphy@nicholls.edu`
+- **Email**: `jonathan.murphy@nicholls.edu`
 - **Password**: `temp_password_change_me` (should be changed)
 - **Role**: IRB Member
 - **College Representative**: Business Administration

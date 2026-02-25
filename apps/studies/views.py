@@ -65,11 +65,8 @@ def participant_information_consent(request):
 
 
 def study_list(request):
-    """Browse available studies."""
-    studies = Study.objects.filter(is_active=True, is_approved=True)
-    
-    # Exclude classroom-based studies from general signup
-    studies = studies.filter(is_classroom_based=False)
+    """Browse available studies. Uses active_approved (IRB-compliant: excludes expired)."""
+    studies = Study.active_approved.all()
     
     # Filter by mode if specified
     mode = request.GET.get('mode')
@@ -82,8 +79,8 @@ def study_list(request):
 
 
 def study_detail(request, pk):
-    """Study detail view."""
-    study = get_object_or_404(Study, pk=pk)
+    """Study detail view. Uses active_approved so expired studies return 404 (IRB compliance)."""
+    study = get_object_or_404(Study.active_approved, pk=pk)
     
     # Get upcoming timeslots
     timeslots = study.timeslots.filter(
@@ -99,8 +96,10 @@ def study_detail(request, pk):
 
 @login_required
 def book_timeslot(request, pk):
-    """Book a timeslot."""
+    """Book a timeslot. Study must be active_approved (IRB compliance)."""
     timeslot = get_object_or_404(Timeslot, pk=pk)
+    if not Study.active_approved.filter(pk=timeslot.study_id).exists():
+        raise Http404("Study is not available for signup.")
     
     if not request.user.is_participant:
         messages.error(request, 'Only participants can book timeslots.')
@@ -351,11 +350,9 @@ def mark_attendance(request, pk):
 def run_protocol(request, slug):
     """
     Serve the protocol HTML for a study.
-    
-    Tries to load templates/projects/{slug}/protocol/index.html if present,
-    otherwise shows the generic placeholder.
+    Uses active_approved so expired studies return 404 (IRB compliance).
     """
-    study = get_object_or_404(Study, slug=slug)
+    study = get_object_or_404(Study.active_approved, slug=slug)
     
     # Try to load project-specific protocol template
     try:
@@ -377,10 +374,9 @@ def submit_response(request, study_id):
     
     Expected POST body: JSON with response data
     Optional query param: session_id (otherwise generated)
+    Uses active_approved so expired studies are rejected (IRB compliance).
     """
-    study = get_object_or_404(Study, pk=study_id)
-    if not study.is_active or not study.is_approved:
-        return JsonResponse({'error': 'Study not available for submissions'}, status=403)
+    study = get_object_or_404(Study.active_approved, pk=study_id)
     
     # Parse JSON payload
     try:
