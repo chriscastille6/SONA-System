@@ -7,14 +7,20 @@ def apply_rls(apps, schema_editor):
     if schema_editor.connection.vendor != 'postgresql':
         return
     with schema_editor.connection.cursor() as cursor:
-        cursor.execute(ENABLE_RLS_SQL)
+        for stmt in ENABLE_RLS_SQL.strip().split(';'):
+            stmt = stmt.strip()
+            if stmt:
+                cursor.execute(stmt)
 
 
 def reverse_rls(apps, schema_editor):
     if schema_editor.connection.vendor != 'postgresql':
         return
     with schema_editor.connection.cursor() as cursor:
-        cursor.execute(DISABLE_RLS_SQL)
+        for stmt in DISABLE_RLS_SQL.strip().split(';'):
+            stmt = stmt.strip()
+            if stmt:
+                cursor.execute(stmt)
 
 
 ENABLE_RLS_SQL = """
