@@ -25,18 +25,21 @@ def reverse_rls(apps, schema_editor):
 _U = "CAST(NULLIF(trim(current_setting('app.current_user_id', true)), '') AS uuid)"
 
 # (forward_sql, reverse_sql)
+# Use separate policies per role to avoid complex nesting that fails on some PostgreSQL versions
 _RLS_OPERATIONS = [
     ("ALTER TABLE studies ENABLE ROW LEVEL SECURITY", "ALTER TABLE studies DISABLE ROW LEVEL SECURITY"),
     ("ALTER TABLE studies FORCE ROW LEVEL SECURITY", migrations.RunSQL.noop),
     (
-        "CREATE POLICY studies_select_policy ON studies FOR SELECT USING ("
-        "(current_setting('app.current_user_role', true) = 'admin') "
-        "OR ((current_setting('app.current_user_role', true) IN ('researcher', 'irb_member', 'instructor') "
-        "AND researcher_id IS NOT NULL AND researcher_id = " + _U + ") "
-        "OR ((current_setting('app.current_user_role', true) IN ('participant', 'anonymous', '') "
-        "AND is_active = true AND is_approved = true AND irb_status IN ('approved', 'exempt', 'not_required') "
-        "AND (irb_expiration IS NULL OR irb_expiration >= CURRENT_DATE)))",
-        "DROP POLICY IF EXISTS studies_select_policy ON studies",
+        "CREATE POLICY studies_select_admin ON studies FOR SELECT USING (current_setting('app.current_user_role', true) = 'admin')",
+        "DROP POLICY IF EXISTS studies_select_admin ON studies",
+    ),
+    (
+        "CREATE POLICY studies_select_researcher ON studies FOR SELECT USING (current_setting('app.current_user_role', true) IN ('researcher', 'irb_member', 'instructor') AND researcher_id IS NOT NULL AND researcher_id = " + _U + ")",
+        "DROP POLICY IF EXISTS studies_select_researcher ON studies",
+    ),
+    (
+        "CREATE POLICY studies_select_participant ON studies FOR SELECT USING (current_setting('app.current_user_role', true) IN ('participant', 'anonymous', '') AND is_active = true AND is_approved = true AND irb_status IN ('approved', 'exempt', 'not_required') AND (irb_expiration IS NULL OR irb_expiration >= CURRENT_DATE))",
+        "DROP POLICY IF EXISTS studies_select_participant ON studies",
     ),
     (
         "CREATE POLICY studies_insert_policy ON studies FOR INSERT WITH CHECK "
