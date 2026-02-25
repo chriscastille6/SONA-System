@@ -35,7 +35,7 @@ _RLS_OPERATIONS = [
         "AND researcher_id IS NOT NULL AND researcher_id = " + _U + ") "
         "OR ((current_setting('app.current_user_role', true) IN ('participant', 'anonymous', '') "
         "AND is_active = true AND is_approved = true AND irb_status IN ('approved', 'exempt', 'not_required') "
-        "AND (irb_expiration IS NULL OR irb_expiration >= CURRENT_DATE))",
+        "AND (irb_expiration IS NULL OR irb_expiration >= CURRENT_DATE)))",
         "DROP POLICY IF EXISTS studies_select_policy ON studies",
     ),
     (
