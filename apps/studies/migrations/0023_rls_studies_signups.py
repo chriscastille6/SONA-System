@@ -6,17 +6,19 @@ from django.db import migrations
 def apply_rls(apps, schema_editor):
     if schema_editor.connection.vendor != 'postgresql':
         return
-    for sql, reverse_sql in _RLS_OPERATIONS:
-        if sql:
-            schema_editor.execute(sql)
+    with schema_editor.connection.cursor() as cursor:
+        for sql, reverse_sql in _RLS_OPERATIONS:
+            if sql:
+                cursor.execute(sql)
 
 
 def reverse_rls(apps, schema_editor):
     if schema_editor.connection.vendor != 'postgresql':
         return
-    for sql, reverse_sql in reversed(_RLS_OPERATIONS):
-        if reverse_sql and reverse_sql is not migrations.RunSQL.noop:
-            schema_editor.execute(reverse_sql)
+    with schema_editor.connection.cursor() as cursor:
+        for sql, reverse_sql in reversed(_RLS_OPERATIONS):
+            if reverse_sql and reverse_sql is not migrations.RunSQL.noop:
+                cursor.execute(reverse_sql)
 
 
 # UUID cast helper - CAST avoids :: parsing issues on some PostgreSQL versions
