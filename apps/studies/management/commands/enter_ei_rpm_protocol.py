@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from django.utils import timezone
 from datetime import timedelta
 from apps.studies.models import Study, ProtocolSubmission, CollegeRepresentative
+from apps.studies.irb_utils import assign_college_rep
 
 User = get_user_model()
 
@@ -461,7 +462,10 @@ All contact information is provided in the consent form and study materials.
         
         # Save the submission
         submission.save()
-        
+
+        # Assign college rep so IRB reviewers can see the protocol
+        assign_college_rep(submission)
+
         self.stdout.write(self.style.SUCCESS(
             f'✅ Protocol details entered for: {study.title}'
         ))

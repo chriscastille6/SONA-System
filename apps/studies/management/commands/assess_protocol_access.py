@@ -41,7 +41,7 @@ class Command(BaseCommand):
             return
 
         show_all = options.get('all', False)
-        by_pi = options.get('by_pi', '').strip().lower()
+        by_pi = (options.get('by_pi') or '').strip().lower()
 
         self.stdout.write('\n' + '=' * 70)
         self.stdout.write('PROTOCOL SUBMISSIONS – ACCESS ASSESSMENT')

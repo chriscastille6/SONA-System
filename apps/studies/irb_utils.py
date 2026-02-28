@@ -110,6 +110,10 @@ def create_or_update_protocol_from_json(study, protocol_path, researcher):
                 setattr(submission, field, val if isinstance(val, str) else str(val))
 
     submission.save()
+
+    # Assign college rep so IRB reviewers (e.g. Jon Murphy) can see the protocol
+    assign_college_rep(submission)
+
     return submission
 
 
@@ -155,23 +159,23 @@ def get_college_from_department(department):
 def assign_college_rep(submission):
     """
     Assign college representative based on researcher's department.
-    
+    Uses researcher profile first; falls back to submission.pi_department (from protocol JSON).
+
     Args:
         submission: ProtocolSubmission instance
-        
+
     Returns:
         CollegeRepresentative instance or None
     """
-    # Get researcher's department
-    researcher = submission.submitted_by or submission.study.researcher
-    if not researcher:
-        return None
-    
-    profile = getattr(researcher, 'profile', None)
-    if not profile:
-        return None
-    
-    department_name = getattr(profile, 'department', None)
+    department_name = None
+    researcher = submission.submitted_by or (submission.study.researcher if submission.study_id else None)
+    if researcher:
+        profile = getattr(researcher, 'profile', None)
+        if profile:
+            department_name = getattr(profile, 'department', None)
+    # Fallback: use pi_department from protocol (e.g. protocols loaded from JSON)
+    if not department_name and getattr(submission, 'pi_department', None):
+        department_name = submission.pi_department
     if not department_name:
         return None
     
