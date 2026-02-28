@@ -168,7 +168,12 @@ def assign_college_rep(submission):
         CollegeRepresentative instance or None
     """
     department_name = None
-    researcher = submission.submitted_by or (submission.study.researcher if submission.study_id else None)
+    researcher = submission.submitted_by
+    if not researcher and submission.study_id:
+        try:
+            researcher = submission.study.researcher
+        except Exception:
+            pass
     if researcher:
         profile = getattr(researcher, 'profile', None)
         if profile:

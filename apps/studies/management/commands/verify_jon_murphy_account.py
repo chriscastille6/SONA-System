@@ -60,7 +60,11 @@ class Command(BaseCommand):
         submissions = ProtocolSubmission.objects.filter(college_rep=jon_murphy)
         self.stdout.write(f'\n  Assigned Protocol Submissions: {submissions.count()}')
         for sub in submissions:
-            self.stdout.write(f'    - {sub.submission_number or "Draft"}: {sub.study.title}')
+            try:
+                title = sub.study.title if sub.study_id else '(no study)'
+            except Exception:
+                title = '(study deleted)'
+            self.stdout.write(f'    - {sub.submission_number or "Draft"}: {title}')
             self.stdout.write(f'      Status: {sub.get_status_display()}, Decision: {sub.get_decision_display()}')
         
         # Test password (can't verify without knowing it, but can check if it's set)

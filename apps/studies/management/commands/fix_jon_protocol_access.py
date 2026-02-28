@@ -22,9 +22,9 @@ class Command(BaseCommand):
         self.stdout.write("\n[1/3] Consolidating Jon Murphy accounts...")
         call_command("fix_jon_murphy_accounts", verbosity=1)
 
-        # Step 2: Assign college reps to protocols that have none
+        # Step 2: Assign college reps to protocols that have none (fallback to Business rep when needed)
         self.stdout.write("\n[2/3] Assigning college reps to unassigned protocols...")
-        call_command("assign_college_reps_to_protocols", verbosity=1)
+        call_command("assign_college_reps_to_protocols", "--fallback-business", verbosity=1)
 
         # Step 3: Verify
         self.stdout.write("\n[3/3] Verifying Jon Murphy account...")
