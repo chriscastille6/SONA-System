@@ -146,6 +146,9 @@
                 </div>
                 {% else %}
                 <p class="text-muted">No protocol submissions found.</p>
+                {% if not show_archived %}
+                <p class="text-muted small mt-2">If you expect to see protocols, try checking <strong>Show archived</strong> above and click Filter—some submissions may be archived.</p>
+                {% endif %}
                 {% endif %}
             </div>
         </div>
