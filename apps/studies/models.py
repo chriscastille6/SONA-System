@@ -1271,6 +1271,14 @@ class ProtocolSubmission(models.Model):
         if self.submission_number:
             return f"Submission {self.submission_number} - {self.study.title} (v{self.version})"
         return f"Draft Protocol - {self.study.title} (v{self.version})"
+
+    @property
+    def display_submission_number(self):
+        """Safe display value: real number or 'Pending' (never None or 'None')."""
+        val = self.submission_number
+        if val and str(val).strip().lower() != 'none':
+            return val
+        return 'Pending'
     
     def save(self, *args, **kwargs):
         """Auto-generate submission number (only when submitting) and increment version."""
@@ -1340,6 +1348,16 @@ class ProtocolSubmission(models.Model):
         self.save(update_fields=['protocol_number'])
         return self.protocol_number
     
+    @property
+    def safe_study_title(self):
+        """Study title, or placeholder if study is deleted/unavailable."""
+        if not self.study_id:
+            return "(no study)"
+        try:
+            return self.study.title
+        except Exception:
+            return "(study unavailable)"
+
     @property
     def can_be_approved_by_college_rep(self):
         """Check if exempt protocols can be approved by college rep."""

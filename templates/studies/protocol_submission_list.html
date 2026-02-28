@@ -101,13 +101,13 @@
                             {% for submission in submissions %}
                             <tr>
                                 <td>
-                                    <strong>{{ submission.submission_number }}</strong>
+                                    <strong>{{ submission.display_submission_number }}</strong>
                                     {% if submission.is_archived %}
                                     <span class="badge bg-secondary ms-1">Archived</span>
                                     {% endif %}
                                 </td>
-                                <td>{{ submission.study.title|truncatewords:5 }}</td>
-                                <td>{{ submission.submitted_by.get_full_name|default:"Unknown" }}</td>
+                                <td>{{ submission.safe_study_title|truncatewords:5 }}</td>
+                                <td>{% if submission.submitted_by %}{{ submission.submitted_by.get_full_name }}{% else %}Unknown{% endif %}</td>
                                 <td>
                                     <span class="badge bg-info">{{ submission.get_review_type_display }}</span>
                                     {% if submission.involves_deception %}
@@ -125,8 +125,8 @@
                                     <span class="badge bg-danger">Rejected</span>
                                     {% endif %}
                                 </td>
-                                <td>{{ submission.college_rep.get_full_name|default:"Not assigned" }}</td>
-                                <td>{{ submission.submitted_at|date:"M d, Y" }}</td>
+                                <td>{% if submission.college_rep %}{{ submission.college_rep.get_full_name }}{% else %}Not assigned{% endif %}</td>
+                                <td>{% if submission.submitted_at %}{{ submission.submitted_at|date:"M d, Y" }}{% else %}<span class="text-muted">—</span>{% endif %}</td>
                                 <td>
                                     {% if submission.protocol_number %}
                                     <strong class="text-success">{{ submission.protocol_number }}</strong>

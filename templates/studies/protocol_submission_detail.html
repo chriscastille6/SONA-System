@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Protocol Submission #{{ submission.submission_number }}{% endblock %}
+{% block title %}Protocol Submission #{{ submission.display_submission_number }}{% endblock %}
 
 {% block content %}
 <div class="row">
@@ -12,14 +12,14 @@
                 {% else %}
                 <li class="breadcrumb-item"><a href="{% url 'studies:protocol_submission_list' %}">Protocol Submissions</a></li>
                 {% endif %}
-                <li class="breadcrumb-item active">Submission #{{ submission.submission_number }}</li>
+                <li class="breadcrumb-item active">Submission #{{ submission.display_submission_number }}</li>
             </ol>
         </nav>
         
         <div class="d-flex justify-content-between align-items-center mb-3">
             <div>
-                <h2>Protocol Submission #{{ submission.submission_number }}</h2>
-                <p class="lead mb-0">{{ submission.study.title }}</p>
+                <h2>Protocol Submission #{{ submission.display_submission_number }}</h2>
+                <p class="lead mb-0">{{ submission.safe_study_title }}</p>
             </div>
             <div>
                 {% if submission.is_archived %}
@@ -45,7 +45,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
-                        <p><strong>Submitted By:</strong> {{ submission.submitted_by.get_full_name|default:"Unknown" }}</p>
+                        <p><strong>Submitted By:</strong> {% if submission.submitted_by %}{{ submission.submitted_by.get_full_name }}{% else %}Unknown{% endif %}</p>
                         <p><strong>Submitted At:</strong> {{ submission.submitted_at|date:"F d, Y g:i A" }}</p>
                         <p><strong>Version:</strong> {{ submission.version }}</p>
                     </div>
@@ -672,13 +672,17 @@
         <!-- Study Link -->
         <div class="card">
             <div class="card-body">
-                <a href="{% url 'studies:detail' submission.study.id %}" class="btn btn-outline-primary">
+                {% if study %}
+                <a href="{% url 'studies:detail' study.id %}" class="btn btn-outline-primary">
                     View Study Details
                 </a>
                 {% if submission.ai_review %}
-                <a href="{% url 'studies:irb_review_detail' submission.study.id submission.ai_review.version %}" class="btn btn-outline-info">
+                <a href="{% url 'studies:irb_review_detail' study.id submission.ai_review.version %}" class="btn btn-outline-info">
                     View AI Review
                 </a>
+                {% endif %}
+                {% else %}
+                <p class="text-muted mb-0">Study record no longer available. Protocol details below are preserved for review.</p>
                 {% endif %}
                 <a href="{% url 'studies:amendment_list' submission.id %}" class="btn btn-outline-secondary">
                     View All Amendments

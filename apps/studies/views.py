@@ -971,7 +971,14 @@ def protocol_submit(request, study_id):
 def protocol_submission_detail(request, submission_id):
     """View protocol submission details."""
     submission = get_object_or_404(ProtocolSubmission, id=submission_id)
-    study = submission.study
+    # Backfill submission_number if this is submitted but never got one (e.g. created via bulk update)
+    if submission.status == 'submitted' and not submission.submission_number:
+        submission.save()  # Model.save() generates submission_number
+        submission.refresh_from_db()
+    try:
+        study = submission.study if submission.study_id else None
+    except Exception:
+        study = None  # Study was deleted; protocol may still be viewable
     
     # Check access (include co-investigators listed on the submission)
     is_co_i = bool(
@@ -982,7 +989,7 @@ def protocol_submission_detail(request, submission_id):
     can_view = (
         request.user.is_staff or
         getattr(request.user, 'is_admin', False) or
-        (request.user.is_researcher and study.researcher == request.user) or
+        (request.user.is_researcher and study and study.researcher == request.user) or
         is_co_i or
         submission.college_rep == request.user or
         submission.chair_reviewer == request.user or
@@ -1002,7 +1009,7 @@ def protocol_submission_detail(request, submission_id):
     return render(request, 'studies/protocol_submission_detail.html', {
         'submission': submission,
         'study': study,
-        'is_pi': request.user.is_researcher and study.researcher == request.user,
+        'is_pi': request.user.is_researcher and study and study.researcher == request.user,
         'is_co_i': is_co_i,
         'is_college_rep': submission.college_rep == request.user,
         'is_chair': submission.chair_reviewer == request.user,
@@ -1298,7 +1305,14 @@ def protocol_submission_list(request):
     if decision_filter:
         submissions = submissions.filter(decision=decision_filter)
     
-    submissions = submissions.select_related('study', 'study__researcher', 'college_rep', 'chair_reviewer').prefetch_related('reviewers').order_by('-submitted_at')
+    # Don't select_related('study') - protocols with deleted studies would be excluded by INNER JOIN.
+    # Use submission.safe_study_title in template for protocols with missing studies.
+    submissions = submissions.select_related('college_rep', 'chair_reviewer').prefetch_related('reviewers').order_by('-submitted_at')
+
+    # Backfill submission_number for any submitted protocols that never got one (e.g. created via bulk update)
+    for sub_id in submissions.filter(status='submitted', submission_number__isnull=True).values_list('id', flat=True):
+        obj = ProtocolSubmission.objects.get(id=sub_id)
+        obj.save()
     
     # Get pending amendments for the user
     if request.user.is_staff or getattr(request.user, 'is_admin', False):
