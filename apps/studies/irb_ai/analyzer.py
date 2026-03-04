@@ -7,6 +7,7 @@ Coordinates multiple AI agents to perform comprehensive IRB review.
 import asyncio
 import time
 from typing import Dict, List, Any
+from asgiref.sync import sync_to_async
 from django.utils import timezone
 from apps.studies.models import IRBReview, ReviewDocument, Study
 from .agents import (
@@ -49,40 +50,41 @@ class IRBAnalyzer:
         self.start_time = time.time()
         
         try:
-            # Update status
+            # Update status (sync ORM from async context - use sync_to_async)
             self.review.status = 'in_progress'
-            self.review.save(update_fields=['status'])
+            await sync_to_async(self.review.save)(update_fields=['status'])
             
             # Step 1: Gather materials
-            print(f"[{self.review.study.slug}] Gathering materials...")
+            study_slug = await sync_to_async(lambda: self.review.study.slug)()
+            print(f"[{study_slug}] Gathering materials...")
             self.materials = await self.gather_materials()
             
             # Step 2: Run all agents in parallel
-            print(f"[{self.review.study.slug}] Running {len(self.agents)} AI agents...")
+            print(f"[{study_slug}] Running {len(self.agents)} AI agents...")
             agent_results = await self._run_agents()
             
             # Step 3: Aggregate and categorize findings
-            print(f"[{self.review.study.slug}] Aggregating findings...")
+            print(f"[{study_slug}] Aggregating findings...")
             self._categorize_findings(agent_results)
             
             # Step 4: Generate recommendations
-            print(f"[{self.review.study.slug}] Generating recommendations...")
+            print(f"[{study_slug}] Generating recommendations...")
             self._generate_recommendations()
             
             # Step 5: Assess overall risk
-            print(f"[{self.review.study.slug}] Assessing overall risk...")
+            print(f"[{study_slug}] Assessing overall risk...")
             self._assess_overall_risk()
             
             # Step 6: Save results
-            print(f"[{self.review.study.slug}] Saving results...")
-            self._save_results()
+            print(f"[{study_slug}] Saving results...")
+            await sync_to_async(self._save_results)()
             
             # Mark complete
             elapsed = int(time.time() - self.start_time)
             self.review.status = 'completed'
             self.review.completed_at = timezone.now()
             self.review.processing_time_seconds = elapsed
-            self.review.save(update_fields=['status', 'completed_at', 'processing_time_seconds'])
+            await sync_to_async(self.review.save)(update_fields=['status', 'completed_at', 'processing_time_seconds'])
             
             return {
                 'success': True,
@@ -99,7 +101,7 @@ class IRBAnalyzer:
             # Mark as failed
             self.review.status = 'failed'
             self.review.completed_at = timezone.now()
-            self.review.save(update_fields=['status', 'completed_at'])
+            await sync_to_async(self.review.save)(update_fields=['status', 'completed_at'])
             
             return {
                 'success': False,
@@ -114,18 +116,21 @@ class IRBAnalyzer:
         Returns:
             Dict with extracted text from all materials
         """
-        materials = {
-            'study_info': {
-                'title': self.review.study.title,
-                'description': self.review.study.description,
-                'mode': self.review.study.get_mode_display(),
-                'duration_minutes': self.review.study.duration_minutes,
-                'credit_value': str(self.review.study.credit_value),
+        def _get_study_info():
+            s = self.review.study
+            return {
+                'title': s.title,
+                'description': s.description,
+                'mode': s.get_mode_display(),
+                'duration_minutes': s.duration_minutes,
+                'credit_value': str(s.credit_value),
             }
-        }
+        study_info = await sync_to_async(_get_study_info)()
+        materials = {'study_info': study_info}
         
         # Extract text from uploaded documents
-        for doc in self.review.documents.all():
+        docs = await sync_to_async(list)(self.review.documents.all())
+        for doc in docs:
             content = self._extract_document_text(doc)
             materials[f'{doc.file_type}_document'] = content
         
@@ -137,8 +142,9 @@ class IRBAnalyzer:
             materials['osf_materials'] = osf_materials
         
         # Check if study has a protocol template (HTML)
-        if self.review.study.slug:
-            protocol_path = f'templates/projects/{self.review.study.slug}/protocol/index.html'
+        study_slug = await sync_to_async(lambda: self.review.study.slug)()
+        if study_slug:
+            protocol_path = f'templates/projects/{study_slug}/protocol/index.html'
             from pathlib import Path
             from django.conf import settings
             full_path = Path(settings.BASE_DIR) / protocol_path
