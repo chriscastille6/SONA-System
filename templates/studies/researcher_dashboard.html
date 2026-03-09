@@ -9,6 +9,15 @@
             <h2>My Studies</h2>
             <a href="{% url 'studies:create' %}" class="btn btn-success">Create New Study</a>
         </div>
+
+        {% if citi_status %}
+        <div class="alert alert-{% if citi_status.status == 'expired' %}danger{% elif citi_status.status == 'expiring_soon' %}warning{% elif citi_status.status == 'none' %}warning{% else %}success{% endif %} mb-4" role="alert">
+            <strong>CITI Training:</strong> {{ citi_status.message }}
+            {% if citi_required and citi_status.status != 'valid' and citi_status.status != 'expiring_soon' %}
+            <span class="d-block mt-1 small">Protocol submission is blocked until your CITI certificate is added or renewed. Contact an administrator to add your certificate.</span>
+            {% endif %}
+        </div>
+        {% endif %}
         
         {% if studies %}
             <div class="row">

@@ -41,6 +41,9 @@ if RENDER_ENVIRONMENT:
 # AI Review Feature Gating
 AI_REVIEW_ENABLED = _config('AI_REVIEW_ENABLED', default='True', cast=bool)
 
+# CITI Certificate: block protocol submission if PI's CITI is expired or missing
+CITI_REQUIRED_FOR_SUBMISSION = _config('CITI_REQUIRED_FOR_SUBMISSION', default='False', cast=bool)
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',

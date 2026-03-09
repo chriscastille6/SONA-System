@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load studies_tags %}
 
 {% block title %}Protocol Submissions{% endblock %}
 
@@ -101,7 +102,7 @@
                             {% for submission in submissions %}
                             <tr>
                                 <td>
-                                    <strong>{{ submission.display_submission_number }}</strong>
+                                    <strong>{{ submission.submission_number|submission_number_display }}</strong>
                                     {% if submission.is_archived %}
                                     <span class="badge bg-secondary ms-1">Archived</span>
                                     {% endif %}

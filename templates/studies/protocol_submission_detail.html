@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
+{% load studies_tags %}
 
-{% block title %}Protocol Submission #{{ submission.display_submission_number }}{% endblock %}
+{% block title %}Protocol Submission #{{ submission.submission_number|submission_number_display }}{% endblock %}
 
 {% block content %}
 <div class="row">
@@ -12,13 +13,13 @@
                 {% else %}
                 <li class="breadcrumb-item"><a href="{% url 'studies:protocol_submission_list' %}">Protocol Submissions</a></li>
                 {% endif %}
-                <li class="breadcrumb-item active">Submission #{{ submission.display_submission_number }}</li>
+                <li class="breadcrumb-item active">Submission #{{ submission.submission_number|submission_number_display }}</li>
             </ol>
         </nav>
         
         <div class="d-flex justify-content-between align-items-center mb-3">
             <div>
-                <h2>Protocol Submission #{{ submission.display_submission_number }}</h2>
+                <h2>Protocol Submission #{{ submission.submission_number|submission_number_display }}</h2>
                 <p class="lead mb-0">{{ submission.safe_study_title }}</p>
             </div>
             <div>

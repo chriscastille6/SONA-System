@@ -227,10 +227,18 @@ def researcher_dashboard(request):
             'pending_amendment': pending_amendment,
         })
     
+    # CITI status for researcher (PI) - flag when expired or expiring
+    citi_status = None
+    if request.user.is_researcher or request.user.is_instructor:
+        from apps.accounts.citi_utils import get_researcher_citi_status
+        citi_status = get_researcher_citi_status(request.user)
+
     return render(request, 'studies/researcher_dashboard.html', {
         'studies': studies,
         'studies_with_protocols': studies_with_protocols,
         'ai_review_enabled': getattr(settings, 'AI_REVIEW_ENABLED', False),
+        'citi_status': citi_status,
+        'citi_required': getattr(settings, 'CITI_REQUIRED_FOR_SUBMISSION', False),
     })
 
 
@@ -878,14 +886,29 @@ def protocol_enter(request, study_id):
 def protocol_submit(request, study_id):
     """Submit protocol for IRB review (final submission)."""
     from .forms import ProtocolSubmissionForm
-    
+    from django.conf import settings
+    from apps.accounts.citi_utils import researcher_can_submit_protocol
+
     study = get_object_or_404(Study, id=study_id)
-    
+
     # Only study owner can submit (or admin/staff)
     if not (request.user.is_researcher and study.researcher == request.user) and not (request.user.is_admin or request.user.is_staff):
         messages.error(request, 'Only the study owner can submit protocols.')
         return redirect('studies:detail', pk=study.id)
-    
+
+    # CITI check: PI must have valid (non-expired) CITI certificate to submit
+    if getattr(settings, 'CITI_REQUIRED_FOR_SUBMISSION', False):
+        pi = study.researcher
+        if pi:
+            can_submit, msg = researcher_can_submit_protocol(pi)
+            if not can_submit:
+                messages.error(
+                    request,
+                    f'Protocol submission blocked: {msg} '
+                    'Please add or renew your CITI certificate in your profile.'
+                )
+                return redirect('studies:protocol_enter', study_id=study.id)
+
     # Get draft submission
     draft_submission = ProtocolSubmission.objects.filter(
         study=study,

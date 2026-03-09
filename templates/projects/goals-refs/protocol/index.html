@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ study.title }} — Protocol</title>
+    <style>
+        :root { --economist-red: #E3120B; --economist-navy: #0E4C99; --economist-gray: #4A4A4A; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Times New Roman', Times, serif; line-height: 1.6; color: var(--economist-gray); background: #fff; max-width: 700px; margin: 0 auto; padding: 2rem; }
+        .header { border-bottom: 3px solid var(--economist-red); padding-bottom: 1rem; margin-bottom: 2rem; }
+        h1 { font-size: 1.5rem; color: #1a1a1a; }
+        h2 { font-size: 1.15rem; color: var(--economist-navy); margin: 1.5rem 0 0.75rem; }
+        ul, ol { margin: 0.5rem 0 1rem 1.25rem; }
+        .btn { display: inline-block; padding: 0.5rem 1.25rem; margin-top: 1rem; background: var(--economist-navy); color: #fff; text-decoration: none; font-family: inherit; font-size: 1rem; border: none; cursor: pointer; }
+        .btn:hover { background: #0a3d7a; }
+        .muted { font-size: 0.9rem; color: #666; margin-top: 0.5rem; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>{{ study.title }}</h1>
+        <p class="subtitle">Study protocol</p>
+    </header>
+
+    <h2>Procedures</h2>
+    <ol>
+        <li><strong>Consent</strong>: You will read a short consent form and indicate that you agree to participate (18+).</li>
+        <li><strong>Vignette</strong>: You will read one scenario about a person (“Alex”) in an organization. The scenario describes the organization’s culture (e.g., scarce vs. shared resources) and how colleagues describe Alex (e.g., more or less willing to use manipulation).</li>
+        <li><strong>Ratings</strong>: You will rate how likely you think Alex would be to do each of several behaviors (1 = Extremely unlikely … 7 = Extremely likely). Items cover task focus, sharing information, production deviance, social undermining, sabotage, and supervisor appraisal.</li>
+        <li><strong>Debriefing</strong>: You will see a short explanation of the study’s purpose.</li>
+    </ol>
+
+    <h2>Duration</h2>
+    <p>About 5–10 minutes.</p>
+
+    <h2>Start the study</h2>
+    <p>Click the link below to begin. You will be shown one scenario at random (or as assigned).</p>
+    {% if study.external_link %}
+    <p><a href="{{ study.external_link }}" class="btn" target="_blank" rel="noopener">Begin study</a></p>
+    <p class="muted">The study will open in a new tab.</p>
+    {% else %}
+    <p class="muted">The study link is not configured. Please contact the researcher.</p>
+    {% endif %}
+</body>
+</html>

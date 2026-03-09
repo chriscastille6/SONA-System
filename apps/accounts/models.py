@@ -148,6 +148,53 @@ class Profile(models.Model):
         )
 
 
+class CITICertificate(models.Model):
+    """
+    CITI Program training certificate for researchers.
+    Tracks completion and expiration so protocol submission can be blocked when expired.
+    """
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='citi_certificates'
+    )
+    completion_date = models.DateField(help_text='Date CITI course was completed')
+    expiration_date = models.DateField(help_text='Date certificate expires (must renew before this)')
+    record_id = models.CharField(max_length=50, blank=True, help_text='CITI Record ID')
+    course_name = models.CharField(max_length=200, blank=True, help_text='e.g. Human Subjects Research - Student Researchers')
+    certificate_file = models.FileField(
+        upload_to='citi_certificates/%Y/%m/',
+        blank=True,
+        null=True,
+        help_text='Uploaded certificate PDF'
+    )
+    notes = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = 'citi_certificates'
+        verbose_name = 'CITI Certificate'
+        verbose_name_plural = 'CITI Certificates'
+        ordering = ['-expiration_date']
+
+    def __str__(self):
+        return f"CITI: {self.user.get_full_name()} (expires {self.expiration_date})"
+
+    @property
+    def is_valid(self):
+        from django.utils import timezone
+        return self.expiration_date >= timezone.now().date()
+
+    @property
+    def is_expiring_soon(self):
+        """Within 30 days of expiration."""
+        from django.utils import timezone
+        from datetime import timedelta
+        today = timezone.now().date()
+        return today <= self.expiration_date < today + timedelta(days=30)
+
+
 class EmailVerificationToken(models.Model):
     """Token for email verification."""
     

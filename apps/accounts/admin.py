@@ -4,7 +4,7 @@ Admin configuration for accounts app.
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils import timezone
-from .models import User, Profile, EmailVerificationToken
+from .models import User, Profile, EmailVerificationToken, CITICertificate
 
 
 @admin.register(User)
@@ -47,6 +47,22 @@ class ProfileAdmin(admin.ModelAdmin):
     list_filter = ['is_banned', 'gender']
     search_fields = ['user__email', 'user__first_name', 'user__last_name', 'student_id']
     raw_id_fields = ['user']
+
+
+@admin.register(CITICertificate)
+class CITICertificateAdmin(admin.ModelAdmin):
+    """Admin interface for CITI certificates. Add certificates for researchers to enable protocol submission."""
+
+    list_display = ['user', 'completion_date', 'expiration_date', 'is_valid', 'course_name', 'record_id']
+    list_filter = ['expiration_date', 'completion_date']
+    search_fields = ['user__email', 'user__first_name', 'user__last_name', 'record_id']
+    raw_id_fields = ['user']
+    readonly_fields = ['created_at']
+    date_hierarchy = 'expiration_date'
+
+    @admin.display(boolean=True)
+    def is_valid(self, obj):
+        return obj.is_valid if obj else False
 
 
 @admin.register(EmailVerificationToken)
