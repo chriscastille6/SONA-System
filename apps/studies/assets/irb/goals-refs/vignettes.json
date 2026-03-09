@@ -1,0 +1,51 @@
+{
+  "study_slug": "goals-refs",
+  "title": "Goals as Reference Points and Risk Taking — Full Vignette Pool",
+  "description": "Participants are randomly assigned 3–6 vignettes from this pool. Each vignette is presented in one of two goal frames (below goal / above goal) as determined by the study design.",
+  "response_types": {
+    "replication": "Binary choice: (A) sure option vs. (B) risky option",
+    "extension": "Likert rating: How acceptable was [person]'s decision? 1 = Not at all acceptable … 7 = Completely acceptable"
+  },
+  "vignettes": [
+    {
+      "id": "R1",
+      "type": "replication",
+      "goal_frames": ["below", "above"],
+      "citation": "Heath et al. (1999); Larrick et al. (2009)",
+      "scenario_below": "You have a goal of selling 10 units this month. You have sold 8 units so far (below goal). You have one more opportunity to make a sale.",
+      "scenario_above": "You have a goal of selling 10 units this month. You have sold 12 units so far (above goal). You have one more opportunity to make a sale.",
+      "option_a": "Accept a sure outcome: 1 additional unit sold (total 9 below / 13 above).",
+      "option_b": "Take a risk: 50% chance of 2 units sold, 50% chance of 0 units (total 8 or 10 below / 12 or 14 above)."
+    },
+    {
+      "id": "R2",
+      "type": "replication",
+      "goal_frames": ["below", "above"],
+      "citation": "Au & Feldman (2020)",
+      "scenario_below": "You need to reach a fundraising goal of $5,000. You currently have $4,200 (below goal). One donor is willing to give a guaranteed $300.",
+      "scenario_above": "You have exceeded your fundraising goal of $5,000 and currently have $5,400. One donor is willing to give a guaranteed $300.",
+      "option_a": "Accept the guaranteed $300.",
+      "option_b": "Ask the donor to flip a coin: heads they give $600, tails they give $0."
+    },
+    {
+      "id": "E1",
+      "type": "extension",
+      "goal_frames": ["below", "above"],
+      "citation": "Novel (extension)",
+      "scenario_below": "Alex is a salesperson who needed to hit a quarterly goal to keep a bonus. With one day left, Alex was $200 short. Alex submitted an expense report that included $250 in personal meals as \"client entertainment.\"",
+      "scenario_above": "Alex is a salesperson who had already exceeded the quarterly goal and secured the bonus. Alex submitted an expense report that included $250 in personal meals as \"client entertainment.\"",
+      "question": "How acceptable was Alex's decision to submit this expense report?",
+      "scale": "1 = Not at all acceptable … 7 = Completely acceptable"
+    },
+    {
+      "id": "E2",
+      "type": "extension",
+      "goal_frames": ["below", "above"],
+      "citation": "Novel (extension)",
+      "scenario_below": "Jordan is a manager who was below the department's safety-incident goal for the year. A minor incident occurred that was not reported to central safety. Jordan did not add it to the monthly report.",
+      "scenario_above": "Jordan is a manager whose department had already met the safety-incident goal for the year. A minor incident occurred that was not reported to central safety. Jordan did not add it to the monthly report.",
+      "question": "How acceptable was Jordan's decision not to include the incident in the report?",
+      "scale": "1 = Not at all acceptable … 7 = Completely acceptable"
+    }
+  ]
+}

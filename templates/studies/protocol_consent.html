@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}{{ study.title }} — Consent{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-10 offset-md-1">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="card-title h2">{{ study.title }}</h1>
+                <p class="text-muted small mb-4">Informed consent — same flow as psychological assessments</p>
+                <hr>
+
+                <h2 class="h5 mt-4">Participant information</h2>
+                <p>Please read the full participant information document (your rights, platform options, and research participation). It is the same document used for the psychological assessment platform.</p>
+                <p class="mb-4">
+                    <a href="{% url 'studies:participant_information_consent' %}" target="_blank" rel="noopener" class="btn btn-outline-primary">Read full participant information document →</a>
+                </p>
+
+                <h2 class="h5 mt-4">Study-specific information</h2>
+                <p>For this study, the following also applies:</p>
+                <div class="bg-light rounded p-3 mb-4" style="white-space: pre-wrap;">{{ study.consent_text }}</div>
+
+                <h2 class="h5 mt-4">Consent</h2>
+                <p class="mb-3">Do you consent to participate in this study?</p>
+                <form method="post" class="d-flex gap-2">
+                    {% csrf_token %}
+                    <button type="submit" name="consent" value="agree" class="btn btn-primary">Yes, I consent to participate</button>
+                    <button type="submit" name="consent" value="decline" class="btn btn-outline-secondary">No, I do not consent</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

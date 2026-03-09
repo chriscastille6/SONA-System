@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block title %}{{ vignettes_data.title }} — {{ study.title }}{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-10 offset-md-1">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'studies:protocol_submission_list' %}">Protocol Submissions</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'studies:protocol_preview' slug=study.slug %}">{{ study.title }}</a></li>
+                <li class="breadcrumb-item active">Vignette pool</li>
+            </ol>
+        </nav>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>{{ vignettes_data.title }}</h2>
+            <div>
+                <a href="{% url 'studies:protocol_vignettes' slug=study.slug %}?format=json" class="btn btn-outline-secondary btn-sm" download="goals-refs-vignettes.json">Download JSON</a>
+                <a href="{% url 'studies:protocol_submission_list' %}" class="btn btn-outline-primary btn-sm">Back to submissions</a>
+            </div>
+        </div>
+        {% if vignettes_data.description %}
+        <p class="lead text-muted">{{ vignettes_data.description }}</p>
+        {% endif %}
+        {% if vignettes_data.response_types %}
+        <div class="card mb-4">
+            <div class="card-body py-2">
+                <strong>Response types:</strong>
+                <ul class="mb-0 mt-1">
+                    {% for k, v in vignettes_data.response_types.items %}
+                    <li><strong>{{ k|capfirst }}:</strong> {{ v }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+        {% endif %}
+        <div class="vignette-list">
+            {% for v in vignettes_data.vignettes %}
+            <div class="card mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span><strong>Vignette {{ v.id }}</strong> — {{ v.type|capfirst }}</span>
+                    {% if v.citation %}<span class="text-muted small">{{ v.citation }}</span>{% endif %}
+                </div>
+                <div class="card-body">
+                    {% if v.goal_frames %}
+                    <p class="small text-muted mb-2">Goal frames: {{ v.goal_frames|join:", " }}</p>
+                    {% endif %}
+                    {% if v.scenario_below %}
+                    <p><strong>Scenario (below goal):</strong><br>{{ v.scenario_below }}</p>
+                    {% endif %}
+                    {% if v.scenario_above %}
+                    <p><strong>Scenario (above goal):</strong><br>{{ v.scenario_above }}</p>
+                    {% endif %}
+                    {% if v.scenario and not v.scenario_below %}
+                    <p><strong>Scenario:</strong><br>{{ v.scenario }}</p>
+                    {% endif %}
+                    {% if v.option_a %}
+                    <p class="mb-1"><strong>Option A:</strong> {{ v.option_a }}</p>
+                    {% endif %}
+                    {% if v.option_b %}
+                    <p class="mb-1"><strong>Option B:</strong> {{ v.option_b }}</p>
+                    {% endif %}
+                    {% if v.question %}
+                    <p class="mb-1"><strong>Question:</strong> {{ v.question }}</p>
+                    {% endif %}
+                    {% if v.scale %}
+                    <p class="text-muted small mb-0"><strong>Scale:</strong> {{ v.scale }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <p class="text-muted small">This document is for IRB reviewers and the research team. Participants see a random subset of 3–6 vignettes.</p>
+    </div>
+</div>
+{% endblock %}

@@ -66,6 +66,12 @@
                         {% endif %}
                     </div>
                 </div>
+                {% if study.slug == 'goals-refs' %}
+                <hr>
+                <p class="mb-0">
+                    <a href="{% url 'studies:protocol_vignettes' slug=study.slug %}">View full vignette pool</a> — all scenarios in the study pool for IRB review.
+                </p>
+                {% endif %}
             </div>
         </div>
         

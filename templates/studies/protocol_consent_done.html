@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}{{ study.title }} — Consent recorded{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">Consent recorded</h5>
+            </div>
+            <div class="card-body">
+                <p class="mb-2">Thank you. You have given consent for <strong>{{ study.title }}</strong>.</p>
+                <p class="text-muted mb-0">The full survey (vignette scenarios and ratings) will be available when the participant frontend is deployed. This preview allows you to review the consent and protocol flow.</p>
+                <hr>
+                <a href="{% url 'studies:protocol_preview' slug=study.slug %}" class="btn btn-outline-primary">Back to protocol</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -34,9 +34,14 @@
     <h2>Duration</h2>
     <p>About 5–10 minutes.</p>
 
+    <p class="muted" style="margin-top: 1rem;"><strong>Note:</strong> There are no course credit opportunities with this study.</p>
+
     <h2>Start the study</h2>
     <p>Click the link below to begin. You will be shown one scenario at random (or as assigned).</p>
-    {% if study.external_link %}
+    {% if use_consent_flow %}
+    <p><a href="{% url 'studies:protocol_consent' slug=study.slug %}" class="btn">Begin study</a></p>
+    <p class="muted">You will see the consent form, then the study.</p>
+    {% elif study.external_link %}
     <p><a href="{{ study.external_link }}" class="btn" target="_blank" rel="noopener">Begin study</a></p>
     <p class="muted">The study will open in a new tab.</p>
     {% else %}
