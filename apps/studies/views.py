@@ -4,7 +4,7 @@ Views for studies app.
 from django.db.models import Prefetch, Q
 from django.db import models
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import JsonResponse, Http404
+from django.http import JsonResponse, Http404, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils import timezone
@@ -15,6 +15,7 @@ from django.template import TemplateDoesNotExist
 from django.conf import settings
 import json
 import uuid
+from pathlib import Path
 from .models import (
     Study,
     Timeslot,
@@ -46,6 +47,15 @@ def user_can_access_study(user, study):
     if getattr(user, 'is_researcher', False) and study.researcher_id == getattr(user, 'id', None):
         return True
     return study.is_assigned_reviewer(user)
+
+
+def extam4_summary_html(request):
+    """Serve the EXT-AM4 / goals-refs SONA summary HTML (file locations, quick reference). Deployed at /studies/docs/extam4-summary/."""
+    path = Path(settings.BASE_DIR) / "docs" / "EXTAM4_SONA_SUMMARY.html"
+    if not path.exists():
+        raise Http404("Summary not found.")
+    with open(path, "r", encoding="utf-8") as f:
+        return HttpResponse(f.read(), content_type="text/html; charset=utf-8")
 
 
 def participant_information_consent(request):
@@ -387,11 +397,95 @@ def protocol_preview(request, slug):
     try:
         return render(request, f'projects/{slug}/protocol/index.html', {
             'study': study,
+            'use_consent_flow': True,
         })
     except TemplateDoesNotExist:
         return render(request, 'studies/protocol_placeholder.html', {
             'study': study,
         })
+
+
+def _can_preview_study(request, study):
+    """True if user can preview this study (staff or PI)."""
+    return request.user.is_authenticated and (
+        request.user.is_staff or (study.researcher and study.researcher_id == request.user.id)
+    )
+
+
+@login_required
+def protocol_consent(request, slug):
+    """
+    Consent page for protocol preview flow. Shows study consent text and I agree / I do not agree.
+    On agree, redirects to consent-done placeholder so the user is not stuck.
+    """
+    study = get_object_or_404(Study.objects.all(), slug=slug)
+    if not _can_preview_study(request, study):
+        raise Http404("Not authorized to preview this protocol")
+    if request.method == 'POST':
+        agreed = request.POST.get('consent') == 'agree'
+        if agreed:
+            return redirect('studies:protocol_consent_done', slug=slug)
+        return redirect('studies:protocol_preview', slug=slug)
+    return render(request, 'studies/protocol_consent.html', {
+        'study': study,
+    })
+
+
+@login_required
+def protocol_consent_done(request, slug):
+    """
+    Post-consent page for preview flow. Confirms consent and notes that the full
+    survey (vignettes) will be available when the participant frontend is deployed.
+    """
+    study = get_object_or_404(Study.objects.all(), slug=slug)
+    if not _can_preview_study(request, study):
+        raise Http404("Not authorized to preview this protocol")
+    return render(request, 'studies/protocol_consent_done.html', {
+        'study': study,
+    })
+
+
+def _can_view_study_protocol_materials(request, study):
+    """True if user can view protocol materials (e.g. vignette pool) for this study: staff, PI, or assigned rep/chair/reviewer on any submission."""
+    if not request.user.is_authenticated:
+        return False
+    if request.user.is_staff or getattr(request.user, 'is_admin', False):
+        return True
+    if study.researcher_id and study.researcher_id == request.user.id:
+        return True
+    from .models import ProtocolSubmission
+    qs = ProtocolSubmission.objects.filter(study=study)
+    if qs.filter(college_rep=request.user).exists():
+        return True
+    if qs.filter(chair_reviewer=request.user).exists():
+        return True
+    if qs.filter(reviewers=request.user).exists():
+        return True
+    return False
+
+
+@login_required
+def protocol_vignettes(request, slug):
+    """
+    Show the full vignette pool for a study. Access: staff, PI, college rep, chair, or reviewer
+    for any submission of this study (so Jon and Juliann can view goals-refs vignettes).
+    """
+    study = get_object_or_404(Study.objects.all(), slug=slug)
+    if not _can_view_study_protocol_materials(request, study):
+        messages.error(request, 'You do not have access to view this study’s vignette pool.')
+        return redirect('studies:protocol_submission_list')
+    base = Path(__file__).resolve().parent.parent.parent
+    vignettes_path = base / "apps" / "studies" / "assets" / "irb" / slug / "vignettes.json"
+    if not vignettes_path.exists():
+        raise Http404("Vignette pool file not found for this study.")
+    with open(vignettes_path, "r", encoding="utf-8") as f:
+        vignettes_data = json.load(f)
+    if request.GET.get("format") == "json":
+        return JsonResponse(vignettes_data, json_dumps_params={"indent": 2})
+    return render(request, "studies/protocol_vignettes.html", {
+        "study": study,
+        "vignettes_data": vignettes_data,
+    })
 
 
 @require_http_methods(["POST"])

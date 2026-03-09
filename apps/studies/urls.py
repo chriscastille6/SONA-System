@@ -28,9 +28,15 @@ urlpatterns = [
     path('researcher/<uuid:pk>/roster/', views.study_roster, name='roster'),
     path('researcher/signup/<uuid:pk>/attendance/', views.mark_attendance, name='mark_attendance'),
     
+    # EXT-AM4 SONA summary (both paths; use extam4-summary if docs/ returns 404)
+    path('extam4-summary/', views.extam4_summary_html, name='extam4_summary'),
+    path('docs/extam4-summary/', views.extam4_summary_html, name='extam4_summary_docs'),
     # Protocol and data collection
     path('<slug:slug>/run/', views.run_protocol, name='run_protocol'),
     path('<slug:slug>/protocol/preview/', views.protocol_preview, name='protocol_preview'),
+    path('<slug:slug>/protocol/vignettes/', views.protocol_vignettes, name='protocol_vignettes'),
+    path('<slug:slug>/protocol/consent/', views.protocol_consent, name='protocol_consent'),
+    path('<slug:slug>/protocol/consent/done/', views.protocol_consent_done, name='protocol_consent_done'),
     path('<slug:slug>/status/', views.study_status, name='status'),
     
     # IRB AI Review

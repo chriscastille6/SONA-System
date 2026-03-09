@@ -4,6 +4,8 @@
 
 **You must:** Work through the protocol template section by section, **tailor every section** for the specific study, then use the toolkit (if generating documents) and complete the PRAMS submission with the correct approvers.
 
+**Decision Making / EXT-AM4 study:** For that project’s file locations (IRB docs, vignettes, study pages, config), read **[docs/FILE_LOCATIONS_FOR_SONA_AGENT.md](FILE_LOCATIONS_FOR_SONA_AGENT.md)**. Paths there are relative to the Decision Making and Unethical Behavior project root.
+
 ---
 
 ## 0. When you're in the study project (getting details for one study)
