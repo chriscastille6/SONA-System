@@ -42,6 +42,34 @@
                 </div>
             </div>
         </div>
+
+        {% if user.is_researcher or user.is_staff or citi_certificates %}
+        <div class="card mt-3">
+            <div class="card-body">
+                <h5 class="card-title">CITI Training</h5>
+                {% if citi_status %}
+                <div class="alert alert-{% if citi_status.status == 'valid' %}success{% elif citi_status.status == 'expiring_soon' %}warning{% elif citi_status.status == 'expired' or citi_status.status == 'none' %}danger{% else %}secondary{% endif %} mb-3" role="alert">
+                    {{ citi_status.message }}
+                </div>
+                {% endif %}
+                {% if citi_certificates %}
+                <p class="mb-2"><strong>Certificates on file:</strong></p>
+                <ul class="list-unstyled mb-3">
+                    {% for cert in citi_certificates %}
+                    <li>
+                        <span class="text-muted">Expires {{ cert.expiration_date }}</span>
+                        {% if cert.record_id %} — Record ID {{ cert.record_id }}{% endif %}
+                        {% if cert.course_name %} — {{ cert.course_name }}{% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                {% if user.is_researcher or user.is_staff %}
+                <a href="{% url 'accounts:add_citi_certificate' %}" class="btn btn-outline-primary">Add or update CITI certificate</a>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

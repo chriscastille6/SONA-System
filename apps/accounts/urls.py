@@ -38,6 +38,7 @@ urlpatterns = [
     # Profile
     path('profile/', views.profile, name='profile'),
     path('profile/edit/', views.edit_profile, name='edit_profile'),
+    path('profile/citi/add/', views.add_citi_certificate, name='add_citi_certificate'),
 ]
 
 

@@ -30,6 +30,7 @@ urlpatterns = [
     
     # Protocol and data collection
     path('<slug:slug>/run/', views.run_protocol, name='run_protocol'),
+    path('<slug:slug>/protocol/preview/', views.protocol_preview, name='protocol_preview'),
     path('<slug:slug>/status/', views.study_status, name='status'),
     
     # IRB AI Review

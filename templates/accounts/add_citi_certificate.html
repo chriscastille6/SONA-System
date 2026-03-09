@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Add CITI Certificate - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h2>Add CITI Certificate</h2>
+        <p class="text-muted">Add your CITI Program training certificate so you can submit IRB protocols. Your certificate is stored as part of your profile.</p>
+
+        <div class="card mt-3">
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="id_completion_date" class="form-label">Completion date <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" id="id_completion_date" name="completion_date" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="id_expiration_date" class="form-label">Expiration date <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" id="id_expiration_date" name="expiration_date" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="id_record_id" class="form-label">CITI Record ID (optional)</label>
+                        <input type="text" class="form-control" id="id_record_id" name="record_id" placeholder="e.g. 66618363">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="id_course_name" class="form-label">Course name (optional)</label>
+                        <input type="text" class="form-control" id="id_course_name" name="course_name" placeholder="e.g. Human Subjects Research - Student Researchers">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="id_certificate_file" class="form-label">Upload certificate PDF (optional)</label>
+                        <input type="file" class="form-control" id="id_certificate_file" name="certificate_file" accept=".pdf">
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Save certificate</button>
+                        <a href="{% url 'accounts:profile' %}" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

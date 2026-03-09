@@ -7,11 +7,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponseForbidden
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.utils.http import url_has_allowed_host_and_scheme
-from datetime import timedelta
-from .models import User, EmailVerificationToken
+from datetime import timedelta, datetime
+from .models import User, EmailVerificationToken, CITICertificate
 
 
 def _send_verification_email(request, user, token):
@@ -132,10 +133,15 @@ def resend_verification(request):
 
 @login_required
 def profile(request):
-    """User profile view."""
+    """User profile view. Includes CITI status so researchers can see and manage certificates."""
+    from .citi_utils import get_researcher_citi_status
+    citi_status = get_researcher_citi_status(request.user)
+    certs = list(CITICertificate.objects.filter(user=request.user).order_by('-expiration_date'))
     return render(request, 'accounts/profile.html', {
         'user': request.user,
-        'profile': request.user.profile
+        'profile': request.user.profile,
+        'citi_status': citi_status,
+        'citi_certificates': certs,
     })
 
 
@@ -155,6 +161,49 @@ def edit_profile(request):
     return render(request, 'accounts/edit_profile.html', {
         'user': request.user,
         'profile': request.user.profile
+    })
+
+
+@login_required
+def add_citi_certificate(request):
+    """Let a researcher (or staff) add a CITI certificate to their profile."""
+    if not (getattr(request.user, 'is_researcher', False) or getattr(request.user, 'is_staff', False)):
+        return HttpResponseForbidden('Only researchers and staff can add CITI certificates.')
+
+    if request.method == 'POST':
+        completion_str = request.POST.get('completion_date', '').strip()
+        expiration_str = request.POST.get('expiration_date', '').strip()
+        if not completion_str or not expiration_str:
+            messages.error(request, 'Completion date and expiration date are required.')
+            return redirect('accounts:add_citi_certificate')
+
+        try:
+            completion = datetime.strptime(completion_str, '%Y-%m-%d').date()
+            expiration = datetime.strptime(expiration_str, '%Y-%m-%d').date()
+        except ValueError:
+            messages.error(request, 'Dates must be in YYYY-MM-DD format.')
+            return redirect('accounts:add_citi_certificate')
+
+        record_id = request.POST.get('record_id', '').strip()
+        course_name = request.POST.get('course_name', '').strip()
+        cert_file = request.FILES.get('certificate_file')
+
+        cert = CITICertificate.objects.create(
+            user=request.user,
+            completion_date=completion,
+            expiration_date=expiration,
+            record_id=record_id,
+            course_name=course_name,
+        )
+        if cert_file:
+            cert.certificate_file = cert_file
+            cert.save(update_fields=['certificate_file'])
+
+        messages.success(request, f'CITI certificate added. Valid through {cert.expiration_date}.')
+        return redirect('accounts:profile')
+
+    return render(request, 'accounts/add_citi_certificate.html', {
+        'user': request.user,
     })
 
 

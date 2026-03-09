@@ -375,6 +375,25 @@ def run_protocol(request, slug):
         })
 
 
+@login_required
+def protocol_preview(request, slug):
+    """
+    Serve the protocol HTML for a study for review (e.g. pending IRB).
+    Does not require active_approved; allows staff and PI to view before approval.
+    """
+    study = get_object_or_404(Study.objects.all(), slug=slug)
+    if not (request.user.is_staff or (study.researcher and study.researcher_id == request.user.id)):
+        raise Http404("Not authorized to preview this protocol")
+    try:
+        return render(request, f'projects/{slug}/protocol/index.html', {
+            'study': study,
+        })
+    except TemplateDoesNotExist:
+        return render(request, 'studies/protocol_placeholder.html', {
+            'study': study,
+        })
+
+
 @require_http_methods(["POST"])
 def submit_response(request, study_id):
     """
