@@ -1,0 +1,8 @@
+# CITI certificate dates for PI (Christopher Castille) — from citiCompletionCertificate_4689946_59381539.pdf
+# Completion 10-May-2024, Expiration 10-May-2026. Run on server: python manage.py add_pi_citi_from_file
+
+email=christopher.castille@nicholls.edu
+completion=2024-05-10
+expiration=2026-05-10
+record_id=59381539
+course=Human Subjects Research (Social/Behavioral Research)
