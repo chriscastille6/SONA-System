@@ -488,6 +488,32 @@ def protocol_vignettes(request, slug):
     })
 
 
+# Study slug -> docs filename for "full documentation" HTML (all cases / protocol summary)
+STUDY_DOCUMENTATION_FILES = {
+    'hr-sjt': 'HR_SJT_DOCUMENTATION.html',
+}
+
+
+@login_required
+def protocol_study_documentation(request, slug):
+    """
+    Serve the full documentation HTML for a study (e.g. hr-sjt: all 27 scenarios + protocol).
+    Access: staff, PI, college rep, chair, or reviewer for any submission of this study.
+    """
+    study = get_object_or_404(Study.objects.all(), slug=slug)
+    if not _can_view_study_protocol_materials(request, study):
+        messages.error(request, 'You do not have access to view this study’s documentation.')
+        return redirect('studies:protocol_submission_list')
+    filename = STUDY_DOCUMENTATION_FILES.get(slug)
+    if not filename:
+        raise Http404("No documentation page for this study.")
+    path = Path(settings.BASE_DIR) / "docs" / filename
+    if not path.exists():
+        raise Http404("Documentation file not found.")
+    with open(path, "r", encoding="utf-8") as f:
+        return HttpResponse(f.read(), content_type="text/html; charset=utf-8")
+
+
 @require_http_methods(["POST"])
 def submit_response(request, study_id):
     """

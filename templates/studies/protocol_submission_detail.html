@@ -71,6 +71,11 @@
                 <p class="mb-0">
                     <a href="{% url 'studies:protocol_vignettes' slug=study.slug %}">View full vignette pool</a> — all scenarios in the study pool for IRB review.
                 </p>
+                {% elif study.slug == 'hr-sjt' %}
+                <hr>
+                <p class="mb-0">
+                    <a href="{% url 'studies:protocol_study_documentation' slug=study.slug %}">View full documentation (all 27 scenarios &amp; protocol)</a> — HTML with cases and protocol summary for IRB review.
+                </p>
                 {% endif %}
             </div>
         </div>

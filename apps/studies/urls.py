@@ -35,6 +35,7 @@ urlpatterns = [
     path('<slug:slug>/run/', views.run_protocol, name='run_protocol'),
     path('<slug:slug>/protocol/preview/', views.protocol_preview, name='protocol_preview'),
     path('<slug:slug>/protocol/vignettes/', views.protocol_vignettes, name='protocol_vignettes'),
+    path('<slug:slug>/protocol/documentation/', views.protocol_study_documentation, name='protocol_study_documentation'),
     path('<slug:slug>/protocol/consent/', views.protocol_consent, name='protocol_consent'),
     path('<slug:slug>/protocol/consent/done/', views.protocol_consent_done, name='protocol_consent_done'),
     path('<slug:slug>/status/', views.study_status, name='status'),
