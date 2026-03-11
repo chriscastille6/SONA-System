@@ -161,6 +161,9 @@
                         </p>
                     </div>
                 </div>
+                {% if study.post_decision_analysis_run_at %}
+                <p class="mt-2"><strong>Post-decision analysis ran:</strong> {{ study.post_decision_analysis_run_at|date:"M d, Y g:i A" }}</p>
+                {% endif %}
                 
                 {% if study.current_bf and study.current_bf >= study.bf_threshold %}
                 <div class="alert alert-success mt-3">

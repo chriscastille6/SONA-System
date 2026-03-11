@@ -21,6 +21,7 @@ from .models import (
     Timeslot,
     Signup,
     Response,
+    StudyEmailContact,
     IRBReview,
     ReviewDocument,
     IRBReviewerAssignment,
@@ -558,6 +559,42 @@ def submit_response(request, study_id):
         'response_id': str(response.id),
         'session_id': str(response.session_id)
     })
+
+
+@require_http_methods(["POST"])
+def submit_infographic_email(request, study_id):
+    """
+    Accept optional email signup for sending study infographics.
+    Only available when study.collect_emails_for_infographics is True.
+    Data is stored in StudyEmailContact (separate from Response payloads).
+    """
+    study = get_object_or_404(Study.active_approved, pk=study_id)
+    if not study.collect_emails_for_infographics:
+        return JsonResponse({'error': 'This study does not collect emails for infographics.'}, status=404)
+    try:
+        payload = json.loads(request.body)
+    except json.JSONDecodeError:
+        return JsonResponse({'error': 'Invalid JSON'}, status=400)
+    email = (payload.get('email') or '').strip()
+    if not email:
+        return JsonResponse({'error': 'Email is required.'}, status=400)
+    if len(email) > 254:
+        return JsonResponse({'error': 'Email is too long.'}, status=400)
+    # Basic email format check
+    if '@' not in email or '.' not in email.split('@')[-1]:
+        return JsonResponse({'error': 'Invalid email format.'}, status=400)
+    session_id = payload.get('session_id')
+    if session_id is not None:
+        try:
+            session_id = uuid.UUID(str(session_id))
+        except (ValueError, TypeError):
+            session_id = None
+    StudyEmailContact.objects.create(
+        study=study,
+        email=email,
+        session_id=session_id,
+    )
+    return JsonResponse({'success': True})
 
 
 def study_status(request, slug):

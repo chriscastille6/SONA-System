@@ -1,6 +1,13 @@
 """
 Celery tasks for studies app.
 """
+import csv
+import json
+import logging
+import subprocess
+import tempfile
+from pathlib import Path
+
 from celery import shared_task
 from django.utils import timezone
 from django.core.mail import send_mail
@@ -10,6 +17,8 @@ from typing import Tuple
 
 from .models import Signup, Study, Response, IRBReviewerAssignment, StudyUpdate, ProtocolSubmission
 import importlib
+
+logger = logging.getLogger(__name__)
 
 
 def _notify_irb_reviewers(study, subject, message) -> Tuple[int, str]:
@@ -481,9 +490,85 @@ def run_sequential_bayes_monitoring(study_id):
         
         study.monitoring_notified = True
         study.save(update_fields=['monitoring_notified'])
+        if getattr(study, 'run_analysis_on_threshold', False):
+            run_post_decision_analysis.delay(str(study.id))
         return f"Study {study.slug}: BF={bf_value:.2f} >= {study.bf_threshold}, notification: {notification_result}"
     
     return f"Study {study.slug}: BF={bf_value:.2f}, N={n}"
+
+
+def _run_post_decision_r_script(study, data_path: Path, script_path: Path) -> Tuple[bool, str]:
+    """Run R script with Rscript; pass data_path and study_id as args. Returns (success, message)."""
+    try:
+        proc = subprocess.run(
+            ["Rscript", str(script_path), str(data_path), str(study.id)],
+            capture_output=True,
+            text=True,
+            timeout=getattr(settings, 'POST_DECISION_R_SCRIPT_TIMEOUT', 600),
+            cwd=str(script_path.parent),
+        )
+        if proc.returncode != 0:
+            return False, f"R script exit {proc.returncode}: {proc.stderr or proc.stdout or 'no output'}"
+        return True, (proc.stdout or "R script completed").strip()[:500]
+    except FileNotFoundError:
+        return False, "Rscript not found (install R and ensure Rscript is on PATH)"
+    except subprocess.TimeoutExpired:
+        return False, "R script timed out"
+    except Exception as e:
+        return False, str(e)
+
+
+@shared_task
+def run_post_decision_analysis(study_id):
+    """
+    Run post-decision analysis when optional stopping threshold has been reached.
+    Sets post_decision_analysis_run_at; if study has post_decision_r_script set,
+    exports responses to a temp CSV and runs the R script automatically.
+    """
+    try:
+        study = Study.objects.get(id=study_id)
+    except Study.DoesNotExist:
+        return f"Study {study_id} not found"
+    if not study.monitoring_notified:
+        return f"Study {study.slug}: monitoring_notified not set, skipping post-decision analysis"
+    if not getattr(study, 'run_analysis_on_threshold', False):
+        return f"Study {study.slug}: run_analysis_on_threshold disabled, skipping"
+    study.post_decision_analysis_run_at = timezone.now()
+    study.save(update_fields=['post_decision_analysis_run_at'])
+
+    script_path_str = getattr(study, 'post_decision_r_script', '').strip()
+    if not script_path_str:
+        return f"Study {study.slug}: post-decision analysis run at {study.post_decision_analysis_run_at}"
+
+    base_dir = getattr(settings, 'BASE_DIR', None) or Path(settings.MEDIA_ROOT).parent
+    script_path = Path(script_path_str) if Path(script_path_str).is_absolute() else base_dir / script_path_str
+    if not script_path.exists():
+        logger.warning("Post-decision R script not found: %s", script_path)
+        return f"Study {study.slug}: R script not found at {script_path}"
+
+    responses = list(study.responses.order_by('created_at').values('id', 'session_id', 'created_at', 'payload'))
+    if not responses:
+        return f"Study {study.slug}: no responses to export for R analysis"
+
+    with tempfile.NamedTemporaryFile(mode='w', suffix='.csv', delete=False, newline='', encoding='utf-8') as f:
+        data_path = Path(f.name)
+        writer = csv.writer(f)
+        writer.writerow(['response_id', 'session_id', 'created_at', 'payload'])
+        for r in responses:
+            writer.writerow([
+                str(r['id']),
+                str(r['session_id']),
+                r['created_at'].isoformat() if r['created_at'] else '',
+                json.dumps(r['payload'], ensure_ascii=False),
+            ])
+    try:
+        ok, msg = _run_post_decision_r_script(study, data_path, script_path)
+        if not ok:
+            logger.warning("Post-decision R script failed for study %s: %s", study.slug, msg)
+            return f"Study {study.slug}: R analysis failed: {msg}"
+        return f"Study {study.slug}: post-decision analysis run at {study.post_decision_analysis_run_at}, R: {msg}"
+    finally:
+        data_path.unlink(missing_ok=True)
 
 
 @shared_task

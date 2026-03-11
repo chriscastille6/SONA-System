@@ -17,6 +17,8 @@ urlpatterns = [
     
     # Protocol response submission
     path('studies/<uuid:study_id>/submit/', study_views.submit_response, name='submit_response'),
+    # Optional email signup for study infographics (separate dataset)
+    path('studies/<uuid:study_id>/infographic-email/', study_views.submit_infographic_email, name='submit_infographic_email'),
 ]
 
 

@@ -156,6 +156,24 @@ class Study(models.Model):
     current_bf = models.FloatField(null=True, blank=True, help_text="Current Bayes Factor value")
     monitoring_enabled = models.BooleanField(default=False, help_text="Enable sequential Bayesian monitoring")
     monitoring_notified = models.BooleanField(default=False, help_text="Notification sent when BF >= threshold")
+    run_analysis_on_threshold = models.BooleanField(
+        default=False,
+        help_text="When True, run post-decision analysis task when BF threshold is reached"
+    )
+    post_decision_analysis_run_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="When the post-decision analysis task last ran (set when threshold reached)"
+    )
+    post_decision_r_script = models.CharField(
+        max_length=500,
+        blank=True,
+        help_text="Path to R script to run when threshold is reached (relative to project root or absolute). Leave blank to skip R analysis."
+    )
+    collect_emails_for_infographics = models.BooleanField(
+        default=False,
+        help_text="Allow participants to optionally share their email to receive study infographics (stored separately from response data)"
+    )
     
     # Metadata
     duration_minutes = models.IntegerField(default=30, help_text="Estimated duration")
@@ -535,6 +553,39 @@ class Response(models.Model):
     
     def __str__(self):
         return f"Response for {self.study.title} at {self.created_at}"
+
+
+class StudyEmailContact(models.Model):
+    """
+    Optional email signup for sending study infographics.
+    Stored in a separate dataset from Response payloads for IRB/privacy clarity.
+    """
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    study = models.ForeignKey(
+        Study,
+        on_delete=models.CASCADE,
+        related_name='infographic_contacts'
+    )
+    email = models.EmailField()
+    session_id = models.UUIDField(
+        null=True,
+        blank=True,
+        db_index=True,
+        help_text="Optional link to response session if submitted in same flow"
+    )
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    
+    class Meta:
+        db_table = 'study_email_contacts'
+        verbose_name = 'Study infographic contact'
+        verbose_name_plural = 'Study infographic contacts'
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['study', 'created_at']),
+        ]
+    
+    def __str__(self):
+        return f"{self.email} ({self.study.title})"
 
 
 class IRBReview(models.Model):

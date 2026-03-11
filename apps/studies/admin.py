@@ -11,6 +11,7 @@ from .models import (
     Timeslot,
     Signup,
     Response,
+    StudyEmailContact,
     IRBReview,
     ReviewDocument,
     IRBReviewerAssignment,
@@ -63,8 +64,8 @@ class StudyUpdateInline(admin.StackedInline):
 
 @admin.register(Study)
 class StudyAdmin(admin.ModelAdmin):
-    list_display = ['title', 'slug', 'researcher', 'mode', 'credit_value', 'is_active', 'irb_status', 'irb_approved_by', 'monitoring_enabled', 'created_at']
-    list_filter = ['mode', 'is_active', 'is_approved', 'irb_status', 'monitoring_enabled', 'created_at']
+    list_display = ['title', 'slug', 'researcher', 'mode', 'credit_value', 'is_active', 'irb_status', 'irb_approved_by', 'monitoring_enabled', 'collect_emails_for_infographics', 'created_at']
+    list_filter = ['mode', 'is_active', 'is_approved', 'irb_status', 'monitoring_enabled', 'collect_emails_for_infographics', 'created_at']
     search_fields = ['title', 'slug', 'researcher__email', 'researcher__first_name', 'researcher__last_name', 'irb_number']
     raw_id_fields = ['researcher', 'irb_approved_by', 'irb_last_reviewed_by']
     readonly_fields = ['created_at', 'updated_at', 'current_bf', 'irb_approved_at', 'irb_last_reviewed_at', 'view_audit_trail']
@@ -88,7 +89,11 @@ class StudyAdmin(admin.ModelAdmin):
             'fields': ('osf_enabled', 'osf_project_id', 'osf_link')
         }),
         ('Bayesian Monitoring', {
-            'fields': ('monitoring_enabled', 'min_sample_size', 'bf_threshold', 'analysis_plugin', 'current_bf', 'monitoring_notified')
+            'fields': ('monitoring_enabled', 'min_sample_size', 'bf_threshold', 'analysis_plugin', 'current_bf', 'monitoring_notified', 'run_analysis_on_threshold', 'post_decision_analysis_run_at', 'post_decision_r_script')
+        }),
+        ('Infographic contact', {
+            'fields': ('collect_emails_for_infographics',),
+            'description': 'When enabled, participants can optionally share their email to receive study infographics. Stored in Study infographic contacts (separate from response data).',
         }),
         ('Study Details', {
             'fields': ('duration_minutes', 'max_participants', 'eligibility', 'consent_text', 'external_link')
@@ -209,6 +214,16 @@ class ResponseAdmin(admin.ModelAdmin):
             'classes': ('collapse',)
         }),
     )
+
+
+@admin.register(StudyEmailContact)
+class StudyEmailContactAdmin(admin.ModelAdmin):
+    list_display = ['email', 'study', 'created_at', 'session_id']
+    list_filter = ['study', 'created_at']
+    search_fields = ['email', 'study__title']
+    raw_id_fields = ['study']
+    readonly_fields = ['id', 'created_at']
+    ordering = ['-created_at']
 
 
 # ============================================================================

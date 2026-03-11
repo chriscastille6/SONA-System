@@ -1,0 +1,40 @@
+EXAMPLE EMAIL 1 — Sample size threshold reached
+============================================================
+
+To: christopher.castille@nicholls.edu
+Subject: [Goals-refs] Sample size threshold reached — vignette R1 (N=10)
+
+The sample size threshold has been reached for the Decision Making and Unethical Behavior study (goals-refs).
+
+Vignette: R1
+Valid N: 10 (minimum N for analysis is 10 per vignette).
+
+Analysis has been triggered for this vignette. You will receive a follow-up email if the evidence threshold (BF ≥ 10) is reached for the hypothesis being tested.
+
+This is a smoke-test example. No data was modified.
+
+------------------------------------------------------------
+EXAMPLE EMAIL 2 — Evidence threshold / retirement suggestion
+============================================================
+
+To: christopher.castille@nicholls.edu
+Subject: [Goals-refs] Evidence threshold reached — retirement suggestion for vignette R1
+
+The evidence threshold has been reached for the Decision Making and Unethical Behavior study (goals-refs).
+
+Vignette: R1
+Hypothesis tested: Goal-frame effect (below vs. above goal)
+BF (alternative): 12.3
+Interpretation: Evidence supports the alternative hypothesis (goal-frame effect). BF ≥ 10 per decision rules.
+
+Suggestion: We suggest retiring vignette R1 (stop data collection for this vignette).
+
+Your decision: Reply to this email with one of the following:
+  • Retire R1 — to retire the vignette (stop collection).
+  • Keep R1 — to continue collection for this vignette.
+
+Your reply determines whether this vignette is retired. No automatic retirement is applied.
+
+(When implemented: participants who saw this vignette and opted in will be contactable for sharing findings.)
+
+This is a smoke-test example. No data was modified.

@@ -134,11 +134,21 @@ python manage.py create_ei_pilot
 
 This creates a demo study configured for pilot testing.
 
+## Post-decision R analysis
+
+When **Run analysis on threshold** is enabled and the study has **Post-decision R script** set, the system runs that R script automatically after the BF threshold is reached. The script receives:
+
+1. **Data path** – path to a temporary CSV of all responses (columns: `response_id`, `session_id`, `created_at`, `payload` where `payload` is JSON).
+2. **Study ID** – the study UUID.
+
+Use a path relative to the project root (e.g. `scripts/post_decision_analysis.R`) or an absolute path. A stub script is provided at `scripts/post_decision_analysis.R`; replace it with your own analysis (e.g. BayesFactor, vignette-level BFs, exports). R must be installed and `Rscript` on PATH where the Celery worker runs. Optional: set `POST_DECISION_R_SCRIPT_TIMEOUT` in settings (seconds, default 600).
+
 ## Celery Tasks
 
 The monitoring runs via Celery background tasks:
 
 - **`run_sequential_bayes_monitoring(study_id)`**: Computes BF and checks threshold
+- **`run_post_decision_analysis(study_id)`**: Sets timestamp and, if configured, runs the R script
 - **`send_bf_notification(study_id)`**: Sends email when threshold reached
 
 To trigger manually:
