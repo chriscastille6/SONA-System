@@ -57,12 +57,10 @@
                                     {% if study.monitoring_enabled %}
                                         <span class="badge bg-success">Monitoring On</span>
                                     {% endif %}
-                                    {% if study.irb_status != 'not_required' %}
-                                        {% if submitted and submitted.decision == 'pending' %}
-                                            <span class="badge bg-primary">IRB: Submitted for review</span>
-                                        {% else %}
-                                            <span class="badge bg-info">IRB: {{ study.get_irb_status_display }}</span>
-                                        {% endif %}
+                                    {% if submitted and submitted.decision == 'pending' %}
+                                        <span class="badge bg-primary">Submitted for review</span>
+                                    {% elif study.irb_status != 'not_required' %}
+                                        <span class="badge bg-info">IRB: {{ study.get_irb_status_display }}</span>
                                     {% endif %}
                                     {% if pending_amendment %}
                                         <span class="badge bg-warning text-dark">Addendum pending</span>
