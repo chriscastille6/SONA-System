@@ -2,7 +2,7 @@
 Views for studies app.
 """
 from django.db.models import Prefetch, Q
-from django.db import models
+from django.db import models, transaction
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse, Http404, HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -1063,63 +1063,75 @@ def protocol_submit(request, study_id):
         return redirect('studies:protocol_enter', study_id=study.id)
     
     if request.method == 'POST':
-        # Mark draft as submitted
-        draft_submission.status = 'submitted'
-        draft_submission.submitted_by = request.user
-        draft_submission.review_type = draft_submission.pi_suggested_review_type  # Initial, may change
-        draft_submission.save()  # This will generate submission_number and set submitted_at
-        
-        # Refresh from database to get the generated submission_number
-        draft_submission.refresh_from_db()
-        
-        # Update study deception flag
-        study.involves_deception = draft_submission.involves_deception
-        study.save(update_fields=['involves_deception'])
-        
-        # Assign college rep
-        assign_college_rep(draft_submission)
-        
-        # Route submission
-        route_submission(draft_submission)
-        
-        # Send email notification to college rep
-        from .tasks import notify_college_rep_about_submission
         try:
-            notify_result = notify_college_rep_about_submission(draft_submission)
-            if notify_result and 'Failed' not in notify_result:
-                messages.info(request, f'College representative has been notified via email.')
-        except Exception as e:
-            # Don't fail submission if email fails
-            pass
-        
-        # Check if AI review was requested (from form if present)
-        use_ai_review = request.POST.get('use_ai_review', False)
-        if use_ai_review:
-            if getattr(settings, 'AI_REVIEW_ENABLED', False):
-                # Create AI review
-                ai_review = IRBReview.objects.create(
-                    study=study,
-                    initiated_by=request.user,
+            with transaction.atomic():
+                # Mark draft as submitted (ensure review_type is set; fallback to exempt)
+                draft_submission.status = 'submitted'
+                draft_submission.submitted_by = request.user
+                suggested = (draft_submission.pi_suggested_review_type or '').strip() or 'exempt'
+                if suggested not in ('exempt', 'expedited', 'full'):
+                    suggested = 'exempt'
+                draft_submission.review_type = suggested
+                draft_submission.save()  # This will generate submission_number and set submitted_at
+
+                # Refresh from database to get the generated submission_number
+                draft_submission.refresh_from_db()
+
+                # Update study deception flag
+                study.involves_deception = draft_submission.involves_deception
+                study.save(update_fields=['involves_deception'])
+
+                # Assign college rep
+                assign_college_rep(draft_submission)
+
+                # Route submission
+                route_submission(draft_submission)
+
+                # Send email notification to college rep
+                from .tasks import notify_college_rep_about_submission
+                try:
+                    notify_result = notify_college_rep_about_submission(draft_submission)
+                    if notify_result and 'Failed' not in notify_result:
+                        messages.info(request, 'College representative has been notified via email.')
+                except Exception:
+                    pass
+
+                # Check if AI review was requested (from form if present)
+                use_ai_review = request.POST.get('use_ai_review', False)
+                if use_ai_review:
+                    if getattr(settings, 'AI_REVIEW_ENABLED', False):
+                        ai_review = IRBReview.objects.create(
+                            study=study,
+                            initiated_by=request.user,
+                        )
+                        draft_submission.ai_review = ai_review
+                        draft_submission.save(update_fields=['ai_review'])
+                        run_irb_ai_review.delay(str(ai_review.id))
+                        messages.info(request, 'AI review initiated. You will be notified when complete.')
+                    else:
+                        messages.warning(request, 'AI review is not currently enabled. Protocol submitted without AI review.')
+
+                submission_detail_url = request.build_absolute_uri(
+                    reverse('studies:protocol_submission_detail', args=[draft_submission.id])
                 )
-                draft_submission.ai_review = ai_review
-                draft_submission.save(update_fields=['ai_review'])
-                run_irb_ai_review.delay(str(ai_review.id))
-                messages.info(request, 'AI review initiated. You will be notified when complete.')
-            else:
-                messages.warning(request, 'AI review is not currently enabled. Protocol submitted without AI review.')
-        
-        submission_detail_url = request.build_absolute_uri(
-            reverse('studies:protocol_submission_detail', args=[draft_submission.id])
-        )
-        dashboard_url = request.build_absolute_uri(reverse('studies:researcher_dashboard'))
-        submission_number = draft_submission.submission_number or 'Pending'
-        messages.success(
-            request,
-            f'Protocol submitted successfully! Submission #{submission_number}. '
-            f'Your college representative will review it within 5-7 business days. '
-            f'View submission details: {submission_detail_url} or return to dashboard: {dashboard_url}'
-        )
-        return redirect('studies:protocol_submission_detail', submission_id=draft_submission.id)
+                dashboard_url = request.build_absolute_uri(reverse('studies:researcher_dashboard'))
+                submission_number = draft_submission.submission_number or 'Pending'
+                messages.success(
+                    request,
+                    f'Protocol submitted successfully! Submission #{submission_number}. '
+                    f'Your college representative will review it within 5-7 business days. '
+                    f'View submission details: {submission_detail_url} or return to dashboard: {dashboard_url}'
+                )
+                return redirect('studies:protocol_submission_detail', submission_id=draft_submission.id)
+        except Exception as e:
+            import logging
+            logging.getLogger(__name__).exception('Protocol submit failed for study %s: %s', study_id, e)
+            messages.error(
+                request,
+                'Submission could not be completed. The error has been logged. '
+                'Please try again or contact support if the problem persists.'
+            )
+            return redirect('studies:protocol_submit', study_id=study.id)
     else:
         # Show confirmation page before submitting
         return render(request, 'studies/protocol_submit_confirm.html', {

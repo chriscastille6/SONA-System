@@ -1284,12 +1284,20 @@ class ProtocolSubmission(models.Model):
         """Auto-generate submission number (only when submitting) and increment version."""
         # Only generate submission number when status is 'submitted' and it doesn't exist
         if self.status == 'submitted' and not self.submission_number:
-            # Generate submission number: SUB-YYYY-NNN
+            # Generate submission number: SUB-YYYY-NNN (use max existing NNN + 1 to avoid collisions)
             year = timezone.now().year
-            count = ProtocolSubmission.objects.filter(
-                submission_number__startswith=f'SUB-{year}'
-            ).count() + 1
-            self.submission_number = f'SUB-{year}-{count:03d}'
+            prefix = f'SUB-{year}-'
+            existing = list(ProtocolSubmission.objects.filter(
+                submission_number__startswith=prefix
+            ).values_list('submission_number', flat=True))
+            numbers = []
+            for s in existing:
+                if s and len(s) > len(prefix):
+                    suffix = s[len(prefix):]
+                    if suffix.isdigit():
+                        numbers.append(int(suffix))
+            next_num = (max(numbers) + 1) if numbers else 1
+            self.submission_number = f'SUB-{year}-{next_num:03d}'
         
         # Set submitted_at when status changes to 'submitted'
         if self.status == 'submitted' and not self.submitted_at:

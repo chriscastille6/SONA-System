@@ -36,7 +36,7 @@
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center">
                                     <span><strong>Suggested Review Type:</strong></span>
-                                    <span class="badge bg-info">{{ draft_submission.get_pi_suggested_review_type_display }}</span>
+                                    <span class="badge bg-info">{{ draft_submission.get_pi_suggested_review_type_display|default:"Exempt" }}</span>
                                 </li>
                                 {% if draft_submission.involves_deception %}
                                 <li class="list-group-item d-flex justify-content-between align-items-center">

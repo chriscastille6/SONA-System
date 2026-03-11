@@ -222,9 +222,12 @@ def route_submission(submission):
             submission.save(update_fields=['chair_reviewer', 'review_type'])
         return submission
     
-    # Set initial review type from PI suggestion
-    submission.review_type = submission.pi_suggested_review_type
-    
+    # Set initial review type from PI suggestion (fallback to exempt if missing)
+    suggested = (submission.pi_suggested_review_type or '').strip() or 'exempt'
+    if suggested not in ('exempt', 'expedited', 'full'):
+        suggested = 'exempt'
+    submission.review_type = suggested
+
     # Route based on review type
     if submission.review_type == 'exempt':
         # Exempt can be approved by college rep
