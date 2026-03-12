@@ -1,0 +1,23 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" type="text/css" href="{% static 'css/admin_custom.css' %}" id="prams-admin-custom-css">
+{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+{# Fallback: ensure layout applies even if static file fails to load #}
+<style id="prams-admin-inline">
+#container { max-width: 1200px; margin-left: auto; margin-right: auto; padding: 0 24px 24px; }
+#header { max-width: 1200px; margin-left: auto; margin-right: auto; box-sizing: border-box; }
+#content-main .module { margin-bottom: 24px; background: #fff; border: 1px solid #e0e0e0; border-radius: 6px; overflow: hidden; }
+#content-main .module caption, #content-main .module h2 { padding: 14px 20px; margin: 0; background: #E5E5E5; border-bottom: 1px solid #e0e0e0; }
+#content-main .module th, #content-main .module td { padding: 12px 20px; border-bottom: 1px solid #e0e0e0; }
+#content a:link { color: #A6192E; }
+.breadcrumbs { padding: 12px 0; margin-bottom: 16px; border-bottom: 1px solid #e0e0e0; }
+</style>
+{% endblock %}

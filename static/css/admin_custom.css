@@ -1,0 +1,199 @@
+/* PRAMS Admin – layout and hierarchy (extends Django admin) */
+/* If you see styled cards and a max-width layout, this file is loading. */
+
+:root {
+    --prams-primary: #A6192E;
+    --prams-primary-dark: #801a28;
+    --prams-gray: #7C858E;
+    --prams-dark: #4A4A4A;
+    --prams-light: #E5E5E5;
+    --prams-bg: #f6f6f6;
+    --prams-card-bg: #fff;
+    --prams-border: #e0e0e0;
+    --admin-max-width: 1200px;
+}
+
+/* Constrain width and center content */
+#container {
+    max-width: var(--admin-max-width);
+    margin: 0 auto;
+    padding: 0 24px 24px;
+}
+
+#header {
+    max-width: var(--admin-max-width);
+    margin: 0 auto;
+    padding: 12px 24px;
+    box-sizing: border-box;
+}
+
+#content {
+    padding: 20px 0;
+}
+
+/* Breadcrumbs */
+#content-main {
+    max-width: var(--admin-max-width);
+    margin: 0 auto;
+}
+
+.breadcrumbs {
+    padding: 12px 0;
+    margin-bottom: 16px;
+    font-size: 13px;
+    color: var(--prams-dark);
+    border-bottom: 1px solid var(--prams-border);
+}
+
+.breadcrumbs a {
+    color: var(--prams-primary);
+}
+
+/* Module list (index page) – clearer grouping and alignment */
+#content-main .module {
+    margin-bottom: 24px;
+    background: var(--prams-card-bg);
+    border: 1px solid var(--prams-border);
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+#content-main .module table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#content-main .module caption,
+#content-main .module h2 {
+    padding: 14px 20px;
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--prams-dark);
+    background: var(--prams-light);
+    border-bottom: 1px solid var(--prams-border);
+    text-align: left;
+}
+
+#content-main .module caption a,
+#content-main .module h2 a {
+    color: var(--prams-primary);
+}
+
+#content-main .module th,
+#content-main .module td {
+    padding: 12px 20px;
+    text-align: left;
+    border-bottom: 1px solid var(--prams-border);
+    vertical-align: middle;
+}
+
+#content-main .module tr:last-child th,
+#content-main .module tr:last-child td {
+    border-bottom: none;
+}
+
+#content-main .module td a {
+    margin-right: 16px;
+}
+
+/* “Select … to change” and action bar */
+#changelist .results,
+#changelist-filter {
+    max-width: var(--admin-max-width);
+}
+
+#changelist .actions {
+    padding: 12px 0;
+    margin-bottom: 16px;
+}
+
+#changelist .actions label {
+    margin-right: 8px;
+}
+
+#changelist .actions select {
+    margin-right: 8px;
+    min-width: 180px;
+}
+
+/* Form and filter alignment */
+#changelist-filter h2 {
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+}
+
+/* Theme toggles – single row, clearer spacing */
+#toggle-theme {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* Buttons */
+.button,
+input[type="submit"],
+input[type="button"],
+.submit-row input {
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-weight: 500;
+}
+
+/* Header branding */
+#branding h1 {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+#branding h1 a {
+    color: var(--prams-primary);
+}
+
+#branding h1 a:hover {
+    color: var(--prams-primary-dark);
+}
+
+/* User tools in header */
+#user-tools {
+    font-size: 13px;
+    padding: 4px 0;
+}
+
+#user-tools a {
+    margin-left: 12px;
+}
+
+/* General link consistency */
+#content a:link {
+    color: var(--prams-primary);
+}
+
+#content a:hover {
+    color: var(--prams-primary-dark);
+}
+
+/* Search bar */
+#changelist-search input[type="text"] {
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid var(--prams-border);
+    min-width: 220px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    #container,
+    #header {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    #content-main .module th,
+    #content-main .module td {
+        padding: 10px 14px;
+    }
+}
