@@ -936,6 +936,7 @@ def hr_sjt_infographic_preview(request):
     return render(request, 'studies/hr_sjt_infographic_preview.html', {
         'study': study,
         'lab_name': 'People Analytics Lab of the Bayou',
+        'lab_website_url': 'https://bayoupal.nicholls.edu',
         'positions_summary': positions_summary,
         'has_ridge_image': has_ridge_image,
         'has_logo': has_logo,

@@ -7,13 +7,20 @@
     <title>Sample infographic — {{ lab_name }}</title>
     <style>
         body { margin: 0; background: #fff; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .wrap { text-align: center; }
         .slide { max-width: 100%; height: auto; display: block; }
+        .lab-link { margin: 0.75rem 0 0; font-family: system-ui, sans-serif; font-size: 0.9rem; }
+        .lab-link a { color: #E3120B; text-decoration: none; }
+        .lab-link a:hover { text-decoration: underline; }
         .fallback { padding: 2rem; font-family: system-ui, sans-serif; color: #666; text-align: center; max-width: 480px; }
     </style>
 </head>
 <body>
     {% if has_ridge_image %}
-        <img src="{% static 'images/infographics/wfh_productivity_ridges.png' %}" alt="Sample infographic — effectiveness ratings by perspective" class="slide">
+        <div class="wrap">
+            <img src="{% static 'images/infographics/wfh_productivity_ridges.png' %}" alt="Sample infographic — effectiveness ratings by perspective" class="slide">
+            <p class="lab-link"><a href="{{ lab_website_url }}" target="_blank" rel="noopener noreferrer">{{ lab_website_url }}</a></p>
+        </div>
     {% else %}
         <div class="fallback">
             <p><strong>Generate the slide:</strong> Run from repo root:</p>
