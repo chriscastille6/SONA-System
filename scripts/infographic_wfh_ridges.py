@@ -14,9 +14,11 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy import stats
 
-# Red shades with clearer contrast (light to dark) for the four density distributions
-RED_SHADES = ["#f08080", "#c41e3a", "#A6192E", "#6b0f1a"]  # light, medium, Nicholls, dark
-NICHOLLS_RED_DARK = "#4a0a12"  # outline for darkest fill
+# Two clusters: optimistic (Undergrads, Working Prof) = darker; skeptical (MBA, Executives) = lighter
+CLUSTER_OPTIMISTIC = "#A6192E"   # darker red — Undergraduate Students, Working Professionals
+CLUSTER_SKEPTICAL = "#e8a0a0"   # lighter red — MBA Students, Executives
+CLUSTER_OPTIMISTIC_EDGE = "#6b0f1a"
+CLUSTER_SKEPTICAL_EDGE = "#c45c5c"
 
 # Repo root: walk up until we find static/
 _resolved = Path(__file__).resolve()
@@ -103,14 +105,17 @@ def main():
     base = 0
     # step already set above for ylim
 
+    # reversed order: bottom to top = Executives(0), Working Prof(1), MBA(2), Undergrad(3)
+    # Optimistic cluster (darker): Undergrad, Working Prof.  Skeptical (lighter): MBA, Executives.
     for i, persp in enumerate(reversed(PERSPECTIVES)):
         name, n, mean, sd = persp["name"], persp["n"], persp["mean"], persp["sd"]
         raw = np.random.normal(mean, sd, n)
         raw = np.clip(raw, X_MIN, X_MAX)
         dens = smooth_kde_clipped(raw, x_grid, bw_mult=1.2)
         y_curve = base + dens * step * 0.88
-        fill_color = RED_SHADES[i % len(RED_SHADES)]
-        edge_color = RED_SHADES[min(i + 1, len(RED_SHADES) - 1)] if i < len(RED_SHADES) - 1 else NICHOLLS_RED_DARK
+        is_skeptical = i in (0, 2)  # Executives, MBA
+        fill_color = CLUSTER_SKEPTICAL if is_skeptical else CLUSTER_OPTIMISTIC
+        edge_color = CLUSTER_SKEPTICAL_EDGE if is_skeptical else CLUSTER_OPTIMISTIC_EDGE
         ax.fill_between(x_grid, base, y_curve, color=fill_color, alpha=0.9, linewidth=0)
         ax.plot(x_grid, y_curve, color=edge_color, linewidth=1, alpha=0.95)
         # Two-line labels with paragraph spacing (name on first line, (n = x) on second)
