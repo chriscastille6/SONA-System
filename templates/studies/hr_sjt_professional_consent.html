@@ -11,7 +11,6 @@
                 <hr>
 
                 <div class="mb-4 consent-body" style="white-space: pre-wrap;">{{ consent_body|safe }}</div>
-                <p class="mb-4 small text-muted">Preview the report we will share: <a href="{% url 'studies:hr_sjt_infographic_preview' %}" target="_blank" rel="noopener">View sample infographic</a>.</p>
 
                 {% if error %}
                 <div class="alert alert-warning" role="alert">{{ error }}</div>

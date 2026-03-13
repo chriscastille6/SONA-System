@@ -454,7 +454,7 @@ def protocol_consent_done(request, slug):
 
 
 # Consent form text for HR SJT student secondary-data consent (MNGT 425).
-# Placeholders: pi_name, pi_department, withdraw_contact_name, withdraw_contact_email.
+# Placeholders: pi_name, pi_department, withdraw_contact_name, withdraw_contact_email, infographic_preview_link.
 HR_SJT_STUDENT_CONSENT_BODY = """
 <strong>Informed Consent for Participation in Research</strong>
 <strong>Project Title:</strong> HR Situational Judgment Test: Evidence-Based HR Decision-Making
@@ -471,7 +471,7 @@ If you agree to participate, you grant the researcher permission to include your
 
 <strong>Data Extraction:</strong> Only the numerical ratings and categorical responses from your LMS submission will be used. Your written reflections or personal identifiers will be removed during the analysis phase.
 
-<strong>Appreciation:</strong> As a token of our appreciation for participating, we will share an aggregated report—as a lab-branded infographic from the People Analytics Lab of the Bayou—highlighting how individuals from different perspectives (e.g., students, working professionals, MBA students, executives) rated the content in these vignettes. No individuals will be identified. You may sign up to receive the infographic when it is ready.
+<strong>Appreciation:</strong> As a token of our appreciation for participating, we will share an aggregated report—as a lab-branded infographic from the People Analytics Lab of the Bayou—highlighting how individuals from different perspectives (e.g., students, working professionals, MBA students, executives) rated the content in these vignettes. No individuals will be identified. You may sign up to receive the infographic when it is ready. Preview the report we will share: {infographic_preview_link}.
 
 <strong>3. Confidentiality</strong>
 <strong>Your privacy is our priority.</strong>
@@ -530,7 +530,12 @@ def hr_sjt_student_data_consent(request):
     On POST with consent=agree and email, records consent and redirects to thank-you.
     """
     study = get_object_or_404(Study.objects.all(), slug='hr-sjt')
-    ctx = _hr_sjt_student_consent_context()
+    ctx = {
+        **_hr_sjt_student_consent_context(),
+        'infographic_preview_link': '<a href="{}" target="_blank" rel="noopener">View sample infographic</a>'.format(
+            request.build_absolute_uri(reverse('studies:hr_sjt_infographic_preview'))
+        ),
+    }
     consent_body = HR_SJT_STUDENT_CONSENT_BODY.format(**ctx).strip()
 
     if request.method == 'POST':
@@ -580,7 +585,7 @@ def hr_sjt_student_data_consent_done(request):
 
 
 # Consent form for HR professionals (working professionals) taking the HR SJT.
-# Placeholders: pi_name, pi_department, withdraw_contact_name, withdraw_contact_email.
+# Placeholders: pi_name, pi_department, withdraw_contact_name, withdraw_contact_email, infographic_preview_link.
 HR_SJT_PROFESSIONAL_CONSENT_BODY = """
 <strong>Informed Consent for Participation in Research</strong>
 <strong>Project Title:</strong> HR Situational Judgment Test: Evidence-Based HR Decision-Making
@@ -597,7 +602,7 @@ If you agree to participate, you will:
 • Receive a feedback report summarizing your ratings.
 
 <strong>3. Time and Compensation</strong>
-The study takes approximately 45–60 minutes. <strong>There is no monetary compensation.</strong> As a token of our appreciation, we will share an aggregated report—as a lab-branded infographic from the People Analytics Lab of the Bayou—highlighting how individuals from different perspectives (e.g., students, working professionals, MBA students, executives) rated the content in these vignettes. No individuals will be identified. You may sign up to receive the infographic when it is ready. Your participation is voluntary and appreciated.
+The study takes approximately 45–60 minutes. <strong>There is no monetary compensation.</strong> As a token of our appreciation, we will share an aggregated report—as a lab-branded infographic from the People Analytics Lab of the Bayou—highlighting how individuals from different perspectives (e.g., students, working professionals, MBA students, executives) rated the content in these vignettes. No individuals will be identified. You may sign up to receive the infographic when it is ready. Preview the report we will share: {infographic_preview_link}. Your participation is voluntary and appreciated.
 
 <strong>4. Confidentiality</strong>
 <strong>Your privacy is our priority.</strong> Your responses will be de-identified and stored with a unique code. No identifiable information will be included in any publications or shared with others.
@@ -617,7 +622,12 @@ def hr_sjt_professional_consent(request):
     No login required. On agree, store consent in session and redirect to demographics.
     """
     study = get_object_or_404(Study.objects.all(), slug='hr-sjt')
-    ctx = _hr_sjt_student_consent_context()
+    ctx = {
+        **_hr_sjt_student_consent_context(),
+        'infographic_preview_link': '<a href="{}" target="_blank" rel="noopener">View sample infographic</a>'.format(
+            request.build_absolute_uri(reverse('studies:hr_sjt_infographic_preview'))
+        ),
+    }
     consent_body = HR_SJT_PROFESSIONAL_CONSENT_BODY.format(**ctx).strip()
 
     if request.method == 'POST':
@@ -1504,6 +1514,10 @@ def protocol_submit(request, study_id):
     if request.method == 'POST':
         try:
             with transaction.atomic():
+                # Save full protocol PDF if uploaded
+                full_pdf = request.FILES.get('full_protocol_pdf')
+                if full_pdf and full_pdf.name.lower().endswith('.pdf'):
+                    draft_submission.full_protocol_pdf = full_pdf
                 # Mark draft as submitted (ensure review_type is set; fallback to exempt)
                 draft_submission.status = 'submitted'
                 draft_submission.submitted_by = request.user
