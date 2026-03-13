@@ -18,7 +18,7 @@
 <body>
     {% if has_ridge_image %}
         <div class="wrap">
-            <img src="{% static 'images/infographics/wfh_productivity_ridges.png' %}" alt="Sample infographic — effectiveness ratings by perspective" class="slide">
+            <img src="{{ infographic_image_url }}" alt="Sample infographic — effectiveness ratings by perspective" class="slide">
             <p class="lab-link"><a href="{{ lab_website_url }}" target="_blank" rel="noopener noreferrer">{{ lab_website_url }}</a></p>
         </div>
     {% else %}

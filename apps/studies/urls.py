@@ -45,6 +45,7 @@ urlpatterns = [
     path('hr-sjt/professional-demographics/', views.hr_sjt_professional_demographics, name='hr_sjt_professional_demographics'),
     path('hr-sjt/infographic/', views.hr_sjt_infographic_signup, name='hr_sjt_infographic_signup'),
     path('hr-sjt/infographic/preview/', views.hr_sjt_infographic_preview, name='hr_sjt_infographic_preview'),
+    path('hr-sjt/infographic/image/', views.hr_sjt_infographic_image, name='hr_sjt_infographic_image'),
     path('<slug:slug>/status/', views.study_status, name='status'),
     
     # IRB AI Review

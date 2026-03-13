@@ -913,6 +913,25 @@ def hr_sjt_infographic_signup(request):
     })
 
 
+def hr_sjt_infographic_image(request):
+    """
+    Serve the WFH ridges infographic PNG so it loads reliably (no dependency on static/CDN).
+    Public; no login.
+    """
+    from pathlib import Path
+    static_dirs = getattr(settings, 'STATICFILES_DIRS', [Path(settings.BASE_DIR) / 'static'])
+    ridge_name = Path('images/infographics/wfh_productivity_ridges.png')
+    for base in static_dirs:
+        path = Path(base) / ridge_name
+        if path.is_file():
+            with open(path, 'rb') as f:
+                body = f.read()
+            response = HttpResponse(body, content_type='image/png')
+            response['Cache-Control'] = 'public, max-age=3600'
+            return response
+    raise Http404('Infographic image not found. Run: python3 scripts/infographic_wfh_ridges.py')
+
+
 def hr_sjt_infographic_preview(request):
     """
     View the lab-branded infographic: hypothetical WFH productivity by position.
@@ -933,6 +952,7 @@ def hr_sjt_infographic_preview(request):
     ridge_name = Path('images/infographics/wfh_productivity_ridges.png')
     has_ridge_image = any((Path(d) / ridge_name).is_file() for d in static_dirs)
     has_logo = any((Path(d) / Path('images/lab_emblem.png')).is_file() for d in static_dirs)
+    infographic_image_url = reverse('studies:hr_sjt_infographic_image') if has_ridge_image else ''
     return render(request, 'studies/hr_sjt_infographic_preview.html', {
         'study': study,
         'lab_name': 'People Analytics Lab of the Bayou',
@@ -940,6 +960,7 @@ def hr_sjt_infographic_preview(request):
         'positions_summary': positions_summary,
         'has_ridge_image': has_ridge_image,
         'has_logo': has_logo,
+        'infographic_image_url': infographic_image_url,
     })
 
 
