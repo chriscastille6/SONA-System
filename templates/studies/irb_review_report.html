@@ -73,6 +73,63 @@
             </div>
         </div>
         
+        <!-- What each agent did (transparency) -->
+        {% if agent_sections %}
+        <div class="card mb-4">
+            <div class="card-header">
+                <h4 class="mb-0">Review by agent</h4>
+                <p class="text-muted small mb-0 mt-1">What each AI agent reviewed and what it found.</p>
+            </div>
+            <div class="card-body">
+                <div class="accordion" id="agentSectionsAccordion">
+                    {% for section in agent_sections %}
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#agent-{{ section.key }}"
+                                    aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}">
+                                <span class="fw-semibold me-2">{{ section.name }}</span>
+                                <span class="badge bg-light text-dark me-2">{{ section.model_used }}</span>
+                                {% if section.risk_assessment %}
+                                <span class="badge bg-{% if section.risk_assessment == 'high' %}danger{% elif section.risk_assessment == 'moderate' %}warning{% elif section.risk_assessment == 'low' or section.risk_assessment == 'minimal' %}success{% else %}secondary{% endif %}">
+                                    {{ section.risk_assessment }}
+                                </span>
+                                {% endif %}
+                            </button>
+                        </h2>
+                        <div id="agent-{{ section.key }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}"
+                             data-bs-parent="#agentSectionsAccordion">
+                            <div class="accordion-body">
+                                <p class="text-muted small mb-2"><strong>Focus:</strong> {{ section.focus }}</p>
+                                {% if section.summary %}
+                                <p class="mb-2">{{ section.summary }}</p>
+                                {% endif %}
+                                {% if section.findings %}
+                                <p class="small fw-semibold mb-1">Findings ({{ section.findings|length }}):</p>
+                                <ul class="list-unstyled small mb-0">
+                                    {% for f in section.findings %}
+                                    <li class="border-start border-2 border-secondary ps-2 mb-2">
+                                        <span class="badge bg-{% if f.severity == 'critical' %}danger{% elif f.severity == 'moderate' %}warning{% elif f.severity == 'minor' %}info{% else %}secondary{% endif %}">{{ f.severity|default:"—" }}</span>
+                                        <span class="badge bg-light text-dark">{{ f.category|default:"general" }}</span>
+                                        {{ f.description|default:"" }}
+                                        {% if f.recommendation %}
+                                        <div class="text-muted mt-1">→ {{ f.recommendation }}</div>
+                                        {% endif %}
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                                {% else %}
+                                <p class="text-muted small mb-0">No specific findings recorded for this agent.</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
         <!-- Issues by Severity -->
         {% if all_issues %}
         <div class="card mb-4">
