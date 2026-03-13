@@ -1206,11 +1206,37 @@ def irb_review_detail(request, study_id, version):
         + [{'severity': 'minor', **issue} for issue in minor_safe]
     )
 
+    # Per-agent transparency: what each agent does and what it found
+    AGENT_DISPLAY = {
+        'ethics': ('Ethics', 'Research ethics and Belmont Report principles (respect for persons, beneficence, justice).'),
+        'privacy': ('Privacy', 'Privacy protection, confidentiality, and data anonymization.'),
+        'vulnerability': ('Vulnerable Populations', 'Protections for vulnerable populations (e.g., children, prisoners).'),
+        'data_security': ('Data Security', 'Data handling, storage, transmission, and security measures.'),
+        'consent': ('Consent', 'Informed consent adequacy, documentation, and process.'),
+    }
+    agent_sections = []
+    for key, (name, focus) in AGENT_DISPLAY.items():
+        analysis = getattr(review, f'{key}_analysis', None) or {}
+        if not isinstance(analysis, dict):
+            analysis = {}
+        model_used = (review.ai_model_versions or {}).get(key) or analysis.get('model') or '—'
+        agent_sections.append({
+            'key': key,
+            'name': name,
+            'focus': focus,
+            'analysis': analysis,
+            'model_used': model_used,
+            'summary': analysis.get('summary') or '',
+            'risk_assessment': analysis.get('risk_assessment') or '',
+            'findings': analysis.get('findings') or [],
+        })
+
     return render(request, 'studies/irb_review_report.html', {
         'study': study,
         'review': review,
         'all_issues': all_issues,
         'can_edit_review': request.user.is_researcher and study.researcher == request.user,
+        'agent_sections': agent_sections,
     })
 
 
