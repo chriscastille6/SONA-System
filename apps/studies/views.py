@@ -22,6 +22,7 @@ from .models import (
     Signup,
     Response,
     StudyEmailContact,
+    StudentDataConsent,
     IRBReview,
     ReviewDocument,
     IRBReviewerAssignment,
@@ -442,6 +443,130 @@ def protocol_consent_done(request, slug):
     if not _can_preview_study(request, study):
         raise Http404("Not authorized to preview this protocol")
     return render(request, 'studies/protocol_consent_done.html', {
+        'study': study,
+    })
+
+
+# Consent form text for HR SJT student secondary-data consent (MNGT 425).
+# Placeholders: pi_name, pi_department, withdraw_contact_name, withdraw_contact_email.
+HR_SJT_STUDENT_CONSENT_BODY = """
+<strong>Informed Consent for Participation in Research</strong>
+<strong>Project Title:</strong> HR Situational Judgment Test: Evidence-Based HR Decision-Making
+
+<strong>Principal Investigator:</strong> {pi_name}, {pi_department}
+
+<strong>1. Introduction and Purpose</strong>
+You are being asked to participate in a research study comparing how students and HR professionals evaluate specific workplace tactics. You were selected because you completed the case study exercises in MNGT 425 HR Analytics.
+
+<strong>2. Procedures</strong>
+If you agree to participate, you grant the researcher permission to include your previously submitted case study ratings in a research dataset.
+
+<strong>No New Work:</strong> You do not need to complete any new assignments or surveys.
+
+<strong>Data Extraction:</strong> Only the numerical ratings and categorical responses from your LMS submission will be used. Your written reflections or personal identifiers will be removed during the analysis phase.
+
+<strong>3. Confidentiality</strong>
+<strong>Your privacy is our priority.</strong>
+
+While the researcher (your instructor) has access to your original submission for grading purposes, the research dataset will be coded. Your name and student ID will be replaced with a <strong>candidate ID</strong> (a unique code linking only to you for the purpose of withdrawal and deletion requests). This allows you to request that your records be deleted at any time.
+
+<strong>No identifiable information will be included in any publications, presentations, or shared with the participating managers.</strong>
+
+<strong>4. Voluntary Participation and "Grade Shield"</strong>
+<strong>Your participation is completely voluntary.</strong>
+
+<strong>No Penalty:</strong> Your decision to participate, or not to participate, will have <strong>zero impact on your grade in MNGT 425</strong> or your relationship with the instructor.
+
+<strong>Blinded Access:</strong> To ensure there is no bias, the instructor will not access the list of consenting students until after the final semester grades have been submitted to the Registrar.
+
+<strong>5. Right to Withdraw</strong>
+You may <strong>withdraw your consent at any time without penalty</strong> by contacting {withdraw_contact_name} at {withdraw_contact_email}.
+
+<strong>6. Right to Deletion</strong>
+You may <strong>request that your data be deleted at any time without penalty</strong>. Because your record is linked to a candidate ID, the researcher can locate and remove your data from the research dataset. There are no penalties or consequences for requesting deletion. Contact {withdraw_contact_name} at {withdraw_contact_email} to request deletion.
+
+<strong>7. Consent</strong>
+By clicking "I Agree" below, you confirm that:
+
+• You are <strong>at least 18 years of age</strong>.
+
+• You have <strong>read this form and understand</strong> the nature of the study.
+
+• You <strong>voluntarily agree</strong> to let your course assignment data be used for this research.
+
+• You understand you may <strong>request deletion of your data at any time without penalty</strong>.
+"""
+
+
+def _hr_sjt_student_consent_context():
+    """Context for HR SJT student data consent form (PI and withdraw contact)."""
+    return {
+        'pi_name': getattr(settings, 'PARTICIPANT_INFO_PI_NAME', 'Dr. Christopher Castille'),
+        'pi_department': getattr(settings, 'HR_SJT_CONSENT_PI_DEPARTMENT', 'Management and Marketing'),
+        'withdraw_contact_name': getattr(
+            settings, 'HR_SJT_WITHDRAW_CONTACT_NAME',
+            getattr(settings, 'IRB_OFFICE_NAME', 'Department of Management and Marketing')
+        ),
+        'withdraw_contact_email': getattr(
+            settings, 'HR_SJT_WITHDRAW_CONTACT_EMAIL',
+            getattr(settings, 'IRB_OFFICE_EMAIL', '')
+        ),
+    }
+
+
+@require_http_methods(['GET', 'POST'])
+def hr_sjt_student_data_consent(request):
+    """
+    Public consent page for MNGT 425 students to consent to secondary use of
+    their course assignment data for the HR SJT study. No login required.
+    On POST with consent=agree and email, records consent and redirects to thank-you.
+    """
+    study = get_object_or_404(Study.objects.all(), slug='hr-sjt')
+    ctx = _hr_sjt_student_consent_context()
+    consent_body = HR_SJT_STUDENT_CONSENT_BODY.format(**ctx).strip()
+
+    if request.method == 'POST':
+        if request.POST.get('consent') != 'agree':
+            return render(request, 'studies/hr_sjt_student_data_consent.html', {
+                'study': study,
+                'consent_body': consent_body,
+                'error': 'You must agree to participate for your consent to be recorded.',
+            })
+        email = (request.POST.get('email') or '').strip().lower()
+        if not email:
+            return render(request, 'studies/hr_sjt_student_data_consent.html', {
+                'study': study,
+                'consent_body': consent_body,
+                'error': 'Please enter your email address so we can record your consent.',
+            })
+        try:
+            with transaction.atomic():
+                obj, created = StudentDataConsent.objects.update_or_create(
+                    study=study,
+                    email=email,
+                    defaults={
+                        'consent_text_version': consent_body,
+                        'withdrawn_at': None,
+                    },
+                )
+        except Exception:
+            return render(request, 'studies/hr_sjt_student_data_consent.html', {
+                'study': study,
+                'consent_body': consent_body,
+                'error': 'We could not save your consent. Please try again or contact the researcher.',
+            })
+        return redirect('studies:hr_sjt_student_data_consent_done')
+
+    return render(request, 'studies/hr_sjt_student_data_consent.html', {
+        'study': study,
+        'consent_body': consent_body,
+    })
+
+
+def hr_sjt_student_data_consent_done(request):
+    """Thank-you page after submitting student data consent."""
+    study = get_object_or_404(Study.objects.all(), slug='hr-sjt')
+    return render(request, 'studies/hr_sjt_student_data_consent_done.html', {
         'study': study,
     })
 

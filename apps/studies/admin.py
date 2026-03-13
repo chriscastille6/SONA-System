@@ -12,6 +12,7 @@ from .models import (
     Signup,
     Response,
     StudyEmailContact,
+    StudentDataConsent,
     IRBReview,
     ReviewDocument,
     IRBReviewerAssignment,
@@ -223,7 +224,16 @@ class StudyEmailContactAdmin(admin.ModelAdmin):
     search_fields = ['email', 'study__title']
     raw_id_fields = ['study']
     readonly_fields = ['id', 'created_at']
-    ordering = ['-created_at']
+
+
+@admin.register(StudentDataConsent)
+class StudentDataConsentAdmin(admin.ModelAdmin):
+    list_display = ['email', 'study', 'consented_at', 'withdrawn_at']
+    list_filter = ['study', 'consented_at']
+    search_fields = ['email', 'study__title']
+    raw_id_fields = ['study']
+    readonly_fields = ['id', 'consented_at', 'consent_text_version']
+    ordering = ['-consented_at']
 
 
 # ============================================================================

@@ -588,6 +588,51 @@ class StudyEmailContact(models.Model):
         return f"{self.email} ({self.study.title})"
 
 
+class StudentDataConsent(models.Model):
+    """
+    Records consent for secondary use of student course data (e.g. MNGT 425
+    assignment ratings for HR SJT research). Used for the HR SJT student
+    secondary-data consent flow; one record per consenting student.
+    """
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    study = models.ForeignKey(
+        Study,
+        on_delete=models.CASCADE,
+        related_name='student_data_consents',
+        help_text="Study for which secondary data consent is given (e.g. hr-sjt)"
+    )
+    email = models.EmailField(
+        help_text="Student email; used to match consent to course data and for withdrawal requests"
+    )
+    consented_at = models.DateTimeField(auto_now_add=True, db_index=True)
+    consent_text_version = models.TextField(
+        help_text="Copy of consent form text at time of consent"
+    )
+    withdrawn_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text="When participant withdrew consent, if applicable"
+    )
+
+    class Meta:
+        db_table = 'student_data_consents'
+        verbose_name = 'Student data consent'
+        verbose_name_plural = 'Student data consents'
+        ordering = ['-consented_at']
+        constraints = [
+            models.UniqueConstraint(
+                fields=['study', 'email'],
+                name='unique_study_student_data_consent',
+            ),
+        ]
+        indexes = [
+            models.Index(fields=['study', 'consented_at']),
+        ]
+
+    def __str__(self):
+        return f"{self.email} – {self.study.title} ({self.consented_at.date()})"
+
+
 class IRBReview(models.Model):
     """AI-assisted IRB review of study materials."""
     

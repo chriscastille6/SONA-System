@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}Student consent — {{ study.title }}{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-10 offset-md-1">
+        <div class="card">
+            <div class="card-body">
+                <p class="text-muted small mb-2">Separate consent form for <strong>MNGT 425 students only</strong></p>
+                <h1 class="card-title h2">Informed Consent for Participation in Research</h1>
+                <p class="text-muted mb-4">Use of your existing MNGT 425 course assignment data for the study: {{ study.title }}</p>
+                <hr>
+
+                <div class="mb-4 consent-body" style="white-space: pre-wrap;">{{ consent_body|safe }}</div>
+
+                {% if error %}
+                <div class="alert alert-warning" role="alert">{{ error }}</div>
+                {% endif %}
+
+                <hr>
+                <h2 class="h5 mt-4">Record your consent</h2>
+                <p class="mb-2">Enter your Nicholls email address so we can record your consent and match it to your course data. You may withdraw or request deletion later by contacting the person named in Sections 5 and 6 above.</p>
+                <form method="post" class="mt-3">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email address</label>
+                        <input type="email" name="email" id="email" class="form-control" placeholder="you@nicholls.edu" required>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <button type="submit" name="consent" value="agree" class="btn btn-primary">I Agree</button>
+                        <a href="{% url 'home' %}" class="btn btn-outline-secondary">I do not consent</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
