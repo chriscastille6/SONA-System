@@ -14,8 +14,11 @@ from django.template.loader import get_template
 from django.template import TemplateDoesNotExist
 from django.conf import settings
 import json
+import logging
 import uuid
 from pathlib import Path
+
+logger = logging.getLogger(__name__)
 from .models import (
     Study,
     Timeslot,
@@ -56,8 +59,11 @@ def extam4_summary_html(request):
     path = Path(settings.BASE_DIR) / "docs" / "EXTAM4_SONA_SUMMARY.html"
     if not path.exists():
         raise Http404("Summary not found.")
-    with open(path, "r", encoding="utf-8") as f:
-        return HttpResponse(f.read(), content_type="text/html; charset=utf-8")
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return HttpResponse(f.read(), content_type="text/html; charset=utf-8")
+    except OSError:
+        raise Http404("Summary could not be read.")
 
 
 def participant_information_consent(request):
@@ -604,8 +610,11 @@ def protocol_vignettes(request, slug):
     vignettes_path = base / "apps" / "studies" / "assets" / "irb" / slug / "vignettes.json"
     if not vignettes_path.exists():
         raise Http404("Vignette pool file not found for this study.")
-    with open(vignettes_path, "r", encoding="utf-8") as f:
-        vignettes_data = json.load(f)
+    try:
+        with open(vignettes_path, "r", encoding="utf-8") as f:
+            vignettes_data = json.load(f)
+    except (OSError, json.JSONDecodeError):
+        raise Http404("Vignette pool could not be loaded for this study.")
     if request.GET.get("format") == "json":
         return JsonResponse(vignettes_data, json_dumps_params={"indent": 2})
     return render(request, "studies/protocol_vignettes.html", {
@@ -636,8 +645,11 @@ def protocol_study_documentation(request, slug):
     path = Path(settings.BASE_DIR) / "docs" / filename
     if not path.exists():
         raise Http404("Documentation file not found.")
-    with open(path, "r", encoding="utf-8") as f:
-        return HttpResponse(f.read(), content_type="text/html; charset=utf-8")
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            return HttpResponse(f.read(), content_type="text/html; charset=utf-8")
+    except OSError:
+        raise Http404("Documentation file could not be read.")
 
 
 @require_http_methods(["POST"])
@@ -666,18 +678,27 @@ def submit_response(request, study_id):
     ip_address = request.META.get('REMOTE_ADDR')
     user_agent = request.META.get('HTTP_USER_AGENT', '')
     
-    # Save response
-    response = Response.objects.create(
-        study=study,
-        session_id=session_id,
-        payload=payload,
-        ip_address=ip_address,
-        user_agent=user_agent
-    )
+    try:
+        response = Response.objects.create(
+            study=study,
+            session_id=session_id,
+            payload=payload,
+            ip_address=ip_address,
+            user_agent=user_agent
+        )
+    except Exception as e:
+        logger.exception('submit_response: failed to save response for study %s', study_id)
+        return JsonResponse(
+            {'error': 'Unable to save response. Please try again later.'},
+            status=503
+        )
     
     # Trigger monitoring if enabled
     if study.monitoring_enabled:
-        run_sequential_bayes_monitoring.delay(str(study.id))
+        try:
+            run_sequential_bayes_monitoring.delay(str(study.id))
+        except Exception:
+            logger.warning('submit_response: monitoring task enqueue failed for study %s', study_id)
     
     return JsonResponse({
         'success': True,
@@ -714,11 +735,18 @@ def submit_infographic_email(request, study_id):
             session_id = uuid.UUID(str(session_id))
         except (ValueError, TypeError):
             session_id = None
-    StudyEmailContact.objects.create(
-        study=study,
-        email=email,
-        session_id=session_id,
-    )
+    try:
+        StudyEmailContact.objects.create(
+            study=study,
+            email=email,
+            session_id=session_id,
+        )
+    except Exception as e:
+        logger.exception('submit_infographic_email: failed to save for study %s', study_id)
+        return JsonResponse(
+            {'error': 'Unable to save email. Please try again later.'},
+            status=503
+        )
     return JsonResponse({'success': True})
 
 
@@ -763,23 +791,26 @@ def study_status(request, slug):
         if not message_text and not attachment:
             update_form_error = 'Please provide a message or upload a file.'
         else:
-            update = StudyUpdate.objects.create(
-                study=study,
-                author=request.user,
-                visibility=visibility,
-                message=message_text,
-                attachment=attachment
-            )
-            
-            if update.visibility == 'irb':
-                notify_result = notify_irb_members_about_update(update)
-                messages.success(
-                    request,
-                    f'IRB update posted. {notify_result}'.strip()
+            try:
+                update = StudyUpdate.objects.create(
+                    study=study,
+                    author=request.user,
+                    visibility=visibility,
+                    message=message_text,
+                    attachment=attachment
                 )
-            else:
-                messages.success(request, 'Internal research team update posted.')
-            return redirect('studies:status', slug=slug)
+                if update.visibility == 'irb':
+                    notify_result = notify_irb_members_about_update(update)
+                    messages.success(
+                        request,
+                        f'IRB update posted. {notify_result}'.strip()
+                    )
+                else:
+                    messages.success(request, 'Internal research team update posted.')
+                return redirect('studies:status', slug=slug)
+            except Exception:
+                logger.exception('study_status: failed to create StudyUpdate for study %s', slug)
+                update_form_error = 'The update could not be saved. Please try again or contact support.'
     
     # Determine which updates are visible to the current user
     if can_post_update or getattr(request.user, 'is_admin', False) or getattr(request.user, 'is_staff', False):
@@ -830,47 +861,57 @@ def irb_review_create(request, study_id):
         return redirect('home')
     
     if request.method == 'POST':
-        # Create new review
-        review = IRBReview.objects.create(
-            study=study,
-            initiated_by=request.user,
-            osf_repo_url=request.POST.get('osf_url', '')
-        )
-        
-        # Handle uploaded files
-        uploaded_count = 0
-        for file_key in request.FILES:
-            uploaded_file = request.FILES[file_key]
-            file_type = request.POST.get(f'{file_key}_type', 'other')
-            
-            doc = ReviewDocument.objects.create(
-                review=review,
-                file=uploaded_file,
-                filename=uploaded_file.name,
-                file_type=file_type
+        try:
+            # Create new review
+            review = IRBReview.objects.create(
+                study=study,
+                initiated_by=request.user,
+                osf_repo_url=request.POST.get('osf_url', '')
             )
-            uploaded_count += 1
-        
-        # Record uploaded files metadata
-        review.uploaded_files = [
-            {
-                'filename': doc.filename,
-                'type': doc.file_type,
-                'size': doc.file_size_bytes,
-                'hash': doc.file_hash
-            }
-            for doc in review.documents.all()
-        ]
-        review.save(update_fields=['uploaded_files'])
-        
-        # Trigger background review
-        run_irb_ai_review.delay(str(review.id))
-        
-        messages.success(
-            request,
-            f'IRB review initiated (version {review.version}). You will be notified when analysis is complete.'
-        )
-        return redirect('studies:irb_review_detail', study_id=study.id, version=review.version)
+            
+            # Handle uploaded files
+            uploaded_count = 0
+            for file_key in request.FILES:
+                uploaded_file = request.FILES[file_key]
+                file_type = request.POST.get(f'{file_key}_type', 'other')
+                
+                doc = ReviewDocument.objects.create(
+                    review=review,
+                    file=uploaded_file,
+                    filename=uploaded_file.name,
+                    file_type=file_type
+                )
+                uploaded_count += 1
+            
+            # Record uploaded files metadata
+            review.uploaded_files = [
+                {
+                    'filename': doc.filename,
+                    'type': doc.file_type,
+                    'size': doc.file_size_bytes,
+                    'hash': doc.file_hash
+                }
+                for doc in review.documents.all()
+            ]
+            review.save(update_fields=['uploaded_files'])
+            
+            # Trigger background review
+            run_irb_ai_review.delay(str(review.id))
+            
+            messages.success(
+                request,
+                f'IRB review initiated (version {review.version}). You will be notified when analysis is complete.'
+            )
+            return redirect('studies:irb_review_detail', study_id=study.id, version=review.version)
+        except Exception:
+            logger.exception('irb_review_create: failed to create review for study %s', study_id)
+            messages.error(
+                request,
+                'The review could not be started. Please check your files and try again, or contact support.'
+            )
+            return render(request, 'studies/irb_review_create.html', {
+                'study': study,
+            })
     
     # GET: Show upload form
     return render(request, 'studies/irb_review_create.html', {
@@ -910,15 +951,37 @@ def irb_review_detail(request, study_id, version):
         messages.success(request, 'Response saved.')
         return redirect('studies:irb_review_detail', study_id=study.id, version=version)
     
-    # Prepare issues for display
-    all_issues = [
-        {'severity': 'critical', **issue} for issue in review.critical_issues
-    ] + [
-        {'severity': 'moderate', **issue} for issue in review.moderate_issues
-    ] + [
-        {'severity': 'minor', **issue} for issue in review.minor_issues
-    ]
-    
+    # Normalize issue fields to lists of dicts so template and **issue never see None or non-dict
+    def _normalize_issue(issue, default_id=''):
+        if isinstance(issue, dict):
+            return {
+                'issue_id': issue.get('issue_id', default_id),
+                'description': issue.get('description', ''),
+                'recommendation': issue.get('recommendation', ''),
+                'category': issue.get('category', 'general'),
+                'affected_section': issue.get('affected_section', ''),
+                'agent': issue.get('agent', ''),
+            }
+        return {'issue_id': default_id, 'description': str(issue), 'recommendation': '', 'category': 'general', 'affected_section': '', 'agent': ''}
+
+    critical_raw = review.critical_issues if isinstance(review.critical_issues, list) else []
+    moderate_raw = review.moderate_issues if isinstance(review.moderate_issues, list) else []
+    minor_raw = review.minor_issues if isinstance(review.minor_issues, list) else []
+
+    critical_safe = [_normalize_issue(issue, f'critical_{i}') for i, issue in enumerate(critical_raw)]
+    moderate_safe = [_normalize_issue(issue, f'moderate_{i}') for i, issue in enumerate(moderate_raw)]
+    minor_safe = [_normalize_issue(issue, f'minor_{i}') for i, issue in enumerate(minor_raw)]
+
+    review.critical_issues = critical_safe
+    review.moderate_issues = moderate_safe
+    review.minor_issues = minor_safe
+
+    all_issues = (
+        [{'severity': 'critical', **issue} for issue in critical_safe]
+        + [{'severity': 'moderate', **issue} for issue in moderate_safe]
+        + [{'severity': 'minor', **issue} for issue in minor_safe]
+    )
+
     return render(request, 'studies/irb_review_report.html', {
         'study': study,
         'review': review,
@@ -1647,8 +1710,11 @@ def protocol_submission_list(request):
 
     # Backfill submission_number for any submitted protocols that never got one (e.g. created via bulk update)
     for sub_id in submissions.filter(status='submitted', submission_number__isnull=True).values_list('id', flat=True):
-        obj = ProtocolSubmission.objects.get(id=sub_id)
-        obj.save()
+        try:
+            obj = ProtocolSubmission.objects.get(id=sub_id)
+            obj.save()
+        except ProtocolSubmission.DoesNotExist:
+            pass  # Deleted between filter and get; skip
     
     # Get pending amendments for the user
     if request.user.is_staff or getattr(request.user, 'is_admin', False):

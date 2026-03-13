@@ -636,9 +636,17 @@ def run_irb_ai_review(review_id):
     import asyncio
     from apps.studies.irb_ai import IRBAnalyzer
     from apps.studies.models import IRBReview
-    
+
     try:
         review = IRBReview.objects.get(id=review_id)
+    except IRBReview.DoesNotExist:
+        return {
+            'success': False,
+            'error': f'IRBReview {review_id} not found (may have been deleted)',
+            'review_id': review_id,
+        }
+
+    try:
         study = review.study
         
         # Initialize analyzer
@@ -670,9 +678,9 @@ Review Version: {review.version}
 
 Results:
 {risk_emoji} Overall Risk Level: {review.get_overall_risk_level_display()}
-🔴 Critical Issues: {len(review.critical_issues)}
-🟡 Moderate Issues: {len(review.moderate_issues)}
-🟢 Minor Issues: {len(review.minor_issues)}
+🔴 Critical Issues: {len(review.critical_issues or [])}
+🟡 Moderate Issues: {len(review.moderate_issues or [])}
+🟢 Minor Issues: {len(review.minor_issues or [])}
 
 Processing Time: {review.processing_time_seconds} seconds
 

@@ -149,8 +149,11 @@ class IRBAnalyzer:
             from django.conf import settings
             full_path = Path(settings.BASE_DIR) / protocol_path
             if full_path.exists():
-                with open(full_path, 'r') as f:
-                    materials['protocol_html'] = f.read()
+                try:
+                    with open(full_path, 'r', encoding='utf-8') as f:
+                        materials['protocol_html'] = f.read()
+                except OSError:
+                    materials['protocol_html'] = ''
         
         return materials
     
