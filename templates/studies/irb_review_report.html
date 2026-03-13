@@ -245,7 +245,7 @@
             <div class="card-body">
                 <h5>Next Steps</h5>
                 <div class="d-flex gap-2 flex-wrap">
-                    {% if can_edit_review and (review.critical_issues or review.moderate_issues) %}
+                    {% if can_edit_review and review.critical_issues or can_edit_review and review.moderate_issues %}
                     <a href="{% url 'studies:irb_review_create' study.id %}" class="btn btn-warning">
                         <i class="bi bi-arrow-repeat"></i> Run New Review (After Fixes)
                     </a>
