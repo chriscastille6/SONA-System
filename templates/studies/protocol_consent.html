@@ -19,7 +19,7 @@
                 <p>For this study, the following also applies:</p>
                 <div class="bg-light rounded p-3 mb-4" style="white-space: pre-wrap;">{{ study.consent_text }}</div>
                 {% if study.slug == 'hr-sjt' %}
-                <p class="mb-4 small text-muted">Preview the report we will share: <a href="{% url 'studies:hr_sjt_infographic_preview' %}" target="_blank" rel="noopener">View sample infographic</a>.</p>
+                <p class="mb-4 small text-muted"><a href="{% url 'studies:hr_sjt_infographic_preview' %}" target="_blank" rel="noopener">See a sample infographic here</a>.</p>
                 {% endif %}
 
                 <h2 class="h5 mt-4">Consent</h2>

@@ -471,7 +471,7 @@ If you agree to participate, you grant the researcher permission to include your
 
 <strong>Data Extraction:</strong> Only the numerical ratings and categorical responses from your LMS submission will be used. Your written reflections or personal identifiers will be removed during the analysis phase.
 
-<strong>Appreciation:</strong> As a token of our appreciation for participating, we will share an aggregated report—as a lab-branded infographic from the People Analytics Lab of the Bayou—highlighting how individuals from different perspectives (e.g., students, working professionals, MBA students, executives) rated the content in these vignettes. No individuals will be identified. You may sign up to receive the infographic when it is ready. Preview the report we will share: {infographic_preview_link}.
+<strong>Appreciation:</strong> As a token of our appreciation for participating, we will share an aggregated report highlighting how individuals from different perspectives (e.g., students, working professionals, MBA students, executives) rated the content in these vignettes. No individuals will be identified. You may sign up to receive the infographic when it is ready. {infographic_preview_link}
 
 <strong>3. Confidentiality</strong>
 <strong>Your privacy is our priority.</strong>
@@ -532,7 +532,7 @@ def hr_sjt_student_data_consent(request):
     study = get_object_or_404(Study.objects.all(), slug='hr-sjt')
     ctx = {
         **_hr_sjt_student_consent_context(),
-        'infographic_preview_link': '<a href="{}" target="_blank" rel="noopener">View sample infographic</a>'.format(
+        'infographic_preview_link': '<a href="{}" target="_blank" rel="noopener">See a sample infographic here</a>.'.format(
             request.build_absolute_uri(reverse('studies:hr_sjt_infographic_preview'))
         ),
     }
@@ -593,6 +593,8 @@ HR_SJT_PROFESSIONAL_CONSENT_BODY = """
 <strong>Principal Investigator:</strong> {pi_name}, {pi_department}
 
 <strong>1. Introduction and Purpose</strong>
+Working professionals, such as HR professionals.
+
 You are invited to participate in a research study comparing how HR professionals and students evaluate workplace tactics in situational judgment scenarios. Your responses will help researchers understand how practitioners apply evidence-based HR practices.
 
 <strong>2. Procedures</strong>
@@ -601,16 +603,19 @@ If you agree to participate, you will:
 • Complete the HR Situational Judgment Test (27 scenarios; rate effectiveness of tactics 1–5).
 • Receive a feedback report summarizing your ratings.
 
-<strong>3. Time and Compensation</strong>
-The study takes approximately 45–60 minutes. <strong>There is no monetary compensation.</strong> As a token of our appreciation, we will share an aggregated report—as a lab-branded infographic from the People Analytics Lab of the Bayou—highlighting how individuals from different perspectives (e.g., students, working professionals, MBA students, executives) rated the content in these vignettes. No individuals will be identified. You may sign up to receive the infographic when it is ready. Preview the report we will share: {infographic_preview_link}. Your participation is voluntary and appreciated.
+<strong>3. Your Report and Data Ownership</strong>
+At the conclusion of the study, you will receive a <strong>PDF report of your data</strong>, which you may keep. The report will contain a <strong>unique identifying code</strong> that gives you ownership over your data. If you would prefer to have your data removed from the study, we will honor that request.
 
-<strong>4. Confidentiality</strong>
+<strong>4. Time and Compensation</strong>
+The study takes approximately 45–60 minutes. <strong>There is no monetary compensation.</strong> As a token of our appreciation, we will share an aggregated report highlighting how individuals from different perspectives (e.g., students, working professionals, MBA students, executives) rated the content in these vignettes. No individuals will be identified. You may sign up to receive the infographic when it is ready. {infographic_preview_link} Your participation is voluntary and appreciated.
+
+<strong>5. Confidentiality</strong>
 <strong>Your privacy is our priority.</strong> Your responses will be de-identified and stored with a unique code. No identifiable information will be included in any publications or shared with others.
 
-<strong>5. Right to Withdraw</strong>
+<strong>6. Right to Withdraw</strong>
 You may <strong>withdraw your consent at any time without penalty</strong> by closing the browser or contacting {withdraw_contact_name} at {withdraw_contact_email}.
 
-<strong>6. Consent</strong>
+<strong>7. Consent</strong>
 By clicking "I Agree" below, you confirm that you are at least 18 years of age, have read this form, and voluntarily agree to participate.
 """
 
@@ -624,7 +629,7 @@ def hr_sjt_professional_consent(request):
     study = get_object_or_404(Study.objects.all(), slug='hr-sjt')
     ctx = {
         **_hr_sjt_student_consent_context(),
-        'infographic_preview_link': '<a href="{}" target="_blank" rel="noopener">View sample infographic</a>'.format(
+        'infographic_preview_link': '<a href="{}" target="_blank" rel="noopener">See a sample infographic here</a>.'.format(
             request.build_absolute_uri(reverse('studies:hr_sjt_infographic_preview'))
         ),
     }
