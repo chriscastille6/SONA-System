@@ -952,7 +952,7 @@ def hr_sjt_infographic_preview(request):
     ridge_name = Path('images/infographics/wfh_productivity_ridges.png')
     has_ridge_image = any((Path(d) / ridge_name).is_file() for d in static_dirs)
     has_logo = any((Path(d) / Path('images/lab_emblem.png')).is_file() for d in static_dirs)
-    infographic_image_url = reverse('studies:hr_sjt_infographic_image') if has_ridge_image else ''
+    infographic_image_url = request.build_absolute_uri(reverse('studies:hr_sjt_infographic_image')) if has_ridge_image else ''
     return render(request, 'studies/hr_sjt_infographic_preview.html', {
         'study': study,
         'lab_name': 'People Analytics Lab of the Bayou',
@@ -1580,6 +1580,30 @@ def protocol_submit(request, study_id):
         })
 
 
+def _get_informed_consent_display(submission, study):
+    """
+    Build consent text for display on protocol submission detail.
+    Uses Study.consent_text when set; otherwise inferred from submission
+    (consent_procedures, risk_statement, confidentiality_procedures, risk_mitigation).
+    Returns None if nothing to show.
+    """
+    if study and getattr(study, 'consent_text', None) and (study.consent_text or '').strip():
+        return (study.consent_text or '').strip()
+    parts = []
+    for title, attr in [
+        ('Consent procedures', 'consent_procedures'),
+        ('Risks', 'risk_statement'),
+        ('Confidentiality', 'confidentiality_procedures'),
+        ('Risk mitigation', 'risk_mitigation'),
+    ]:
+        value = (getattr(submission, attr, None) or '').strip()
+        if value:
+            parts.append(f"### {title}\n\n{value}")
+    if not parts:
+        return None
+    return '\n\n'.join(parts)
+
+
 @login_required
 def protocol_submission_detail(request, submission_id):
     """View protocol submission details."""
@@ -1619,6 +1643,8 @@ def protocol_submission_detail(request, submission_id):
     if submission.college_rep:
         irb_members = irb_members.exclude(id=submission.college_rep.id)
     
+    informed_consent_display = _get_informed_consent_display(submission, study) if submission and study else None
+
     return render(request, 'studies/protocol_submission_detail.html', {
         'submission': submission,
         'study': study,
@@ -1628,6 +1654,7 @@ def protocol_submission_detail(request, submission_id):
         'is_chair': submission.chair_reviewer == request.user,
         'is_reviewer': submission.reviewers.filter(id=request.user.id).exists(),
         'irb_members': irb_members,
+        'informed_consent_display': informed_consent_display,
     })
 
 
