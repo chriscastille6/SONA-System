@@ -9,6 +9,10 @@
             </div>
             <div class="card-body">
                 <p class="mb-2">Thank you. You have given consent for <strong>{{ study.title }}</strong>.</p>
+                {% if study.slug == 'hr-sjt' %}
+                <p class="mt-3 mb-0"><a href="{% url 'studies:hr_sjt_infographic_preview' %}" class="btn btn-outline-primary me-2">View the sample infographic</a> <a href="{% url 'studies:hr_sjt_infographic_signup' %}" class="btn btn-outline-secondary">Get the infographic when it’s ready</a></p>
+                <hr>
+                {% endif %}
                 <p class="text-muted mb-0">The full survey (vignette scenarios and ratings) will be available when the participant frontend is deployed. This preview allows you to review the consent and protocol flow.</p>
                 <hr>
                 <a href="{% url 'studies:protocol_preview' slug=study.slug %}" class="btn btn-outline-primary">Back to protocol</a>

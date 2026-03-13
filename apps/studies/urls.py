@@ -41,6 +41,10 @@ urlpatterns = [
     # HR SJT student secondary-data consent (MNGT 425)
     path('hr-sjt/student-data-consent/', views.hr_sjt_student_data_consent, name='hr_sjt_student_data_consent'),
     path('hr-sjt/student-data-consent/done/', views.hr_sjt_student_data_consent_done, name='hr_sjt_student_data_consent_done'),
+    path('hr-sjt/professional-consent/', views.hr_sjt_professional_consent, name='hr_sjt_professional_consent'),
+    path('hr-sjt/professional-demographics/', views.hr_sjt_professional_demographics, name='hr_sjt_professional_demographics'),
+    path('hr-sjt/infographic/', views.hr_sjt_infographic_signup, name='hr_sjt_infographic_signup'),
+    path('hr-sjt/infographic/preview/', views.hr_sjt_infographic_preview, name='hr_sjt_infographic_preview'),
     path('<slug:slug>/status/', views.study_status, name='status'),
     
     # IRB AI Review

@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sample infographic — {{ lab_name }}</title>
+    <style>
+        body { margin: 0; background: #fff; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .slide { max-width: 100%; height: auto; display: block; }
+        .fallback { padding: 2rem; font-family: system-ui, sans-serif; color: #666; text-align: center; max-width: 480px; }
+    </style>
+</head>
+<body>
+    {% if has_ridge_image %}
+        <img src="{% static 'images/infographics/wfh_productivity_ridges.png' %}" alt="Sample infographic — effectiveness ratings by perspective" class="slide">
+    {% else %}
+        <div class="fallback">
+            <p><strong>Generate the slide:</strong> Run from repo root:</p>
+            <p><code>python3 scripts/infographic_wfh_ridges.py</code></p>
+            <p class="small">Requires numpy, scipy, matplotlib. Saves to static/images/infographics/wfh_productivity_ridges.png</p>
+        </div>
+    {% endif %}
+</body>
+</html>

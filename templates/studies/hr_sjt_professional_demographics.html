@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% block title %}Demographics — {{ study.title }}{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-10 offset-md-1">
+        <div class="card">
+            <div class="card-body">
+                <h1 class="card-title h2">Demographics</h1>
+                <p class="text-muted mb-4">A few optional questions help us compare responses across groups. All responses are confidential.</p>
+                <hr>
+
+                <form method="post">
+                    {% csrf_token %}
+
+                    <h3 class="h6 mt-4 mb-2">Race / Ethnicity (optional, BLS/EEO-1 categories)</h3>
+                    <select name="race_ethnicity" class="form-select mb-4">
+                        <option value="">Prefer not to answer</option>
+                        <option value="hispanic-latino">Hispanic or Latino</option>
+                        <option value="white">White (Not Hispanic or Latino)</option>
+                        <option value="black-african-american">Black or African American</option>
+                        <option value="asian">Asian</option>
+                        <option value="american-indian-alaska-native">American Indian or Alaska Native</option>
+                        <option value="native-hawaiian-pacific-islander">Native Hawaiian or Other Pacific Islander</option>
+                        <option value="two-or-more">Two or More Races</option>
+                    </select>
+
+                    <h3 class="h6 mt-4 mb-2">HR role and experience</h3>
+                    <div class="mb-3">
+                        <label class="form-label">Current job level</label>
+                        <select name="job_level" class="form-select">
+                            <option value="">— Select —</option>
+                            <option value="other">Other</option>
+                            <option value="hr_manager">HR Manager</option>
+                            <option value="director">Director</option>
+                            <option value="vp">VP (Vice President)</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Years in HR (or HR-related role)</label>
+                        <input type="text" name="years_in_hr" class="form-control" placeholder="e.g. 5" maxlength="4">
+                    </div>
+
+                    <h3 class="h6 mt-4 mb-2">Education</h3>
+                    <div class="mb-3">
+                        <label class="form-label">Highest level of education</label>
+                        <select name="education" class="form-select">
+                            <option value="">— Select —</option>
+                            <option value="hs">High school</option>
+                            <option value="bachelors">Bachelor's degree</option>
+                            <option value="masters">Master's degree</option>
+                            <option value="phd">Ph.D. or equivalent</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Was your degree in HR or a closely related field?</label>
+                        <select name="hr_major" class="form-select">
+                            <option value="">— Select —</option>
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </div>
+
+                    <h3 class="h6 mt-4 mb-2">Credentials (select all that apply)</h3>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="credentials" value="phr" id="cred-phr">
+                            <label class="form-check-label" for="cred-phr">PHR (Professional in Human Resources)</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="credentials" value="sphr" id="cred-sphr">
+                            <label class="form-check-label" for="cred-sphr">SPHR (Senior Professional in Human Resources)</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="credentials" value="shrm_cp" id="cred-shrm-cp">
+                            <label class="form-check-label" for="cred-shrm-cp">SHRM-CP (SHRM Certified Professional)</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="credentials" value="shrm_scp" id="cred-shrm-scp">
+                            <label class="form-check-label" for="cred-shrm-scp">SHRM-SCP (SHRM Senior Certified Professional)</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="credentials" value="none" id="cred-none">
+                            <label class="form-check-label" for="cred-none">None of these</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="credentials" value="other" id="cred-other">
+                            <label class="form-check-label" for="cred-other">Other</label>
+                        </div>
+                        <input type="text" name="credentials_other" class="form-control mt-2" placeholder="Other credential (optional)" maxlength="200">
+                    </div>
+
+                    <hr class="my-4">
+                    <button type="submit" class="btn btn-primary">Continue to assessment →</button>
+                    <p class="mt-3 mb-0"><a href="{% url 'studies:hr_sjt_infographic_preview' %}" class="btn btn-outline-primary btn-sm me-2" target="_blank" rel="noopener">View the sample infographic</a> <a href="{% url 'studies:hr_sjt_infographic_signup' %}">Sign up to receive the infographic when it’s ready</a></p>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

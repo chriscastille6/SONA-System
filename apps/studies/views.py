@@ -471,6 +471,8 @@ If you agree to participate, you grant the researcher permission to include your
 
 <strong>Data Extraction:</strong> Only the numerical ratings and categorical responses from your LMS submission will be used. Your written reflections or personal identifiers will be removed during the analysis phase.
 
+<strong>Appreciation:</strong> As a token of our appreciation for participating, we will share an aggregated report—as a lab-branded infographic from the People Analytics Lab of the Bayou—highlighting how individuals from different perspectives (e.g., students, working professionals, MBA students, executives) rated the content in these vignettes. No individuals will be identified. You may sign up to receive the infographic when it is ready.
+
 <strong>3. Confidentiality</strong>
 <strong>Your privacy is our priority.</strong>
 
@@ -575,6 +577,123 @@ def hr_sjt_student_data_consent_done(request):
     return render(request, 'studies/hr_sjt_student_data_consent_done.html', {
         'study': study,
     })
+
+
+# Consent form for HR professionals (working professionals) taking the HR SJT.
+# Placeholders: pi_name, pi_department, withdraw_contact_name, withdraw_contact_email.
+HR_SJT_PROFESSIONAL_CONSENT_BODY = """
+<strong>Informed Consent for Participation in Research</strong>
+<strong>Project Title:</strong> HR Situational Judgment Test: Evidence-Based HR Decision-Making
+
+<strong>Principal Investigator:</strong> {pi_name}, {pi_department}
+
+<strong>1. Introduction and Purpose</strong>
+You are invited to participate in a research study comparing how HR professionals and students evaluate workplace tactics in situational judgment scenarios. Your responses will help researchers understand how practitioners apply evidence-based HR practices.
+
+<strong>2. Procedures</strong>
+If you agree to participate, you will:
+• Complete a brief demographic questionnaire (including optional BLS race/ethnicity and HR credentials).
+• Complete the HR Situational Judgment Test (27 scenarios; rate effectiveness of tactics 1–5).
+• Receive a feedback report summarizing your ratings.
+
+<strong>3. Time and Compensation</strong>
+The study takes approximately 45–60 minutes. <strong>There is no monetary compensation.</strong> As a token of our appreciation, we will share an aggregated report—as a lab-branded infographic from the People Analytics Lab of the Bayou—highlighting how individuals from different perspectives (e.g., students, working professionals, MBA students, executives) rated the content in these vignettes. No individuals will be identified. You may sign up to receive the infographic when it is ready. Your participation is voluntary and appreciated.
+
+<strong>4. Confidentiality</strong>
+<strong>Your privacy is our priority.</strong> Your responses will be de-identified and stored with a unique code. No identifiable information will be included in any publications or shared with others.
+
+<strong>5. Right to Withdraw</strong>
+You may <strong>withdraw your consent at any time without penalty</strong> by closing the browser or contacting {withdraw_contact_name} at {withdraw_contact_email}.
+
+<strong>6. Consent</strong>
+By clicking "I Agree" below, you confirm that you are at least 18 years of age, have read this form, and voluntarily agree to participate.
+"""
+
+
+@require_http_methods(['GET', 'POST'])
+def hr_sjt_professional_consent(request):
+    """
+    Consent page for HR professionals (working professionals) taking the HR SJT.
+    No login required. On agree, store consent in session and redirect to demographics.
+    """
+    study = get_object_or_404(Study.objects.all(), slug='hr-sjt')
+    ctx = _hr_sjt_student_consent_context()
+    consent_body = HR_SJT_PROFESSIONAL_CONSENT_BODY.format(**ctx).strip()
+
+    if request.method == 'POST':
+        if request.POST.get('consent') != 'agree':
+            return render(request, 'studies/hr_sjt_professional_consent.html', {
+                'study': study,
+                'consent_body': consent_body,
+                'error': 'You must agree to participate to continue.',
+            })
+        from django.utils import timezone
+        request.session['hr_sjt_professional_consent'] = {
+            'at': timezone.now().isoformat(),
+            'version': consent_body[:200],
+        }
+        request.session.modified = True
+        return redirect('studies:hr_sjt_professional_demographics')
+
+    return render(request, 'studies/hr_sjt_professional_consent.html', {
+        'study': study,
+        'consent_body': consent_body,
+    })
+
+
+@require_http_methods(['GET', 'POST'])
+def hr_sjt_professional_demographics(request):
+    """
+    Demographics for HR professionals: BLS race/ethnicity + Rynes-style credentials.
+    Requires session from professional consent. On submit, save Response and redirect to assessment.
+    """
+    study = get_object_or_404(Study.objects.all(), slug='hr-sjt')
+    if not request.session.get('hr_sjt_professional_consent'):
+        return redirect('studies:hr_sjt_professional_consent')
+
+    if request.method == 'POST':
+        from django.utils import timezone
+        consent_data = request.session.get('hr_sjt_professional_consent', {})
+        demographics = {
+            'participant_type': 'professional',
+            'consent_at': consent_data.get('at'),
+            'race_ethnicity': request.POST.get('race_ethnicity', ''),
+            'job_level': request.POST.get('job_level', ''),
+            'years_in_hr': request.POST.get('years_in_hr', ''),
+            'education': request.POST.get('education', ''),
+            'hr_major': request.POST.get('hr_major', ''),
+            'credentials': request.POST.getlist('credentials'),  # multi
+        }
+        if request.POST.get('credentials_other'):
+            demographics['credentials_other'] = request.POST.get('credentials_other', '')[:200]
+        payload = {'consent': True, 'demographics': demographics}
+        Response.objects.create(
+            study=study,
+            payload=payload,
+            ip_address=get_client_ip(request),
+            user_agent=request.META.get('HTTP_USER_AGENT', '')[:500],
+        )
+        del request.session['hr_sjt_professional_consent']
+        request.session.modified = True
+        base = getattr(settings, 'HR_SJT_ASSESSMENT_BASE_URL', 'https://bayoupal.nicholls.edu/hr-sjt-assessment/index.html')
+        if study.external_link:
+            link = study.external_link.rstrip('/')
+            url = f"{link}?study={study.id}" if '?' not in link else f"{link}&study={study.id}"
+        else:
+            url = f"{base.rstrip('/')}?study={study.id}"
+        return redirect(url)
+
+    return render(request, 'studies/hr_sjt_professional_demographics.html', {
+        'study': study,
+    })
+
+
+def get_client_ip(request):
+    """Return client IP from request (respect X-Forwarded-For if present)."""
+    xff = request.META.get('HTTP_X_FORWARDED_FOR')
+    if xff:
+        return xff.split(',')[0].strip()
+    return request.META.get('REMOTE_ADDR')
 
 
 def _can_view_study_protocol_materials(request, study):
@@ -748,6 +867,79 @@ def submit_infographic_email(request, study_id):
             status=503
         )
     return JsonResponse({'success': True})
+
+
+def _validate_infographic_email(email):
+    """Return None if valid, else (error_message, status_code)."""
+    email = (email or '').strip()
+    if not email:
+        return ('Email is required.', 400)
+    if len(email) > 254:
+        return ('Email is too long.', 400)
+    if '@' not in email or '.' not in email.split('@')[-1]:
+        return ('Please enter a valid email address.', 400)
+    return None
+
+
+@require_http_methods(["GET", "POST"])
+def hr_sjt_infographic_signup(request):
+    """
+    Public page for HR SJT participants to sign up to receive the lab-branded
+    aggregated report infographic. Same-origin form POST avoids CORS/connection issues.
+    """
+    study = get_object_or_404(Study, slug='hr-sjt')
+    if not study.collect_emails_for_infographics:
+        raise Http404('This study does not collect emails for infographics.')
+    submitted = request.GET.get('submitted') == '1'
+    error = None
+    if request.method == 'POST':
+        email = request.POST.get('email', '').strip()
+        err = _validate_infographic_email(email)
+        if err:
+            error = err[0] if isinstance(err, tuple) else err
+        else:
+            try:
+                StudyEmailContact.objects.create(study=study, email=email.strip(), session_id=None)
+            except Exception:
+                logger.exception('hr_sjt_infographic_signup: failed to save for study hr-sjt')
+                error = 'Unable to save. Please try again later.'
+            else:
+                return redirect(request.path + '?submitted=1')
+    return render(request, 'studies/hr_sjt_infographic_signup.html', {
+        'study': study,
+        'submitted': submitted,
+        'error': error,
+        'lab_name': 'People Analytics Lab of the Bayou',
+    })
+
+
+def hr_sjt_infographic_preview(request):
+    """
+    View the lab-branded infographic: hypothetical WFH productivity by position.
+    Uses economist-style ridge plot (R: ggridges + viridis) from Teaching/MNGT425.
+    Public; no login.
+    """
+    study = get_object_or_404(Study, slug='hr-sjt')
+    # Hypothetical summary: 4 perspectives (match Python script — students & professionals more positive, MBA & execs more pessimistic)
+    positions_summary = [
+        {'name': 'Undergraduate Students', 'mean': 3.8, 'n': 42},
+        {'name': 'MBA Students', 'mean': 3.0, 'n': 28},
+        {'name': 'Working Professionals', 'mean': 4.0, 'n': 45},
+        {'name': 'Executives', 'mean': 2.9, 'n': 12},
+    ]
+    # Ridge plot: generated by Teaching/MNGT425/infographic_wfh_ridges.py (or R script)
+    from pathlib import Path
+    static_dirs = getattr(settings, 'STATICFILES_DIRS', [Path(settings.BASE_DIR) / 'static'])
+    ridge_name = Path('images/infographics/wfh_productivity_ridges.png')
+    has_ridge_image = any((Path(d) / ridge_name).is_file() for d in static_dirs)
+    has_logo = any((Path(d) / Path('images/lab_emblem.png')).is_file() for d in static_dirs)
+    return render(request, 'studies/hr_sjt_infographic_preview.html', {
+        'study': study,
+        'lab_name': 'People Analytics Lab of the Bayou',
+        'positions_summary': positions_summary,
+        'has_ridge_image': has_ridge_image,
+        'has_logo': has_logo,
+    })
 
 
 def study_status(request, slug):
