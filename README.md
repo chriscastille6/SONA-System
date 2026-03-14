@@ -1,6 +1,10 @@
 # Research Participant Recruitment System
 
-A lean, SONA-like participant recruitment and study management platform for university psychology research departments.
+A lean, participant recruitment and study management platform (PRAMS) for university psychology research departments.
+
+**Repositories**
+- **GitHub (public/shell):** [chriscastille6/prams-system](https://github.com/chriscastille6/prams-system) — code only, no institutional data; clone from here to use or adapt the product.
+- **GitLab (institutional/IT):** [chriscastille/prams](https://gitlab.nicholls.edu/chriscastille/prams) — deployment and IT review at Nicholls; production deploys from here.
 
 ## Features
 
@@ -36,7 +40,7 @@ A lean, SONA-like participant recruitment and study management platform for univ
 
 1. **Clone and setup environment**
 ```bash
-cd "/Users/ccastille/Documents/GitHub/SONA System"
+cd "/Users/ccastille/Documents/GitHub/PRAMS"
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
@@ -109,11 +113,15 @@ recruitment_system/
 
 ## License
 
-MIT License
+MIT License. See [LICENSE](LICENSE) for the full text.
+
+**Dependencies:** PyMuPDF is licensed under AGPL-3.0. If you distribute a modified version of this software, you must comply with the AGPL (e.g., offer corresponding source code).
 
 ## Acknowledgments
 
 This system was designed and implemented with AI assistance. Inspired by [Sona Systems](https://www.sona-systems.com), a leading research participant management platform used by over 1,500 institutions globally.
+
+This project is not affiliated with, endorsed by, or connected to Sona Systems, Ltd. "Sona Systems" and "SONA" are trademarks of Sona Systems, Ltd. This software is an independent implementation of participant recruitment and study management.
 
 ### References
 Sona Systems, Ltd. (2025). *Participant recruitment & study management made simple*. Retrieved October 2, 2025, from https://www.sona-systems.com

@@ -1,7 +1,7 @@
 #!/bin/bash
 # File location: deploy-to-server.sh
 # What this file does: Deploys HSIRB Study Management System to bayoupal.nicholls.edu
-# This script pulls from GitHub and sets up the Django application
+# This script pulls from GitLab (institutional) and sets up the Django application
 
 # ============================================================================
 # CONFIGURATION
@@ -10,8 +10,9 @@ SERVER_USER="ccastille"
 SERVER_HOST="bayoupal.nicholls.edu"
 REMOTE_PATH="~/hsirb-system"
 WEB_PATH="/var/www/html/hsirb"
-GITHUB_REPO="https://github.com/chriscastille6/SONA-System.git"
-GITHUB_BRANCH="main"
+# Institutional deployment: clone from GitLab (IT review). Use SSH so server key can access GitLab.
+GIT_REPO="git@gitlab.nicholls.edu:chriscastille/prams.git"
+GIT_BRANCH="main"
 
 # ============================================================================
 # COLORS
@@ -28,7 +29,9 @@ echo -e "${GREEN}🚀 Deploying HSIRB Study Management System to ${SERVER_HOST}.
 # DEPLOY TO SERVER
 # ============================================================================
 echo -e "${BLUE}📦 Step 1: Cloning/updating repository on server...${NC}"
-ssh bayoupal << 'DEPLOY_SCRIPT'
+# Run this script from your Mac/laptop (not on the server). SSH target:
+SSH_TARGET="${SERVER_USER}@${SERVER_HOST}"
+ssh "$SSH_TARGET" << 'DEPLOY_SCRIPT'
     SUDO_PASS="nsutemppasswd123"
     # Create directory if it doesn't exist
     mkdir -p ~/hsirb-system
@@ -43,11 +46,12 @@ ssh bayoupal << 'DEPLOY_SCRIPT'
     
     # Clone if doesn't exist, otherwise pull
     if [ ! -d ".git" ]; then
-        echo "Cloning repository..."
-        git clone https://github.com/chriscastille6/SONA-System.git ~/hsirb-system
+        echo "Cloning repository from GitLab..."
+        git clone git@gitlab.nicholls.edu:chriscastille/prams.git ~/hsirb-system
         cd ~/hsirb-system
     else
-        echo "Pulling latest changes..."
+        echo "Pulling latest changes from GitLab..."
+        git remote set-url origin git@gitlab.nicholls.edu:chriscastille/prams.git
         git pull origin main
     fi
     
@@ -100,9 +104,13 @@ fi
 
 echo -e "\n${GREEN}✅ Deployment successful!${NC}"
 echo -e "${YELLOW}📝 Next steps:${NC}"
-echo -e "   1. SSH to server: ssh bayoupal"
+echo -e "   1. SSH to server: ssh ${SERVER_USER}@${SERVER_HOST}"
 echo -e "   2. Set up .env file: cd ~/hsirb-system && cp env.template .env && nano .env"
 echo -e "   3. Run initial setup: ./setup-postgresql.sh (if not done)"
 echo -e "   4. Create superuser: source venv/bin/activate && python manage.py createsuperuser"
 echo -e "   5. Restart service: echo 'nsutemppasswd123' | sudo -S systemctl restart hsirb-system"
 echo -e "   6. Test site: https://bayoupal.nicholls.edu/hsirb/"
+echo ""
+echo -e "${YELLOW}To copy only the mark_stuck_irb_reviews_failed command (run from this repo root):${NC}"
+echo -e "   scp apps/studies/management/commands/mark_stuck_irb_reviews_failed.py ${SSH_TARGET}:~/hsirb-system/apps/studies/management/commands/"
+echo -e "   Then on server: cd ~/hsirb-system && source venv/bin/activate && python manage.py mark_stuck_irb_reviews_failed --hours=0.5"
