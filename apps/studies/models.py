@@ -926,6 +926,19 @@ class ProtocolSubmission(models.Model):
         choices=REVIEW_TYPE_CHOICES,
         help_text="Review type suggested by Primary Investigator"
     )
+
+    # Primary study context (helps reviewers apply the appropriate standards; see Social Science IRB Standards)
+    PRIMARY_STUDY_CONTEXT_CHOICES = [
+        ('social_behavioral', 'Traditional social / behavioral science (surveys, qualitative, educational, CBPR, etc.)'),
+        ('biomedical_clinical', 'Biomedical or clinical intervention (drugs, devices, physical procedures)'),
+        ('mixed_other', 'Mixed or other'),
+    ]
+    primary_study_context = models.CharField(
+        max_length=30,
+        choices=PRIMARY_STUDY_CONTEXT_CHOICES,
+        blank=True,
+        help_text="PI classification so reviewers can apply the appropriate mental model (proportional social/behavioral vs standard IRB framework)"
+    )
     
     # College rep assignment
     college_rep = models.ForeignKey(
@@ -942,6 +955,10 @@ class ProtocolSubmission(models.Model):
         choices=REVIEW_TYPE_CHOICES,
         blank=True,
         help_text="College rep's determination of review type"
+    )
+    college_rep_notes = models.TextField(
+        blank=True,
+        help_text="College rep's notes when making the determination (optional)"
     )
     
     # Deception flag (from study, but can be overridden)
@@ -1170,6 +1187,17 @@ class ProtocolSubmission(models.Model):
         blank=True,
         help_text="List of co-investigators (name, title, department, email)"
     )
+    # Co-investigators who have PRAMS accounts (see study on their dashboard)
+    co_investigator_users = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        related_name='co_investigator_protocols',
+        blank=True,
+        help_text="PRAMS users listed as co-investigators; they will see this protocol's study on their dashboard",
+    )
+    co_investigators_extra = models.TextField(
+        blank=True,
+        help_text="Additional co-investigators (name, email) without PRAMS accounts; merged into co_investigators for display",
+    )
     citi_training_completion = models.TextField(
         blank=True,
         help_text="CITI training completion dates and certificate numbers for all investigators"
@@ -1247,6 +1275,12 @@ class ProtocolSubmission(models.Model):
     appendices_notes = models.TextField(
         blank=True,
         help_text="Notes about supporting documents, instruments, or analysis plans attached"
+    )
+    full_protocol_pdf = models.FileField(
+        upload_to='protocol_submissions/full_protocols/%Y/%m/',
+        blank=True,
+        null=True,
+        help_text="Full set of protocols as a single PDF for IRB review (electronic version can also be viewed on the study protocol pages)"
     )
     
     # Additional Contact Information

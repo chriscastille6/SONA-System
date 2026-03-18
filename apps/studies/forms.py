@@ -74,10 +74,15 @@ class ProtocolSubmissionForm(forms.ModelForm):
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # Set queryset for IRB members
         from apps.accounts.models import User
+        # Set queryset for IRB members
         self.fields['selected_irb_reviewers'].queryset = User.objects.filter(
             role='irb_member',
+            is_active=True
+        ).order_by('last_name', 'first_name')
+        # PRAMS users who can be added as co-investigators (researcher, instructor, admin)
+        self.fields['co_investigator_users'].queryset = User.objects.filter(
+            role__in=['researcher', 'instructor', 'admin'],
             is_active=True
         ).order_by('last_name', 'first_name')
         
@@ -110,6 +115,18 @@ class ProtocolSubmissionForm(forms.ModelForm):
         widget=forms.RadioSelect(attrs={'class': 'form-check-input'}),
         label='Review Type Suggestion',
         help_text='Based on your protocol, suggest which review type you believe is appropriate'
+    )
+    primary_study_context = forms.ChoiceField(
+        choices=[
+            ('', '-- Select one --'),
+            ('social_behavioral', 'Traditional social / behavioral science (surveys, qualitative, educational, CBPR, etc.)'),
+            ('biomedical_clinical', 'Biomedical or clinical intervention (drugs, devices, physical procedures)'),
+            ('mixed_other', 'Mixed or other'),
+        ],
+        required=False,
+        widget=forms.RadioSelect(attrs={'class': 'form-check-input'}),
+        label='Primary study context',
+        help_text='Helps reviewers apply the right standards. See Social Science IRB Standards for guidance.'
     )
     involves_deception = forms.BooleanField(
         required=False,
@@ -371,11 +388,18 @@ class ProtocolSubmissionForm(forms.ModelForm):
         label='PI Phone',
         help_text='Primary Investigator phone number'
     )
-    co_investigators = forms.CharField(
+    co_investigator_users = forms.ModelMultipleChoiceField(
+        queryset=None,  # Set in __init__
         required=False,
-        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 10}),
-        label='Co-Investigators',
-        help_text='List all co-investigators (name, title, department, email)'
+        widget=forms.CheckboxSelectMultiple(attrs={'class': 'form-check-input'}),
+        label='Co-Investigators with PRAMS accounts',
+        help_text='Select PRAMS users as co-investigators; they will see this study on their dashboard.',
+    )
+    co_investigators_extra = forms.CharField(
+        required=False,
+        widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+        label='Other co-investigators (no PRAMS account)',
+        help_text='Name and email of anyone else (e.g. "Jane Doe, jane@example.edu"). One per line.',
     )
     citi_training_completion = forms.CharField(
         required=False,
@@ -535,6 +559,7 @@ class ProtocolSubmissionForm(forms.ModelForm):
         model = ProtocolSubmission
         fields = [
             'pi_suggested_review_type',
+            'primary_study_context',
             'involves_deception',
             'protocol_description',
             'population_description',
@@ -574,7 +599,8 @@ class ProtocolSubmissionForm(forms.ModelForm):
             'pi_department',
             'pi_email',
             'pi_phone',
-            'co_investigators',
+            'co_investigator_users',
+            'co_investigators_extra',
             'citi_training_completion',
             'citi_training_certificate',
             # Vulnerable Populations

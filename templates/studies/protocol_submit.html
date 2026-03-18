@@ -86,6 +86,13 @@
                 <br><small>You can use the form below to create a new version or revise your submission.</small>
             </div>
             {% endif %}
+
+            <div class="alert alert-light border">
+                <strong>Final standards check:</strong>
+                If this is a social, behavioral, qualitative, classroom-based, or community-engaged study, review the
+                <a href="{% url 'studies:social_science_irb_standards' %}" class="alert-link">Social Science IRB Standards</a>
+                before submitting.
+            </div>
             
             <form method="post" id="protocol-submission-form">
                 {% csrf_token %}
@@ -143,7 +150,23 @@
                                 <div class="text-danger small">{{ form.pi_suggested_review_type.errors.0 }}</div>
                             {% endif %}
                         </div>
-                        
+
+                        <div class="mb-3">
+                            <label class="form-label"><strong>{{ form.primary_study_context.label }}</strong></label>
+                            <p class="text-muted small mb-2">{{ form.primary_study_context.help_text }} <a href="{% url 'studies:social_science_irb_standards' %}" target="_blank" rel="noopener">Social Science IRB Standards</a></p>
+                            {% for choice in form.primary_study_context.field.choices %}
+                                {% if choice.0 %}
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" name="{{ form.primary_study_context.name }}" id="context_{{ choice.0 }}" value="{{ choice.0 }}" {% if form.primary_study_context.value == choice.0 %}checked{% endif %}>
+                                    <label class="form-check-label" for="context_{{ choice.0 }}">{{ choice.1 }}</label>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                            {% if form.primary_study_context.errors %}
+                                <div class="text-danger small">{{ form.primary_study_context.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="mb-3">

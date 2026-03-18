@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %}Social Science IRB Standards{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 offset-lg-1">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                <li class="breadcrumb-item active">Social Science IRB Standards</li>
+            </ol>
+        </nav>
+
+        <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap mb-4">
+            <div>
+                <h2>Social Science IRB Standards</h2>
+                <p class="lead mb-0">
+                    A shared PRAMS mental model for proportionate, context-sensitive review of social and behavioral studies.
+                </p>
+            </div>
+            <span class="text-muted small">Source: <code>docs/SOCIAL_SCIENCE_IRB_STANDARDS.md</code></span>
+        </div>
+
+        <div class="alert alert-info">
+            Use this guide when a PRAMS study is primarily social, behavioral, educational, qualitative, or community-engaged rather than biomedical. It does not lower protections; it helps match protections to the actual risks and methods of the study.
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-body standards-doc-body">
+                {{ standards_html|safe }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Diagram 1: larger text */
+    .standards-doc-body .mermaid-diagram-1 svg { font-size: 1.2rem; }
+    .standards-doc-body .mermaid-diagram-1 .nodeLabel, .standards-doc-body .mermaid-diagram-1 .edgeLabel { font-size: 1.15rem; }
+    /* Space between Diagram 1 and Diagram 2 */
+    .standards-doc-body .diagram-1-wrapper { margin-bottom: 2.5rem; }
+    .standards-doc-body .diagram-2-wrapper { margin-top: 0.5rem; }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+
+    mermaid.initialize({
+        startOnLoad: true,
+        securityLevel: "strict",
+        theme: "default",
+        flowchart: {
+            useMaxWidth: true,
+            htmlLabels: false
+        }
+    });
+</script>
+{% endblock %}

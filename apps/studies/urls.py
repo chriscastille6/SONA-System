@@ -9,6 +9,7 @@ app_name = 'studies'
 urlpatterns = [
     # Participant information document (full consent/info for psychological assessment platform)
     path('participant-information/', views.participant_information_consent, name='participant_information_consent'),
+    path('irb-standards/', views.social_science_irb_standards, name='social_science_irb_standards'),
     # Browse studies
     path('', views.study_list, name='list'),
     path('<uuid:pk>/', views.study_detail, name='detail'),
@@ -28,7 +29,7 @@ urlpatterns = [
     path('researcher/<uuid:pk>/roster/', views.study_roster, name='roster'),
     path('researcher/signup/<uuid:pk>/attendance/', views.mark_attendance, name='mark_attendance'),
     
-    # EXT-AM4 SONA summary (both paths; use extam4-summary if docs/ returns 404)
+    # EXT-AM4 PRAMS summary (both paths; use extam4-summary if docs/ returns 404)
     path('extam4-summary/', views.extam4_summary_html, name='extam4_summary'),
     path('docs/extam4-summary/', views.extam4_summary_html, name='extam4_summary_docs'),
     # Protocol and data collection

@@ -7,11 +7,21 @@
     <div class="col-md-12">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>IRB Committee Dashboard</h2>
-            {% if show_admin_links %}
-            <a href="{% url 'admin:studies_irbreview_changelist' %}" class="btn btn-outline-secondary">
-                Admin Interface
-            </a>
-            {% endif %}
+            <div class="d-flex gap-2 flex-wrap">
+                <a href="{% url 'studies:social_science_irb_standards' %}" class="btn btn-outline-primary">
+                    Social Science Standards
+                </a>
+                {% if show_admin_links %}
+                <a href="{% url 'admin:studies_irbreview_changelist' %}" class="btn btn-outline-secondary">
+                    Admin Interface
+                </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="alert alert-light border mb-4">
+            Use the <a href="{% url 'studies:social_science_irb_standards' %}" class="alert-link">Social Science IRB Standards</a>
+            when reviewing PRAMS studies that are social, behavioral, educational, qualitative, or community-engaged.
         </div>
         
         <!-- Filter Bar -->

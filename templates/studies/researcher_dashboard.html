@@ -18,6 +18,12 @@
             {% endif %}
         </div>
         {% endif %}
+
+        <div class="alert alert-light border mb-4" role="alert">
+            <strong>Working on a social or behavioral study?</strong>
+            Use the <a href="{% url 'studies:social_science_irb_standards' %}" class="alert-link">Social Science IRB Standards</a>
+            to frame risk, consent, and methodological flexibility before you submit in PRAMS.
+        </div>
         
         {% if studies %}
             <div class="row">

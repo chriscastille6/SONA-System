@@ -98,6 +98,13 @@
                 <br><small>If this study already has an approved protocol, go to <a href="{% url 'studies:researcher_dashboard' %}">My Studies</a> and click <strong>View Submission</strong> to see the full protocol.</small>
             </div>
             {% endif %}
+
+            <div class="alert alert-light border">
+                <strong>Need help applying the right standards?</strong>
+                For social, behavioral, qualitative, classroom-based, or community-engaged studies, review the
+                <a href="{% url 'studies:social_science_irb_standards' %}" class="alert-link">Social Science IRB Standards</a>
+                before completing risk, consent, and review-type sections.
+            </div>
             
             <form method="post" id="protocol-submission-form" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -153,6 +160,22 @@
                             {% endfor %}
                             {% if form.pi_suggested_review_type.errors %}
                                 <div class="text-danger small">{{ form.pi_suggested_review_type.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label"><strong>{{ form.primary_study_context.label }}</strong></label>
+                            <p class="text-muted small mb-2">{{ form.primary_study_context.help_text }} <a href="{% url 'studies:social_science_irb_standards' %}" target="_blank" rel="noopener">Social Science IRB Standards</a></p>
+                            {% for choice in form.primary_study_context.field.choices %}
+                                {% if choice.0 %}
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio" name="{{ form.primary_study_context.name }}" id="context_{{ choice.0 }}" value="{{ choice.0 }}" {% if form.primary_study_context.value == choice.0 %}checked{% endif %}>
+                                    <label class="form-check-label" for="context_{{ choice.0 }}">{{ choice.1 }}</label>
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                            {% if form.primary_study_context.errors %}
+                                <div class="text-danger small">{{ form.primary_study_context.errors.0 }}</div>
                             {% endif %}
                         </div>
                         
@@ -606,11 +629,18 @@
                             {{ form.pi_phone }}
                         </div>
                         <div class="mb-3">
-                            <label for="{{ form.co_investigators.id_for_label }}" class="form-label">
-                                {{ form.co_investigators.label }}
+                            <label class="form-label">{{ form.co_investigator_users.label }}</label>
+                            <div class="border rounded p-3" style="background-color: #f8f9fa; max-height: 200px; overflow-y: auto;">
+                                {{ form.co_investigator_users }}
+                            </div>
+                            <small class="form-text text-muted">{{ form.co_investigator_users.help_text }}</small>
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.co_investigators_extra.id_for_label }}" class="form-label">
+                                {{ form.co_investigators_extra.label }}
                             </label>
-                            {{ form.co_investigators }}
-                            <small class="form-text text-muted">{{ form.co_investigators.help_text }}</small>
+                            {{ form.co_investigators_extra }}
+                            <small class="form-text text-muted">{{ form.co_investigators_extra.help_text }}</small>
                         </div>
                         <div class="mb-3">
                             <label for="{{ form.citi_training_completion.id_for_label }}" class="form-label">

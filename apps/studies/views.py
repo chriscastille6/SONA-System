@@ -15,8 +15,11 @@ from django.template import TemplateDoesNotExist
 from django.conf import settings
 import json
 import logging
+import re
 import uuid
 from pathlib import Path
+
+import markdown
 
 logger = logging.getLogger(__name__)
 from .models import (
@@ -55,7 +58,7 @@ def user_can_access_study(user, study):
 
 
 def extam4_summary_html(request):
-    """Serve the EXT-AM4 / goals-refs SONA summary HTML (file locations, quick reference). Deployed at /studies/docs/extam4-summary/."""
+    """Serve the EXT-AM4 / goals-refs PRAMS summary HTML (file locations, quick reference). Deployed at /studies/docs/extam4-summary/."""
     path = Path(settings.BASE_DIR) / "docs" / "EXTAM4_SONA_SUMMARY.html"
     if not path.exists():
         raise Http404("Summary not found.")
@@ -79,6 +82,66 @@ def participant_information_consent(request):
         'irb_office_name': getattr(settings, 'IRB_OFFICE_NAME', ''),
         'irb_office_phone': getattr(settings, 'IRB_OFFICE_PHONE', ''),
         'irb_office_email': getattr(settings, 'IRB_OFFICE_EMAIL', ''),
+    })
+
+
+def _render_social_science_irb_standards_html():
+    """Read docs/SOCIAL_SCIENCE_IRB_STANDARDS.md, convert to HTML, preserve mermaid blocks for client-side render."""
+    path = Path(settings.BASE_DIR) / "docs" / "SOCIAL_SCIENCE_IRB_STANDARDS.md"
+    if not path.exists():
+        return "<p>Standards document not found.</p>"
+    try:
+        raw = path.read_text(encoding="utf-8")
+    except OSError:
+        return "<p>Could not read standards document.</p>"
+    # Split on ```mermaid so we can leave mermaid blocks as <div class="mermaid"> for Mermaid.js
+    parts = re.split(r"```mermaid\s*\n", raw)
+    out = []
+    mermaid_index = 0
+    for i, segment in enumerate(parts):
+        if i == 0:
+            # Optional leading markdown (no mermaid before it)
+            if segment.strip():
+                out.append(markdown.markdown(segment, extensions=["fenced_code"]))
+        else:
+            # After ```mermaid: content is "flowchart...\n```\nrest" or "flowchart...\n```"
+            match = re.match(r"^([\s\S]*?)\n```\s*\n?([\s\S]*)$", segment)
+            if match:
+                mermaid_body, rest = match.group(1), match.group(2)
+                mermaid_index += 1
+                if mermaid_index == 1:
+                    out.append(
+                        '<div class="diagram-1-wrapper">'
+                        '<div class="mermaid mermaid-diagram-1">\n' + mermaid_body.strip() + "\n</div>"
+                        "</div>"
+                    )
+                else:
+                    out.append('<div class="diagram-2-wrapper"><div class="mermaid">\n' + mermaid_body.strip() + "\n</div></div>")
+                if rest.strip():
+                    out.append(markdown.markdown(rest, extensions=["fenced_code"]))
+            else:
+                # Fallback: treat whole segment as markdown
+                out.append(markdown.markdown(segment, extensions=["fenced_code"]))
+    return "\n".join(out)
+
+
+@login_required
+def social_science_irb_standards(request):
+    """Shared guidance for applying proportionate standards to social and behavioral studies."""
+    allowed = (
+        request.user.is_researcher or
+        request.user.is_instructor or
+        getattr(request.user, 'is_irb_member', False) or
+        request.user.is_staff or
+        getattr(request.user, 'is_admin', False)
+    )
+    if not allowed:
+        messages.error(request, 'Access denied.')
+        return redirect('home')
+
+    standards_html = _render_social_science_irb_standards_html()
+    return render(request, 'studies/social_science_irb_standards.html', {
+        'standards_html': standards_html,
     })
 
 
@@ -198,10 +261,11 @@ def researcher_dashboard(request):
     from django.db.models import Q
     from apps.studies.models import ProtocolSubmission
     
-    # Use Q objects to combine queries safely
+    # Use Q objects to combine queries safely (PI, or co-I via text or PRAMS user link)
     studies = Study.objects.filter(
         Q(researcher=request.user) |
-        Q(protocol_submissions__co_investigators__icontains=request.user.email)
+        Q(protocol_submissions__co_investigators__icontains=request.user.email) |
+        Q(protocol_submissions__co_investigator_users=request.user)
     ).distinct().order_by('-created_at')
     
     # Annotate each study with draft and submitted protocol info
@@ -1459,6 +1523,16 @@ def protocol_enter(request, study_id):
                     submission.suggested_reviewers = reviewer_text
             
             submission.save()
+            form.save_m2m()  # Save co_investigator_users M2M
+            
+            # Rebuild co_investigators text from PRAMS users + extra (for display and dashboard __icontains)
+            selected_co_i = form.cleaned_data.get('co_investigator_users') or []
+            lines = [f"{u.get_full_name()}, {u.email}" for u in selected_co_i]
+            extra = (form.cleaned_data.get('co_investigators_extra') or "").strip()
+            if extra:
+                lines.append(extra)
+            submission.co_investigators = "\n".join(lines)
+            submission.save(update_fields=['co_investigators'])
             
             # Update study deception flag
             study.involves_deception = submission.involves_deception
@@ -1662,11 +1736,10 @@ def protocol_submission_detail(request, submission_id):
     except Exception:
         study = None  # Study was deleted; protocol may still be viewable
     
-    # Check access (include co-investigators listed on the submission)
+    # Check access (include co-investigators: text list or PRAMS users)
     is_co_i = bool(
-        request.user.email
-        and submission.co_investigators
-        and request.user.email.lower() in submission.co_investigators.lower()
+        (request.user.email and submission.co_investigators and request.user.email.lower() in submission.co_investigators.lower())
+        or submission.co_investigator_users.filter(pk=request.user.pk).exists()
     )
     can_view = (
         request.user.is_staff or
@@ -1719,13 +1792,14 @@ def protocol_college_rep_review(request, submission_id):
         return redirect('studies:protocol_submission_detail', submission_id=submission.id)
     
     determination = request.POST.get('determination')
-    notes = request.POST.get('notes', '')
+    notes = request.POST.get('notes', '').strip()
     
     if determination not in ['exempt', 'expedited', 'full']:
         messages.error(request, 'Invalid determination.')
         return redirect('studies:protocol_submission_detail', submission_id=submission.id)
     
     submission.college_rep_determination = determination
+    submission.college_rep_notes = notes
     submission.review_type = determination
     submission.reviewed_at = timezone.now()
     
@@ -1910,9 +1984,8 @@ def protocol_archive(request, submission_id):
     
     # Only PI, co-investigator, or admin/staff can archive
     is_co_i = bool(
-        request.user.email
-        and submission.co_investigators
-        and request.user.email.lower() in submission.co_investigators.lower()
+        (request.user.email and submission.co_investigators and request.user.email.lower() in submission.co_investigators.lower())
+        or submission.co_investigator_users.filter(pk=request.user.pk).exists()
     )
     can_archive = (
         request.user.is_staff or
@@ -1941,9 +2014,8 @@ def protocol_unarchive(request, submission_id):
     
     # Only PI, co-investigator, or admin/staff can unarchive
     is_co_i = bool(
-        request.user.email
-        and submission.co_investigators
-        and request.user.email.lower() in submission.co_investigators.lower()
+        (request.user.email and submission.co_investigators and request.user.email.lower() in submission.co_investigators.lower())
+        or submission.co_investigator_users.filter(pk=request.user.pk).exists()
     )
     can_unarchive = (
         request.user.is_staff or
@@ -2030,12 +2102,11 @@ def amendment_create(request, submission_id):
     submission = get_object_or_404(ProtocolSubmission, id=submission_id)
     study = submission.study
 
-    # Only PI or admin/staff can create amendments
+    # Only PI, co-investigator, or admin/staff can create amendments
     is_pi = request.user.is_researcher and study.researcher == request.user
     is_co_i = bool(
-        request.user.email
-        and submission.co_investigators
-        and request.user.email.lower() in submission.co_investigators.lower()
+        (request.user.email and submission.co_investigators and request.user.email.lower() in submission.co_investigators.lower())
+        or submission.co_investigator_users.filter(pk=request.user.pk).exists()
     )
     if not (is_pi or is_co_i or request.user.is_staff or getattr(request.user, 'is_admin', False)):
         messages.error(request, 'Only the study PI or co-investigators can create amendments.')
@@ -2139,9 +2210,8 @@ def amendment_detail(request, amendment_id):
     study = submission.study
 
     is_co_i = bool(
-        request.user.email
-        and submission.co_investigators
-        and request.user.email.lower() in submission.co_investigators.lower()
+        (request.user.email and submission.co_investigators and request.user.email.lower() in submission.co_investigators.lower())
+        or submission.co_investigator_users.filter(pk=request.user.pk).exists()
     )
     can_view = (
         request.user.is_staff or
@@ -2255,9 +2325,8 @@ def amendment_list(request, submission_id):
     study = submission.study
 
     is_co_i = bool(
-        request.user.email
-        and submission.co_investigators
-        and request.user.email.lower() in submission.co_investigators.lower()
+        (request.user.email and submission.co_investigators and request.user.email.lower() in submission.co_investigators.lower())
+        or submission.co_investigator_users.filter(pk=request.user.pk).exists()
     )
     can_view = (
         request.user.is_staff or

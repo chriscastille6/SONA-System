@@ -7,9 +7,20 @@
     <div class="col-12">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>Your Assigned Protocols</h2>
-            <a href="{% url 'studies:committee_dashboard' %}" class="btn btn-outline-secondary">
-                Committee Overview
-            </a>
+            <div class="d-flex gap-2 flex-wrap">
+                <a href="{% url 'studies:social_science_irb_standards' %}" class="btn btn-outline-primary">
+                    Social Science Standards
+                </a>
+                <a href="{% url 'studies:committee_dashboard' %}" class="btn btn-outline-secondary">
+                    Committee Overview
+                </a>
+            </div>
+        </div>
+
+        <div class="alert alert-light border">
+            Reviewing a social or behavioral protocol? Open the
+            <a href="{% url 'studies:social_science_irb_standards' %}" class="alert-link">Social Science IRB Standards</a>
+            for a proportionate framework for risk, consent, and study adaptations.
         </div>
         
         {% if assigned_items %}
