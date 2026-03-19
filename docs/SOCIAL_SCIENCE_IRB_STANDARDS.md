@@ -72,6 +72,14 @@ flowchart TD
 - When requesting revisions, ask for targeted protections tied to the actual risks rather than generic biomedical safeguards.
 - Keep proportionality in view: stronger oversight when risk truly increases, lighter oversight when participant protections are already appropriate to a minimal-risk design.
 
+## Note for chairs and administrators: common social-science practices
+
+**Course credit and bonus points.** In psychology, business, and other social-science departments, offering course credit or bonus points for research participation is a standard, widely accepted practice at many universities. For minimal-risk studies (e.g., surveys, behavioral tasks, vignette-based research), these incentives are generally not considered coercive when participation is voluntary, alternatives to participation are available per course policy, and the study has been approved as minimal risk. Treating such incentives as inherently problematic can block the very research that disciplinary norms and federal guidance allow, and can place the institution at odds with common practice elsewhere without a proportionate benefit to participants.
+
+**Convenience sampling.** Recruiting from student participant pools or other readily accessible populations (convenience sampling) is the default in much of social and behavioral research. It is a methodological choice with known limits for generalizability, not an ethical shortcoming. Reviewers and administrators should not treat convenience sampling alone as a reason to withhold or condition approval for minimal-risk protocols. Where generalizability is a scientific concern, it belongs in the discussion of study limitations, not as an IRB barrier.
+
+**Balancing oversight with academic freedom.** The aim of ethics review is to protect participants and support responsible research. When standards are applied so strictly or so misaligned with disciplinary norms that they routinely delay or prevent legitimate, low-risk social and behavioral research, the institution risks undermining academic freedom and the ability of researchers to conduct work that is standard in their field. Guidance that helps reviewers apply proportionate standards—and that names common practices such as course credit and convenience sampling as acceptable in the minimal-risk context—supports both protection and scholarship.
+
 ## PRAMS Review Notes
 
 - Use this guide alongside the existing PRAMS exempt, expedited, and full review workflow.
