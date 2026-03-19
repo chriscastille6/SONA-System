@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IRB Review — HR Situational Judgment Test</title>
+  <style>
+    :root {
+      --ink: #1f2937;
+      --muted: #4b5563;
+      --line: #d1d5db;
+      --panel: #f9fafb;
+      --accent: #0e4c99;
+      --warn: #a6192e;
+      --ok: #1e7e34;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      line-height: 1.58;
+      background: #fff;
+    }
+    .page {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 3rem;
+    }
+    h1 {
+      margin: 0 0 0.5rem;
+      font-size: 1.8rem;
+      border-bottom: 3px solid var(--warn);
+      padding-bottom: 0.55rem;
+    }
+    h2 {
+      margin: 2rem 0 0.75rem;
+      font-size: 1.2rem;
+      color: var(--accent);
+    }
+    .lede { color: var(--muted); margin: 0.3rem 0 1.2rem; }
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 0.6rem 1rem;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.9rem 1rem;
+    }
+    .meta-label { font-weight: 700; }
+    .box {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.9rem 1rem;
+      background: #fff;
+      margin-bottom: 0.8rem;
+    }
+    .callout {
+      background: #eef4ff;
+      border-left: 4px solid var(--accent);
+      padding: 0.8rem 1rem;
+      margin: 0.9rem 0;
+    }
+    .callout.warn {
+      background: #fff8f0;
+      border-left-color: #c2410c;
+    }
+    .incident {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.9rem 1rem;
+      margin: 0.9rem 0;
+    }
+    .incident h3 {
+      margin: 0 0 0.5rem;
+      color: #102a4c;
+      font-size: 1.05rem;
+    }
+    .incident.skipped { opacity: 0.55; }
+    .tactics {
+      margin-top: 0.7rem;
+      border-top: 1px dashed var(--line);
+      padding-top: 0.7rem;
+    }
+    .tactic {
+      margin-bottom: 0.7rem;
+      padding: 0.55rem;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem;
+      margin-top: 0.45rem;
+      align-items: center;
+    }
+    .rating label { margin-right: 0.5rem; white-space: nowrap; font-size: 0.92rem; }
+    .skip-btn {
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      background: #fff;
+      border-radius: 4px;
+      padding: 0.25rem 0.6rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-family: inherit;
+    }
+    .skip-state {
+      color: var(--ok);
+      font-size: 0.9rem;
+      font-weight: 700;
+      display: none;
+    }
+    .actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.8rem 0; }
+    .btn {
+      display: inline-block;
+      padding: 0.45rem 0.7rem;
+      border-radius: 6px;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.93rem;
+      background: #fff;
+    }
+    .small { color: var(--muted); font-size: 0.92rem; }
+    .footer {
+      margin-top: 2.4rem;
+      border-top: 1px solid var(--line);
+      padding-top: 0.9rem;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+    @media print {
+      .page { max-width: none; padding: 0.5in; }
+      .skip-btn { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <h1>IRB Reviewer Packet: HR Situational Judgment Test</h1>
+    <p class="lede">
+      <strong>No data collection on this page.</strong> This is a review-only copy for IRB. Scenario and tactic text is loaded from the same source file used by the live assessment (<code>incidents-data.js</code>), so content stays aligned with production. Nothing is submitted to any server.
+    </p>
+
+    <div class="callout warn">
+      <strong>Live participant app vs. this page:</strong> The public assessment at <code>hr-sjt-assessment</code> starts a session via <code>/platform-api/hr-sjt/sessions</code>. If that API is unavailable, “Begin Assessment” fails there — but you do <em>not</em> need that backend for IRB review of wording and skip behavior. Use this page for full review; use the live link below only when the API is deployed.
+    </div>
+
+    <div class="actions">
+      <a class="btn" href="https://bayoupal.nicholls.edu/hr-sjt-assessment/index.html?study={{ study.id }}" target="_blank" rel="noopener">Open live assessment (needs API)</a>
+    </div>
+
+    <section>
+      <h2>Study Snapshot</h2>
+      <div class="meta-grid">
+        <div><span class="meta-label">Protocol Slug:</span> hr-sjt</div>
+        <div><span class="meta-label">Study ID (PRAMS):</span> {{ study.id }}</div>
+        <div><span class="meta-label">Review Type:</span> Exempt (Category D)</div>
+        <div><span class="meta-label">Duration:</span> ~45–60 minutes (live)</div>
+        <div><span class="meta-label">PI:</span> Dr. Christopher Castille</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Participant flow (for protocol text)</h2>
+      <div class="box">
+        <ol>
+          <li>Consent → ID from name (live app) → instructions → 27 situations with 1–5 tactic ratings.</li>
+          <li><strong>Skip:</strong> Each situation below has <em>Skip this situation</em>; ratings are optional (no <code>required</code> attributes).</li>
+        </ol>
+      </div>
+      <div class="callout">
+        <strong>IRB check:</strong> Reviewers can confirm participants are not forced to answer every situation by using the skip control and leaving ratings blank.
+      </div>
+    </section>
+
+    <section>
+      <h2>All 27 situations (same content as live instrument)</h2>
+      <p class="small">Source: <code>https://bayoupal.nicholls.edu/hr-sjt-assessment/incidents-data.js</code></p>
+      <div id="incident-list"></div>
+    </section>
+
+    <section>
+      <h2>Contacts</h2>
+      <div class="box">
+        <p><strong>PI:</strong> Dr. Christopher Castille, christopher.castille@nicholls.edu, 985-449-7015</p>
+        <p><strong>IRB:</strong> Dr. Alaina Daigle, 985-448-4697</p>
+      </div>
+    </section>
+
+    <p class="footer">IRB review packet — frontend only; no responses stored.</p>
+  </main>
+
+  <script src="https://bayoupal.nicholls.edu/hr-sjt-assessment/incidents-data.js"></script>
+  <script>
+    (function () {
+      var incidents = typeof INCIDENTS_DATA !== 'undefined' ? INCIDENTS_DATA : [];
+      var host = document.getElementById('incident-list');
+      if (!host) return;
+
+      if (!Array.isArray(incidents) || incidents.length === 0) {
+        host.innerHTML = '<div class="box"><strong>Could not load incidents.</strong> Check network access to incidents-data.js.</div>';
+        return;
+      }
+
+      incidents.forEach(function (incident, idx) {
+        var card = document.createElement('article');
+        card.className = 'incident';
+
+        var title = document.createElement('h3');
+        title.textContent = 'Situation ' + (idx + 1) + ' of 27: ' + (incident.name || 'Untitled');
+        card.appendChild(title);
+
+        var scenario = document.createElement('p');
+        scenario.textContent = incident.scenario || '';
+        card.appendChild(scenario);
+
+        var tacticsWrap = document.createElement('div');
+        tacticsWrap.className = 'tactics';
+
+        var tactics = Array.isArray(incident.tactics) ? incident.tactics : [];
+        tactics.forEach(function (tactic, tIdx) {
+          var tacticBox = document.createElement('div');
+          tacticBox.className = 'tactic';
+
+          var tacticText = document.createElement('p');
+          tacticText.innerHTML = '<strong>Tactic ' + (tIdx + 1) + ':</strong> ' + (tactic.text || '');
+          tacticBox.appendChild(tacticText);
+
+          var controls = document.createElement('div');
+          controls.className = 'controls';
+          var rating = document.createElement('div');
+          rating.className = 'rating';
+          for (var score = 1; score <= 5; score += 1) {
+            var label = document.createElement('label');
+            var input = document.createElement('input');
+            input.type = 'radio';
+            input.name = 'i' + idx + '_t' + tIdx;
+            input.value = String(score);
+            label.appendChild(input);
+            label.appendChild(document.createTextNode(' ' + score));
+            rating.appendChild(label);
+          }
+          controls.appendChild(rating);
+          tacticBox.appendChild(controls);
+          tacticsWrap.appendChild(tacticBox);
+        });
+
+        var skipControls = document.createElement('div');
+        skipControls.className = 'controls';
+
+        var skipBtn = document.createElement('button');
+        skipBtn.type = 'button';
+        skipBtn.className = 'skip-btn';
+        skipBtn.textContent = 'Skip this situation';
+
+        var skipState = document.createElement('span');
+        skipState.className = 'skip-state';
+        skipState.textContent = 'Skipped';
+
+        skipBtn.addEventListener('click', function () {
+          var checked = card.querySelectorAll('input[type="radio"]:checked');
+          for (var i = 0; i < checked.length; i++) checked[i].checked = false;
+          skipState.style.display = 'inline';
+          card.classList.add('skipped');
+        });
+
+        skipControls.appendChild(skipBtn);
+        skipControls.appendChild(skipState);
+        tacticsWrap.appendChild(skipControls);
+
+        card.appendChild(tacticsWrap);
+        host.appendChild(card);
+      });
+    })();
+  </script>
+</body>
+</html>

@@ -442,6 +442,22 @@ def run_protocol(request, slug):
     Serve the protocol HTML for a study.
     Uses active_approved so expired studies return 404 (IRB compliance).
     """
+    # HR-SJT uses a standalone IRB reviewer packet page.
+    # Allow IRB/staff/PI access before approval for review.
+    if slug == 'hr-sjt':
+        study = get_object_or_404(Study.objects.all(), slug=slug)
+        can_preview_preapproval = request.user.is_authenticated and (
+            request.user.is_staff
+            or getattr(request.user, 'is_admin', False)
+            or getattr(request.user, 'role', None) == 'irb_member'
+            or (study.researcher and study.researcher_id == request.user.id)
+        )
+        if not study.is_active and not can_preview_preapproval:
+            raise Http404()
+        return render(request, 'studies/hr_sjt_irb_full_study.html', {
+            'study': study,
+        })
+
     study = get_object_or_404(Study.active_approved, slug=slug)
     
     # Try to load project-specific protocol template
