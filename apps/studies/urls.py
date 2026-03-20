@@ -33,6 +33,8 @@ urlpatterns = [
     path('extam4-summary/', views.extam4_summary_html, name='extam4_summary'),
     path('docs/extam4-summary/', views.extam4_summary_html, name='extam4_summary_docs'),
     # Protocol and data collection
+    # Hosted live survey (goals-refs Wave 1) — before slug routes
+    path('goals-refs/survey/', views.goals_refs_live_survey, name='goals_refs_live_survey'),
     path('<slug:slug>/run/', views.run_protocol, name='run_protocol'),
     path('<slug:slug>/protocol/preview/', views.protocol_preview, name='protocol_preview'),
     path('<slug:slug>/protocol/vignettes/', views.protocol_vignettes, name='protocol_vignettes'),

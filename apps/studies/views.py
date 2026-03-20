@@ -10,6 +10,7 @@ from django.contrib import messages
 from django.utils import timezone
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.template.loader import get_template
 from django.template import TemplateDoesNotExist
 from django.conf import settings
@@ -437,24 +438,78 @@ def mark_attendance(request, pk):
     return render(request, 'studies/mark_attendance.html', {'signup': signup})
 
 
+def _run_protocol_preapproval_allowed(request, study):
+    """
+    Whether the Run Protocol page may be shown when the study is inactive
+    (draft / not yet visible). Matches HR-SJT behavior: active studies stay
+    public; inactive ones are limited to staff, IRB members, and the PI.
+    """
+    if study.is_active:
+        return True
+    if not request.user.is_authenticated:
+        return False
+    if request.user.is_staff or getattr(request.user, 'is_admin', False):
+        return True
+    if getattr(request.user, 'role', None) == 'irb_member':
+        return True
+    if study.researcher_id and study.researcher_id == request.user.id:
+        return True
+    return False
+
+
+# Studies whose Run Protocol URL should resolve even when not in active_approved
+# (pending IRB), using the same visibility rules as HR-SJT.
+_RUN_PROTOCOL_PREAPPROVAL_SLUGS = frozenset({'hr-sjt', 'goals-refs'})
+
+
+@ensure_csrf_cookie
+@require_http_methods(["GET", "HEAD"])
+def goals_refs_live_survey(request):
+    """
+    Hosted Wave 1 survey (R1, R2, E1, E2): consent, demographics, vignettes, attention checks, debrief.
+    Submits JSON to /api/studies/<study_id>/submit/ (requires study in active_approved).
+    """
+    study = Study.objects.filter(slug="goals-refs").first()
+    if not study:
+        raise Http404("Study goals-refs not found. Run add_goals_refs_study_online.")
+    base = Path(settings.BASE_DIR) / "apps" / "studies" / "assets" / "irb" / "goals-refs"
+    vignettes_path = base / "vignettes.json"
+    if not vignettes_path.exists():
+        raise Http404("Vignette configuration missing.")
+    try:
+        with open(vignettes_path, "r", encoding="utf-8") as f:
+            vd = json.load(f)
+    except (OSError, json.JSONDecodeError):
+        raise Http404("Could not load vignettes.")
+    vignettes = vd.get("vignettes") or []
+    submit_path = reverse("submit_response", kwargs={"study_id": study.id})
+    submit_url = request.build_absolute_uri(submit_path)
+    return render(
+        request,
+        "studies/goals_refs_live_survey.html",
+        {
+            "study": study,
+            "vignettes_json": json.dumps(vignettes),
+            "instrument_wave": vd.get("instrument_wave", 1),
+            "submit_url": submit_url,
+        },
+    )
+
+
 def run_protocol(request, slug):
     """
     Serve the protocol HTML for a study.
     Uses active_approved so expired studies return 404 (IRB compliance).
     """
-    # HR-SJT uses a standalone IRB reviewer packet page.
-    # Allow IRB/staff/PI access before approval for review.
-    if slug == 'hr-sjt':
+    if slug in _RUN_PROTOCOL_PREAPPROVAL_SLUGS:
         study = get_object_or_404(Study.objects.all(), slug=slug)
-        can_preview_preapproval = request.user.is_authenticated and (
-            request.user.is_staff
-            or getattr(request.user, 'is_admin', False)
-            or getattr(request.user, 'role', None) == 'irb_member'
-            or (study.researcher and study.researcher_id == request.user.id)
-        )
-        if not study.is_active and not can_preview_preapproval:
+        if not _run_protocol_preapproval_allowed(request, study):
             raise Http404()
-        return render(request, 'studies/hr_sjt_irb_full_study.html', {
+        if slug == 'hr-sjt':
+            return render(request, 'studies/hr_sjt_irb_full_study.html', {
+                'study': study,
+            })
+        return render(request, 'projects/goals-refs/protocol/index.html', {
             'study': study,
         })
 
@@ -837,9 +892,17 @@ def protocol_vignettes(request, slug):
     })
 
 
-# Study slug -> docs filename for "full documentation" HTML (all cases / protocol summary)
+# Study slug -> path parts (under BASE_DIR) for "full documentation" HTML.
 STUDY_DOCUMENTATION_FILES = {
-    'hr-sjt': 'HR_SJT_DOCUMENTATION.html',
+    'hr-sjt': ('docs', 'HR_SJT_DOCUMENTATION.html'),
+    'goals-refs': (
+        'apps',
+        'studies',
+        'assets',
+        'irb',
+        'goals-refs',
+        'vignettes_with_predicted_patterns.html',
+    ),
 }
 
 
@@ -853,10 +916,10 @@ def protocol_study_documentation(request, slug):
     if not _can_view_study_protocol_materials(request, study):
         messages.error(request, 'You do not have access to view this study’s documentation.')
         return redirect('studies:protocol_submission_list')
-    filename = STUDY_DOCUMENTATION_FILES.get(slug)
-    if not filename:
+    doc_parts = STUDY_DOCUMENTATION_FILES.get(slug)
+    if not doc_parts:
         raise Http404("No documentation page for this study.")
-    path = Path(settings.BASE_DIR) / "docs" / filename
+    path = Path(settings.BASE_DIR).joinpath(*doc_parts)
     if not path.exists():
         raise Http404("Documentation file not found.")
     try:

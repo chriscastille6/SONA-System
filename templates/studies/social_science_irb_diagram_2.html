@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}Diagram 2 - Social Science IRB Standards{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'studies:social_science_irb_standards' %}">Social Science IRB Standards</a></li>
+                <li class="breadcrumb-item active">Diagram 2</li>
+            </ol>
+        </nav>
+        <h2>Diagram 2: Reviewer Checklist for Social and Behavioral Studies</h2>
+        <p class="text-muted">Set to a consistent 12pt label size for readability.</p>
+        <div class="card">
+            <div class="card-body">
+                <div class="diagram-wrap">
+                    <div class="mermaid">{{ diagram_mermaid }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .diagram-wrap { overflow-x: auto; overflow-y: visible; }
+    .diagram-wrap .mermaid { width: 100%; }
+    .diagram-wrap .mermaid svg { width: 100% !important; max-width: 100% !important; min-width: 1180px; height: auto; }
+    .diagram-wrap .mermaid .node .label { padding: 10px 14px !important; }
+    .diagram-wrap .mermaid .nodeLabel,
+    .diagram-wrap .mermaid .edgeLabel { white-space: normal; line-height: 1.3; }
+    .diagram-wrap .mermaid foreignObject { overflow: visible; }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({
+        startOnLoad: true,
+        securityLevel: "strict",
+        theme: "default",
+        themeVariables: {
+            fontSize: "18px"
+        },
+        flowchart: {
+            useMaxWidth: true,
+            htmlLabels: true,
+            wrappingWidth: 460,
+            nodeSpacing: 75,
+            rankSpacing: 95,
+            padding: 28
+        }
+    });
+</script>
+{% endblock %}
