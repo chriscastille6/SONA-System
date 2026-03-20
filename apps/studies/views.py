@@ -86,8 +86,8 @@ def participant_information_consent(request):
     })
 
 
-def _render_social_science_irb_standards_html():
-    """Read docs/SOCIAL_SCIENCE_IRB_STANDARDS.md, convert to HTML, preserve mermaid blocks for client-side render."""
+def _render_social_science_irb_standards_html(include_mermaid=True):
+    """Read standards markdown and convert to HTML, optionally excluding mermaid blocks."""
     path = Path(settings.BASE_DIR) / "docs" / "SOCIAL_SCIENCE_IRB_STANDARDS.md"
     if not path.exists():
         return "<p>Standards document not found.</p>"
@@ -95,6 +95,9 @@ def _render_social_science_irb_standards_html():
         raw = path.read_text(encoding="utf-8")
     except OSError:
         return "<p>Could not read standards document.</p>"
+    if not include_mermaid:
+        raw = re.sub(r"^## Diagram 1: Which Standards Apply\?\s*$", "", raw, flags=re.MULTILINE)
+        raw = re.sub(r"^## Diagram 2: Reviewer Checklist for Social and Behavioral Studies\s*$", "", raw, flags=re.MULTILINE)
     # Split on ```mermaid so we can leave mermaid blocks as <div class="mermaid"> for Mermaid.js
     parts = re.split(r"```mermaid\s*\n", raw)
     out = []
@@ -110,14 +113,15 @@ def _render_social_science_irb_standards_html():
             if match:
                 mermaid_body, rest = match.group(1), match.group(2)
                 mermaid_index += 1
-                if mermaid_index == 1:
-                    out.append(
-                        '<div class="diagram-1-wrapper">'
-                        '<div class="mermaid mermaid-diagram-1">\n' + mermaid_body.strip() + "\n</div>"
-                        "</div>"
-                    )
-                else:
-                    out.append('<div class="diagram-2-wrapper"><div class="mermaid">\n' + mermaid_body.strip() + "\n</div></div>")
+                if include_mermaid:
+                    if mermaid_index == 1:
+                        out.append(
+                            '<div class="diagram-1-wrapper">'
+                            '<div class="mermaid mermaid-diagram-1">\n' + mermaid_body.strip() + "\n</div>"
+                            "</div>"
+                        )
+                    else:
+                        out.append('<div class="diagram-2-wrapper"><div class="mermaid">\n' + mermaid_body.strip() + "\n</div></div>")
                 if rest.strip():
                     out.append(markdown.markdown(rest, extensions=["fenced_code"]))
             else:
@@ -140,10 +144,57 @@ def social_science_irb_standards(request):
         messages.error(request, 'Access denied.')
         return redirect('home')
 
-    standards_html = _render_social_science_irb_standards_html()
+    standards_html = _render_social_science_irb_standards_html(include_mermaid=False)
     return render(request, 'studies/social_science_irb_standards.html', {
         'standards_html': standards_html,
     })
+
+
+def _extract_social_science_mermaid_blocks():
+    path = Path(settings.BASE_DIR) / "docs" / "SOCIAL_SCIENCE_IRB_STANDARDS.md"
+    if not path.exists():
+        return []
+    try:
+        raw = path.read_text(encoding="utf-8")
+    except OSError:
+        return []
+    return [b.strip() for b in re.findall(r"```mermaid\s*\n([\s\S]*?)\n```", raw)]
+
+
+@login_required
+def social_science_irb_diagram_1(request):
+    allowed = (
+        request.user.is_researcher or
+        request.user.is_instructor or
+        getattr(request.user, 'is_irb_member', False) or
+        request.user.is_staff or
+        getattr(request.user, 'is_admin', False)
+    )
+    if not allowed:
+        messages.error(request, 'Access denied.')
+        return redirect('home')
+    blocks = _extract_social_science_mermaid_blocks()
+    if not blocks:
+        raise Http404("Diagram not found.")
+    return render(request, 'studies/social_science_irb_diagram_1.html', {'diagram_mermaid': blocks[0]})
+
+
+@login_required
+def social_science_irb_diagram_2(request):
+    allowed = (
+        request.user.is_researcher or
+        request.user.is_instructor or
+        getattr(request.user, 'is_irb_member', False) or
+        request.user.is_staff or
+        getattr(request.user, 'is_admin', False)
+    )
+    if not allowed:
+        messages.error(request, 'Access denied.')
+        return redirect('home')
+    blocks = _extract_social_science_mermaid_blocks()
+    if len(blocks) < 2:
+        raise Http404("Diagram not found.")
+    return render(request, 'studies/social_science_irb_diagram_2.html', {'diagram_mermaid': blocks[1]})
 
 
 def study_list(request):

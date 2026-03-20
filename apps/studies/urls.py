@@ -10,6 +10,8 @@ urlpatterns = [
     # Participant information document (full consent/info for psychological assessment platform)
     path('participant-information/', views.participant_information_consent, name='participant_information_consent'),
     path('irb-standards/', views.social_science_irb_standards, name='social_science_irb_standards'),
+    path('irb-standards/diagram-1/', views.social_science_irb_diagram_1, name='social_science_irb_diagram_1'),
+    path('irb-standards/diagram-2/', views.social_science_irb_diagram_2, name='social_science_irb_diagram_2'),
     # Browse studies
     path('', views.study_list, name='list'),
     path('<uuid:pk>/', views.study_detail, name='detail'),
