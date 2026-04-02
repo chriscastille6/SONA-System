@@ -130,20 +130,8 @@ def _render_social_science_irb_standards_html(include_mermaid=True):
     return "\n".join(out)
 
 
-@login_required
 def social_science_irb_standards(request):
-    """Shared guidance for applying proportionate standards to social and behavioral studies."""
-    allowed = (
-        request.user.is_researcher or
-        request.user.is_instructor or
-        getattr(request.user, 'is_irb_member', False) or
-        request.user.is_staff or
-        getattr(request.user, 'is_admin', False)
-    )
-    if not allowed:
-        messages.error(request, 'Access denied.')
-        return redirect('home')
-
+    """Shared guidance for proportionate review of social and behavioral studies (public)."""
     standards_html = _render_social_science_irb_standards_html(include_mermaid=False)
     return render(request, 'studies/social_science_irb_standards.html', {
         'standards_html': standards_html,
@@ -161,36 +149,14 @@ def _extract_social_science_mermaid_blocks():
     return [b.strip() for b in re.findall(r"```mermaid\s*\n([\s\S]*?)\n```", raw)]
 
 
-@login_required
 def social_science_irb_diagram_1(request):
-    allowed = (
-        request.user.is_researcher or
-        request.user.is_instructor or
-        getattr(request.user, 'is_irb_member', False) or
-        request.user.is_staff or
-        getattr(request.user, 'is_admin', False)
-    )
-    if not allowed:
-        messages.error(request, 'Access denied.')
-        return redirect('home')
     blocks = _extract_social_science_mermaid_blocks()
     if not blocks:
         raise Http404("Diagram not found.")
     return render(request, 'studies/social_science_irb_diagram_1.html', {'diagram_mermaid': blocks[0]})
 
 
-@login_required
 def social_science_irb_diagram_2(request):
-    allowed = (
-        request.user.is_researcher or
-        request.user.is_instructor or
-        getattr(request.user, 'is_irb_member', False) or
-        request.user.is_staff or
-        getattr(request.user, 'is_admin', False)
-    )
-    if not allowed:
-        messages.error(request, 'Access denied.')
-        return redirect('home')
     blocks = _extract_social_science_mermaid_blocks()
     if len(blocks) < 2:
         raise Http404("Diagram not found.")
