@@ -26,6 +26,17 @@
             Use this guide when a PRAMS study is primarily social, behavioral, educational, qualitative, or community-engaged rather than biomedical. It does not lower protections; it helps match protections to the actual risks and methods of the study.
         </div>
 
+        <div class="card mb-4 border-primary">
+            <div class="card-body py-3">
+                <h3 class="h6 card-title mb-2">Diagrams (full-size)</h3>
+                <p class="small text-muted mb-2">Flowcharts open on separate pages for readability and projection.</p>
+                <ul class="mb-0">
+                    <li><a href="{% url 'studies:social_science_irb_diagram_1' %}">Diagram 1 — Which standards apply?</a></li>
+                    <li><a href="{% url 'studies:social_science_irb_diagram_2' %}">Diagram 2 — Reviewer checklist for social and behavioral studies</a></li>
+                </ul>
+            </div>
+        </div>
+
         <div class="card mb-4">
             <div class="card-body standards-doc-body">
                 {{ standards_html|safe }}
@@ -33,31 +44,4 @@
         </div>
     </div>
 </div>
-{% endblock %}
-
-{% block extra_css %}
-<style>
-    /* Diagram 1: larger text */
-    .standards-doc-body .mermaid-diagram-1 svg { font-size: 1.2rem; }
-    .standards-doc-body .mermaid-diagram-1 .nodeLabel, .standards-doc-body .mermaid-diagram-1 .edgeLabel { font-size: 1.15rem; }
-    /* Space between Diagram 1 and Diagram 2 */
-    .standards-doc-body .diagram-1-wrapper { margin-bottom: 2.5rem; }
-    .standards-doc-body .diagram-2-wrapper { margin-top: 0.5rem; }
-</style>
-{% endblock %}
-
-{% block extra_js %}
-<script type="module">
-    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
-
-    mermaid.initialize({
-        startOnLoad: true,
-        securityLevel: "strict",
-        theme: "default",
-        flowchart: {
-            useMaxWidth: true,
-            htmlLabels: false
-        }
-    });
-</script>
 {% endblock %}
