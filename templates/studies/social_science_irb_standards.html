@@ -42,6 +42,13 @@
                 {{ standards_html|safe }}
             </div>
         </div>
+
+        <p class="text-center small mb-0">
+            <span class="text-muted">Diagrams:</span>
+            <a href="{% url 'studies:social_science_irb_diagram_1' %}">Diagram 1 — Which standards apply?</a>
+            <span class="text-muted mx-1">·</span>
+            <a href="{% url 'studies:social_science_irb_diagram_2' %}">Diagram 2 — Reviewer checklist</a>
+        </p>
     </div>
 </div>
 {% endblock %}
