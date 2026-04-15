@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Diagram 2 — Reviewer checklist</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 0; padding: 1rem 1rem 2rem; background: #fafafa; }
+    h1 { font-size: 1.25rem; margin: 0 0 0.5rem; }
+    p.lead { color: #555; font-size: 0.95rem; margin: 0 0 1rem; }
+    p.nav { font-size: 0.9rem; margin-bottom: 1rem; }
+    a { color: #0b5cab; }
+    .card { background: #fff; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1rem; }
+    .diagram-wrap { overflow-x: auto; overflow-y: visible; }
+    .diagram-wrap .mermaid { width: 100%; }
+    .diagram-wrap .mermaid svg { width: 100% !important; max-width: 100% !important; min-width: 1180px; height: auto; }
+    .diagram-wrap .mermaid .node .label { padding: 10px 14px !important; }
+    .diagram-wrap .mermaid .nodeLabel,
+    .diagram-wrap .mermaid .edgeLabel { white-space: normal; line-height: 1.3; }
+    .diagram-wrap .mermaid foreignObject { overflow: visible; }
+  </style>
+</head>
+<body>
+  <p class="nav"><a href="standards.html">← Social Science IRB Standards</a></p>
+  <h1>Diagram 2: Reviewer checklist for social and behavioral studies</h1>
+  <p class="lead">Consistent label sizing for readability (scroll horizontally if needed).</p>
+  <div class="card">
+    <div class="diagram-wrap">
+      <div class="mermaid">
+flowchart TD
+    reviewerStart["Reviewer opens a PRAMS protocol"] --> identifyContext["Identify study context: survey, interview, classroom, qualitative, CBPR, digital, or mixed methods"]
+    identifyContext --> riskQuestion{"Minimal risk in context?"}
+    riskQuestion -->|"Yes"| riskOutcome["Do not add biomedical concerns that the protocol does not create"]
+    riskQuestion -->|"No"| riskProtections["Specify the concrete added protections needed"]
+
+    riskOutcome --> consentQuestion{"Does the consent model fit the method and population?"}
+    riskProtections --> consentQuestion
+    consentQuestion -->|"Yes"| consentOutcome["Evaluate clarity, voluntariness, and comprehension"]
+    consentQuestion -->|"No"| consentRevision["Request a better-fit consent process or stronger justification"]
+
+    consentOutcome --> flexibilityQuestion{"Does the design require iterative or emergent adaptation?"}
+    consentRevision --> flexibilityQuestion
+    flexibilityQuestion -->|"Yes"| flexibilityOutcome["Ask whether adaptation is documented, bounded, and ethically monitored"]
+    flexibilityQuestion -->|"No"| fixedProtocol["Use the submitted protocol as the review baseline"]
+
+    flexibilityOutcome --> decisionNode["Decision: approve, exempt with conditions, or request revisions"]
+    fixedProtocol --> decisionNode
+      </div>
+    </div>
+  </div>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    mermaid.initialize({
+        startOnLoad: true,
+        securityLevel: "strict",
+        theme: "default",
+        themeVariables: {
+            fontSize: "18px"
+        },
+        flowchart: {
+            useMaxWidth: true,
+            htmlLabels: true,
+            wrappingWidth: 460,
+            nodeSpacing: 75,
+            rankSpacing: 95,
+            padding: 28
+        }
+    });
+  </script>
+</body>
+</html>
