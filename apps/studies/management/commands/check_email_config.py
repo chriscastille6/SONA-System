@@ -10,7 +10,7 @@ from django.core.mail import send_mail
 class Command(BaseCommand):
     help = (
         "Check email configuration and optionally send a test email. "
-        "Use this on bayoupal after setting EMAIL_* in .env to verify PI approval emails will work."
+        "Use on the server after setting EMAIL_* in .env (PI approval mail, password reset, verification)."
     )
 
     def add_arguments(self, parser):
@@ -34,12 +34,15 @@ class Command(BaseCommand):
         self.stdout.write(f'  DEFAULT_FROM_EMAIL = {from_email or "(not set)"}')
         self.stdout.write(f'  EMAIL_HOST_USER = {"(set)" if has_user else "(not set)"}')
         self.stdout.write(f'  EMAIL_HOST_PASSWORD = {"(set)" if has_password else "(not set)"}')
+        self.stdout.write(f'  SITE_URL = {getattr(settings, "SITE_URL", "") or "(not set)"}')
+        fsn = getattr(settings, 'FORCE_SCRIPT_NAME', None) or ''
+        self.stdout.write(f'  FORCE_SCRIPT_NAME = {fsn or "(not set)"}')
 
         if not email_host:
             self.stdout.write(self.style.WARNING(
-                '\nOutgoing email is NOT configured. PI approval notifications will not be sent.\n'
-                'Add EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD (and optionally DEFAULT_FROM_EMAIL)\n'
-                'to your .env on the server. See docs/EMAIL_SETUP_BAYOUPAL.md.'
+                '\nOutgoing email is NOT configured. Password reset, verification, and PI approval emails will not be sent.\n'
+                'Add EMAIL_HOST, EMAIL_HOST_USER, EMAIL_HOST_PASSWORD, and DEFAULT_FROM_EMAIL to your .env on the server. '
+                'Set SITE_URL and FORCE_SCRIPT_NAME to match the public site (see env.example).'
             ))
             return
 
@@ -49,7 +52,9 @@ class Command(BaseCommand):
             ))
             return
 
-        self.stdout.write(self.style.SUCCESS('\nEmail appears configured. PI approval emails should be sent.'))
+        self.stdout.write(self.style.SUCCESS(
+            '\nEmail appears configured. Password reset, verification, and PI approval email should work.'
+        ))
 
         test_to = (options.get('email') or '').strip()
         if not test_to:
@@ -59,11 +64,11 @@ class Command(BaseCommand):
         self.stdout.write(f'\nSending test email to {test_to}...')
         try:
             send_mail(
-                subject='[HSIRB] Test email – PI notifications are working',
+                subject='[HSIRB] Test email – outgoing mail is working',
                 message=(
                     'This is a test from the HSIRB Study Management System.\n\n'
-                    'If you received this, outgoing email is configured correctly and you should '
-                    'receive "Protocol Approved" emails when a college rep approves your submissions.\n\n'
+                    'If you received this, SMTP is configured. Users can receive password reset links, '
+                    'email verification, and (when applicable) "Protocol Approved" messages.\n\n'
                     f'Sent by check_email_config on {settings.SITE_NAME}.'
                 ),
                 from_email=from_email or None,

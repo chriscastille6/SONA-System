@@ -1,14 +1,18 @@
 """
 Views for accounts app.
 """
+from urllib.parse import urlparse
+
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import LoginView
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponseForbidden
-from django.urls import reverse, reverse_lazy
+from django.urls import get_script_prefix, reverse, reverse_lazy, set_script_prefix
+from django.views.generic.edit import FormView
 from django.utils import timezone
 from django.utils.http import url_has_allowed_host_and_scheme
 from datetime import timedelta, datetime
@@ -233,5 +237,72 @@ class RoleAwareLoginView(LoginView):
             return reverse_lazy('studies:list')
         return settings.LOGIN_REDIRECT_URL
 
+
+def _script_prefix_for_reset_email():
+    """
+    Return WSGI script prefix (with trailing slash) for {% url %} inside password-reset
+    emails, or None to keep the current thread prefix.
+    """
+    fsn = (getattr(settings, 'FORCE_SCRIPT_NAME', None) or '').strip()
+    if fsn:
+        return fsn if fsn.endswith('/') else fsn + '/'
+    site_url = (getattr(settings, 'SITE_URL', '') or '').strip()
+    pl = urlparse(site_url)
+    if pl.path and pl.path not in ('', '/'):
+        p = pl.path
+        return p if p.endswith('/') else p + '/'
+    return None
+
+
+def _password_reset_email_link_context(request):
+    """Override domain/protocol/site_name in the reset email from SITE_URL (public site)."""
+    site_url = (getattr(settings, 'SITE_URL', '') or '').strip()
+    pl = urlparse(site_url)
+    if not pl.hostname:
+        return {}
+    if pl.scheme in ('http', 'https'):
+        protocol = pl.scheme
+    else:
+        protocol = 'https' if request.is_secure() else 'http'
+    return {
+        'domain': pl.hostname,
+        'site_name': settings.SITE_NAME,
+        'protocol': protocol,
+    }
+
+
+class ConfiguredPasswordResetView(auth_views.PasswordResetView):
+    """
+    Build password-reset emails with:
+    - Host and protocol from SITE_URL (avoids bad links when the proxy Host differs).
+    - Script prefix from FORCE_SCRIPT_NAME or the path on SITE_URL so /hsirb/ appears in links.
+    """
+
+    def form_valid(self, form):
+        old_prefix = get_script_prefix()
+        desired = _script_prefix_for_reset_email()
+        try:
+            if desired is not None:
+                set_script_prefix(desired)
+            pl = urlparse((getattr(settings, 'SITE_URL', '') or '').strip())
+            use_https = self.request.is_secure()
+            if pl.hostname and pl.scheme in ('http', 'https'):
+                use_https = pl.scheme == 'https'
+            base_extra = self.extra_email_context or {}
+            extra = {**base_extra, **_password_reset_email_link_context(self.request)}
+            opts = {
+                'use_https': use_https,
+                'token_generator': self.token_generator,
+                'from_email': self.from_email,
+                'email_template_name': self.email_template_name,
+                'subject_template_name': self.subject_template_name,
+                'request': self.request,
+                'html_email_template_name': self.html_email_template_name,
+                'extra_email_context': extra,
+            }
+            form.save(**opts)
+        finally:
+            set_script_prefix(old_prefix)
+        return FormView.form_valid(self, form)
 
 

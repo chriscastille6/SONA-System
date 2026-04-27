@@ -18,7 +18,7 @@ urlpatterns = [
     path('resend-verification/', views.resend_verification, name='resend_verification'),
     
     # Password reset
-    path('password-reset/', auth_views.PasswordResetView.as_view(
+    path('password-reset/', views.ConfiguredPasswordResetView.as_view(
         template_name='accounts/password_reset.html',
         success_url=reverse_lazy('accounts:password_reset_done'),
         email_template_name='registration/password_reset_email.html',
