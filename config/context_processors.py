@@ -10,6 +10,7 @@ def site_settings(request):
         'SITE_NAME': settings.SITE_NAME,
         'INSTITUTION_NAME': settings.INSTITUTION_NAME,
         'SITE_URL': settings.SITE_URL,
+        'PLATFORM_SUPPORT_EMAIL': getattr(settings, 'PLATFORM_SUPPORT_EMAIL', ''),
     }
 
 

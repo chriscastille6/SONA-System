@@ -5,6 +5,13 @@
 {% block content %}
 <div class="row">
     <div class="col-12">
+        <div class="alert alert-secondary border mb-4">
+            <strong>Your password</strong> —
+            <a href="{% url 'accounts:password_change' %}" class="alert-link">Change password</a>
+            if you know your current one, or
+            <a href="{% url 'accounts:password_reset' %}" class="alert-link">email yourself a reset link</a>
+            if you forgot it. Reset messages sometimes land in spam.
+        </div>
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h2>Your Assigned Protocols</h2>
             <div class="d-flex gap-2 flex-wrap">
