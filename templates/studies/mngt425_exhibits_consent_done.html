@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Recorded — MNGT 425 Exhibits A–C{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-body">
+                {% if outcome == 'decline' %}
+                <h1 class="h2">Your choice is recorded</h1>
+                <p class="mb-0">You indicated that you <strong>do not consent</strong> to the use described on the form. This does not affect your grade. If you submitted this in error, contact {{ withdraw_contact_email }}.</p>
+                {% elif outcome == 'consent' %}
+                <h1 class="h2">Thank you</h1>
+                <p class="mb-0">Your <strong>consent</strong> for use of de-identified data in connection with <strong>Exhibits A–C</strong> and the course activities described on the form has been recorded. If you wish to withdraw later, contact the instructor or {{ withdraw_contact_email }}.</p>
+                {% else %}
+                <h1 class="h2">Form</h1>
+                <p class="mb-0">If you just submitted the form, you can close this tab. To start over, <a href="{% url 'studies:mngt425_exhibits_consent' %}">return to the consent page</a>.</p>
+                {% endif %}
+                {% if has_pdf_download %}
+                <hr class="my-4">
+                <h2 class="h5">Download a copy for Canvas (backup)</h2>
+                <p class="mb-2">Save the PDF below and upload it to the <strong>Canvas assignment your instructor created</strong> for this consent, if required. The database copy remains the primary record; this file protects you if anything goes wrong with the link.</p>
+                <p class="mb-3">
+                    <a class="btn btn-outline-primary" href="{% url 'studies:mngt425_exhibits_consent_pdf_record' %}" download>Download my signed consent (PDF)</a>
+                </p>
+                <p class="small text-muted mb-0">If the button fails, ensure you are on the same device/browser as when you submitted. You can also open <a href="{% url 'studies:mngt425_exhibits_consent_pdf_record' %}">this link</a> in a new tab.</p>
+                {% endif %}
+                <p class="mt-3 mb-0"><a href="{% url 'studies:list' %}">Back to studies</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

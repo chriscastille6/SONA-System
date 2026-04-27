@@ -1,0 +1,14 @@
+[
+  {
+    "id": "goals-refs",
+    "slug": "goals-refs",
+    "title": "Goals as Reference Points and Risk Taking",
+    "description": "Four short scenarios about how goals affect risk-taking and judgments of ethically gray behavior. Online; about 15–25 minutes. Up to 0.5 course credit where applicable.",
+    "mode": "online",
+    "participant_url": "https://bayoupal.nicholls.edu/hsirb/studies/goals-refs/survey/",
+    "participant_url_with_token": "https://bayoupal.nicholls.edu/hsirb/studies/goals-refs/survey/?participant={{PARTICIPANT_ID}}",
+    "protocol_url": "https://bayoupal.nicholls.edu/hsirb/studies/goals-refs/run/",
+    "hsirb_study_slug": "goals-refs",
+    "notes": "Hosted Wave 1 survey in HSIRB. Merge into your /platform studies catalog; adjust base URL if not using /hsirb/ mount."
+  }
+]

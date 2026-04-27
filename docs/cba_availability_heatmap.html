@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>CBA Availability Heatmap — Spring 2026</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; margin: 1rem; background: #1a1a1a; color: #e0e0e0; }
+    h1 { font-size: 1.25rem; margin-bottom: 0.5rem; }
+    .sub { font-size: 0.875rem; color: #888; margin-bottom: 1rem; }
+    .legend { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 1rem; font-size: 0.8rem; }
+    .legend span { display: inline-flex; align-items: center; gap: 0.35rem; }
+    .legend .swatch { width: 1rem; height: 1rem; border-radius: 3px; }
+    table { border-collapse: collapse; font-size: 0.7rem; }
+    th, td { border: 1px solid #333; padding: 0.2rem 0.35rem; text-align: center; min-width: 3rem; }
+    th { background: #2a2a2a; }
+    th.row-header { text-align: right; padding-right: 0.5rem; }
+    td.cell-0 { background: #2d2d2d; color: #666; }
+    td.cell-1 { background: #3d3d2a; color: #b8b84e; }
+    td.cell-2 { background: #2a3d2a; color: #7cb87c; }
+    td.cell-3 { background: #1e3d1e; color: #9ee09e; }
+    td.cell-4 { background: #0e4d0e; color: #b8f0b8; }
+    td[title] { cursor: help; }
+  </style>
+</head>
+<body>
+  <h1>CBA availability heatmap — Spring 2026</h1>
+  <p class="sub">Faculty office-hour overlap with Powell/White room availability (20+ seats). 30-min slots. <strong>F</strong> = number of research-team faculty in office; <strong>R</strong> = number of free CBA rooms. Hover a cell for details. Green intensity = more faculty available (darker = better for running a study).</p>
+  <div class="legend">
+    <span><span class="swatch" style="background:#2d2d2d"></span> No overlap</span>
+    <span><span class="swatch" style="background:#3d3d2a"></span> 1F</span>
+    <span><span class="swatch" style="background:#2a3d2a"></span> 2F</span>
+    <span><span class="swatch" style="background:#1e3d1e"></span> 3F</span>
+    <span><span class="swatch" style="background:#0e4d0e"></span> 4F (all in office)</span>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th class="row-header">Time</th>
+        <th>Mon</th>
+        <th>Tue</th>
+        <th>Wed</th>
+        <th>Thu</th>
+        <th>Fri</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><th class="row-header">7:00 AM</th><td class="cell-0" title="Mon 7:00 AM: 0 faculty in office, 41 rooms free. 0F 41R">0F 41R</td><td class="cell-0" title="Tue 7:00 AM: 0 faculty in office, 41 rooms free. 0F 41R">0F 41R</td><td class="cell-0" title="Wed 7:00 AM: 0 faculty in office, 41 rooms free. 0F 41R">0F 41R</td><td class="cell-0" title="Thu 7:00 AM: 0 faculty in office, 41 rooms free. 0F 41R">0F 41R</td><td class="cell-0" title="Fri 7:00 AM: 0 faculty in office, 41 rooms free. 0F 41R">0F 41R</td></tr>
+      <tr><th class="row-header">7:30 AM</th><td class="cell-1" title="Mon 7:30 AM: 1 faculty in office, 41 rooms free. 1F 41R">1F 41R</td><td class="cell-0" title="Tue 7:30 AM: 0 faculty in office, 40 rooms free. 0F 40R">0F 40R</td><td class="cell-1" title="Wed 7:30 AM: 1 faculty in office, 41 rooms free. 1F 41R">1F 41R</td><td class="cell-0" title="Thu 7:30 AM: 0 faculty in office, 40 rooms free. 0F 40R">0F 40R</td><td class="cell-1" title="Fri 7:30 AM: 1 faculty in office, 41 rooms free. 1F 41R">1F 41R</td></tr>
+      <tr><th class="row-header">8:00 AM</th><td class="cell-1" title="Mon 8:00 AM: 1 faculty in office, 41 rooms free. 1F 41R">1F 41R</td><td class="cell-2" title="Tue 8:00 AM: 2 faculty in office, 40 rooms free. 2F 40R">2F 40R</td><td class="cell-2" title="Wed 8:00 AM: 2 faculty in office, 41 rooms free. 2F 41R">2F 41R</td><td class="cell-2" title="Thu 8:00 AM: 2 faculty in office, 40 rooms free. 2F 40R">2F 40R</td><td class="cell-1" title="Fri 8:00 AM: 1 faculty in office, 41 rooms free. 1F 41R">1F 41R</td></tr>
+      <tr><th class="row-header">8:30 AM</th><td class="cell-0" title="Mon 8:30 AM: 0 faculty in office, 36 rooms free. 0F 36R">0F 36R</td><td class="cell-2" title="Tue 8:30 AM: 2 faculty in office, 40 rooms free. 2F 40R">2F 40R</td><td class="cell-1" title="Wed 8:30 AM: 1 faculty in office, 36 rooms free. 1F 36R">1F 36R</td><td class="cell-2" title="Thu 8:30 AM: 2 faculty in office, 40 rooms free. 2F 40R">2F 40R</td><td class="cell-0" title="Fri 8:30 AM: 0 faculty in office, 36 rooms free. 0F 36R">0F 36R</td></tr>
+      <tr><th class="row-header">9:00 AM</th><td class="cell-1" title="Mon 9:00 AM: 1 faculty in office, 36 rooms free. 1F 36R">1F 36R</td><td class="cell-0" title="Tue 9:00 AM: 0 faculty in office, 26 rooms free. 0F 26R">0F 26R</td><td class="cell-3" title="Wed 9:00 AM: 3 faculty in office, 36 rooms free. 3F 36R">3F 36R</td><td class="cell-0" title="Thu 9:00 AM: 0 faculty in office, 26 rooms free. 0F 26R">0F 26R</td><td class="cell-0" title="Fri 9:00 AM: 0 faculty in office, 36 rooms free. 0F 36R">0F 36R</td></tr>
+      <tr><th class="row-header">9:30 AM</th><td class="cell-1" title="Mon 9:30 AM: 1 faculty in office, 35 rooms free. 1F 35R">1F 35R</td><td class="cell-0" title="Tue 9:30 AM: 0 faculty in office, 26 rooms free. 0F 26R">0F 26R</td><td class="cell-3" title="Wed 9:30 AM: 3 faculty in office, 35 rooms free. 3F 35R">3F 35R</td><td class="cell-0" title="Thu 9:30 AM: 0 faculty in office, 26 rooms free. 0F 26R">0F 26R</td><td class="cell-1" title="Fri 9:30 AM: 1 faculty in office, 36 rooms free. 1F 36R">1F 36R</td></tr>
+      <tr><th class="row-header">10:00 AM</th><td class="cell-1" title="Mon 10:00 AM: 1 faculty in office, 35 rooms free. 1F 35R">1F 35R</td><td class="cell-1" title="Tue 10:00 AM: 1 faculty in office, 26 rooms free. 1F 26R">1F 26R</td><td class="cell-3" title="Wed 10:00 AM: 3 faculty in office, 35 rooms free. 3F 35R">3F 35R</td><td class="cell-1" title="Thu 10:00 AM: 1 faculty in office, 26 rooms free. 1F 26R">1F 26R</td><td class="cell-1" title="Fri 10:00 AM: 1 faculty in office, 36 rooms free. 1F 36R">1F 36R</td></tr>
+      <tr><th class="row-header">10:30 AM</th><td class="cell-1" title="Mon 10:30 AM: 1 faculty in office, 30 rooms free. 1F 30R">1F 30R</td><td class="cell-1" title="Tue 10:30 AM: 1 faculty in office, 26 rooms free. 1F 26R">1F 26R</td><td class="cell-3" title="Wed 10:30 AM: 3 faculty in office, 30 rooms free. 3F 30R">3F 30R</td><td class="cell-1" title="Thu 10:30 AM: 1 faculty in office, 26 rooms free. 1F 26R">1F 26R</td><td class="cell-1" title="Fri 10:30 AM: 1 faculty in office, 34 rooms free. 1F 34R">1F 34R</td></tr>
+      <tr><th class="row-header">11:00 AM</th><td class="cell-0" title="Mon 11:00 AM: 0 faculty in office, 31 rooms free. 0F 31R">0F 31R</td><td class="cell-1" title="Tue 11:00 AM: 1 faculty in office, 26 rooms free. 1F 26R">1F 26R</td><td class="cell-2" title="Wed 11:00 AM: 2 faculty in office, 31 rooms free. 2F 31R">2F 31R</td><td class="cell-1" title="Thu 11:00 AM: 1 faculty in office, 26 rooms free. 1F 26R">1F 26R</td><td class="cell-1" title="Fri 11:00 AM: 1 faculty in office, 37 rooms free. 1F 37R">1F 37R</td></tr>
+      <tr><th class="row-header">11:30 AM</th><td class="cell-2" title="Mon 11:30 AM: 2 faculty in office, 31 rooms free. 2F 31R">2F 31R</td><td class="cell-1" title="Tue 11:30 AM: 1 faculty in office, 27 rooms free. 1F 27R">1F 27R</td><td class="cell-3" title="Wed 11:30 AM: 3 faculty in office, 31 rooms free. 3F 31R">3F 31R</td><td class="cell-1" title="Thu 11:30 AM: 1 faculty in office, 27 rooms free. 1F 27R">1F 27R</td><td class="cell-0" title="Fri 11:30 AM: 0 faculty in office, 37 rooms free. 0F 37R">0F 37R</td></tr>
+      <tr><th class="row-header">12:00 PM</th><td class="cell-1" title="Mon 12:00 PM: 1 faculty in office, 29 rooms free. 1F 29R">1F 29R</td><td class="cell-0" title="Tue 12:00 PM: 0 faculty in office, 32 rooms free. 0F 32R">0F 32R</td><td class="cell-2" title="Wed 12:00 PM: 2 faculty in office, 30 rooms free. 2F 30R">2F 30R</td><td class="cell-0" title="Thu 12:00 PM: 0 faculty in office, 31 rooms free. 0F 31R">0F 31R</td><td class="cell-1" title="Fri 12:00 PM: 1 faculty in office, 41 rooms free. 1F 41R">1F 41R</td></tr>
+      <tr><th class="row-header">12:30 PM</th><td class="cell-1" title="Mon 12:30 PM: 1 faculty in office, 34 rooms free. 1F 34R">1F 34R</td><td class="cell-0" title="Tue 12:30 PM: 0 faculty in office, 32 rooms free. 0F 32R">0F 32R</td><td class="cell-2" title="Wed 12:30 PM: 2 faculty in office, 35 rooms free. 2F 35R">2F 35R</td><td class="cell-0" title="Thu 12:30 PM: 0 faculty in office, 31 rooms free. 0F 31R">0F 31R</td><td class="cell-1" title="Fri 12:30 PM: 1 faculty in office, 41 rooms free. 1F 41R">1F 41R</td></tr>
+      <tr><th class="row-header">1:00 PM</th><td class="cell-1" title="Mon 1:00 PM: 1 faculty in office, 34 rooms free. 1F 34R">1F 34R</td><td class="cell-0" title="Tue 1:00 PM: 0 faculty in office, 32 rooms free. 0F 32R">0F 32R</td><td class="cell-2" title="Wed 1:00 PM: 2 faculty in office, 35 rooms free. 2F 35R">2F 35R</td><td class="cell-1" title="Thu 1:00 PM: 1 faculty in office, 31 rooms free. 1F 31R">1F 31R</td><td class="cell-1" title="Fri 1:00 PM: 1 faculty in office, 41 rooms free. 1F 41R">1F 41R</td></tr>
+      <tr><th class="row-header">1:30 PM</th><td class="cell-1" title="Mon 1:30 PM: 1 faculty in office, 29 rooms free. 1F 29R">1F 29R</td><td class="cell-1" title="Tue 1:30 PM: 1 faculty in office, 34 rooms free. 1F 34R">1F 34R</td><td class="cell-2" title="Wed 1:30 PM: 2 faculty in office, 30 rooms free. 2F 30R">2F 30R</td><td class="cell-2" title="Thu 1:30 PM: 2 faculty in office, 34 rooms free. 2F 34R">2F 34R</td><td class="cell-1" title="Fri 1:30 PM: 1 faculty in office, 41 rooms free. 1F 41R">1F 41R</td></tr>
+      <tr><th class="row-header">2:00 PM</th><td class="cell-0" title="Mon 2:00 PM: 0 faculty in office, 29 rooms free. 0F 29R">0F 29R</td><td class="cell-1" title="Tue 2:00 PM: 1 faculty in office, 34 rooms free. 1F 34R">1F 34R</td><td class="cell-2" title="Wed 2:00 PM: 2 faculty in office, 30 rooms free. 2F 30R">2F 30R</td><td class="cell-1" title="Thu 2:00 PM: 1 faculty in office, 34 rooms free. 1F 34R">1F 34R</td><td class="cell-1" title="Fri 2:00 PM: 1 faculty in office, 41 rooms free. 1F 41R">1F 41R</td></tr>
+      <tr><th class="row-header">2:30 PM</th><td class="cell-0" title="Mon 2:30 PM: 0 faculty in office, 29 rooms free. 0F 29R">0F 29R</td><td class="cell-1" title="Tue 2:30 PM: 1 faculty in office, 34 rooms free. 1F 34R">1F 34R</td><td class="cell-2" title="Wed 2:30 PM: 2 faculty in office, 30 rooms free. 2F 30R">2F 30R</td><td class="cell-1" title="Thu 2:30 PM: 1 faculty in office, 34 rooms free. 1F 34R">1F 34R</td><td class="cell-1" title="Fri 2:30 PM: 1 faculty in office, 41 rooms free. 1F 41R">1F 41R</td></tr>
+      <tr><th class="row-header">3:00 PM</th><td class="cell-0" title="Mon 3:00 PM: 0 faculty in office, 39 rooms free. 0F 39R">0F 39R</td><td class="cell-0" title="Tue 3:00 PM: 0 faculty in office, 40 rooms free. 0F 40R">0F 40R</td><td class="cell-1" title="Wed 3:00 PM: 1 faculty in office, 40 rooms free. 1F 40R">1F 40R</td><td class="cell-0" title="Thu 3:00 PM: 0 faculty in office, 41 rooms free. 0F 41R">0F 41R</td><td class="cell-0" title="Fri 3:00 PM: 0 faculty in office, 41 rooms free. 0F 41R">0F 41R</td></tr>
+      <tr><th class="row-header">3:30 PM</th><td class="cell-0" title="Mon 3:30 PM: 0 faculty in office, 41 rooms free. 0F 41R">0F 41R</td><td class="cell-0" title="Tue 3:30 PM: 0 faculty in office, 40 rooms free. 0F 40R">0F 40R</td><td class="cell-1" title="Wed 3:30 PM: 1 faculty in office, 41 rooms free. 1F 41R">1F 41R</td><td class="cell-0" title="Thu 3:30 PM: 0 faculty in office, 41 rooms free. 0F 41R">0F 41R</td><td class="cell-0" title="Fri 3:30 PM: 0 faculty in office, 41 rooms free. 0F 41R">0F 41R</td></tr>
+      <tr><th class="row-header">4:00 PM</th><td class="cell-0" title="Mon 4:00 PM: 0 faculty in office, 41 rooms free. 0F 41R">0F 41R</td><td class="cell-0" title="Tue 4:00 PM: 0 faculty in office, 40 rooms free. 0F 40R">0F 40R</td><td class="cell-1" title="Wed 4:00 PM: 1 faculty in office, 41 rooms free. 1F 41R">1F 41R</td><td class="cell-0" title="Thu 4:00 PM: 0 faculty in office, 41 rooms free. 0F 41R">0F 41R</td><td class="cell-0" title="Fri 4:00 PM: 0 faculty in office, 41 rooms free. 0F 41R">0F 41R</td></tr>
+      <tr><th class="row-header">4:30 PM</th><td class="cell-0" title="Mon 4:30 PM: 0 faculty in office, 41 rooms free. 0F 41R">0F 41R</td><td class="cell-0" title="Tue 4:30 PM: 0 faculty in office, 41 rooms free. 0F 41R">0F 41R</td><td class="cell-1" title="Wed 4:30 PM: 1 faculty in office, 41 rooms free. 1F 41R">1F 41R</td><td class="cell-0" title="Thu 4:30 PM: 0 faculty in office, 41 rooms free. 0F 41R">0F 41R</td><td class="cell-0" title="Fri 4:30 PM: 0 faculty in office, 41 rooms free. 0F 41R">0F 41R</td></tr>
+    </tbody>
+  </table>
+</body>
+</html>

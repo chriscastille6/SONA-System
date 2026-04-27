@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ study.title }} — Survey</title>
+  <style>
+    :root { --navy: #0E4C99; --red: #A6192E; --ink: #333; --bg: #f7f8fa; }
+    * { box-sizing: border-box; }
+    body { font-family: Georgia, 'Times New Roman', serif; margin: 0; padding: 1rem; background: var(--bg); color: var(--ink); line-height: 1.55; max-width: 42rem; margin-left: auto; margin-right: auto; }
+    h1 { font-size: 1.35rem; color: #111; border-bottom: 3px solid var(--red); padding-bottom: 0.5rem; }
+    h2 { font-size: 1.1rem; color: var(--navy); margin-top: 0; }
+    .card { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 1.25rem; margin-bottom: 1rem; }
+    .muted { font-size: 0.9rem; color: #555; }
+    .consent-box { max-height: 14rem; overflow-y: auto; border: 1px solid #ccc; padding: 0.75rem; margin: 0.75rem 0; background: #fafafa; font-size: 0.95rem; }
+    label { display: block; margin: 0.5rem 0; cursor: pointer; }
+    input[type="text"], input[type="number"], input[type="email"], select { width: 100%; max-width: 22rem; padding: 0.4rem 0.5rem; font-size: 1rem; }
+    .btn { display: inline-block; padding: 0.55rem 1.25rem; background: var(--navy); color: #fff; border: none; border-radius: 4px; font-size: 1rem; cursor: pointer; font-family: inherit; margin-top: 0.5rem; }
+    .btn:hover { background: #0a3d7a; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .err { color: var(--red); font-size: 0.9rem; margin-top: 0.35rem; }
+    .scenario { white-space: pre-wrap; margin: 0.75rem 0; padding: 0.75rem; background: #f0f4fa; border-left: 4px solid var(--navy); }
+    .hidden { display: none !important; }
+    .progress { font-size: 0.85rem; color: #666; margin-bottom: 0.5rem; }
+    .likert label { display: inline-flex; align-items: center; margin-right: 0.35rem; }
+  </style>
+</head>
+<body>
+  {% csrf_token %}
+  <h1>{{ study.title }}</h1>
+  <p class="muted">Wave {{ instrument_wave }} — online survey (approx. 15–25 minutes). Please do not use the browser Back button; use <strong>Next</strong> only.</p>
+
+  <div id="screen-consent" class="card">
+    <h2>Informed consent</h2>
+    <div class="consent-box">{{ study.consent_text|linebreaksbr }}</div>
+    <label><input type="checkbox" id="consent-agree"> I am 18 or older and I agree to participate.</label>
+    <div id="consent-err" class="err hidden">Please confirm consent to continue.</div>
+    <button type="button" class="btn" id="btn-consent">Continue</button>
+  </div>
+
+  <div id="screen-demo" class="card hidden">
+    <h2>Background</h2>
+    <p class="muted">Brief items for analysis (as described in the protocol).</p>
+    <label>Age (years) <input type="number" id="demo-age" min="18" max="120" step="1"></label>
+    <label>Gender <select id="demo-gender"><option value="">—</option><option value="woman">Woman</option><option value="man">Man</option><option value="nonbinary">Non-binary / other</option><option value="prefer_not">Prefer not to say</option></select></label>
+    <label>Student status <select id="demo-status"><option value="">—</option><option value="ug">Undergraduate</option><option value="grad">Graduate</option><option value="other">Other / not a student</option></select></label>
+    <div id="demo-err" class="err hidden">Please enter your age (18+).</div>
+    <button type="button" class="btn" id="btn-demo">Continue</button>
+  </div>
+
+  <div id="screen-ac1" class="card hidden">
+    <h2>Attention check</h2>
+    <p>To help us ensure data quality, please select <strong>Strongly agree</strong> below.</p>
+    <div id="ac1-options"></div>
+    <div id="ac1-err" class="err hidden">Please answer using the scale.</div>
+    <button type="button" class="btn" id="btn-ac1">Continue</button>
+  </div>
+
+  <div id="vignette-screens"></div>
+
+  <div id="screen-ac2" class="card hidden">
+    <h2>Attention check</h2>
+    <p>What is <strong>3 + 4</strong>? (enter a number)</p>
+    <input type="text" id="ac2-ans" inputmode="numeric" autocomplete="off">
+    <div id="ac2-err" class="err hidden">Please enter the correct answer.</div>
+    <button type="button" class="btn" id="btn-ac2">Continue</button>
+  </div>
+
+  <div id="screen-email" class="card hidden">
+    <h2>Optional</h2>
+    <p>If you would like a short summary of results when the study is finished, enter your email (optional).</p>
+    <input type="email" id="opt-email" placeholder="email@example.com" autocomplete="email">
+    <button type="button" class="btn" id="btn-email">Continue</button>
+  </div>
+
+  <div id="screen-debrief" class="card hidden">
+    <h2>Debriefing</h2>
+    <p>This study examines whether <strong>goals act as reference points</strong>: people who are <em>below</em> a goal may be more willing to choose risky options or to view ethically gray actions as more acceptable than people who are <em>above</em> a goal. There was no deception. If you have questions, contact Dr. Christopher Castille at <a href="mailto:christopher.castille@nicholls.edu">christopher.castille@nicholls.edu</a> or the IRB office (Dr. Alaina Daigle, 985-448-4697).</p>
+    <button type="button" class="btn" id="btn-debrief">Submit responses</button>
+  </div>
+
+  <div id="screen-done" class="card hidden">
+    <h2>Thank you</h2>
+    <p id="done-msg">Your responses have been recorded. You may close this window and return to PRAMS to receive credit if applicable.</p>
+    <p class="muted" id="done-id"></p>
+  </div>
+
+  <div id="screen-error" class="card hidden">
+    <h2>Could not save</h2>
+    <p id="error-msg"></p>
+    <p class="muted">If you are a participant, contact the researcher. Researchers: ensure this study is <strong>active and IRB-approved</strong> in PRAMS so the API accepts submissions.</p>
+  </div>
+
+  <script id="vignettes-data" type="application/json">{{ vignettes_json|safe }}</script>
+  <script>
+(function() {
+  const VIGNETTES = JSON.parse(document.getElementById('vignettes-data').textContent);
+  const SUBMIT_URL = "{{ submit_url|escapejs }}";
+  const INSTRUMENT_WAVE = {{ instrument_wave }};
+  const params = new URLSearchParams(window.location.search);
+  const pramsParticipantId = params.get('participant') || params.get('prams_id') || params.get('s') || '';
+
+  function getCsrf() {
+    const inp = document.querySelector('[name=csrfmiddlewaretoken]');
+    if (inp && inp.value) return inp.value;
+    const m = document.cookie.match(/csrftoken=([^;]+)/);
+    return m ? decodeURIComponent(m[1].trim()) : '';
+  }
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  const order = shuffle([0, 1, 2, 3]);
+  const frames = order.map(() => (Math.random() < 0.5 ? 'below' : 'above'));
+
+  const state = {
+    demographics: {},
+    attention_checks: [],
+    vignettes: [],
+    results_email: '',
+    order, frames
+  };
+
+  // Build AC1 likert
+  const ac1Labels = ['Strongly disagree', 'Disagree', 'Somewhat disagree', 'Neutral', 'Somewhat agree', 'Agree', 'Strongly agree'];
+  const ac1El = document.getElementById('ac1-options');
+  ac1Labels.forEach((lab, i) => {
+    const id = 'ac1-' + i;
+    const r = document.createElement('label');
+    r.innerHTML = '<input type="radio" name="ac1" value="' + (i + 1) + '"> ' + lab;
+    ac1El.appendChild(r);
+  });
+
+  // Build vignette screens
+  const vsHost = document.getElementById('vignette-screens');
+  order.forEach((vidx, si) => {
+    const v = VIGNETTES[vidx];
+    const frame = frames[si];
+    const scen = frame === 'below' ? v.scenario_below : v.scenario_above;
+    const card = document.createElement('div');
+    card.className = 'card hidden';
+    card.id = 'screen-v-' + si;
+    card.dataset.stepIndex = String(si);
+    let inner = '<p class="progress">Scenario ' + (si + 1) + ' of 4 · Goal frame: <strong>' + frame.replace(/^\w/, c => c.toUpperCase()) + '</strong></p><h2>Vignette ' + v.id + '</h2>';
+    inner += '<div class="scenario">' + esc(scen) + '</div>';
+    if (v.type === 'replication') {
+      inner += '<p><strong>Which would you choose?</strong></p>';
+      inner += '<label><input type="radio" name="v-' + si + '" value="A"> (A) ' + esc(v.option_a) + '</label>';
+      inner += '<label><input type="radio" name="v-' + si + '" value="B"> (B) ' + esc(v.option_b) + '</label>';
+    } else {
+      inner += '<p><strong>' + esc(v.question) + '</strong></p><p class="muted">' + esc(v.scale) + '</p>';
+      inner += '<div class="likert">';
+      for (let x = 1; x <= 7; x++) {
+        inner += '<label><input type="radio" name="v-' + si + '" value="' + x + '"> ' + x + '</label> ';
+      }
+      inner += '</div>';
+    }
+    inner += '<div class="err hidden" id="v-err-' + si + '">Please select a response.</div>';
+    inner += '<button type="button" class="btn btn-vnext" data-si="' + si + '">Continue</button>';
+    card.innerHTML = inner;
+    vsHost.appendChild(card);
+  });
+
+  function esc(s) {
+    if (!s) return '';
+    const d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+  }
+
+  let phase = 'consent';
+  const vignetteCount = 4;
+  let vi = 0; // which vignette screen (0..3) — order in presentation
+
+  function show(id) {
+    document.querySelectorAll('.card').forEach(el => { if (el.id && el.id.startsWith('screen-')) el.classList.add('hidden'); });
+    document.querySelectorAll('#vignette-screens .card').forEach(el => el.classList.add('hidden'));
+    const el = document.getElementById(id);
+    if (el) el.classList.remove('hidden');
+  }
+
+  document.getElementById('btn-consent').onclick = function() {
+    document.getElementById('consent-err').classList.add('hidden');
+    if (!document.getElementById('consent-agree').checked) {
+      document.getElementById('consent-err').classList.remove('hidden');
+      return;
+    }
+    show('screen-demo');
+    phase = 'demo';
+  };
+
+  document.getElementById('btn-demo').onclick = function() {
+    const age = parseInt(document.getElementById('demo-age').value, 10);
+    document.getElementById('demo-err').classList.add('hidden');
+    if (!age || age < 18) {
+      document.getElementById('demo-err').classList.remove('hidden');
+      return;
+    }
+    state.demographics = {
+      age: age,
+      gender: document.getElementById('demo-gender').value,
+      student_status: document.getElementById('demo-status').value
+    };
+    show('screen-ac1');
+    phase = 'ac1';
+  };
+
+  document.getElementById('btn-ac1').onclick = function() {
+    const sel = document.querySelector('input[name="ac1"]:checked');
+    document.getElementById('ac1-err').classList.add('hidden');
+    if (!sel) {
+      document.getElementById('ac1-err').classList.remove('hidden');
+      return;
+    }
+    state.attention_checks.push({ id: 'ac1_likert', response: sel.value, correct: sel.value === '7' });
+    vi = 0;
+    show('screen-v-0');
+    phase = 'v0';
+  };
+
+  document.querySelectorAll('.btn-vnext').forEach(btn => {
+    btn.onclick = function() {
+      const si = parseInt(btn.dataset.si, 10);
+      const v = VIGNETTES[order[si]];
+      const frame = frames[si];
+      const sel = document.querySelector('input[name="v-' + si + '"]:checked');
+      document.getElementById('v-err-' + si).classList.add('hidden');
+      if (!sel) {
+        document.getElementById('v-err-' + si).classList.remove('hidden');
+        return;
+      }
+      let response = sel.value;
+      if (v.type === 'extension') response = parseInt(response, 10);
+      state.vignettes.push({
+        id: v.id,
+        type: v.type,
+        goal_frame: frame,
+        response: response
+      });
+      if (si === 1) {
+        show('screen-ac2');
+        phase = 'ac2';
+      } else if (si === vignetteCount - 1) {
+        show('screen-email');
+        phase = 'email';
+      } else {
+        show('screen-v-' + (si + 1));
+        phase = 'v' + (si + 1);
+      }
+    };
+  });
+
+  document.getElementById('btn-ac2').onclick = function() {
+    const raw = document.getElementById('ac2-ans').value.trim();
+    document.getElementById('ac2-err').classList.add('hidden');
+    if (raw !== '7') {
+      document.getElementById('ac2-err').classList.remove('hidden');
+      return;
+    }
+    state.attention_checks.push({ id: 'ac2_math', response: raw, correct: true });
+    show('screen-v-2');
+    phase = 'v2';
+  };
+
+  document.getElementById('btn-email').onclick = function() {
+    state.results_email = document.getElementById('opt-email').value.trim();
+    show('screen-debrief');
+    phase = 'debrief';
+  };
+
+  document.getElementById('btn-debrief').onclick = async function() {
+    const btn = document.getElementById('btn-debrief');
+    btn.disabled = true;
+    const payload = {
+      instrument_wave: INSTRUMENT_WAVE,
+      study_slug: 'goals-refs',
+      prams_participant_id: pramsParticipantId,
+      demographics: state.demographics,
+      attention_checks: state.attention_checks,
+      vignettes: state.vignettes,
+      vignette_order_presented: order.map(i => VIGNETTES[i].id),
+      goal_frames: frames,
+      results_email: state.results_email,
+      completed_at: new Date().toISOString(),
+      user_agent: navigator.userAgent,
+      survey_version: 'goals_refs_live_1'
+    };
+    try {
+      const res = await fetch(SUBMIT_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': getCsrf()
+        },
+        credentials: 'same-origin',
+        body: JSON.stringify(payload)
+      });
+      const text = await res.text();
+      let data = {};
+      try { data = JSON.parse(text); } catch (e) { data = { error: text ? text.slice(0, 300) : 'Invalid response' }; }
+      if (res.ok && data.success) {
+        document.getElementById('done-id').textContent = 'Reference: ' + (data.session_id || data.response_id || '');
+        show('screen-done');
+      } else {
+        document.getElementById('error-msg').textContent = (data && data.error) ? data.error : ('HTTP ' + res.status);
+        show('screen-error');
+      }
+    } catch (e) {
+      document.getElementById('error-msg').textContent = String(e);
+      show('screen-error');
+    }
+  };
+})();
+  </script>
+</body>
+</html>

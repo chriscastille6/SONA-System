@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}Consent — MNGT 425 teaching portfolio (Exhibits A–C){% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-10 offset-md-1">
+        <div class="card">
+            <div class="card-body">
+                <p class="text-muted small mb-2">For <strong>MNGT 425 students only</strong> — separate from any HR Situational Judgment Test consent.</p>
+                <h1 class="card-title h2">Optional consent: Exhibits A–C &amp; de-identified course data</h1>
+                <hr>
+                {{ consent_body|safe }}
+                <p class="small text-muted mb-0">
+                    <a href="{% url 'studies:mngt425_exhibits_consent_pdf_information' %}" target="_blank" rel="noopener">Download the consent text as PDF</a>
+                    (for your files only; you must still submit the form below for your choice to count).
+                </p>
+                {% if error %}
+                <div class="alert alert-warning" role="alert">{{ error }}</div>
+                {% endif %}
+                <hr>
+                <h2 class="h5 mt-4">Your name, email, and decision</h2>
+                <p class="mb-3 text-muted small">Enter your legal name as it appears on university records. Your decision (consent or decline) is stored so the instructor and IRB can verify that participation is voluntary.</p>
+                <form method="post" class="mt-3">
+                    {% csrf_token %}
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="first_name" class="form-label">Legal first name</label>
+                            <input type="text" name="first_name" id="first_name" class="form-control" autocomplete="given-name" value="{{ form_first_name }}" required maxlength="100">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="last_name" class="form-label">Legal last name</label>
+                            <input type="text" name="last_name" id="last_name" class="form-control" autocomplete="family-name" value="{{ form_last_name }}" required maxlength="100">
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <label for="email" class="form-label">Nicholls email address</label>
+                        <input type="email" name="email" id="email" class="form-control" autocomplete="email" placeholder="you@nicholls.edu" value="{{ form_email }}" required>
+                    </div>
+                    <div class="d-flex flex-wrap gap-2 align-items-center">
+                        <button type="submit" name="consent" value="agree" class="btn btn-primary">I consent</button>
+                        <button type="submit" name="consent" value="decline" class="btn btn-outline-secondary">I do not consent</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
