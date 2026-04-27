@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vignettes with Predicted Patterns — Goals as Reference Points</title>
+  <style>
+    :root {
+      --economist-red: #E3120B;
+      --economist-navy: #0E4C99;
+      --economist-gray: #4A4A4A;
+      --economist-light: #E8E8E8;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Times New Roman', Times, 'DejaVu Serif', serif;
+      line-height: 1.6;
+      color: var(--economist-gray);
+      background: #fff;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .vignettes-side-by-side {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin: 1rem 0;
+    }
+    .vignettes-three-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.5rem;
+      margin: 1rem 0;
+    }
+    .vignettes-2x2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin: 1rem 0;
+    }
+    @media (max-width: 700px) {
+      .vignettes-side-by-side { grid-template-columns: 1fr; }
+      .vignettes-three-col { grid-template-columns: 1fr; }
+      .vignettes-2x2 { grid-template-columns: 1fr; }
+    }
+    .vignette-condition {
+      background: #f9f9f9;
+      padding: 1rem 1.25rem;
+      border-left: 4px solid var(--economist-red);
+      font-size: 0.95rem;
+      white-space: pre-line;
+      min-height: 6rem;
+    }
+    .vignette-condition-label {
+      font-size: 0.8rem;
+      font-weight: bold;
+      color: var(--economist-navy);
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .manipulated { font-weight: bold; color: var(--economist-red); }
+    .header {
+      border-bottom: 3px solid var(--economist-red);
+      padding-bottom: 1rem;
+      margin-bottom: 2rem;
+    }
+    h1 {
+      font-size: 1.75rem;
+      font-weight: bold;
+      color: #1a1a1a;
+      margin-bottom: 0.25rem;
+    }
+    .subtitle {
+      font-size: 1rem;
+      color: var(--economist-gray);
+    }
+    .vignette-section {
+      margin: 2.5rem 0;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--economist-light);
+    }
+    .vignette-section:last-of-type { border-bottom: none; }
+    .vignette-id {
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: var(--economist-red);
+      margin-bottom: 0.5rem;
+    }
+    .vignette-title {
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #1a1a1a;
+      margin-bottom: 0.5rem;
+    }
+    .vignette-source {
+      font-size: 0.85rem;
+      color: var(--economist-gray);
+      font-style: italic;
+      margin-bottom: 1rem;
+    }
+    table.prior-table, table.pattern-table {
+      width: 100%;
+      max-width: 600px;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+      margin: 1rem 0;
+    }
+    table.prior-table th, table.prior-table td,
+    table.pattern-table th, table.pattern-table td {
+      border: 1px solid var(--economist-light);
+      padding: 0.5rem 0.75rem;
+      text-align: left;
+    }
+    table.prior-table th, table.pattern-table th {
+      background: #f5f5f5;
+      font-weight: bold;
+      color: var(--economist-navy);
+    }
+    .expected-pattern {
+      font-size: 0.85rem;
+      color: var(--economist-gray);
+      margin-top: 0.5rem;
+    }
+    .footer {
+      margin-top: 3rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--economist-light);
+      font-size: 0.85rem;
+      color: var(--economist-gray);
+    }
+    .summary-table {
+      margin: 2rem 0;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1>Vignettes with Predicted Patterns</h1>
+    <p class="subtitle">Goals as Reference Points → Unethical Behavior Study. Full vignette text, expected data patterns, priors, and sources.</p>
+  </header>
+
+  <div style="background: #fff8e6; border: 2px solid #c9a227; border-radius: 8px; padding: 1rem 1.25rem; margin-bottom: 2rem; font-size: 0.95rem; color: #3d3d3d;">
+    <strong>IRB Wave 1 scope (PRAMS):</strong> The <em>initial approved live survey</em> implements only the <strong>four</strong> compact vignettes in <code>vignettes.json</code> (IDs R1, R2, E1, E2)—see <code>INSTRUMENT_WAVE1.md</code> in the same repo folder. The replication and extension scenarios below (REP-H1–H4, EXT-*, etc.) support <strong>design reference, priors, and future amendments</strong>; they are <strong>not</strong> all administered to participants unless added by protocol amendment and reflected in Qualtrics.
+  </div>
+
+  <section class="summary-table">
+    <h2 style="font-size: 1.2rem; margin-bottom: 1rem;">Summary: Priors and Expected Patterns (Replications)</h2>
+    <table class="pattern-table">
+      <thead>
+        <tr>
+          <th>Vignette</th>
+          <th>prior_mean_log_or</th>
+          <th>prior_sd_log_or</th>
+          <th>Prior OR</th>
+          <th>p(risky) below</th>
+          <th>p(risky) above</th>
+          <th>Observed OR</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>REP-H1</td><td>4.39</td><td>1.07</td><td>~80</td><td>77%</td><td>4%</td><td>80.4 (Larrick)</td></tr>
+        <tr><td>REP-H2</td><td>3.03</td><td>0.43</td><td>~21</td><td>82%</td><td>18%</td><td>20.8 (Heath)</td></tr>
+        <tr><td>REP-H3</td><td>3.63</td><td>0.47</td><td>~38</td><td>86%</td><td>14%</td><td>37.7 (Heath)</td></tr>
+        <tr><td>REP-H4</td><td>0.70</td><td>0.17</td><td>~2.0</td><td>17–89%*</td><td>12–63%*</td><td>1.5–4.8 (meta)</td></tr>
+      </tbody>
+    </table>
+    <p class="expected-pattern">* REP-H4 varies across studies; meta-OR ≈ 2.0.</p>
+  </section>
+
+  <h2 style="font-size: 1.2rem; margin: 2rem 0 1rem;">Replication vignettes</h2>
+
+  <section class="vignette-section">
+    <div class="vignette-id">REP-H1</div>
+    <div class="vignette-title">Risk Preference (Below vs. Above Goal)</div>
+    <div class="vignette-source">Sources: Larrick et al. (2009), John salesperson; Heath et al. (1999) Problem 1; Au & Feldman (2020) matched.</div>
+    <div class="vignettes-side-by-side">
+      <div>
+        <div class="vignette-condition-label">Condition A — Below goal (6 units)</div>
+        <div class="vignette-condition">Imagine you are a salesperson. Your goal for this month is to sell 10 units. So far you have sold <span class="manipulated">6 units</span>.
+
+You have one more opportunity: you can choose either (A) a sure outcome of 2 more units, or (B) a 50% chance of 4 more units and 50% chance of 0 more units.
+
+Which would you choose?
+(A) Sure 2 units
+(B) 50% chance of 4, 50% chance of 0</div>
+      </div>
+      <div>
+        <div class="vignette-condition-label">Condition B — Above goal (14 units)</div>
+        <div class="vignette-condition">Imagine you are a salesperson. Your goal for this month is to sell 10 units. So far you have sold <span class="manipulated">14 units</span>.
+
+You have one more opportunity: you can choose either (A) a sure outcome of 2 more units, or (B) a 50% chance of 4 more units and 50% chance of 0 more units.
+
+Which would you choose?
+(A) Sure 2 units
+(B) 50% chance of 4, 50% chance of 0</div>
+      </div>
+    </div>
+    <table class="pattern-table">
+      <thead><tr><th>Condition</th><th>p(risky)</th><th>p(safe)</th><th>Source</th></tr></thead>
+      <tbody>
+        <tr><td>Below goal (6 units)</td><td>77%</td><td>23%</td><td>Larrick 2009: 21/30 chose B</td></tr>
+        <tr><td>Above goal (14 units)</td><td>4%</td><td>96%</td><td>Larrick 2009: 1/27 chose B</td></tr>
+      </tbody>
+    </table>
+    <table class="prior-table">
+      <thead><tr><th>Parameter</th><th>Value</th><th>Source</th></tr></thead>
+      <tbody>
+        <tr><td>prior_mean_log_or</td><td>4.39</td><td>Meta-analyzed: Larrick 2009</td></tr>
+        <tr><td>prior_sd_log_or</td><td>1.07</td><td>Meta-analyzed: Larrick 2009</td></tr>
+        <tr><td>Implied prior OR</td><td>~80</td><td></td></tr>
+      </tbody>
+    </table>
+    <p class="expected-pattern">DV: Binary (A = safe, B = risky). Observed OR: 80.4.</p>
+  </section>
+
+  <section class="vignette-section">
+    <div class="vignette-id">REP-H2</div>
+    <div class="vignette-title">Effort Allocation (Below vs. Above Goal)</div>
+    <div class="vignette-source">Source: Heath et al. (1999), Problem 4.</div>
+    <div class="vignettes-side-by-side">
+      <div>
+        <div class="vignette-condition-label">Condition A — Below goal (75%)</div>
+        <div class="vignette-condition">Imagine you are a student. Your goal is to score 90% on an exam. After the first half, your score is <span class="manipulated">75%</span>.
+
+For the second half, you can choose: (A) Study 2 hours (moderate effort, moderate chance of doing well), or (B) Study 6 hours (high effort, higher chance of doing well but more costly).
+
+Which would you choose?
+(A) 2 hours
+(B) 6 hours</div>
+      </div>
+      <div>
+        <div class="vignette-condition-label">Condition B — Above goal (95%)</div>
+        <div class="vignette-condition">Imagine you are a student. Your goal is to score 90% on an exam. After the first half, your score is <span class="manipulated">95%</span>.
+
+For the second half, you can choose: (A) Study 2 hours (moderate effort, moderate chance of doing well), or (B) Study 6 hours (high effort, higher chance of doing well but more costly).
+
+Which would you choose?
+(A) 2 hours
+(B) 6 hours</div>
+      </div>
+    </div>
+    <table class="pattern-table">
+      <thead><tr><th>Condition</th><th>p(high effort)</th><th>p(low effort)</th><th>Source</th></tr></thead>
+      <tbody>
+        <tr><td>Below goal (75%)</td><td>82%</td><td>18%</td><td>Heath 1999: 60/73 chose B</td></tr>
+        <tr><td>Above goal (95%)</td><td>18%</td><td>82%</td><td>Heath 1999: 13/73 chose B</td></tr>
+      </tbody>
+    </table>
+    <table class="prior-table">
+      <thead><tr><th>Parameter</th><th>Value</th><th>Source</th></tr></thead>
+      <tbody>
+        <tr><td>prior_mean_log_or</td><td>3.03</td><td>Meta-analyzed: Heath 1999</td></tr>
+        <tr><td>prior_sd_log_or</td><td>0.43</td><td>Meta-analyzed: Heath 1999</td></tr>
+        <tr><td>Implied prior OR</td><td>~21</td><td></td></tr>
+      </tbody>
+    </table>
+    <p class="expected-pattern">DV: Binary (A = low effort, B = high effort). Observed OR: 20.8.</p>
+  </section>
+
+  <section class="vignette-section">
+    <div class="vignette-id">REP-H3</div>
+    <div class="vignette-title">Diminishing Sensitivity (Near vs. Far from Goal)</div>
+    <div class="vignette-source">Source: Heath et al. (1999), Problem 7.</div>
+    <div class="vignettes-side-by-side">
+      <div>
+        <div class="vignette-condition-label">Condition A — Near goal ($900)</div>
+        <div class="vignette-condition">Imagine your goal is to earn $1000 this month. You currently have <span class="manipulated">$900</span>.
+
+You can choose: (A) A sure $50 more, or (B) A 50% chance of $100 more and 50% chance of $0 more.
+
+Which would you choose?
+(A) Sure $50
+(B) 50% of $100, 50% of $0</div>
+      </div>
+      <div>
+        <div class="vignette-condition-label">Condition B — Far from goal ($500)</div>
+        <div class="vignette-condition">Imagine your goal is to earn $1000 this month. You currently have <span class="manipulated">$500</span>.
+
+You can choose: (A) A sure $50 more, or (B) A 50% chance of $100 more and 50% chance of $0 more.
+
+Which would you choose?
+(A) Sure $50
+(B) 50% of $100, 50% of $0</div>
+      </div>
+    </div>
+    <table class="pattern-table">
+      <thead><tr><th>Condition</th><th>p(risky)</th><th>p(safe)</th><th>Source</th></tr></thead>
+      <tbody>
+        <tr><td>Near goal ($900)</td><td>86%</td><td>14%</td><td>Heath 1999: 64/74 chose B</td></tr>
+        <tr><td>Far from goal ($500)</td><td>14%</td><td>86%</td><td>Heath 1999: 10/74 chose B</td></tr>
+      </tbody>
+    </table>
+    <table class="prior-table">
+      <thead><tr><th>Parameter</th><th>Value</th><th>Source</th></tr></thead>
+      <tbody>
+        <tr><td>prior_mean_log_or</td><td>3.63</td><td>Meta-analyzed: Heath 1999</td></tr>
+        <tr><td>prior_sd_log_or</td><td>0.47</td><td>Meta-analyzed: Heath 1999</td></tr>
+        <tr><td>Implied prior OR</td><td>~38</td><td></td></tr>
+      </tbody>
+    </table>
+    <p class="expected-pattern">DV: Binary (A = sure, B = risky). Observed OR: 37.7.</p>
+  </section>
+
+  <section class="vignette-section">
+    <div class="vignette-id">REP-H4</div>
+    <div class="vignette-title">Goal vs. Do Your Best</div>
+    <div class="vignette-source">Sources: Heath et al. (1999) Problem 11; Larrick et al. (2009) Study 3; Au & Feldman (2020) Problem 11.</div>
+    <div class="vignettes-side-by-side">
+      <div>
+        <div class="vignette-condition-label">Condition A — Goal</div>
+        <div class="vignette-condition"><span class="manipulated">Your manager sets a goal: sell 12 units this month.</span>
+
+You have sold 8 units so far. You have one more deal: (A) Sure 2 units, or (B) 50% chance of 4 units, 50% chance of 0.
+
+Which would you choose?
+(A) Sure 2
+(B) 50% of 4, 50% of 0</div>
+      </div>
+      <div>
+        <div class="vignette-condition-label">Condition B — Do your best</div>
+        <div class="vignette-condition"><span class="manipulated">Your manager says "do your best" this month.</span>
+
+You have sold 8 units so far. You have one more deal: (A) Sure 2 units, or (B) 50% chance of 4 units, 50% chance of 0.
+
+Which would you choose?
+(A) Sure 2
+(B) 50% of 4, 50% of 0</div>
+      </div>
+    </div>
+    <table class="pattern-table">
+      <thead><tr><th>Study</th><th>n_below</th><th>n_above</th><th>p(risky | goal)</th><th>p(risky | DYB)</th><th>OR</th></tr></thead>
+      <tbody>
+        <tr><td>Heath 1999</td><td>66</td><td>65</td><td>47%</td><td>24%</td><td>2.8</td></tr>
+        <tr><td>Larrick 2009</td><td>65</td><td>65</td><td>89%</td><td>63%</td><td>4.8</td></tr>
+        <tr><td>Au & Feldman 2020</td><td>377</td><td>377</td><td>17.2%</td><td>11.9%</td><td>1.5</td></tr>
+      </tbody>
+    </table>
+    <table class="prior-table">
+      <thead><tr><th>Parameter</th><th>Value</th><th>Source</th></tr></thead>
+      <tbody>
+        <tr><td>prior_mean_log_or</td><td>0.70</td><td>Meta: Heath, Larrick, Au & Feldman</td></tr>
+        <tr><td>prior_sd_log_or</td><td>0.17</td><td>Meta: Heath, Larrick, Au & Feldman</td></tr>
+        <tr><td>Implied prior OR</td><td>~2.0</td><td></td></tr>
+      </tbody>
+    </table>
+    <p class="expected-pattern">DV: Binary (A = sure, B = risky). Meta-analyzed prior OR ≈ 2.0.</p>
+  </section>
+
+  <h2 style="font-size: 1.2rem; margin: 2.5rem 0 1rem;">Extension vignettes</h2>
+  <p style="font-size: 0.9rem; color: var(--economist-gray); margin-bottom: 1.5rem;">Extensions use Likert 1–7; no informed priors from literature (default/weakly informative).</p>
+
+  <section class="vignette-section">
+    <div class="vignette-id">EXT-GS1</div>
+    <div class="vignette-title">Sales Misreporting</div>
+    <div class="vignette-source">Manipulation: Below vs. above; commitment; goal source; distance.</div>
+    <div class="vignettes-three-col">
+      <div>
+        <div class="vignette-condition-label">High commitment, participatively set, just shy (below)</div>
+        <div class="vignette-condition">Jordan is a salesperson. Jordan and the manager <span class="manipulated">discussed and set</span> a goal of 15 units this month. Jordan has made it a priority, and a bonus is tied to hitting it. So far Jordan has sold <span class="manipulated">14 units</span>.
+
+Jordan has one more potential sale, but the customer is uncertain. Jordan reported the sale as "confirmed" (which would help hit the goal) even though the customer might cancel. Reporting it as confirmed is technically allowed but ethically questionable.
+
+How acceptable was Jordan's decision to report the sale as confirmed?
+1 = Not at all acceptable … 7 = Completely acceptable</div>
+      </div>
+      <div>
+        <div class="vignette-condition-label">Low commitment, assigned, far (below)</div>
+        <div class="vignette-condition">Jordan is a salesperson. The manager <span class="manipulated">assigned</span> Jordan a goal of 15 units; Jordan doesn't particularly care about it. So far Jordan has sold <span class="manipulated">5 units</span>.
+
+Jordan has one more potential sale, but the customer is uncertain. Jordan reported the sale as "confirmed" (which would help hit the goal) even though the customer might cancel. Reporting it as confirmed is technically allowed but ethically questionable.
+
+How acceptable was Jordan's decision to report the sale as confirmed?
+1 = Not at all acceptable … 7 = Completely acceptable</div>
+      </div>
+      <div>
+        <div class="vignette-condition-label">Above goal (control)</div>
+        <div class="vignette-condition">Jordan is a salesperson. Jordan and the manager discussed and set a goal of 15 units. So far Jordan has sold <span class="manipulated">18 units</span>.
+
+[Same scenario: Jordan reported the sale as confirmed.]
+
+How acceptable was Jordan's decision to report the sale as confirmed?
+1 = Not at all acceptable … 7 = Completely acceptable</div>
+      </div>
+    </div>
+    <p class="expected-pattern">DV: Likert 1–7. Prior: Default. Tests: H2a; commitment × distance moderation.</p>
+  </section>
+
+  <section class="vignette-section">
+    <div class="vignette-id">EXT-GS2</div>
+    <div class="vignette-title">Expense Inflation</div>
+    <div class="vignette-source">Manipulation: Below vs. above; commitment; goal source; distance.</div>
+    <div class="vignettes-three-col">
+      <div>
+        <div class="vignette-condition-label">High commitment, participatively set, just shy (below)</div>
+        <div class="vignette-condition">Sam set a <span class="manipulated">personal savings goal</span> of $500 this month with a financial advisor. Sam has made it a priority. So far Sam has saved <span class="manipulated">$480</span>.
+
+Sam had a work trip. Sam claimed a slightly inflated expense (e.g., added $30 for a meal Sam didn't have) to help reach the savings goal. This is against policy but hard to detect.
+
+How acceptable was Sam's decision to inflate the expense?
+1 = Not at all acceptable … 7 = Completely acceptable</div>
+      </div>
+      <div>
+        <div class="vignette-condition-label">Low commitment, assigned, far (below)</div>
+        <div class="vignette-condition">A savings target of $500 was <span class="manipulated">assigned</span> to Sam; Sam doesn't particularly care about it. So far Sam has saved <span class="manipulated">$150</span>.
+
+Sam had a work trip. Sam claimed a slightly inflated expense (e.g., added $30 for a meal Sam didn't have) to help reach the savings goal. This is against policy but hard to detect.
+
+How acceptable was Sam's decision to inflate the expense?
+1 = Not at all acceptable … 7 = Completely acceptable</div>
+      </div>
+      <div>
+        <div class="vignette-condition-label">Above goal (control)</div>
+        <div class="vignette-condition">Sam set a personal savings goal of $500 this month. So far Sam has saved <span class="manipulated">$600</span>.
+
+[Same scenario: Sam inflated the expense.]
+
+How acceptable was Sam's decision to inflate the expense?
+1 = Not at all acceptable … 7 = Completely acceptable</div>
+      </div>
+    </div>
+    <p class="expected-pattern">DV: Likert 1–7. Prior: Default. Tests: H2a; commitment × distance moderation.</p>
+  </section>
+
+  <section class="vignette-section">
+    <div class="vignette-id">EXT-AM1</div>
+    <div class="vignette-title">Elastic Estimate and Goal Pressure</div>
+    <div class="vignette-source">Manipulation: Behind vs. ahead of schedule; commitment.</div>
+    <div class="vignettes-side-by-side">
+      <div>
+        <div class="vignette-condition-label">Behind schedule, high commitment</div>
+        <div class="vignette-condition">Morgan is a project manager. Morgan's goal is to deliver the project "on time." The deadline is somewhat flexible—"on time" could mean the original date or up to a week later. Morgan and the client <span class="manipulated">agreed</span> on the timeline; it matters for Morgan's reputation. Morgan is <span class="manipulated">behind schedule</span>.
+
+A client asked: "Will you deliver on time?" Morgan answered (A) "Yes, we will deliver on time" (stretching the definition of "on time" if needed), rather than (B) "We are working toward the original date but may need a few extra days."
+
+How justified was Morgan's answer?
+1 = Not at all justified … 7 = Completely justified</div>
+      </div>
+      <div>
+        <div class="vignette-condition-label">Ahead of schedule (control)</div>
+        <div class="vignette-condition">[Same setup, but "Morgan is <span class="manipulated">ahead of schedule</span>" and gave the same answer.]
+
+How justified was Morgan's answer?
+1 = Not at all justified … 7 = Completely justified</div>
+      </div>
+    </div>
+    <p class="expected-pattern">DV: Likert 1–7. Prior: Default. Tests: H2b.</p>
+  </section>
+
+  <section class="vignette-section">
+    <div class="vignette-id">EXT-AM2</div>
+    <div class="vignette-title">Numeric Claim with Elasticity</div>
+    <div class="vignette-source">Manipulation: Below vs. above; commitment; distance.</div>
+    <div class="vignettes-side-by-side">
+      <div>
+        <div class="vignette-condition-label">High commitment, just shy (below)</div>
+        <div class="vignette-condition">Riley is a fundraiser. Riley <span class="manipulated">set a goal</span> with the team to raise $10,000. Riley has raised <span class="manipulated">$9,200</span> so far.
+
+A donor asked how much Riley has raised. The exact amount is somewhat uncertain (some pledges may not materialize). Riley reported a more optimistic estimate that includes likely pledges ($9,500) rather than the conservative estimate ($9,200).
+
+How acceptable was Riley's decision to report the higher amount?
+1 = Not at all acceptable … 7 = Completely acceptable</div>
+      </div>
+      <div>
+        <div class="vignette-condition-label">Low commitment, far (below)</div>
+        <div class="vignette-condition">Riley is a fundraiser. A goal of $10,000 was <span class="manipulated">assigned</span> to Riley; Riley doesn't particularly care. Riley has raised <span class="manipulated">$4,000</span> so far.
+
+[Same scenario: Riley reported the higher amount.]
+
+How acceptable was Riley's decision to report the higher amount?
+1 = Not at all acceptable … 7 = Completely acceptable</div>
+      </div>
+    </div>
+    <p class="expected-pattern">DV: Likert 1–7. Prior: Default. Tests: H2b.</p>
+  </section>
+
+  <section class="vignette-section">
+    <div class="vignette-id">EXT-AM3</div>
+    <div class="vignette-title">Attribution (Goals Caused Unethical Behavior)</div>
+    <div class="vignette-source">Manipulation: Commitment; goal source; below vs. above.</div>
+    <div class="vignettes-three-col">
+      <div>
+        <div class="vignette-condition-label">High commitment, participatively set, below goal</div>
+        <div class="vignette-condition">Alex is a salesperson. Alex and the manager <span class="manipulated">discussed and set</span> a goal of 20 units. Alex cared about hitting it. Alex sold 12 units and then misreported a borderline sale as confirmed to reach the goal.
+
+To what extent do you think the goal caused Alex's behavior?
+1 = Not at all … 7 = Completely</div>
+      </div>
+      <div>
+        <div class="vignette-condition-label">Low commitment, assigned, below goal</div>
+        <div class="vignette-condition">Alex is a salesperson. A goal of 20 units was <span class="manipulated">assigned</span> to Alex; Alex didn't particularly care. Alex sold 12 units and then misreported a borderline sale as confirmed.
+
+To what extent do you think the goal caused Alex's behavior?
+1 = Not at all … 7 = Completely</div>
+      </div>
+      <div>
+        <div class="vignette-condition-label">Above goal (control)</div>
+        <div class="vignette-condition">Alex is a salesperson with a goal of 20 units. Alex sold 22 units and then misreported a borderline sale as confirmed (for other reasons).
+
+To what extent do you think the goal caused Alex's behavior?
+1 = Not at all … 7 = Completely</div>
+      </div>
+    </div>
+    <p class="expected-pattern">DV: Likert 1–7. Prior: Default. Tests: H2c; commitment moderation.</p>
+  </section>
+
+  <section class="vignette-section">
+    <div class="vignette-id">EXT-GS4</div>
+    <div class="vignette-title">Goal Legitimacy</div>
+    <div class="vignette-source">Manipulation: Legitimate vs. illegitimate goal (procedural fairness of goal-setting).</div>
+    <div class="vignettes-side-by-side">
+      <div>
+        <div class="vignette-condition-label">Legitimate goal (below)</div>
+        <div class="vignette-condition">Imagine you are a salesperson. Your goal of 12 units this month was <span class="manipulated">set through a fair process</span>—you and your manager reviewed benchmarks, discussed what was achievable, and agreed on the target. So far you have sold 11 units.
+
+You have one more potential sale, but the customer is uncertain. You can choose: (A) Report the sale as "confirmed" (helps hit the goal; customer might cancel), or (B) Report it as uncertain.
+
+Which would you choose?
+(A) Report as confirmed
+(B) Report as uncertain</div>
+      </div>
+      <div>
+        <div class="vignette-condition-label">Illegitimate goal (below)</div>
+        <div class="vignette-condition">Imagine you are a salesperson. Your goal of 12 units this month was <span class="manipulated">imposed by headquarters without your input</span>—it doesn't match industry benchmarks, and your team widely views it as unfair. So far you have sold 11 units.
+
+You have one more potential sale, but the customer is uncertain. You can choose: (A) Report the sale as "confirmed" (helps hit the goal; customer might cancel), or (B) Report it as uncertain.
+
+Which would you choose?
+(A) Report as confirmed
+(B) Report as uncertain</div>
+      </div>
+    </div>
+    <p class="expected-pattern">DV: Binary (A vs B). Prior: Default. Tests: Goal legitimacy.</p>
+  </section>
+
+  <section class="vignette-section">
+    <div class="vignette-id">EXT-AM4</div>
+    <div class="vignette-title">Amoral Manipulation × Resource Context (Behavioral Expectations)</div>
+    <div class="vignette-source">Manipulation: Character described as high vs. low on amoral manipulation (MACH tactics facet); organizational context as scarcity culture + zero-sum vs. abundance culture + commitment to reallocating/sharing. DV: Likelihood of task-focused vs. undermining behaviors.</div>
+    <div class="vignettes-2x2">
+      <div>
+        <div class="vignette-condition-label">Low amoral manipulation — Abundance culture</div>
+        <div class="vignette-condition">Alex works in an organization whose culture is that <span class="manipulated">resources exist but are often hidden or underused and can be unlocked—and that the organization is committed to reallocating or sharing resources so that success depends on people cooperating and pooling effort</span>. Colleagues describe Alex as <span class="manipulated">direct and straightforward—someone who doesn't play politics, avoids flattering others or cutting corners to get ahead, and believes in being transparent about the real reasons for doing things</span>.
+
+How likely is it that Alex would do each of the following?
+(1 = Extremely unlikely … 7 = Extremely likely)
+
+• Put in extra effort on their own deliverables (Task performance)
+• Share information with teammates to improve joint outcomes (OCB)
+• Let errors go uncorrected when it suits them (Production deviance)
+• Withhold useful information from peers (Social undermining)
+• Spread negative information about a colleague to others (Social undermining)
+• Deliberately set traps or create situations so that a highly effective coworker would fail or look bad (Sabotage)
+• Receive a favorable performance appraisal from their supervisor (Job performance) (1 = Extremely unlikely … 7 = Extremely likely)</div>
+      </div>
+      <div>
+        <div class="vignette-condition-label">High amoral manipulation — Abundance culture</div>
+        <div class="vignette-condition">Alex works in an organization whose culture is that <span class="manipulated">resources exist but are often hidden or underused and can be unlocked—and that the organization is committed to reallocating or sharing resources so that success depends on people cooperating and pooling effort</span>. Colleagues describe Alex as <span class="manipulated">someone who believes the best way to handle people is to tell them what they want to hear; Alex is willing to flatter others and cut corners when it helps get ahead, and doesn't think you need to reveal the real reason for doing something unless it's useful</span>.
+
+How likely is it that Alex would do each of the following?
+(1 = Extremely unlikely … 7 = Extremely likely)
+
+• Put in extra effort on their own deliverables (Task performance)
+• Share information with teammates to improve joint outcomes (OCB)
+• Let errors go uncorrected when it suits them (Production deviance)
+• Withhold useful information from peers (Social undermining)
+• Spread negative information about a colleague to others (Social undermining)
+• Deliberately set traps or create situations so that a highly effective coworker would fail or look bad (Sabotage)
+• Receive a favorable performance appraisal from their supervisor (Job performance) (1 = Extremely unlikely … 7 = Extremely likely)</div>
+      </div>
+      <div>
+        <div class="vignette-condition-label">Low amoral manipulation — Scarcity culture</div>
+        <div class="vignette-condition">Alex works in an organization whose culture is that <span class="manipulated">there aren't enough resources to do the right thing, and that view is used to justify short-term or wasteful decisions; resources and rewards are limited (e.g., only one person can get the promotion, or the bonus pool is fixed so one person's gain is another's loss)</span>. Colleagues describe Alex as <span class="manipulated">direct and straightforward—someone who doesn't play politics, avoids flattering others or cutting corners to get ahead, and believes in being transparent about the real reasons for doing things</span>.
+
+How likely is it that Alex would do each of the following?
+(1 = Extremely unlikely … 7 = Extremely likely)
+
+• Put in extra effort on their own deliverables (Task performance)
+• Share information with teammates to improve joint outcomes (OCB)
+• Let errors go uncorrected when it suits them (Production deviance)
+• Withhold useful information from peers (Social undermining)
+• Spread negative information about a colleague to others (Social undermining)
+• Deliberately set traps or create situations so that a highly effective coworker would fail or look bad (Sabotage)
+• Receive a favorable performance appraisal from their supervisor (Job performance) (1 = Extremely unlikely … 7 = Extremely likely)</div>
+      </div>
+      <div>
+        <div class="vignette-condition-label">High amoral manipulation — Scarcity culture</div>
+        <div class="vignette-condition">Alex works in an organization whose culture is that <span class="manipulated">there aren't enough resources to do the right thing, and that view is used to justify short-term or wasteful decisions; resources and rewards are limited (e.g., only one person can get the promotion, or the bonus pool is fixed so one person's gain is another's loss)</span>. Colleagues describe Alex as <span class="manipulated">someone who believes the best way to handle people is to tell them what they want to hear; Alex is willing to flatter others and cut corners when it helps get ahead, and doesn't think you need to reveal the real reason for doing something unless it's useful</span>.
+
+How likely is it that Alex would do each of the following?
+(1 = Extremely unlikely … 7 = Extremely likely)
+
+• Put in extra effort on their own deliverables (Task performance)
+• Share information with teammates to improve joint outcomes (OCB)
+• Let errors go uncorrected when it suits them (Production deviance)
+• Withhold useful information from peers (Social undermining)
+• Spread negative information about a colleague to others (Social undermining)
+• Deliberately set traps or create situations so that a highly effective coworker would fail or look bad (Sabotage)
+• Receive a favorable performance appraisal from their supervisor (Job performance) (1 = Extremely unlikely … 7 = Extremely likely)</div>
+      </div>
+    </div>
+    <p class="expected-pattern">DV: Likert 1–7 likelihood per item. Constructs: Task performance (extra effort); OCB (share information); Production deviance (Spector: let errors go uncorrected); Social undermining (withhold, spread negative); Sabotage (set traps so highly effective coworker fails or looks bad); Job performance (supervisor appraisal). Prior: Default. Hypothesis: Amoral manipulation seen as more functional in scarcity (zero-sum) environments → interaction such that high amoral × scarcity culture yields higher expected undermining, sabotage (target = highly effective coworker), and possibly lower expected task focus than high amoral × abundance culture.</p>
+  </section>
+
+  <footer class="footer">
+    <p><strong>PRAMS copy:</strong> This file lives in the SONA System repo at <code>apps/studies/assets/irb/goals-refs/vignettes_with_predicted_patterns.html</code>. Replication priors are summarized in the tables above; the Decision Making project may also maintain <code>VIGNETTES_FULL_WITH_PRIORS.md</code> and <code>config/replication_priors.csv</code> for the full analysis workflow.</p>
+  </footer>
+</body>
+</html>

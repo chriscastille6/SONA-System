@@ -228,9 +228,18 @@ class StudyEmailContactAdmin(admin.ModelAdmin):
 
 @admin.register(StudentDataConsent)
 class StudentDataConsentAdmin(admin.ModelAdmin):
-    list_display = ['email', 'study', 'consented_at', 'withdrawn_at']
-    list_filter = ['study', 'consented_at']
-    search_fields = ['email', 'study__title']
+    list_display = [
+        'first_name',
+        'last_name',
+        'email',
+        'study',
+        'purpose',
+        'consent_given',
+        'consented_at',
+        'withdrawn_at',
+    ]
+    list_filter = ['study', 'purpose', 'consent_given', 'consented_at']
+    search_fields = ['email', 'first_name', 'last_name', 'study__title']
     raw_id_fields = ['study']
     readonly_fields = ['id', 'consented_at', 'consent_text_version']
     ordering = ['-consented_at']

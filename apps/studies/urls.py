@@ -46,6 +46,19 @@ urlpatterns = [
     # HR SJT student secondary-data consent (MNGT 425)
     path('hr-sjt/student-data-consent/', views.hr_sjt_student_data_consent, name='hr_sjt_student_data_consent'),
     path('hr-sjt/student-data-consent/done/', views.hr_sjt_student_data_consent_done, name='hr_sjt_student_data_consent_done'),
+    # MNGT 425 Exhibits A–C / teaching portfolio (separate StudentDataConsent purpose)
+    path('mngt425/exhibits-consent/', views.mngt425_exhibits_consent, name='mngt425_exhibits_consent'),
+    path('mngt425/exhibits-consent/done/', views.mngt425_exhibits_consent_done, name='mngt425_exhibits_consent_done'),
+    path(
+        'mngt425/exhibits-consent/information.pdf',
+        views.mngt425_exhibits_consent_pdf_information,
+        name='mngt425_exhibits_consent_pdf_information',
+    ),
+    path(
+        'mngt425/exhibits-consent/my-record.pdf',
+        views.mngt425_exhibits_consent_pdf_record,
+        name='mngt425_exhibits_consent_pdf_record',
+    ),
     path('hr-sjt/professional-consent/', views.hr_sjt_professional_consent, name='hr_sjt_professional_consent'),
     path('hr-sjt/professional-demographics/', views.hr_sjt_professional_demographics, name='hr_sjt_professional_demographics'),
     path('hr-sjt/infographic/', views.hr_sjt_infographic_signup, name='hr_sjt_infographic_signup'),

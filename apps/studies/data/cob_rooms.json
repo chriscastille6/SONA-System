@@ -1,0 +1,260 @@
+[
+  {
+    "building": "Powell Hall",
+    "room": "110",
+    "room_key": "Powell Hall 110",
+    "estimated_capacity": 30
+  },
+  {
+    "building": "Powell Hall",
+    "room": "113",
+    "room_key": "Powell Hall 113",
+    "estimated_capacity": 35
+  },
+  {
+    "building": "Powell Hall",
+    "room": "123",
+    "room_key": "Powell Hall 123",
+    "estimated_capacity": 20
+  },
+  {
+    "building": "Powell Hall",
+    "room": "125",
+    "room_key": "Powell Hall 125",
+    "estimated_capacity": 40
+  },
+  {
+    "building": "Powell Hall",
+    "room": "128",
+    "room_key": "Powell Hall 128",
+    "estimated_capacity": 20
+  },
+  {
+    "building": "Powell Hall",
+    "room": "129",
+    "room_key": "Powell Hall 129",
+    "estimated_capacity": 10
+  },
+  {
+    "building": "Powell Hall",
+    "room": "130",
+    "room_key": "Powell Hall 130",
+    "estimated_capacity": 20
+  },
+  {
+    "building": "Powell Hall",
+    "room": "132",
+    "room_key": "Powell Hall 132",
+    "estimated_capacity": 30
+  },
+  {
+    "building": "Powell Hall",
+    "room": "133",
+    "room_key": "Powell Hall 133",
+    "estimated_capacity": 40
+  },
+  {
+    "building": "Powell Hall",
+    "room": "140",
+    "room_key": "Powell Hall 140",
+    "estimated_capacity": 80
+  },
+  {
+    "building": "Powell Hall",
+    "room": "146",
+    "room_key": "Powell Hall 146",
+    "estimated_capacity": 1
+  },
+  {
+    "building": "Powell Hall",
+    "room": "147",
+    "room_key": "Powell Hall 147",
+    "estimated_capacity": 20
+  },
+  {
+    "building": "Powell Hall",
+    "room": "149",
+    "room_key": "Powell Hall 149",
+    "estimated_capacity": 30
+  },
+  {
+    "building": "Powell Hall",
+    "room": "150",
+    "room_key": "Powell Hall 150",
+    "estimated_capacity": 30
+  },
+  {
+    "building": "Powell Hall",
+    "room": "151",
+    "room_key": "Powell Hall 151",
+    "estimated_capacity": 20
+  },
+  {
+    "building": "Powell Hall",
+    "room": "152",
+    "room_key": "Powell Hall 152",
+    "estimated_capacity": 30
+  },
+  {
+    "building": "Powell Hall",
+    "room": "153",
+    "room_key": "Powell Hall 153",
+    "estimated_capacity": 20
+  },
+  {
+    "building": "Powell Hall",
+    "room": "208",
+    "room_key": "Powell Hall 208",
+    "estimated_capacity": 40
+  },
+  {
+    "building": "Powell Hall",
+    "room": "209",
+    "room_key": "Powell Hall 209",
+    "estimated_capacity": 22
+  },
+  {
+    "building": "Powell Hall",
+    "room": "210",
+    "room_key": "Powell Hall 210",
+    "estimated_capacity": 45
+  },
+  {
+    "building": "Powell Hall",
+    "room": "213",
+    "room_key": "Powell Hall 213",
+    "estimated_capacity": 48
+  },
+  {
+    "building": "Powell Hall",
+    "room": "214",
+    "room_key": "Powell Hall 214",
+    "estimated_capacity": 45
+  },
+  {
+    "building": "Powell Hall",
+    "room": "215",
+    "room_key": "Powell Hall 215",
+    "estimated_capacity": 60
+  },
+  {
+    "building": "Powell Hall",
+    "room": "217",
+    "room_key": "Powell Hall 217",
+    "estimated_capacity": 40
+  },
+  {
+    "building": "Powell Hall",
+    "room": "219",
+    "room_key": "Powell Hall 219",
+    "estimated_capacity": 45
+  },
+  {
+    "building": "Powell Hall",
+    "room": "220",
+    "room_key": "Powell Hall 220",
+    "estimated_capacity": 46
+  },
+  {
+    "building": "Powell Hall",
+    "room": "221",
+    "room_key": "Powell Hall 221",
+    "estimated_capacity": 42
+  },
+  {
+    "building": "Powell Hall",
+    "room": "309",
+    "room_key": "Powell Hall 309",
+    "estimated_capacity": 20
+  },
+  {
+    "building": "Powell Hall",
+    "room": "311",
+    "room_key": "Powell Hall 311",
+    "estimated_capacity": 30
+  },
+  {
+    "building": "Powell Hall",
+    "room": "316",
+    "room_key": "Powell Hall 316",
+    "estimated_capacity": 30
+  },
+  {
+    "building": "White Hall",
+    "room": "101",
+    "room_key": "White Hall 101",
+    "estimated_capacity": 30
+  },
+  {
+    "building": "White Hall",
+    "room": "102",
+    "room_key": "White Hall 102",
+    "estimated_capacity": 30
+  },
+  {
+    "building": "White Hall",
+    "room": "103",
+    "room_key": "White Hall 103",
+    "estimated_capacity": 50
+  },
+  {
+    "building": "White Hall",
+    "room": "104",
+    "room_key": "White Hall 104",
+    "estimated_capacity": 30
+  },
+  {
+    "building": "White Hall",
+    "room": "105",
+    "room_key": "White Hall 105",
+    "estimated_capacity": 20
+  },
+  {
+    "building": "White Hall",
+    "room": "106",
+    "room_key": "White Hall 106",
+    "estimated_capacity": 30
+  },
+  {
+    "building": "White Hall",
+    "room": "201",
+    "room_key": "White Hall 201",
+    "estimated_capacity": 30
+  },
+  {
+    "building": "White Hall",
+    "room": "202",
+    "room_key": "White Hall 202",
+    "estimated_capacity": 38
+  },
+  {
+    "building": "White Hall",
+    "room": "204",
+    "room_key": "White Hall 204",
+    "estimated_capacity": 20
+  },
+  {
+    "building": "White Hall",
+    "room": "205",
+    "room_key": "White Hall 205",
+    "estimated_capacity": 35
+  },
+  {
+    "building": "White Hall",
+    "room": "206",
+    "room_key": "White Hall 206",
+    "estimated_capacity": 20
+  },
+  {
+    "building": "White Hall",
+    "room": "207",
+    "room_key": "White Hall 207",
+    "estimated_capacity": 35
+  },
+  {
+    "building": "White Hall",
+    "room": "208",
+    "room_key": "White Hall 208",
+    "estimated_capacity": 40
+  }
+]

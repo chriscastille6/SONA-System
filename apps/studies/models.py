@@ -591,9 +591,17 @@ class StudyEmailContact(models.Model):
 class StudentDataConsent(models.Model):
     """
     Records consent for secondary use of student course data (e.g. MNGT 425
-    assignment ratings for HR SJT research). Used for the HR SJT student
-    secondary-data consent flow; one record per consenting student.
+    assignment ratings for HR SJT research, or teaching-portfolio / Exhibits A–C).
+    The same student may have two rows for the same study if they complete
+    separate consent forms (see purpose).
     """
+    PURPOSE_HR_SJT_SECONDARY = 'hr_sjt_secondary'
+    PURPOSE_MNGT425_TEACHING_PORTFOLIO = 'mngt425_teaching_portfolio'
+    PURPOSE_CHOICES = [
+        (PURPOSE_HR_SJT_SECONDARY, 'HR SJT — secondary use of course/assignment data'),
+        (PURPOSE_MNGT425_TEACHING_PORTFOLIO, 'MNGT 425 — teaching portfolio research (Exhibits A–C)'),
+    ]
+
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     study = models.ForeignKey(
         Study,
@@ -601,8 +609,31 @@ class StudentDataConsent(models.Model):
         related_name='student_data_consents',
         help_text="Study for which secondary data consent is given (e.g. hr-sjt)"
     )
+    purpose = models.CharField(
+        max_length=40,
+        choices=PURPOSE_CHOICES,
+        default=PURPOSE_HR_SJT_SECONDARY,
+        db_index=True,
+        help_text="Which consent the student agreed to; same email may consent separately to each purpose.",
+    )
     email = models.EmailField(
         help_text="Student email; used to match consent to course data and for withdrawal requests"
+    )
+    first_name = models.CharField(
+        max_length=100,
+        blank=True,
+        default='',
+        help_text='Participant first name (typed signature) where collected; legacy rows may be blank.',
+    )
+    last_name = models.CharField(
+        max_length=100,
+        blank=True,
+        default='',
+        help_text='Participant last name (typed signature) where collected; legacy rows may be blank.',
+    )
+    consent_given = models.BooleanField(
+        default=True,
+        help_text='False when participant explicitly declined on this form (auditable outcome).',
     )
     consented_at = models.DateTimeField(auto_now_add=True, db_index=True)
     consent_text_version = models.TextField(
@@ -621,8 +652,8 @@ class StudentDataConsent(models.Model):
         ordering = ['-consented_at']
         constraints = [
             models.UniqueConstraint(
-                fields=['study', 'email'],
-                name='unique_study_student_data_consent',
+                fields=['study', 'email', 'purpose'],
+                name='unique_study_email_purpose_student_data_consent',
             ),
         ]
         indexes = [
@@ -630,7 +661,9 @@ class StudentDataConsent(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.email} – {self.study.title} ({self.consented_at.date()})"
+        name = (f"{self.first_name} {self.last_name}".strip()) or self.email
+        yn = 'yes' if self.consent_given else 'no'
+        return f"{name} ({self.email}) consent={yn} — {self.study.title} [{self.get_purpose_display()}]"
 
 
 class IRBReview(models.Model):

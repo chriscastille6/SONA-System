@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IRB Reviewer Packet — Goals as Reference Points and Risk Taking</title>
+  <style>
+    :root {
+      --ink: #1f2937;
+      --muted: #4b5563;
+      --line: #d1d5db;
+      --panel: #f9fafb;
+      --accent: #0e4c99;
+      --warn: #a6192e;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--ink);
+      line-height: 1.58;
+      background: #ffffff;
+    }
+    .page {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 3rem;
+    }
+    h1 {
+      margin: 0 0 0.5rem;
+      font-size: 1.8rem;
+      border-bottom: 3px solid var(--warn);
+      padding-bottom: 0.55rem;
+    }
+    h2 {
+      margin: 2rem 0 0.75rem;
+      font-size: 1.2rem;
+      color: var(--accent);
+    }
+    h3 {
+      margin: 1.2rem 0 0.5rem;
+      font-size: 1rem;
+      color: #0f3b72;
+    }
+    p, li { color: var(--ink); }
+    .lede {
+      margin: 0.3rem 0 1.2rem;
+      color: var(--muted);
+    }
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 0.6rem 1rem;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.9rem 1rem;
+    }
+    .meta-grid div { font-size: 0.95rem; }
+    .meta-label { font-weight: 700; }
+    .box {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.9rem 1rem;
+      background: #ffffff;
+      margin-bottom: 0.8rem;
+    }
+    .flow li { margin-bottom: 0.35rem; }
+    ul, ol { margin-top: 0.4rem; }
+    .callout {
+      background: #eef4ff;
+      border-left: 4px solid var(--accent);
+      padding: 0.8rem 1rem;
+      margin: 0.9rem 0;
+    }
+    .vignette {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 0.9rem 1rem;
+      margin: 0.9rem 0;
+    }
+    .v-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: baseline;
+      flex-wrap: wrap;
+      margin-bottom: 0.55rem;
+    }
+    .v-title strong { color: #102a4c; }
+    .citation { color: var(--muted); font-size: 0.88rem; }
+    .small { font-size: 0.93rem; color: var(--muted); }
+    .footer {
+      margin-top: 2.4rem;
+      border-top: 1px solid var(--line);
+      padding-top: 0.9rem;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+    @media print {
+      .page { max-width: none; padding: 0.5in; }
+      a { color: inherit; text-decoration: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <h1>IRB Reviewer Packet: Goals as Reference Points and Risk Taking</h1>
+    <p class="lede"><strong>Wave 1 (IRB):</strong> The approved live instrument uses <strong>four</strong> vignettes (R1, R2, E1, E2) from <code>vignettes.json</code>; each participant sees all four in random order, each once in a randomly assigned below- or above-goal frame. This page summarizes scope and procedures. For priors and extended replication/extension text (design reference and future waves), see <strong>vignettes_with_predicted_patterns.html</strong> (PRAMS: protocol submission → “View vignettes with predicted patterns &amp; priors”). Read <code>INSTRUMENT_WAVE1.md</code> for the canonical one-paragraph instrument summary.</p>
+
+    <section>
+      <h2>Study Snapshot</h2>
+      <div class="meta-grid">
+        <div><span class="meta-label">Protocol Slug:</span> goals-refs</div>
+        <div><span class="meta-label">Review Type:</span> Exempt (Category D)</div>
+        <div><span class="meta-label">Mode:</span> Online (Qualtrics or equivalent)</div>
+        <div><span class="meta-label">Estimated Duration:</span> 15-25 minutes</div>
+        <div><span class="meta-label">Population:</span> Nicholls students, age 18+</div>
+        <div><span class="meta-label">Compensation:</span> Up to 0.5 course credit (PRAMS, participating courses)</div>
+        <div><span class="meta-label">PI:</span> Dr. Christopher Castille (Management and Marketing)</div>
+        <div><span class="meta-label">Co-Investigator:</span> Jaycee Bennett (Student Researcher; contact via PI)</div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Scientific Purpose and Objectives</h2>
+      <div class="box">
+        <p>This study tests whether goals function as reference points such that being below a goal increases risk-seeking and acceptability of ethically questionable strategies.</p>
+        <ol>
+          <li>Replicate classic goal-framing effects on risky choice.</li>
+          <li>Extend goal-framing effects to ethical acceptability judgments.</li>
+          <li>Compare below-goal versus above-goal conditions across vignette types.</li>
+          <li>Contribute evidence on goals, reference points, and ethical decision-making.</li>
+        </ol>
+      </div>
+    </section>
+
+    <section>
+      <h2>Participant Eligibility and Recruitment</h2>
+      <div class="box">
+        <h3>Inclusion Criteria</h3>
+        <ul>
+          <li>At least 18 years old.</li>
+          <li>Currently enrolled at Nicholls State University.</li>
+          <li>Eligible course participation via PRAMS.</li>
+          <li>Able to complete an online English-language survey.</li>
+        </ul>
+        <h3>Exclusion Criteria</h3>
+        <ul>
+          <li>Under 18 years old.</li>
+          <li>Not currently enrolled at Nicholls State University.</li>
+          <li>Duplicate participation.</li>
+          <li>Unable to complete online survey procedures.</li>
+        </ul>
+        <h3>Recruitment Channel</h3>
+        <p>Participants are recruited through the Participant Recruitment and Management System (PRAMS).</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Full Participant Flow</h2>
+      <div class="box">
+        <ol class="flow">
+          <li><strong>Consent:</strong> Electronic informed consent before any study item.</li>
+          <li><strong>Demographics and Background:</strong> Brief demographics module when needed for analyses.</li>
+          <li><strong>Vignette Assignment (Wave 1):</strong> All four vignettes in the pool below (R1, R2, E1, E2); random order; one goal frame (below or above) per vignette.</li>
+          <li><strong>Response Format:</strong> Binary risky-choice items (replication) and/or 1-7 acceptability ratings (extension).</li>
+          <li><strong>Attention Checks:</strong> One to two quality-check items.</li>
+          <li><strong>Optional Follow-up:</strong> Optional email for findings summary (stored separately if provided).</li>
+          <li><strong>Debrief:</strong> Study purpose/hypothesis explanation and contact information.</li>
+        </ol>
+      </div>
+      <div class="callout">
+        <strong>Demographics note for reviewers:</strong> Demographics are intentionally brief and only collected when analytically needed. The protocol specifies de-identified handling (PRAMS ID only) with no names stored in the research dataset.
+      </div>
+    </section>
+
+    <section>
+      <h2>Measures and Data Collected</h2>
+      <div class="box">
+        <ul>
+          <li>Vignette responses (binary choices and/or Likert ratings).</li>
+          <li>Attention check responses.</li>
+          <li>Brief demographics/background (if enabled for a given run).</li>
+          <li>Optional email only for participants requesting results summary.</li>
+        </ul>
+        <p class="small">Primary identifier in dataset: PRAMS ID. Optional contact email is separate from analytic data when collected.</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Risk, Confidentiality, and Data Security</h2>
+      <div class="box">
+        <ul>
+          <li>Minimal-risk online study; no physical procedures.</li>
+          <li>Some vignettes describe ethically gray behavior in hypothetical contexts.</li>
+          <li>Participation is voluntary; withdrawal allowed without penalty.</li>
+          <li>Data stored on secured, password-protected systems with limited access.</li>
+          <li>Reporting and sharing are anonymized and aggregated for publication.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Recruitment Listing Text (Reviewer Copy)</h2>
+      <div class="box">
+        <p><strong>Study Title:</strong> Goals as Reference Points and Risk Taking</p>
+        <p><strong>Description:</strong> This study examines how goals influence decision-making and risk-taking. You will complete four short scenarios in which you either make choices (sure vs. risky option) or rate how acceptable another person's behavior is.</p>
+        <p><strong>Duration:</strong> Approximately 15-25 minutes</p>
+        <p><strong>Mode:</strong> Online</p>
+        <p><strong>Eligibility:</strong> Must be 18 years of age or older</p>
+      </div>
+    </section>
+
+    <section>
+      <h2>Full Vignette Pool</h2>
+      <p class="small">Wave 1: Participants complete all four vignettes below (one goal frame each).</p>
+
+      <article class="vignette">
+        <div class="v-title">
+          <strong>Vignette R1 (Replication)</strong>
+          <span class="citation">Heath et al. (1999); Larrick et al. (2009)</span>
+        </div>
+        <p><strong>Below-goal frame:</strong> You have a goal of selling 10 units this month. You have sold 8 units so far (below goal). You have one more opportunity to make a sale.</p>
+        <p><strong>Above-goal frame:</strong> You have a goal of selling 10 units this month. You have sold 12 units so far (above goal). You have one more opportunity to make a sale.</p>
+        <p><strong>Option A:</strong> Accept a sure outcome: 1 additional unit sold (total 9 below / 13 above).</p>
+        <p><strong>Option B:</strong> Take a risk: 50% chance of 2 units sold, 50% chance of 0 units (total 8 or 10 below / 12 or 14 above).</p>
+      </article>
+
+      <article class="vignette">
+        <div class="v-title">
+          <strong>Vignette R2 (Replication)</strong>
+          <span class="citation">Au and Feldman (2020)</span>
+        </div>
+        <p><strong>Below-goal frame:</strong> You need to reach a fundraising goal of $5,000. You currently have $4,200 (below goal). One donor is willing to give a guaranteed $300.</p>
+        <p><strong>Above-goal frame:</strong> You have exceeded your fundraising goal of $5,000 and currently have $5,400. One donor is willing to give a guaranteed $300.</p>
+        <p><strong>Option A:</strong> Accept the guaranteed $300.</p>
+        <p><strong>Option B:</strong> Ask the donor to flip a coin: heads they give $600, tails they give $0.</p>
+      </article>
+
+      <article class="vignette">
+        <div class="v-title">
+          <strong>Vignette E1 (Extension)</strong>
+          <span class="citation">Novel extension</span>
+        </div>
+        <p><strong>Below-goal frame:</strong> Alex is a salesperson who needed to hit a quarterly goal to keep a bonus. With one day left, Alex was $200 short. Alex submitted an expense report that included $250 in personal meals as "client entertainment."</p>
+        <p><strong>Above-goal frame:</strong> Alex is a salesperson who had already exceeded the quarterly goal and secured the bonus. Alex submitted an expense report that included $250 in personal meals as "client entertainment."</p>
+        <p><strong>Prompt:</strong> How acceptable was Alex's decision to submit this expense report?</p>
+        <p><strong>Scale:</strong> 1 = Not at all acceptable ... 7 = Completely acceptable</p>
+      </article>
+
+      <article class="vignette">
+        <div class="v-title">
+          <strong>Vignette E2 (Extension)</strong>
+          <span class="citation">Novel extension</span>
+        </div>
+        <p><strong>Below-goal frame:</strong> Jordan is a manager who was below the department's safety-incident goal for the year. A minor incident occurred that was not reported to central safety. Jordan did not add it to the monthly report.</p>
+        <p><strong>Above-goal frame:</strong> Jordan is a manager whose department had already met the safety-incident goal for the year. A minor incident occurred that was not reported to central safety. Jordan did not add it to the monthly report.</p>
+        <p><strong>Prompt:</strong> How acceptable was Jordan's decision not to include the incident in the report?</p>
+        <p><strong>Scale:</strong> 1 = Not at all acceptable ... 7 = Completely acceptable</p>
+      </article>
+    </section>
+
+    <section>
+      <h2>Study Contacts</h2>
+      <div class="box">
+        <p><strong>Principal Investigator:</strong> Dr. Christopher Castille, christopher.castille@nicholls.edu, 985-449-7015</p>
+        <p><strong>IRB Contact Note:</strong> For participant concerns, contact the PI or the IRB Office (Dr. Alaina Daigle, 985-448-4697).</p>
+      </div>
+    </section>
+
+    <p class="footer">Internal reviewer reference generated for the Goals as Reference Points protocol packet. Use this file as a single-document overview for IRB review.</p>
+  </main>
+</body>
+</html>

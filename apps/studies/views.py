@@ -11,7 +11,7 @@ from django.utils import timezone
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import ensure_csrf_cookie
-from django.template.loader import get_template
+from django.template.loader import get_template, render_to_string
 from django.template import TemplateDoesNotExist
 from django.conf import settings
 import json
@@ -39,6 +39,7 @@ from .models import (
     ProtocolAmendment,
 )
 from .irb_utils import assign_college_rep, route_submission, get_irb_chair
+from .mngt425_consent_pdf import build_exhibits_consent_pdf, safe_pdf_filename
 from .tasks import (
     run_sequential_bayes_monitoring,
     run_irb_ai_review,
@@ -709,6 +710,7 @@ def hr_sjt_student_data_consent(request):
                 obj, created = StudentDataConsent.objects.update_or_create(
                     study=study,
                     email=email,
+                    purpose=StudentDataConsent.PURPOSE_HR_SJT_SECONDARY,
                     defaults={
                         'consent_text_version': consent_body,
                         'withdrawn_at': None,
@@ -733,6 +735,175 @@ def hr_sjt_student_data_consent_done(request):
     study = get_object_or_404(Study.objects.all(), slug='hr-sjt')
     return render(request, 'studies/hr_sjt_student_data_consent_done.html', {
         'study': study,
+    })
+
+
+def _mngt425_exhibits_consent_render(request, study, consent_body, **form_ctx):
+    """Shared render for Exhibits consent form with optional repopulated fields."""
+    ctx = {
+        'study': study,
+        'consent_body': consent_body,
+        'form_first_name': form_ctx.get('form_first_name', ''),
+        'form_last_name': form_ctx.get('form_last_name', ''),
+        'form_email': form_ctx.get('form_email', ''),
+        'error': form_ctx.get('error'),
+    }
+    return render(request, 'studies/mngt425_exhibits_consent.html', ctx)
+
+
+@require_http_methods(['GET', 'POST'])
+def mngt425_exhibits_consent(request):
+    """
+    Optional consent for MNGT 425 students: use de-identified course data and
+    the Exhibits A–C technical supplement for teaching-portfolio / research documentation.
+    Separate purpose from HR SJT secondary-data consent (same study slug, different purpose).
+
+    Collects legal name + email + explicit consent or decline for IRB audit (stored in DB).
+    """
+    study = get_object_or_404(Study.objects.all(), slug='hr-sjt')
+    ctx = {
+        **_hr_sjt_student_consent_context(),
+    }
+    consent_body = render_to_string(
+        'studies/includes/mngt425_exhibits_consent_body.html',
+        ctx,
+        request=request,
+    )
+
+    if request.method == 'POST':
+        raw_consent = request.POST.get('consent')
+        first_name = (request.POST.get('first_name') or '').strip()
+        last_name = (request.POST.get('last_name') or '').strip()
+        email = (request.POST.get('email') or '').strip().lower()
+        repop = {'form_first_name': first_name, 'form_last_name': last_name, 'form_email': email}
+
+        if raw_consent not in ('agree', 'decline'):
+            return _mngt425_exhibits_consent_render(
+                request, study, consent_body,
+                error='Please choose either I consent or I do not consent.',
+                **repop,
+            )
+        consent_given = raw_consent == 'agree'
+
+        if not first_name or not last_name:
+            return _mngt425_exhibits_consent_render(
+                request, study, consent_body,
+                error='Please enter your legal first and last name.',
+                **repop,
+            )
+        if not email:
+            return _mngt425_exhibits_consent_render(
+                request, study, consent_body,
+                error='Please enter your Nicholls email address.',
+                **repop,
+            )
+
+        try:
+            with transaction.atomic():
+                StudentDataConsent.objects.update_or_create(
+                    study=study,
+                    email=email,
+                    purpose=StudentDataConsent.PURPOSE_MNGT425_TEACHING_PORTFOLIO,
+                    defaults={
+                        'consent_text_version': consent_body,
+                        'withdrawn_at': None,
+                        'first_name': first_name,
+                        'last_name': last_name,
+                        'consent_given': consent_given,
+                    },
+                )
+        except Exception:
+            return _mngt425_exhibits_consent_render(
+                request, study, consent_body,
+                error='We could not save your response. Please try again or contact the instructor.',
+                **repop,
+            )
+
+        request.session['mngt425_exhibits_outcome'] = 'consent' if consent_given else 'decline'
+        now = timezone.now()
+        request.session['mngt425_exhibits_pdf'] = {
+            'first_name': first_name,
+            'last_name': last_name,
+            'email': email,
+            'consent_given': consent_given,
+            'submitted_at_iso': now.isoformat(),
+            'submitted_at_display': timezone.localtime(now).strftime('%Y-%m-%d %H:%M %Z'),
+        }
+        request.session.modified = True
+        return redirect('studies:mngt425_exhibits_consent_done')
+
+    return _mngt425_exhibits_consent_render(request, study, consent_body)
+
+
+@require_http_methods(['GET', 'HEAD'])
+def mngt425_exhibits_consent_pdf_information(request):
+    """Downloadable PDF of consent text only (review / backup). Does not replace online submit."""
+    get_object_or_404(Study.objects.all(), slug='hr-sjt')
+    ctx = {**_hr_sjt_student_consent_context()}
+    consent_body = render_to_string(
+        'studies/includes/mngt425_exhibits_consent_body.html',
+        ctx,
+        request=request,
+    )
+    try:
+        pdf = build_exhibits_consent_pdf(consent_html=consent_body)
+    except RuntimeError as exc:
+        return HttpResponse(str(exc), status=500, content_type='text/plain')
+    resp = HttpResponse(pdf, content_type='application/pdf')
+    resp['Content-Disposition'] = 'attachment; filename="MNGT425_Exhibits_ABC_consent_information.pdf"'
+    return resp
+
+
+@require_http_methods(['GET', 'HEAD'])
+def mngt425_exhibits_consent_pdf_record(request):
+    """Signed PDF copy after web submit (same browser session). For Canvas upload backup."""
+    payload = request.session.get('mngt425_exhibits_pdf')
+    if not payload:
+        return HttpResponse(
+            'This download is available only after you submit the consent form using this browser. '
+            'Return to the form, submit your choice, then use the link on the confirmation page.',
+            status=404,
+            content_type='text/plain; charset=utf-8',
+        )
+    get_object_or_404(Study.objects.all(), slug='hr-sjt')
+    ctx = {**_hr_sjt_student_consent_context()}
+    consent_body = render_to_string(
+        'studies/includes/mngt425_exhibits_consent_body.html',
+        ctx,
+        request=request,
+    )
+    try:
+        pdf = build_exhibits_consent_pdf(
+            consent_html=consent_body,
+            signer_first=payload['first_name'],
+            signer_last=payload['last_name'],
+            signer_email=payload['email'],
+            consent_given=payload['consent_given'],
+            submitted_at_display=payload.get('submitted_at_display'),
+        )
+    except RuntimeError as exc:
+        return HttpResponse(str(exc), status=500, content_type='text/plain')
+    fn = safe_pdf_filename(payload['last_name'], payload['first_name'])
+    resp = HttpResponse(pdf, content_type='application/pdf')
+    resp['Content-Disposition'] = f'attachment; filename="{fn}"'
+    return resp
+
+
+@require_http_methods(['GET', 'HEAD'])
+def mngt425_exhibits_consent_done(request):
+    study = get_object_or_404(Study.objects.all(), slug='hr-sjt')
+    outcome = request.session.pop('mngt425_exhibits_outcome', None)
+    if outcome not in ('consent', 'decline'):
+        outcome = None
+    has_pdf_download = bool(request.session.get('mngt425_exhibits_pdf'))
+    return render(request, 'studies/mngt425_exhibits_consent_done.html', {
+        'study': study,
+        'outcome': outcome,
+        'has_pdf_download': has_pdf_download,
+        'withdraw_contact_email': getattr(
+            settings, 'HR_SJT_WITHDRAW_CONTACT_EMAIL',
+            getattr(settings, 'IRB_OFFICE_EMAIL', ''),
+        ),
     })
 
 
