@@ -95,7 +95,7 @@ class Command(BaseCommand):
 
         submission.recruitment_method = (
             "Classroom visits with flyer (Appendix F). Instructors may offer bonus points or course credit. "
-            "Flyer mentions up to $14 cash reward. Participants bring cell phone for ID generator."
+            "Flyer mentions up to $14 cash reward."
         )
 
         submission.inclusion_criteria = (
