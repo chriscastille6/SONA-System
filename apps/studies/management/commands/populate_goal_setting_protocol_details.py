@@ -40,9 +40,10 @@ class Command(BaseCommand):
             "Replication of Schweitzer, Ordóñez, and Douma (2004) examining whether goal setting "
             "motivates unethical behavior. Participants complete anagram tasks under four experimental "
             "conditions: (i) do your best, (ii) mere goal (90th percentile from pilot), (iii) reward goal "
-            "(same goal + $2 per round met), and (iv) personal goal (mere goal without 'prior students' "
+            "(same goal + $7 base + $1 per round met), and (iv) personal goal (mere goal without 'prior students' "
             "reference). Participants have the opportunity to overstate performance and (in reward goal) "
-            "take unearned cash. Sponsored by ARIM (Advancement of Replications Initiative in Management)."
+            "take unearned cash. Sponsored by ARIM (Advancement of Replications Initiative in Management) "
+            "and aligned with the master multi-site global research project."
         )
 
         submission.population_description = (
@@ -53,17 +54,21 @@ class Command(BaseCommand):
         )
 
         submission.research_procedures = (
-            "1. Consent: Participants read and sign informed consent. Materials assigned randomly for double-blind.\n\n"
-            "2. Participant ID: Participants generate unique ID via https://chriscastille6.github.io/CANDIDATE-ID-GENERATOR/\n\n"
-            "3. Practice Rounds: Two 1-minute anagram rounds (create words from 7 letters).\n\n"
-            "4. Condition Assignment: Random assignment to do your best, mere goal, reward goal, or personal goal. "
-            "Goal conditions receive 90th percentile target from pilot (e.g., 9 words).\n\n"
-            "5. Performance Rounds: Eight 1-minute anagram rounds. Round 8 uses unique anagram for data linking.\n\n"
-            "6. Self-Payment: Experimenters leave room. Participants check work, complete Productivity Report, "
-            "pay themselves ($10 for do your best/mere/personal; $2/round for reward goal), seal envelope.\n\n"
-            "7. Follow-Up Survey: Manipulation checks (goal recall, commitment), attention check, "
-            "open-ended (exclude data? study purpose?). Optional: HEXACO-60, Moral Identity, Need for Achievement.\n\n"
-            "8. Debriefing: Immediate debriefing (minimize diffusion); full debrief via email after data collection."
+            "1. Consent: Participants read and sign informed consent. Materials are assigned randomly for a double-blind design.\n\n"
+            "2. Practice Rounds: Two 1-minute anagram rounds (create words from 7 letters) to familiarize with the task rules.\n\n"
+            "3. Condition Assignment: Random assignment to do your best, mere goal, reward goal, or personal goal. "
+            "Goal conditions receive the site-calibrated 90th percentile target from pilot (e.g., 9 words).\n\n"
+            "4. Performance Rounds: Seven 1-minute anagram rounds where participants solve word puzzles.\n\n"
+            "5. Anagram Pilot / Linking Round: An 8th round is completed (presented as an anagram pilot round) "
+            "using an anagram unique to each participant. This unique anagram acts as a secure, double-blind "
+            "linking key to correlate the workbook with the anonymous self-reported Productivity Report.\n\n"
+            "6. Self-Payment: Experimenters leave the room. Participants check their work, complete the anonymous "
+            "Productivity Report, pay themselves from their $14 envelope ($10 flat for do-your-best/mere/personal; "
+            "$7 base + $1 per round met for reward goal), and place their reports in a sealed envelope.\n\n"
+            "7. Follow-Up Survey: Manipulation checks (goal recall, goal type), attention check, "
+            "and an open-ended data quality check (whether to use their data). Optional scales: HEXACO-60, "
+            "Moral Identity, Need for Achievement.\n\n"
+            "8. Debriefing: Immediate verbal debriefing to minimize information diffusion; full debrief sheet is provided."
         )
 
         submission.research_objectives = (
@@ -95,8 +100,7 @@ class Command(BaseCommand):
 
         submission.inclusion_criteria = (
             "- Undergraduate students or working professionals\n"
-            "- 18 years of age or older\n"
-            "- Must have cell phone for participant ID generator (if used)"
+            "- 18 years of age or older"
         )
 
         submission.exclusion_criteria = (
@@ -127,8 +131,11 @@ class Command(BaseCommand):
         )
 
         submission.payment_compensation = (
-            "Do your best, mere goal, personal goal: $10 flat. Reward goal: $2 per round met (max $14). "
-            "All participants receive $16 envelope at start; unearned money returned in sealed envelope."
+            "Participants receive an envelope containing $14 at the start of the study. "
+            "Those in the do-your-best, mere goal, and personal goal conditions are instructed to keep a flat $10. "
+            "Those in the reward goal condition are instructed to keep a base of $7 plus $1 for each round in "
+            "which they met their goal (maximum $14). All participants return any unearned cash in a sealed "
+            "envelope placed in a secure collection box, completely privately."
         )
 
         submission.costs_to_subjects = (
@@ -136,13 +143,15 @@ class Command(BaseCommand):
         )
 
         submission.review_type_justification = (
-            "Exempt under Category D: data obtained through educational tests (cognitive/anagram task) "
-            "and recorded so subjects cannot be identified. Anonymous participation; unique anagram "
-            "allows measurement of overstating without identifying individuals. Minimal risk. "
-            "Mild deception (participants told 'decision making' study) disclosed in debrief."
+            "Exempt under Category 2 of the revised Common Rule (45 CFR 46.104(d)(2)): "
+            "Data are obtained through educational tests (cognitive/anagram task) and standard survey "
+            "procedures. Information is recorded in such a manner that the identity of the human "
+            "subjects cannot be readily ascertained, directly or through identifiers linked to the "
+            "subjects. The double-blind design ensures anonymous participation, where a unique 8th-round "
+            "anagram safely correlates performance to reports without ever identifying individual students. Minimal risk."
         )
 
-        submission.exemption_category = "Category D: Educational tests, anonymous data"
+        submission.exemption_category = "Exempt Category 2 (45 CFR 46.104(d)(2))"
         submission.expedited_category = ""
 
         submission.risk_statement = (
