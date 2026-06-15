@@ -87,9 +87,10 @@ class Command(BaseCommand):
         )
 
         submission.educational_justification = (
-            "ARIM initiative uses replication-focused research to help doctoral students learn "
-            "scientific research skills. Dr. Castille (PI) and Dr. Ann-Marie Castille support "
-            "junior scholars (Adrien Maught, Kaitlin Gravois). Design builds on Schweitzer et al. (2004)."
+            "ARIM initiative uses replication-focused research to help students and faculty learn "
+            "scientific research skills. Dr. Christopher Castille (PI) and Dr. Ann-Marie R. Castille support "
+            "junior scholars and co-investigators (Mr. Adrien Maught, Mrs. Kaitlin Gravois, Dr. Samantha Falgout). "
+            "Design builds on Schweitzer et al. (2004)."
         )
 
         submission.recruitment_method = (
@@ -192,8 +193,9 @@ class Command(BaseCommand):
         )
 
         submission.data_access = (
-            "PI (Dr. Christopher Castille), Co-Is (Adrien Maught, Kaitlin Gravois, Dr. Ann-Marie "
-            "Castille, Dr. Samantha Falgout), and authorized ARIM collaborators. Anonymized data shared publicly via OSF."
+            "PI (Dr. Christopher Castille), Co-Is (Dr. Ann-Marie R. Castille, Dr. Samantha Falgout, "
+            "Mrs. Kaitlin Gravois, Mr. Adrien Maught), and authorized ARIM collaborators. "
+            "Anonymized data shared publicly via OSF."
         )
 
         submission.consent_procedures = (
@@ -208,21 +210,22 @@ class Command(BaseCommand):
         submission.continuation_of_previous = False
 
         submission.pi_name = "Dr. Christopher Castille"
-        submission.pi_title = "Associate Professor"
+        submission.pi_title = "Associate Professor of Management"
         submission.pi_department = "Management and Marketing"
         submission.pi_email = "christopher.castille@nicholls.edu"
         submission.pi_phone = "985-449-7015"
         submission.co_investigators = (
-            "Mr. Adrien Maught, adrien.maught@nicholls.edu, 985-448-4194\n"
-            "Mrs. Kaitlin Gravois, kaitlin.gravois@nicholls.edu, 985-448-4187\n"
-            "Dr. Ann-Marie R. Castille, ann-marie.castille@nicholls.edu, 985-448-4738\n"
-            "Dr. Samantha Falgout, samantha.falgout@nicholls.edu, 985-448-4193"
+            "Dr. Ann-Marie R. Castille (Associate Professor of Management), ann-marie.castille@nicholls.edu, 985-448-4738\n"
+            "Dr. Samantha Falgout (Assistant Professor of Accounting), samantha.falgout@nicholls.edu, 985-448-4193\n"
+            "Mrs. Kaitlin Gravois (Instructor of Management / MBA), kaitlin.gravois@nicholls.edu, 985-448-4187\n"
+            "Mr. Adrien Maught (Instructor / Student Researcher), adrien.maught@nicholls.edu, 985-448-4194"
         )
 
         submission.citi_training_completion = (
             "All investigators have completed CITI Program training. Dr. Christopher Castille "
-            "(Faculty Researchers), Dr. Ann-Marie Castille, Kaitlin Gravois (Faculty Researchers), "
-            "Adrien Maught (Social/Behavioral RCR), Dr. Samantha Falgout. Certificates on file."
+            "(Faculty Researchers), Dr. Ann-Marie R. Castille (Faculty Researchers), "
+            "Dr. Samantha Falgout (Faculty Researchers), Mrs. Kaitlin Gravois (Faculty Researchers), "
+            "Mr. Adrien Maught (Social/Behavioral RCR). Certificates on file."
         )
 
         submission.involves_vulnerable_populations = False
