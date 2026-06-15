@@ -1816,11 +1816,15 @@ def protocol_enter(request, study_id):
         initial_data = {}
         source_submission = draft_submission or existing_submitted
         if source_submission:
+            m2m_fields = {f.name for f in source_submission._meta.many_to_many}
             for field in ProtocolSubmissionForm.Meta.fields:
                 if hasattr(source_submission, field):
                     value = getattr(source_submission, field)
                     if value is not None and value != '':  # Only include non-empty values
-                        initial_data[field] = value
+                        if field in m2m_fields:
+                            initial_data[field] = value.all()
+                        else:
+                            initial_data[field] = value
         
         # Auto-fill PI information from logged-in user profile when nothing loaded
         if not initial_data.get('pi_name'):
