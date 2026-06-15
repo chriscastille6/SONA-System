@@ -6,12 +6,15 @@ Supports Anthropic, OpenAI, Ollama (local/server-hosted LLM), and Google Gemini.
 """
 
 import json
+import logging
 import os
 import urllib.request
 import urllib.error
 from pathlib import Path
 from typing import Dict, List, Any
 from django.conf import settings
+
+logger = logging.getLogger(__name__)
 
 
 class BaseAgent:
@@ -203,6 +206,27 @@ class BaseAgent:
         """
         if not self.client:
             raise ValueError("AI client not initialized - check API key or Ollama URL configuration")
+
+        from config.ferpa_guard import FerpaBlockedError, assert_safe_for_external_transfer, provider_destination
+
+        destination = provider_destination(self.provider)
+        if getattr(settings, "FERPA_GUARD_ENABLED", True) and destination == "external":
+            try:
+                assert_safe_for_external_transfer(
+                    prompt,
+                    context=f"irb_ai:{self.agent_name}:{self.provider}",
+                )
+            except FerpaBlockedError as exc:
+                logger.warning(
+                    "Blocked external IRB AI call (%s): %s",
+                    self.provider,
+                    exc.verdict.summary(),
+                )
+                raise ValueError(
+                    "This IRB AI request was blocked by the FERPA guard because the prompt "
+                    "appears to contain student education-record data. Redact student "
+                    "identifiers or switch to an institutional provider (Ollama)."
+                ) from exc
 
         if self.provider == 'anthropic':
             message = self.client.messages.create(

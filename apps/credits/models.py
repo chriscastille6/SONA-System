@@ -105,6 +105,21 @@ class AuditLog(models.Model):
         actor_name = self.actor.get_full_name() if self.actor else "System"
         return f"{actor_name}: {self.action} on {self.entity}"
 
+    @property
+    def study_id(self):
+        """Extract and return the associated study UUID if present."""
+        if self.entity == 'study' and self.entity_id:
+            return self.entity_id
+        if self.metadata:
+            meta_sid = self.metadata.get('study_id')
+            if meta_sid:
+                try:
+                    import uuid as uuid_stdlib
+                    return uuid_stdlib.UUID(str(meta_sid))
+                except (ValueError, TypeError):
+                    return None
+        return None
+
 
 
 

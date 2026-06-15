@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block title %}IRB Audit Report - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2>IRB Audit Report</h2>
+            <a href="{% url 'reporting:home' %}" class="btn btn-outline-secondary">Back to Reports</a>
+        </div>
+
+        <div class="alert alert-light border">
+            Use one or more filters below to audit activity by IRB member, researcher, or project.
+        </div>
+
+        <form method="get" class="card mb-4">
+            <div class="card-body">
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-4">
+                        <label for="irb_member_id" class="form-label">IRB member activity</label>
+                        <select class="form-select" id="irb_member_id" name="irb_member_id">
+                            <option value="">All IRB members</option>
+                            {% for member in irb_members %}
+                                <option value="{{ member.id }}" {% if selected_irb_member_id == member.id|stringformat:"s" %}selected{% endif %}>
+                                    {{ member.get_full_name }} ({{ member.email }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="researcher_id" class="form-label">Researcher activity</label>
+                        <select class="form-select" id="researcher_id" name="researcher_id">
+                            <option value="">All researchers</option>
+                            {% for researcher in researchers %}
+                                <option value="{{ researcher.id }}" {% if selected_researcher_id == researcher.id|stringformat:"s" %}selected{% endif %}>
+                                    {{ researcher.get_full_name }} ({{ researcher.email }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="study_id" class="form-label">Project activity</label>
+                        <select class="form-select" id="study_id" name="study_id">
+                            <option value="">All projects</option>
+                            {% for study in studies %}
+                                <option value="{{ study.id }}" {% if selected_study_id == study.id|stringformat:"s" %}selected{% endif %}>
+                                    {{ study.title }} ({{ study.researcher.get_full_name }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="mt-3 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary">Run Audit</button>
+                    <a href="{% url 'reporting:irb_audit_report' %}" class="btn btn-outline-secondary">Clear Filters</a>
+                </div>
+            </div>
+        </form>
+
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Audit Events (latest 300)</h5>
+                {% if audit_rows %}
+                    <div class="table-responsive">
+                        <table class="table table-sm table-striped align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Actor</th>
+                                    <th>Action</th>
+                                    <th>Entity</th>
+                                    <th>Project</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for row in audit_rows %}
+                                    <tr>
+                                        <td>{{ row.log.created_at|date:"Y-m-d H:i:s" }}</td>
+                                        <td>
+                                            {% if row.log.actor %}
+                                                {{ row.log.actor.get_full_name }}<br>
+                                                <small class="text-muted">{{ row.log.actor.email }}</small>
+                                            {% else %}
+                                                <span class="text-muted">System</span>
+                                            {% endif %}
+                                        </td>
+                                        <td><code>{{ row.log.action }}</code></td>
+                                        <td>{{ row.log.entity }}</td>
+                                        <td>
+                                            {% if row.study %}
+                                                {{ row.study.title }}
+                                            {% else %}
+                                                <span class="text-muted">Not linked</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="alert alert-info mb-0">
+                        No audit events matched the selected filter(s).
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

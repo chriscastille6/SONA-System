@@ -8,6 +8,7 @@ app_name = 'reporting'
 
 urlpatterns = [
     path('', views.reports_home, name='home'),
+    path('irb-audit/', views.irb_audit_report, name='irb_audit_report'),
     path('course/<uuid:course_id>/credits.csv', views.course_credits_csv, name='course_credits_csv'),
     path('study/<uuid:study_id>/', views.study_report, name='study_report'),
 ]

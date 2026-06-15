@@ -12,7 +12,6 @@ from django.utils.html import strip_tags
 
 try:
     from reportlab.lib import colors
-    from reportlab.lib.colors import HexColor
     from reportlab.lib.enums import TA_JUSTIFY, TA_LEFT
     from reportlab.lib.pagesizes import letter
     from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
@@ -22,20 +21,25 @@ try:
         Paragraph,
         SimpleDocTemplate,
         Spacer,
-        Table,
-        TableStyle,
     )
     from reportlab.pdfgen import canvas as pdf_canvas
+
+    # Nicholls-adjacent palette (formal, not official marketing lockup)
+    _ACCENT = colors.HexColor("#0e4c99")
+    _MUTED = colors.HexColor("#4b5563")
+    _TABLE_HEADER = colors.HexColor("#e8eef5")
+    _RULE = colors.HexColor("#cbd5e1")
+    _PAGE_WIDTH, _PAGE_HEIGHT = letter
 except ImportError:  # pragma: no cover
     SimpleDocTemplate = None
-
-# Nicholls-adjacent palette (formal, not official marketing lockup)
-_ACCENT = HexColor("#0e4c99")
-_MUTED = HexColor("#4b5563")
-_TABLE_HEADER = HexColor("#e8eef5")
-_RULE = HexColor("#cbd5e1")
-
-_PAGE_WIDTH, PAGE_HEIGHT = letter
+    colors = None
+    letter = None
+    pdf_canvas = None
+    TA_JUSTIFY = TA_LEFT = None
+    ParagraphStyle = getSampleStyleSheet = inch = None
+    PageBreak = Paragraph = Spacer = None
+    _ACCENT = _MUTED = _TABLE_HEADER = _RULE = None
+    _PAGE_WIDTH = _PAGE_HEIGHT = None
 
 
 def _html_to_plain_chunks(consent_html: str, max_chunk: int = 4200) -> list[str]:
@@ -216,8 +220,24 @@ def build_exhibits_consent_pdf(
         borderPadding=10,
         borderColor=_RULE,
         borderWidth=0.5,
-        backColor=HexColor("#f8fafc"),
+        backColor=colors.HexColor("#f8fafc"),
         spaceAfter=14,
+        alignment=TA_LEFT,
+    )
+    attest_block = ParagraphStyle(
+        name="M425Attest",
+        parent=styles["Normal"],
+        fontName="Helvetica",
+        fontSize=11,
+        leading=15,
+        textColor=colors.HexColor("#111827"),
+        leftIndent=12,
+        rightIndent=12,
+        borderPadding=14,
+        borderColor=_ACCENT,
+        borderWidth=1,
+        backColor=colors.HexColor("#f0f5fb"),
+        spaceAfter=12,
         alignment=TA_LEFT,
     )
     footnote = ParagraphStyle(
@@ -251,52 +271,24 @@ def build_exhibits_consent_pdf(
     )
 
     if signed:
-        story.append(
-            Paragraph(
-                "<b>Participant attestation</b> — retain this page for your records or Canvas upload.",
-                section_head,
-            )
+        # Use Paragraph (not Table) for attestation — Table string cells are unreliable in some PDF viewers.
+        dec_short = "I consent" if consent_given else "I do not consent"
+        dec_color = "#065f46" if consent_given else "#9a3412"
+        full_name = f"{(signer_first or '').strip()} {(signer_last or '').strip()}".strip()
+        at_html = (
+            f'<b>Participant attestation</b> (retain for Canvas or your files)<br/><br/>'
+            f'<b>Legal name (typed signature):</b> {(_px(full_name) if full_name else "—")}<br/>'
+            f'<b>Nicholls email:</b> {_px(signer_email or "—")}<br/>'
+            f'<b>Decision:</b> <font color="{dec_color}"><b>{_px(dec_short)}</b></font><br/>'
+            f'<b>Recorded (server time):</b> {_px(submitted_at_display or "—")}'
         )
-        decision = "I consent" if consent_given else "I do not consent"
-        decision_color = colors.HexColor("#065f46") if consent_given else colors.HexColor("#92400e")
-        data = [
-            ["Legal name (typed signature)", f"{signer_first} {signer_last}"],
-            ["Nicholls email", signer_email],
-            ["Decision", decision],
-            ["Recorded (server time)", submitted_at_display or "—"],
-        ]
-        att = Table(
-            [[_px(a), _px(b)] for a, b in data],
-            colWidths=[2.05 * inch, 4.25 * inch],
-        )
-        att.setStyle(
-            TableStyle(
-                [
-                    ("FONTNAME", (0, 0), (0, -1), "Helvetica-Bold"),
-                    ("FONTNAME", (1, 0), (1, -1), "Helvetica"),
-                    ("FONTSIZE", (0, 0), (-1, -1), 10),
-                    ("TEXTCOLOR", (0, 0), (0, -1), _MUTED),
-                    ("TEXTCOLOR", (1, 2), (1, 2), decision_color),
-                    ("FONTNAME", (1, 2), (1, 2), "Helvetica-Bold"),
-                    ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
-                    ("TOPPADDING", (0, 0), (-1, -1), 10),
-                    ("BOTTOMPADDING", (0, 0), (-1, -1), 10),
-                    ("LEFTPADDING", (0, 0), (-1, -1), 12),
-                    ("RIGHTPADDING", (0, 0), (-1, -1), 12),
-                    ("BACKGROUND", (0, 0), (-1, -1), colors.white),
-                    ("GRID", (0, 0), (-1, -1), 0.75, _RULE),
-                    ("LINEABOVE", (0, 0), (-1, 0), 2, _ACCENT),
-                ]
-            )
-        )
-        story.append(att)
-        story.append(Spacer(1, 0.12 * inch))
+        story.append(Paragraph(at_html, attest_block))
         story.append(
             Paragraph(
                 _px(
-                    "You submitted this decision through the authorized PRAMS web form. "
-                    "Your printed name above constitutes your electronic signature under this record. "
-                    "If your instructor assigned a Canvas upload, attach this file there as a backup copy."
+                    "You submitted this decision through the authorized PRAMS web form. Your printed name "
+                    "in the box above is your electronic signature. If your instructor assigned a Canvas upload, "
+                    "attach this PDF there as a backup copy."
                 ),
                 callout,
             )
@@ -310,8 +302,9 @@ def build_exhibits_consent_pdf(
         story.append(
             Paragraph(
                 _px(
-                    "This PDF is an information copy only. Your choice is not recorded until you complete "
-                    "and submit the official web form on PRAMS/HSIRB."
+                    "Information copy only — it does not include your name, email, or decision. Your choice is "
+                    "not recorded until you complete and submit the web form. After you submit, use the "
+                    "Download my signed consent (PDF) link on the thank-you page to get a PDF with your attestation."
                 ),
                 callout,
             )

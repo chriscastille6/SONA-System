@@ -9,19 +9,89 @@ logger = logging.getLogger(__name__)
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import HttpResponse
+from django.db.models import Q
+from apps.accounts.models import User
 from apps.courses.models import Course, Enrollment
 from apps.studies.models import Study, Signup
-from apps.credits.models import CreditTransaction
+from apps.credits.models import AuditLog
 
 
 @login_required
 def reports_home(request):
     """Reports dashboard."""
-    if not (request.user.is_instructor or request.user.is_admin or request.user.is_researcher):
+    if not (request.user.is_instructor or request.user.is_admin or request.user.is_researcher or request.user.is_irb_member):
         messages.error(request, 'Access denied.')
         return redirect('home')
     
     return render(request, 'reporting/home.html')
+
+
+@login_required
+def irb_audit_report(request):
+    """IRB-focused audit report with filters by IRB member, researcher, and project."""
+    if not (request.user.is_irb_member or request.user.is_admin or request.user.is_staff):
+        messages.error(request, 'Access denied.')
+        return redirect('reporting:home')
+
+    irb_member_id = request.GET.get('irb_member_id') or ''
+    researcher_id = request.GET.get('researcher_id') or ''
+    study_id = request.GET.get('study_id') or ''
+
+    logs = AuditLog.objects.select_related('actor').order_by('-created_at')
+
+    # Filter 1: specific IRB member activity
+    if irb_member_id:
+        logs = logs.filter(actor_id=irb_member_id)
+
+    # Filter 2: specific researcher activity
+    if researcher_id:
+        researcher_studies = list(
+            Study.objects.filter(researcher_id=researcher_id).values_list('id', flat=True)
+        )
+        researcher_study_ids = [str(sid) for sid in researcher_studies]
+        logs = logs.filter(
+            Q(actor_id=researcher_id)
+            | Q(entity='study', entity_id__in=researcher_studies)
+            | Q(metadata__study_id__in=researcher_study_ids)
+        )
+
+    # Filter 3: specific project/study activity
+    if study_id:
+        logs = logs.filter(
+            Q(entity='study', entity_id=study_id)
+            | Q(metadata__study_id=study_id)
+        )
+
+    logs = list(logs[:300])
+
+    study_ids = {log.study_id for log in logs if log.study_id}
+
+    studies_by_id = {
+        study.id: study
+        for study in Study.objects.filter(id__in=study_ids).select_related('researcher')
+    }
+
+    audit_rows = [
+        {
+            'log': log,
+            'study': studies_by_id.get(log.study_id),
+        }
+        for log in logs
+    ]
+
+    irb_members = User.objects.filter(role='irb_member', is_active=True).order_by('last_name', 'first_name')
+    researchers = User.objects.filter(role='researcher', is_active=True).order_by('last_name', 'first_name')
+    studies = Study.objects.select_related('researcher').order_by('title')
+
+    return render(request, 'reporting/irb_audit_report.html', {
+        'audit_rows': audit_rows,
+        'irb_members': irb_members,
+        'researchers': researchers,
+        'studies': studies,
+        'selected_irb_member_id': irb_member_id,
+        'selected_researcher_id': researcher_id,
+        'selected_study_id': study_id,
+    })
 
 
 @login_required

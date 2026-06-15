@@ -42,7 +42,21 @@
                         </div>
                     </div>
                 </div>
+            {% endif %}
+
+            {% if user.is_irb_member or user.is_admin or user.is_staff %}
+                <div class="col-md-6 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">IRB Activity Audits</h5>
+                            <p class="card-text">Audit activity by IRB member, researcher, or project.</p>
+                            <a href="{% url 'reporting:irb_audit_report' %}" class="btn btn-primary">Open IRB Audits</a>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
                 
+            {% if user.is_admin %}
                 <div class="col-md-6 mb-3">
                     <div class="card">
                         <div class="card-body">

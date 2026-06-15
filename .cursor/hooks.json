@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "hooks": {
+    "beforeSubmitPrompt": [
+      {
+        "command": ".cursor/hooks/ferpa_before_submit_prompt.sh",
+        "matcher": "UserPromptSubmit",
+        "failClosed": true,
+        "timeout": 120
+      }
+    ]
+  }
+}

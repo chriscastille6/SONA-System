@@ -232,6 +232,17 @@ IRB_OFFICE_EMAIL = _config('IRB_OFFICE_EMAIL', default='alania.daigle@nicholls.e
 # Research exports: system-specific salt for anonymized participant IDs (prevents cross-database linkage)
 PARTICIPANT_EXPORT_SALT = _config('PARTICIPANT_EXPORT_SALT', default=None)
 
+# Microsoft Presidio (PII detection / redaction)
+PRESIDIO_LANGUAGE = _config('PRESIDIO_LANGUAGE', default='en')
+PRESIDIO_SCORE_THRESHOLD = _config('PRESIDIO_SCORE_THRESHOLD', default=0.35, cast=float)
+
+# FERPA in-flight guard (blocks outbound transfers to external AI / tooling)
+FERPA_GUARD_ENABLED = _config('FERPA_GUARD_ENABLED', default=True, cast=bool)
+FERPA_ALLOWLIST_PATH = _config(
+    'FERPA_ALLOWLIST_PATH',
+    default=str(BASE_DIR / 'config' / 'ferpa_allowlist.yaml'),
+)
+
 # Policy Settings
 CANCELLATION_WINDOW_HOURS = _config('CANCELLATION_WINDOW_HOURS', default=2, cast=int)
 MAX_WEEKLY_SIGNUPS = _config('MAX_WEEKLY_SIGNUPS', default=3, cast=int)

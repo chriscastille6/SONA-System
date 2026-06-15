@@ -1,0 +1,26 @@
+# Identifiers that are NOT treated as FERPA concerns in this workspace.
+# Used by config/ferpa_guard.py before blocking outbound transfers.
+#
+# Add faculty/staff you routinely discuss in prompts. Do NOT add student names
+# or @my.nicholls.edu addresses here.
+
+people:
+  - label: "PI / platform owner"
+    names:
+      - "Chris Castille"
+      - "Christopher Castille"
+      - "Chris Castille, Ph.D."
+    emails:
+      - "christopher.castille@nicholls.edu"
+      - "ccastille@nicholls.edu"
+    phones: []
+    tokens:
+      - "ccastille"
+
+# Regex patterns (case-insensitive) that are always ignored after allowlist masking.
+ignore_patterns:
+  - "@nicholls\\.edu"
+  - "People Analytics Lab"
+  - "Bayou PAL"
+  - "HSIRB"
+  - "PRAMS"

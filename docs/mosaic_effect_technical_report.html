@@ -1,0 +1,1628 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.29">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="People Analytics Lab of the Bayou">
+<meta name="dcterms.date" content="2026-05-16">
+
+<title>Mosaic Effect Risk and Mitigation</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="mosaic_effect_technical_report_files/libs/clipboard/clipboard.min.js"></script>
+<script src="mosaic_effect_technical_report_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="mosaic_effect_technical_report_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="mosaic_effect_technical_report_files/libs/quarto-html/popper.min.js"></script>
+<script src="mosaic_effect_technical_report_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="mosaic_effect_technical_report_files/libs/quarto-html/anchor.min.js"></script>
+<link href="mosaic_effect_technical_report_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="mosaic_effect_technical_report_files/libs/quarto-html/quarto-syntax-highlighting-98ef97c852da5b49c7a3c2d79aa69302.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="mosaic_effect_technical_report_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="mosaic_effect_technical_report_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="mosaic_effect_technical_report_files/libs/bootstrap/bootstrap-a2710520fd008f66d122fb8ac675a7e4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<style>html{ scroll-behavior: smooth; }</style>
+<meta name="mermaid-theme" content="neutral">
+<script src="mosaic_effect_technical_report_files/libs/quarto-diagram/mermaid.min.js"></script>
+<script src="mosaic_effect_technical_report_files/libs/quarto-diagram/mermaid-init.js"></script>
+<link href="mosaic_effect_technical_report_files/libs/quarto-diagram/mermaid.css" rel="stylesheet">
+
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="99">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#abbreviations" id="toc-abbreviations" class="nav-link active" data-scroll-target="#abbreviations">Abbreviations</a></li>
+  <li><a href="#executive-summary" id="toc-executive-summary" class="nav-link" data-scroll-target="#executive-summary">Executive summary</a></li>
+  <li><a href="#document-standards" id="toc-document-standards" class="nav-link" data-scroll-target="#document-standards">Document standards</a></li>
+  <li><a href="#problem-statement-the-mosaic-effect" id="toc-problem-statement-the-mosaic-effect" class="nav-link" data-scroll-target="#problem-statement-the-mosaic-effect">1. Problem statement: the mosaic effect</a>
+  <ul class="collapse">
+  <li><a href="#definition" id="toc-definition" class="nav-link" data-scroll-target="#definition">1.1 Definition</a></li>
+  <li><a href="#aggregate-release-is-appropriateand-not-sufficient-alone" id="toc-aggregate-release-is-appropriateand-not-sufficient-alone" class="nav-link" data-scroll-target="#aggregate-release-is-appropriateand-not-sufficient-alone">1.2 Aggregate release is appropriate—and not sufficient alone</a></li>
+  </ul></li>
+  <li><a href="#system-architecture-and-data-flow" id="toc-system-architecture-and-data-flow" class="nav-link" data-scroll-target="#system-architecture-and-data-flow">2. System architecture and data flow</a>
+  <ul class="collapse">
+  <li><a href="#entity-model-what-it-inherits" id="toc-entity-model-what-it-inherits" class="nav-link" data-scroll-target="#entity-model-what-it-inherits">2.1 Entity model (what IT inherits)</a></li>
+  <li><a href="#end-to-end-flow" id="toc-end-to-end-flow" class="nav-link" data-scroll-target="#end-to-end-flow">2.2 End-to-end flow</a></li>
+  <li><a href="#mosaic-linkage-scenarios-this-system" id="toc-mosaic-linkage-scenarios-this-system" class="nav-link" data-scroll-target="#mosaic-linkage-scenarios-this-system">2.3 Mosaic linkage scenarios (this system)</a></li>
+  </ul></li>
+  <li><a href="#key-concerns-for-it-professionals" id="toc-key-concerns-for-it-professionals" class="nav-link" data-scroll-target="#key-concerns-for-it-professionals">3. Key concerns for IT professionals</a>
+  <ul class="collapse">
+  <li><a href="#security-and-access-control" id="toc-security-and-access-control" class="nav-link" data-scroll-target="#security-and-access-control">3.1 Security and access control</a></li>
+  <li><a href="#data-classification-and-ferpa" id="toc-data-classification-and-ferpa" class="nav-link" data-scroll-target="#data-classification-and-ferpa">3.2 Data classification and FERPA</a></li>
+  <li><a href="#infrastructure-and-pipeline-leakage" id="toc-infrastructure-and-pipeline-leakage" class="nav-link" data-scroll-target="#infrastructure-and-pipeline-leakage">3.3 Infrastructure and pipeline leakage</a></li>
+  <li><a href="#monitoring-and-audit" id="toc-monitoring-and-audit" class="nav-link" data-scroll-target="#monitoring-and-audit">3.4 Monitoring and audit</a></li>
+  <li><a href="#what-it-should-expect-from-research-aggregate-first" id="toc-what-it-should-expect-from-research-aggregate-first" class="nav-link" data-scroll-target="#what-it-should-expect-from-research-aggregate-first">3.5 What IT should expect from research (aggregate-first)</a></li>
+  </ul></li>
+  <li><a href="#research-side-mitigation-statistical-disclosure-control" id="toc-research-side-mitigation-statistical-disclosure-control" class="nav-link" data-scroll-target="#research-side-mitigation-statistical-disclosure-control">4. Research-side mitigation (statistical disclosure control)</a>
+  <ul class="collapse">
+  <li><a href="#cell-size-and-k-rules-for-n-20500" id="toc-cell-size-and-k-rules-for-n-20500" class="nav-link" data-scroll-target="#cell-size-and-k-rules-for-n-20500">4.1 Cell-size and <em>k</em> rules for <em>N</em> = 20–500</a></li>
+  <li><a href="#collection-time-mitigations" id="toc-collection-time-mitigations" class="nav-link" data-scroll-target="#collection-time-mitigations">4.2 Collection-time mitigations</a></li>
+  <li><a href="#analysis-time-mitigations" id="toc-analysis-time-mitigations" class="nav-link" data-scroll-target="#analysis-time-mitigations">4.3 Analysis-time mitigations</a></li>
+  <li><a href="#publication-and-osf" id="toc-publication-and-osf" class="nav-link" data-scroll-target="#publication-and-osf">4.4 Publication and OSF</a></li>
+  <li><a href="#monte-carlo-simulation-plain-language-results" id="toc-monte-carlo-simulation-plain-language-results" class="nav-link" data-scroll-target="#monte-carlo-simulation-plain-language-results">4.5 Monte Carlo simulation: plain-language results</a></li>
+  </ul></li>
+  <li><a href="#operational-tooling" id="toc-operational-tooling" class="nav-link" data-scroll-target="#operational-tooling">5. Operational tooling</a></li>
+  <li><a href="#joint-responsibility-matrix" id="toc-joint-responsibility-matrix" class="nav-link" data-scroll-target="#joint-responsibility-matrix">6. Joint responsibility matrix</a></li>
+  <li><a href="#gap-summary-and-recommended-actions" id="toc-gap-summary-and-recommended-actions" class="nav-link" data-scroll-target="#gap-summary-and-recommended-actions">7. Gap summary and recommended actions</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">8. Conclusion</a></li>
+  <li><a href="#appendix-a-quasi-identifier-inventory" id="toc-appendix-a-quasi-identifier-inventory" class="nav-link" data-scroll-target="#appendix-a-quasi-identifier-inventory">Appendix A — Quasi-identifier inventory</a></li>
+  <li><a href="#appendix-b-it-operations-checklist-one-page" id="toc-appendix-b-it-operations-checklist-one-page" class="nav-link" data-scroll-target="#appendix-b-it-operations-checklist-one-page">Appendix B — IT operations checklist (one page)</a></li>
+  <li><a href="#appendix-c-document-control" id="toc-appendix-c-document-control" class="nav-link" data-scroll-target="#appendix-c-document-control">Appendix C — Document control</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+<div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="../mosaic_effect_technical_report.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Mosaic Effect Risk and Mitigation</h1>
+<p class="subtitle lead">Technical Report for IT and Research Operations — SONA / PRAMS</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>People Analytics Lab of the Bayou </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 16, 2026</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+How to render (maintainers)
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>From the repository root (with <a href="https://quarto.org/">Quarto</a> installed):</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./venv312/bin/python</span> scripts/visualize_mosaic_simulation.py</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render docs/mosaic_effect_technical_report.qmd</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="ex">quarto</span> render docs/mosaic_effect_technical_report.qmd <span class="at">--to</span> pdf</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Figures: <code>docs/figures/</code> · Interactive charts: <a href="mosaic_simulation_charts.html">mosaic_simulation_charts.html</a></p>
+</div>
+</div>
+</div>
+<section id="abbreviations" class="level2">
+<h2 class="anchored" data-anchor-id="abbreviations">Abbreviations</h2>
+<p>This report uses the following abbreviations:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Abbreviation</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>API</td>
+<td>Application programming interface</td>
+</tr>
+<tr class="even">
+<td>BF</td>
+<td>Bayes factor</td>
+</tr>
+<tr class="odd">
+<td>CSRF</td>
+<td>Cross-site request forgery</td>
+</tr>
+<tr class="even">
+<td>DLP</td>
+<td>Data loss prevention</td>
+</tr>
+<tr class="odd">
+<td>DMP</td>
+<td>Data management plan</td>
+</tr>
+<tr class="even">
+<td>DUA</td>
+<td>Data-use agreement</td>
+</tr>
+<tr class="odd">
+<td>FERPA</td>
+<td>Family Educational Rights and Privacy Act</td>
+</tr>
+<tr class="even">
+<td>IDOR</td>
+<td>Insecure direct object reference</td>
+</tr>
+<tr class="odd">
+<td>IRB</td>
+<td>Institutional review board</td>
+</tr>
+<tr class="even">
+<td>IT</td>
+<td>Information technology</td>
+</tr>
+<tr class="odd">
+<td>MFA</td>
+<td>Multi-factor authentication</td>
+</tr>
+<tr class="even">
+<td>NTP</td>
+<td>Network Time Protocol</td>
+</tr>
+<tr class="odd">
+<td>OSF</td>
+<td>Open Science Framework</td>
+</tr>
+<tr class="even">
+<td>PII</td>
+<td>Personally identifiable information</td>
+</tr>
+<tr class="odd">
+<td>QI</td>
+<td>Quasi-identifier</td>
+</tr>
+<tr class="even">
+<td>QC</td>
+<td>Quality control</td>
+</tr>
+<tr class="odd">
+<td>RBAC</td>
+<td>Role-based access control</td>
+</tr>
+<tr class="even">
+<td>SDC</td>
+<td>Statistical disclosure control</td>
+</tr>
+<tr class="odd">
+<td>TOP</td>
+<td>Transparency and Openness Promotion</td>
+</tr>
+<tr class="even">
+<td>WAF</td>
+<td>Web application firewall</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="executive-summary" class="level2">
+<h2 class="anchored" data-anchor-id="executive-summary">Executive summary</h2>
+<p>The SONA / PRAMS platform collects protocol responses as flexible JSON while operating in a FERPA-aware, IRB-governed environment. For studies with sample sizes between <strong>20 and 500</strong>, the intended public disclosure path is <strong>not row-level microdata</strong> but <strong>aggregates and inferential statistics</strong> (means, proportions, confidence intervals, Bayes factors, and test statistics) that support scientific claims. That choice materially lowers re-identification risk, yet it does not eliminate the <strong>mosaic effect</strong>: the risk that a person becomes identifiable when quasi-identifiers, behavioral data, and auxiliary records (signups, emails, timing, external identifiers) are combined across systems or releases.</p>
+<p>This report is written for two audiences who share accountability. <strong>IT professionals</strong> must understand where identifiers and metadata enter the stack, how exports and backups propagate them, and which access controls bound insider and pipeline risk. <strong>Research operations</strong> must apply <strong>statistical disclosure control (SDC)</strong> so that internal analysis files and any exceptional microdata handoffs do not undermine the aggregate-first publication strategy. A Monte Carlo simulation (§4.5) quantifies how often participants are unique on realistic quasi-identifiers at <em>N</em> = 20–500 and supports a practical release rule: <strong>external handoffs should be descriptive-statistics tables unless the study is very large relative to the fields collected.</strong> The diagrams below summarize data flow and disclosure tiers; later sections map controls to concrete models and code paths in this repository.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 61%">
+<col style="width: 38%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Typical study <em>N</em></td>
+<td>20–500</td>
+</tr>
+<tr class="even">
+<td>Primary external release</td>
+<td>Aggregates and inferential statistics</td>
+</tr>
+<tr class="odd">
+<td>Raw microdata release</td>
+<td>Unlikely; not the default path</td>
+</tr>
+<tr class="even">
+<td>Institutional frame</td>
+<td>FERPA-aware recruitment; IRB human subjects governance</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="document-standards" class="level2">
+<h2 class="anchored" data-anchor-id="document-standards">Document standards</h2>
+<p>This report follows practices from the <a href="https://github.com/K-Dense-AI/scientific-agent-skills">K-Dense scientific-agent-skills</a> collection:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 28%">
+<col style="width: 72%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Skill</th>
+<th>Application here</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>markdown-mermaid-writing</strong></td>
+<td>Architecture and workflow diagrams are Mermaid in Quarto (version-controlled, diffable source)</td>
+</tr>
+<tr class="even">
+<td><strong>scientific-writing</strong></td>
+<td>Technical prose structure, precision, and tables for comparisons (adapted for IT/research ops, not journal IMRAD)</td>
+</tr>
+<tr class="odd">
+<td><strong>Statistical disclosure control</strong></td>
+<td><em>k</em>-anonymity framing and cell-size rules aligned with social-science aggregate release</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="problem-statement-the-mosaic-effect" class="level2">
+<h2 class="anchored" data-anchor-id="problem-statement-the-mosaic-effect">1. Problem statement: the mosaic effect</h2>
+<section id="definition" class="level3">
+<h3 class="anchored" data-anchor-id="definition">1.1 Definition</h3>
+<p>The <strong>mosaic effect</strong> (also discussed under <strong>statistical disclosure control</strong> and <strong>record linkage</strong> in federal and health-data guidance) arises when no single field identifies a person, but <strong>joint information</strong> does. In this codebase, quasi-identifiers (QIs) include demographics in JSON payloads, submission timestamps, session identifiers, vignette presentation order, and professional attributes in HR-SJT instruments. Auxiliary data may include course rosters, <code>Signup</code> timeslots, <code>StudyEmailContact</code> rows, or PRAMS <code>participant_secure_id</code> values held outside the anonymous-looking <code>Response</code> table.</p>
+<p>Risk increases when the equivalence class size <em>k</em> for a combination of QIs falls below an acceptable threshold (<em>k</em>-anonymity). With <em>N</em> between 20 and 500, even two or three QIs can yield <strong>singleton cells</strong> in classroom cohorts or rare demographic intersections.</p>
+</section>
+<section id="aggregate-release-is-appropriateand-not-sufficient-alone" class="level3">
+<h3 class="anchored" data-anchor-id="aggregate-release-is-appropriateand-not-sufficient-alone">1.2 Aggregate release is appropriate—and not sufficient alone</h3>
+<p>Publishing group-level statistics is much safer than releasing rows, but it is not a free pass. Small cells in slides, unusual response patterns in appendices, and linkage across repeated OSF deposits can still expose people. Internal CSV/R exports are another weak spot because they often sit outside the publication workflow and get less scrutiny. Since raw release is rare in this lab, the practical focus is straightforward: keep row-level data from drifting out of the application, and apply cell-size and suppression rules to every table that leaves the secure environment.</p>
+<section id="open-science-without-mosaic-risk" class="level4">
+<h4 class="anchored" data-anchor-id="open-science-without-mosaic-risk">Open science without mosaic risk</h4>
+<p>Open science is not an all-or-nothing obligation to post everything (Castille et al., 2022). The “buffet” framing in that editorial is useful here: preregistration, materials sharing, code sharing, and data sharing are different choices, not one package deal. For studies in the 20-500 range, the best fit is transparent design and analysis plus descriptive tables on the Open Science Framework (OSF). That keeps the work reproducible without turning internal response JSON into public microdata by accident.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 40%">
+<col style="width: 21%">
+<col style="width: 38%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Scientific value (Castille et al., 2022)</th>
+<th>Open-science practice</th>
+<th>Mosaic-safe interpretation for this lab</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Openness</td>
+<td>Preregistration, OSF project, shared materials</td>
+<td>Document instruments and analysis; deposit <strong>aggregates and code</strong>, not identifiable rows</td>
+</tr>
+<tr class="even">
+<td>Honesty</td>
+<td>Report what was collected and what is shared</td>
+<td>Data management plan (DMP) states QIs collected; OSF README states T0-only external data</td>
+</tr>
+<tr class="odd">
+<td>Stewardship</td>
+<td>Protect participants and institutional relationships</td>
+<td>FERPA signups stay T2; OSF gets tables with cell <em>n</em> ≥ 5, not session IDs or exact age</td>
+</tr>
+<tr class="even">
+<td>Accountability</td>
+<td>Reproducible workflow</td>
+<td>Code + summary tables reproduce claims; microdata stays behind DUA if needed</td>
+</tr>
+</tbody>
+</table>
+<p>OSF deposits, conference slides, and supplements are publication channels, so they need the same disclosure rules as journal tables. A preregistered hypothesis is not a reason to post a cross-tab with singleton cells. Materials can be fully open while data remain aggregate-first. That still aligns with Transparency and Openness Promotion (TOP) guideline goals, and it avoids treating “open data” as “open rows.”</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TB
+    t0["T0 Public aggregates&lt;br/&gt;means, BF, n per cell"]
+    t1["T1 Restricted microdata&lt;br/&gt;SDC and DUA"]
+    t2["T2 Operational identified&lt;br/&gt;FERPA signups credits"]
+
+    t0 --&gt; c0["Cell n at least 5&lt;br/&gt;no IDs or timestamps"]
+    t1 --&gt; c1["k anonymity audit&lt;br/&gt;metadata stripped"]
+    t2 --&gt; c2["RBAC, MFA, audit logs"]
+
+    classDef tier fill:#dbeafe,stroke:#2563eb,color:#1e3a5f
+    classDef ctrl fill:#dcfce7,stroke:#16a34a,color:#14532d
+    class t0,t1,t2 tier
+    class c0,c1,c2 ctrl
+</pre>
+</div>
+<p></p><figcaption> Disclosure tiers and typical controls (T0 is the default external path for this lab).</figcaption> </figure><p></p>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+</section>
+<section id="system-architecture-and-data-flow" class="level2">
+<h2 class="anchored" data-anchor-id="system-architecture-and-data-flow">2. System architecture and data flow</h2>
+<section id="entity-model-what-it-inherits" class="level3">
+<h3 class="anchored" data-anchor-id="entity-model-what-it-inherits">2.1 Entity model (what IT inherits)</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 36%">
+<col style="width: 14%">
+<col style="width: 48%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Store / model</th>
+<th>Role</th>
+<th>Identifier posture</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Response</code></td>
+<td><code>payload</code> JSON + <code>session_id</code>, <code>created_at</code>, <code>ip_address</code>, <code>user_agent</code></td>
+<td>No participant FK; anonymity depends on payload</td>
+</tr>
+<tr class="even">
+<td><code>Signup</code></td>
+<td>Timeslot booking linked to <code>User</code></td>
+<td><strong>Identified</strong> (FERPA-relevant)</td>
+</tr>
+<tr class="odd">
+<td><code>StudyEmailContact</code></td>
+<td>Infographic email + optional <code>session_id</code></td>
+<td><strong>Bridge</strong> to <code>Response</code></td>
+</tr>
+<tr class="even">
+<td><code>StudentDataConsent</code></td>
+<td>Secondary-use consent with email, names</td>
+<td><strong>Identified</strong></td>
+</tr>
+<tr class="odd">
+<td><code>PrescreenResponse</code></td>
+<td>Participant-linked prescreen JSON</td>
+<td><strong>Identified</strong></td>
+</tr>
+<tr class="even">
+<td><code>PRAMSSignup</code></td>
+<td><code>participant_secure_id</code>, cancellation PIN</td>
+<td>Pseudonymous in PRAMS; may link externally</td>
+</tr>
+<tr class="odd">
+<td><code>AuditLog</code></td>
+<td>Actor, action, <code>metadata</code>, IP, user agent</td>
+<td>Security and compliance</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>Response</code> model is anonymous by schema design (no participant foreign key). <strong>Client payloads and cross-table joins can restore identity</strong> if governance is weak.</p>
+</section>
+<section id="end-to-end-flow" class="level3">
+<h3 class="anchored" data-anchor-id="end-to-end-flow">2.2 End-to-end flow</h3>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">sequenceDiagram
+    participant Br as Browser
+    participant API as submit_response
+    participant DB as Response table
+    participant Cel as post_decision_analysis
+    participant RRun as Rscript
+    participant Pub as Publication OSF
+
+    Br-&gt;&gt;API: POST JSON payload
+    API-&gt;&gt;DB: payload session_id IP UA
+    Note over DB: StudyEmailContact may link email to session_id
+    Cel-&gt;&gt;DB: read responses
+    Cel-&gt;&gt;RRun: temp CSV with ids and payload
+    RRun--&gt;&gt;Pub: summary stats only intended
+    Note over Pub: T0 aggregates no row-level release
+</pre>
+</div>
+<p></p><figcaption> Browser data flow from submission through storage, analysis export, and publication.</figcaption> </figure><p></p>
+</div>
+</div>
+</div>
+<p><strong>Ingestion (<code>apps/studies/views.py</code>, <code>submit_response</code>):</strong> full client JSON is persisted without field-level allowlisting; <code>REMOTE_ADDR</code> and <code>HTTP_USER_AGENT</code> are stored (HR-SJT demographics use <code>get_client_ip</code> with <code>X-Forwarded-For</code>—proxy configuration should be consistent).</p>
+<p><strong>High-risk payload fields (goals-refs live survey):</strong> exact <code>demographics.age</code>, <code>demographics.gender</code>, <code>demographics.student_status</code>, <code>prams_participant_id</code>, <code>completed_at</code>, <code>results_email</code>, <code>vignette_order_presented</code>, <code>goal_frames</code>, client <code>user_agent</code>.</p>
+<p><strong>Export (<code>apps/studies/tasks.py</code>):</strong> <code>run_post_decision_analysis</code> writes a temporary CSV with <code>response_id</code>, <code>session_id</code>, <code>created_at</code>, and serialized <code>payload</code> for <code>Rscript</code>. The file is deleted in <code>finally</code>, but the R process or analyst environment may retain copies.</p>
+<p><strong>Pseudonymization utility:</strong> <code>config/export_utils.py</code> provides <code>get_anonymized_participant_id()</code> (HMAC with <code>PARTICIPANT_EXPORT_SALT</code>) but is <strong>not wired</strong> into the main response export path—IT should not assume automatic HMAC IDs on export.</p>
+</section>
+<section id="mosaic-linkage-scenarios-this-system" class="level3">
+<h3 class="anchored" data-anchor-id="mosaic-linkage-scenarios-this-system">2.3 Mosaic linkage scenarios (this system)</h3>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
+    Resp["Response&lt;br/&gt;session_id created_at payload"]
+    E["StudyEmailContact&lt;br/&gt;email session_id"]
+    S["Signup&lt;br/&gt;user timeslot"]
+    C["StudentDataConsent&lt;br/&gt;email name"]
+    P["PRAMS secure_id&lt;br/&gt;in payload or URL"]
+
+    E --&gt;|session_id| Resp
+    S -.-&gt;|time correlation| Resp
+    C -.-&gt;|email match| E
+    P -.-&gt;|in payload| Resp
+
+    classDef store fill:#e0e7ff,stroke:#4f46e5,color:#312e81
+    class Resp,E,S,C,P store
+</pre>
+</div>
+<p></p><figcaption> Cross-table linkage paths that can re-identify anonymous-looking responses.</figcaption> </figure><p></p>
+</div>
+</div>
+</div>
+<hr>
+</section>
+</section>
+<section id="key-concerns-for-it-professionals" class="level2">
+<h2 class="anchored" data-anchor-id="key-concerns-for-it-professionals">3. Key concerns for IT professionals</h2>
+<p>IT ownership centers on <strong>confidentiality, integrity, and auditability</strong> of systems that touch participant data—not on choosing statistical tables for papers.</p>
+<section id="security-and-access-control" class="level3">
+<h3 class="anchored" data-anchor-id="security-and-access-control">3.1 Security and access control</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 26%">
+<col style="width: 55%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Concern</th>
+<th>Description</th>
+<th>Posture in this codebase</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Authentication boundary</td>
+<td>Who may POST protocol data</td>
+<td><code>submit_response</code> is unauthenticated; gated by <code>Study.active_approved</code></td>
+</tr>
+<tr class="even">
+<td>RBAC</td>
+<td>Participant / researcher / IRB / admin</td>
+<td>Role model present; see <code>SECURITY_COMPLIANCE_REMEDIATION_LIST.md</code></td>
+</tr>
+<tr class="odd">
+<td>IDOR</td>
+<td>Object-level authorization</td>
+<td>Documented remediation for attendance and similar views</td>
+</tr>
+<tr class="even">
+<td>CSRF</td>
+<td>Cross-site POST to study APIs</td>
+<td>Requires explicit token strategy per deployment</td>
+</tr>
+<tr class="odd">
+<td>Admin surface</td>
+<td>Django admin shows full <code>payload</code>, IP, UA</td>
+<td>High-trust accounts only; MFA</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="data-classification-and-ferpa" class="level3">
+<h3 class="anchored" data-anchor-id="data-classification-and-ferpa">3.2 Data classification and FERPA</h3>
+<p>Enrollments, credits, signups, and prescreens linked to <code>User</code> are <strong>education records</strong> when maintained by the institution. <code>Response</code> rows may fall outside FERPA only while they remain <strong>non-linkable</strong>; linkage via email, session, or timing collapses that boundary. Secondary-use consent (<code>StudentDataConsent</code>) is a separate legal track from anonymous protocol JSON. IRB AI review may transmit protocol text to external LLMs—see <code>FERPA_AUDIT_REPORT.md</code> for prompt-screening gaps.</p>
+</section>
+<section id="infrastructure-and-pipeline-leakage" class="level3">
+<h3 class="anchored" data-anchor-id="infrastructure-and-pipeline-leakage">3.3 Infrastructure and pipeline leakage</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Mechanism</th>
+<th>IT action</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>ip_address</code>, <code>user_agent</code> on <code>Response</code></td>
+<td>Restrict column access; exclude from backups shared with researchers</td>
+</tr>
+<tr class="even">
+<td>Precise timestamps</td>
+<td>Treat as QI in exports; align NTP and proxy logging</td>
+</tr>
+<tr class="odd">
+<td>UUID keys in CSV/R temp files</td>
+<td>Encrypt analyst workstations; no sync to personal cloud</td>
+</tr>
+<tr class="even">
+<td>DB backups, WAF, app logs</td>
+<td>Retention policy; DLP on export endpoints</td>
+</tr>
+<tr class="odd">
+<td><code>course_credits_csv</code> (FERPA)</td>
+<td>Log access (implemented); separate storage from research</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="monitoring-and-audit" class="level3">
+<h3 class="anchored" data-anchor-id="monitoring-and-audit">3.4 Monitoring and audit</h3>
+<p><code>AuditLog</code> records sensitive actions; signal-created entries <strong>lack IP/user agent</strong> (<code>apps/studies/signals.py</code>). IT should centralize logs, review admin access periodically, and alert on anomalous <code>Response</code> creation rates (data poisoning).</p>
+</section>
+<section id="what-it-should-expect-from-research-aggregate-first" class="level3">
+<h3 class="anchored" data-anchor-id="what-it-should-expect-from-research-aggregate-first">3.5 What IT should expect from research (aggregate-first)</h3>
+<p>When research affirms that only <strong>T0</strong> outputs leave the institution, IT still validates that <strong>T1</strong> files are not stored on open shares. Research attestation should reference cell-size rules (§4.1) and the audit script (§5).</p>
+<hr>
+</section>
+</section>
+<section id="research-side-mitigation-statistical-disclosure-control" class="level2">
+<h2 class="anchored" data-anchor-id="research-side-mitigation-statistical-disclosure-control">4. Research-side mitigation (statistical disclosure control)</h2>
+<p>Research operations implement SDC complementary to IT controls. Because external release is <strong>aggregate-first</strong>, the highest-impact research practices are <strong>small-cell suppression</strong>, <strong>QI minimization</strong>, and <strong>internal microdata hygiene</strong>.</p>
+<section id="cell-size-and-k-rules-for-n-20500" class="level3">
+<h3 class="anchored" data-anchor-id="cell-size-and-k-rules-for-n-20500">4.1 Cell-size and <em>k</em> rules for <em>N</em> = 20–500</h3>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 13%">
+<col style="width: 32%">
+<col style="width: 54%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><em>N</em> range</th>
+<th>Minimum reported cell <em>n</em></th>
+<th>Internal <em>k</em> review (if microdata exists)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>20–49</td>
+<td>5 (collapse or suppress otherwise)</td>
+<td>Target <em>k</em> ≥ 3–5; avoid 3+ way demos in tables</td>
+</tr>
+<tr class="even">
+<td>50–199</td>
+<td>5</td>
+<td>Target <em>k</em> ≥ 5</td>
+</tr>
+<tr class="odd">
+<td>200–500</td>
+<td>5 (10 for rare HR/professional categories)</td>
+<td>Target <em>k</em> ≥ 5–10</td>
+</tr>
+</tbody>
+</table>
+<p>For journals, OSF, and conference slides: <strong>do not display cells with <em>n</em> &lt; 5</strong>. For inferential claims, report test statistics and effect sizes at the <strong>condition or scale level</strong>, not per-participant series, unless <em>n</em> is large and points are aggregated.</p>
+</section>
+<section id="collection-time-mitigations" class="level3">
+<h3 class="anchored" data-anchor-id="collection-time-mitigations">4.2 Collection-time mitigations</h3>
+<p>Harmonize instruments so live surveys match lower-risk patterns already used in <code>ext_am4_assessment.js</code> (age <strong>bands</strong>, not exact age). Route optional emails through <code>StudyEmailContact</code>, not <code>results_email</code> inside <code>payload</code>. Avoid echoing PRAMS participant IDs into JSON unless IRB-approved linkage is required; if required, store keys in a <strong>locked linkage table</strong>, not in analysis copies. Omit client <code>user_agent</code> and ISO <code>completed_at</code> from payload when server <code>created_at</code> suffices for operations.</p>
+</section>
+<section id="analysis-time-mitigations" class="level3">
+<h3 class="anchored" data-anchor-id="analysis-time-mitigations">4.3 Analysis-time mitigations</h3>
+<p>Researchers should flatten <code>payload</code> for internal QC, run the k-anonymity audit (§5), coarsen age and dates, top/bottom-code numeric outliers, apply local suppression on sparse cells, and compute inferential results inside the secure environment. <strong>Only summary tables</strong> graduate to T0.</p>
+</section>
+<section id="publication-and-osf" class="level3">
+<h3 class="anchored" data-anchor-id="publication-and-osf">4.4 Publication and OSF</h3>
+<p>Preregister the disclosure tier in the protocol and data management plan. Suppress interaction cells with low <em>n</em>. Do not publish vignette order vectors with demographics unless aggregated. Separate FERPA operational exports from analysis directories on storage.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
+    c1["Protocol design&lt;br/&gt;minimize QIs"]
+    c2["Secure analysis&lt;br/&gt;no IDs in notebooks"]
+    c3["reid_risk_audit.py&lt;br/&gt;if microdata touched"]
+    c4["Tables for paper&lt;br/&gt;cell n at least 5"]
+    c5["T0 release&lt;br/&gt;OSF journal"]
+
+    c1 --&gt; c2 --&gt; c3 --&gt; c4 --&gt; c5
+
+    classDef step fill:#dbeafe,stroke:#2563eb,color:#1e3a5f
+    class c1,c2,c3,c4,c5 step
+</pre>
+</div>
+<p></p><figcaption> Recommended research workflow from collection through publication (aggregate-first).</figcaption> </figure><p></p>
+</div>
+</div>
+</div>
+</section>
+<section id="monte-carlo-simulation-plain-language-results" class="level3">
+<h3 class="anchored" data-anchor-id="monte-carlo-simulation-plain-language-results">4.5 Monte Carlo simulation: plain-language results</h3>
+<p>A population-level simulation (<code>scripts/mosaic_reidentification_simulation.py</code>) draws many random samples at sizes <em>N</em> = 20-500 and asks a simple question: how often does one person end up alone in a quasi-identifier cell? Here that means being the only row with a given combination such as gender, exact age, and student status. The figures label that rate as P(unique). In plain terms, it is an estimate of how easy row-level matching can become when detailed microdata exist internally, even if nobody plans to publish those rows.</p>
+<p>How to read the charts: each line reflects a different level of detail in the collected fields. When P(unique) is high, those fields start behaving like a partial identifier. If someone already knows a student’s age, gender, and status, they can often find one matching row. The second student chart tracks a different threshold: the share of participants in cells smaller than five, which is the common minimum for tables in papers and slides. The HR charts add career attributes (race, job level, years in HR, credentials), and uniqueness rises fast. The linkage chart models a partial roster attack. The mitigation bars compare three policy options at <em>N</em> = 100.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 76%">
+<col style="width: 23%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Finding (student, gender + exact age + status, no mitigation)</th>
+<th>Approximate value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>P(unique) at <em>N</em> = 20</td>
+<td>56%</td>
+</tr>
+<tr class="even">
+<td>P(unique) at <em>N</em> = 100</td>
+<td>18%</td>
+</tr>
+<tr class="odd">
+<td>P(unique) at <em>N</em> = 100 after age bands</td>
+<td>4%</td>
+</tr>
+<tr class="even">
+<td>P(unique) at <em>N</em> = 100 after suppressing cells with <em>k</em> &lt; 5</td>
+<td>0%</td>
+</tr>
+<tr class="odd">
+<td>Share of sample in cells with <em>k</em> &lt; 5 at <em>N</em> = 100</td>
+<td>55%</td>
+</tr>
+<tr class="even">
+<td>HR four-way QIs, P(unique) at <em>N</em> = 50</td>
+<td>68%</td>
+</tr>
+<tr class="odd">
+<td>Roster linkage success at <em>N</em> = 100</td>
+<td>4–5%</td>
+</tr>
+</tbody>
+</table>
+<p>Student cohort: exact age creates a lot of uniqueness on its own at classroom sample sizes, and adding student status makes that worse. At <em>N</em> = 100, roughly one in six participants is unique on gender + exact age + status. At <em>N</em> = 20, it is more than half. Switching to age bands cuts the <em>N</em> = 100 result to about one in twenty-five. Suppression of sparse cells (or collecting less granular fields from the start) can remove singleton cells in this scenario. Even with no row-level public release, the below-<em>k</em> curve shows how easy it is for small cross-tabs to leak identity.</p>
+<p>HR cohort: once you combine several career attributes, uniqueness climbs quickly. With four QIs at <em>N</em> = 50, about two-thirds of participants are unique. The rate drops as <em>N</em> increases, but it is still non-trivial at <em>N</em> = 500 for the richest field combination.</p>
+<p>Linkage and mitigations: roster linkage is a secondary path compared with in-sample uniqueness, but in this simplified model it still sits around 4-5% near <em>N</em> = 100. The mitigation comparison at <em>N</em> = 100 is the practical takeaway: coarsening helps, and suppression (or tighter collection rules) can bring both P(unique) and small-cell share to zero in this case.</p>
+<p>Full numeric output: <code>docs/mosaic_simulation_results.csv</code>. Regenerate figures with <code>scripts/visualize_mosaic_simulation.py</code>.</p>
+<section id="recommended-external-release-format" class="level4">
+<h4 class="anchored" data-anchor-id="recommended-external-release-format">Recommended external release format</h4>
+<p>For studies in the 20-500 participant range, the safest default is simple: what leaves the secure environment should be descriptive tables (or a small set of tables), not row-level files and not high-dimensional tabs with thin cells. Inferential outputs can still be reported from secure analysis (test statistics, Bayes factors, confidence intervals). The key boundary is that external files should not be reversible to a person.</p>
+<p>That can change when datasets are very large relative to the identifiers collected (for example, thousands of rows with coarse demographics), because row-level uniqueness drops. In this lab, that is the exception, not the norm. Operationally, treat Celery-to-R CSVs, notebook extracts, and OSF uploads as T0 summaries only. If a collaborator needs more detail, use a data-use agreement, disclosure controls, and the audit script in §5 instead of sharing raw exports by email.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Release checklist (research PI)
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li>External handoff = <strong>means, proportions, SDs, test stats, Bayes factors, cell <em>n</em></strong>—not participant-level rows.</li>
+<li>Every published cell has <strong>n ≥ 5</strong> (collapse or suppress otherwise).</li>
+<li>No exact age, email, session ID, vignette order vectors, or timestamps in public materials.</li>
+<li>Run <code>reid_risk_audit.py</code> before any exceptional microdata share when <em>N</em> &lt; 200 or ≥3 QIs are collected.</li>
+</ol>
+</div>
+</div>
+</section>
+<section id="simulation-figures" class="level4">
+<h4 class="anchored" data-anchor-id="simulation-figures">Simulation figures</h4>
+<div id="fig-student-punique" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-cap="Student cohort — P(unique) by *N* (no mitigation). Higher lines mean more fields or finer age detail.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-student-punique-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/mosaic_student_p_unique.png" class="img-fluid figure-img" style="width:95.0%" data-fig-cap="Student cohort — P(unique) by *N* (no mitigation). Higher lines mean more fields or finer age detail.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-student-punique-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Student cohort: probability a participant is alone in their QI cell (P(unique)) by sample size.
+</figcaption>
+</figure>
+</div>
+<div id="fig-student-belowk" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-cap="Student cohort — fraction in cells with *k* < 5 for exact age + status.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-student-belowk-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/mosaic_student_below_k.png" class="img-fluid figure-img" style="width:95.0%" data-fig-cap="Student cohort — fraction in cells with *k* < 5 for exact age + status.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-student-belowk-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Student cohort: share of participants in equivalence classes smaller than the publication threshold K = 5.
+</figcaption>
+</figure>
+</div>
+<div id="fig-hr-punique" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-cap="HR cohort — P(unique) by *N* (no mitigation).">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-hr-punique-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/mosaic_hr_p_unique.png" class="img-fluid figure-img" style="width:95.0%" data-fig-cap="HR cohort — P(unique) by *N* (no mitigation).">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-hr-punique-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: HR professional cohort: P(unique) by sample size as quasi-identifiers are added.
+</figcaption>
+</figure>
+</div>
+<div id="fig-linkage" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-cap="Roster linkage — P(linkage success) for gender + exact age + status.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-linkage-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/mosaic_linkage.png" class="img-fluid figure-img" style="width:95.0%" data-fig-cap="Roster linkage — P(linkage success) for gender + exact age + status.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-linkage-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Simplified roster linkage attack: probability of successful match by sample size.
+</figcaption>
+</figure>
+</div>
+<div id="fig-mitigation-n100" class="quarto-float quarto-figure quarto-figure-center anchored" data-fig-cap="Mitigations at *N* = 100 — P(unique) and share in cells with *k* < 5.">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-mitigation-n100-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="figures/mosaic_mitigation_n100.png" class="img-fluid figure-img" style="width:95.0%" data-fig-cap="Mitigations at *N* = 100 — P(unique) and share in cells with *k* < 5.">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-mitigation-n100-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Mitigations at N = 100 for gender + exact age + status.
+</figcaption>
+</figure>
+</div>
+<p><strong>Interactive charts:</strong> <a href="mosaic_simulation_charts.html">mosaic_simulation_charts.html</a> (same data; zoom-friendly in a browser).</p>
+<hr>
+</section>
+</section>
+</section>
+<section id="operational-tooling" class="level2">
+<h2 class="anchored" data-anchor-id="operational-tooling">5. Operational tooling</h2>
+<p>Repository script: <code>scripts/reid_risk_audit.py</code> (pandas). Run after exporting responses from Django (management command or admin export), <strong>before</strong> any collaborator handoff or R analysis on row-level data.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Risk report (aggregate release: still useful for internal QC)</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> scripts/reid_risk_audit.py <span class="dt">\</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">--input</span> responses_export.csv <span class="dt">\</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">--flatten-payload</span> <span class="dt">\</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">--k-threshold</span> 5 <span class="dt">\</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">--max-combo</span> 3 <span class="dt">\</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">--strip-identifiers</span> <span class="dt">\</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">--output-risk</span> k_risk_report.csv <span class="dt">\</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">--output-summary-json</span> k_risk_summary.json</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Optional sanitized microdata for T1</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="ex">python3</span> scripts/reid_risk_audit.py <span class="dt">\</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">--input</span> responses_export.csv <span class="dt">\</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">--flatten-payload</span> <span class="dt">\</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">--k-threshold</span> 5 <span class="dt">\</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">--remediate</span> <span class="dt">\</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">--output-sanitized</span> responses_sanitized.csv</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Metric</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>min_k</code></td>
+<td>Smallest group size for a QI combination</td>
+</tr>
+<tr class="even">
+<td><code>groups_below_k</code></td>
+<td>Count of equivalence classes under threshold</td>
+</tr>
+<tr class="odd">
+<td><code>pct_unique_rows</code></td>
+<td>Fraction of rows in singleton classes</td>
+</tr>
+</tbody>
+</table>
+<p>Remediation patterns implemented in the script:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Coarsen age and dates; strip identifiers; suppress sparse cells</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"age_band"</span>] <span class="op">=</span> pd.cut(df[<span class="st">"age"</span>], bins<span class="op">=</span>[<span class="dv">18</span>, <span class="dv">25</span>, <span class="dv">35</span>, <span class="dv">45</span>, <span class="dv">55</span>, <span class="dv">65</span>, <span class="dv">200</span>], right<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">"created_date"</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">"created_at"</span>], utc<span class="op">=</span><span class="va">True</span>).dt.floor(<span class="st">"D"</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>drop <span class="op">=</span> [c <span class="cf">for</span> c <span class="kw">in</span> df.columns <span class="cf">if</span> <span class="bu">any</span>(h <span class="kw">in</span> c.lower() <span class="cf">for</span> h <span class="kw">in</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>        (<span class="st">"email"</span>, <span class="st">"session_id"</span>, <span class="st">"ip"</span>, <span class="st">"user_agent"</span>, <span class="st">"response_id"</span>))]</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.drop(columns<span class="op">=</span>drop, errors<span class="op">=</span><span class="st">"ignore"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<hr>
+</section>
+<section id="joint-responsibility-matrix" class="level2">
+<h2 class="anchored" data-anchor-id="joint-responsibility-matrix">6. Joint responsibility matrix</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 33%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Risk</th>
+<th>IT primary</th>
+<th>Research primary</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Unauthorized admin/export</td>
+<td>RBAC, MFA, logging</td>
+<td>Least-privilege accounts</td>
+</tr>
+<tr class="even">
+<td>PII in JSON payload</td>
+<td>API allowlist (future); WAF</td>
+<td>Protocol field hygiene</td>
+</tr>
+<tr class="odd">
+<td>Temp CSV → R</td>
+<td>Secure <code>/tmp</code>, container isolation</td>
+<td>SDC before R; no raw <code>saveRDS</code> on sync folders</td>
+</tr>
+<tr class="even">
+<td>Demographics + timing mosaic</td>
+<td>Consistent proxy IP logging</td>
+<td>Coarsen timestamps; limit QIs</td>
+</tr>
+<tr class="odd">
+<td>Email ↔︎ session bridge</td>
+<td>DB permissions on <code>StudyEmailContact</code></td>
+<td>No merge into analysis without IRB</td>
+</tr>
+<tr class="even">
+<td>Small cells in public tables</td>
+<td>—</td>
+<td>Suppress; collapse categories</td>
+</tr>
+<tr class="odd">
+<td>AI IRB prompts</td>
+<td>Vendor contracts, egress</td>
+<td>Redact uploads</td>
+</tr>
+</tbody>
+</table>
+<hr>
+</section>
+<section id="gap-summary-and-recommended-actions" class="level2">
+<h2 class="anchored" data-anchor-id="gap-summary-and-recommended-actions">7. Gap summary and recommended actions</h2>
+<p><strong>Cross-functional (high priority):</strong></p>
+<ol type="1">
+<li>Payload allowlist at <code>submit_response</code> for <code>email</code>, <code>results_email</code>, <code>user_agent</code>, precise <code>completed_at</code>, and nonessential external IDs.</li>
+<li>Wire export sanitization and <code>get_anonymized_participant_id()</code> on any CSV leaving Django/Celery.</li>
+<li>Use <code>get_client_ip(request)</code> consistently behind reverse proxies.</li>
+<li>Coarsen or audit temp CSV before <code>Rscript</code> in <code>run_post_decision_analysis</code>.</li>
+</ol>
+<p><strong>Research (aggregate release path):</strong></p>
+<ol type="1">
+<li>Enforce <strong>cell <em>n</em> ≥ 5</strong> on all external tables and slides.</li>
+<li>Run <code>reid_risk_audit.py</code> before submission when <em>N</em> &lt; 200 or ≥3 QIs are collected.</li>
+<li>Align goals-refs live survey with age bands and separate email collection.</li>
+</ol>
+<p><strong>IT-only:</strong></p>
+<ol type="1">
+<li>Continue <code>SECURITY_COMPLIANCE_REMEDIATION_LIST.md</code> remediations.</li>
+<li>Encrypt backups containing <code>Response</code>; periodic access reviews.</li>
+<li>Monitor abnormal submission volume per study.</li>
+</ol>
+<hr>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">8. Conclusion</h2>
+<p>For studies with 20–500 participants, releasing <strong>aggregates that support inferential claims</strong> is the correct default and aligns with how this lab intends to communicate science externally. IT professionals should treat the application as a <strong>high-trust data processor</strong>: metadata, bridges, and export pipelines are the dominant mosaic vectors. Research teams should treat <strong>every internal CSV as if it could become public</strong>, applying SDC and cell-size discipline before analysis artifacts spread beyond the secure environment. Mermaid diagrams and the audit script in this repository are maintained as <strong>version-controlled source</strong> so IT and research can update controls as protocols evolve.</p>
+<hr>
+</section>
+<section id="appendix-a-quasi-identifier-inventory" class="level2">
+<h2 class="anchored" data-anchor-id="appendix-a-quasi-identifier-inventory">Appendix A — Quasi-identifier inventory</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Source</th>
+<th>Fields</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>Response</code> columns</td>
+<td><code>session_id</code>, <code>created_at</code>, <code>ip_address</code>, <code>user_agent</code></td>
+</tr>
+<tr class="even">
+<td>goals-refs payload</td>
+<td><code>demographics.*</code>, <code>prams_participant_id</code>, <code>completed_at</code>, <code>vignette_order_presented</code>, <code>goal_frames</code>, <code>results_email</code></td>
+</tr>
+<tr class="odd">
+<td>EXT-AM4 payload</td>
+<td><code>session_id</code>, <code>started_at</code>, <code>completed_at</code>, <code>demographics.age_range</code>, <code>demographics.gender</code>, <code>condition</code></td>
+</tr>
+<tr class="even">
+<td>HR-SJT payload</td>
+<td><code>race_ethnicity</code>, <code>job_level</code>, <code>years_in_hr</code>, <code>education</code>, <code>credentials</code></td>
+</tr>
+<tr class="odd">
+<td>Linkage</td>
+<td><code>StudyEmailContact.email</code> + <code>session_id</code>; <code>StudentDataConsent.email</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="appendix-b-it-operations-checklist-one-page" class="level2">
+<h2 class="anchored" data-anchor-id="appendix-b-it-operations-checklist-one-page">Appendix B — IT operations checklist (one page)</h2>
+<p>Use this checklist for onboarding, annual review, or pre-production sign-off. Items map to §7 and codebase paths in this repository.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 7%">
+<col style="width: 36%">
+<col style="width: 21%">
+<col style="width: 18%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>#</th>
+<th>Control area</th>
+<th>Action</th>
+<th>Owner</th>
+<th style="text-align: center;">Done</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1</td>
+<td><strong>Access</strong></td>
+<td>Restrict Django admin to named staff; require MFA for admin and DB access</td>
+<td>IT</td>
+<td style="text-align: center;">☐</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td><strong>Access</strong></td>
+<td>Verify RBAC: participants cannot self-assign <code>researcher</code> / <code>admin</code> / <code>irb_member</code> (see <code>SECURITY_COMPLIANCE_REMEDIATION_LIST.md</code> H-1)</td>
+<td>IT</td>
+<td style="text-align: center;">☐</td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td><strong>Access</strong></td>
+<td>Confirm IDOR fixes on researcher views (e.g.&nbsp;mark-attendance) return 404, not partial PII</td>
+<td>IT</td>
+<td style="text-align: center;">☐</td>
+</tr>
+<tr class="even">
+<td>4</td>
+<td><strong>API</strong></td>
+<td>Document CSRF/token policy for <code>submit_response</code> and public protocol POST endpoints</td>
+<td>IT</td>
+<td style="text-align: center;">☐</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td><strong>API</strong></td>
+<td>Confirm only <code>Study.active_approved</code> studies accept submissions</td>
+<td>IT / Dev</td>
+<td style="text-align: center;">☐</td>
+</tr>
+<tr class="even">
+<td>6</td>
+<td><strong>Network</strong></td>
+<td>Standardize client IP: <code>get_client_ip(request)</code> on all response writes behind reverse proxy</td>
+<td>Dev</td>
+<td style="text-align: center;">☐</td>
+</tr>
+<tr class="odd">
+<td>7</td>
+<td><strong>Data store</strong></td>
+<td>Encrypt DB backups containing <code>responses</code>, <code>signups</code>, <code>study_email_contacts</code></td>
+<td>IT</td>
+<td style="text-align: center;">☐</td>
+</tr>
+<tr class="even">
+<td>8</td>
+<td><strong>Data store</strong></td>
+<td>Separate backup/ACL policy for FERPA exports (<code>course_credits_csv</code>) vs research tables</td>
+<td>IT</td>
+<td style="text-align: center;">☐</td>
+</tr>
+<tr class="odd">
+<td>9</td>
+<td><strong>Export pipeline</strong></td>
+<td>Review Celery <code>run_post_decision_analysis</code>: temp CSV lifecycle, R host isolation, no shared sync folders</td>
+<td>IT</td>
+<td style="text-align: center;">☐</td>
+</tr>
+<tr class="even">
+<td>10</td>
+<td><strong>Export pipeline</strong></td>
+<td>Plan: sanitize CSV (strip <code>session_id</code>, IP, raw payload) or run <code>reid_risk_audit.py --remediate</code> before <code>Rscript</code></td>
+<td>Dev / Research</td>
+<td style="text-align: center;">☐</td>
+</tr>
+<tr class="odd">
+<td>11</td>
+<td><strong>Linkage</strong></td>
+<td>Limit DB/user access to <code>StudyEmailContact</code> and <code>StudentDataConsent</code>; audit cross-table queries</td>
+<td>IT</td>
+<td style="text-align: center;">☐</td>
+</tr>
+<tr class="even">
+<td>12</td>
+<td><strong>Logging</strong></td>
+<td>Centralize <code>AuditLog</code> + app logs; retention policy; alert on bulk CSV export / credit export</td>
+<td>IT</td>
+<td style="text-align: center;">☐</td>
+</tr>
+<tr class="odd">
+<td>13</td>
+<td><strong>Logging</strong></td>
+<td>Pass <code>ip_address</code> / <code>user_agent</code> into view-created <code>AuditLog</code> rows (signals lack request context)</td>
+<td>Dev</td>
+<td style="text-align: center;">☐</td>
+</tr>
+<tr class="even">
+<td>14</td>
+<td><strong>Third party</strong></td>
+<td>IRB AI: BAA/DPAs, egress rules, prompt screening per <code>FERPA_AUDIT_REPORT.md</code></td>
+<td>IT / IRB</td>
+<td style="text-align: center;">☐</td>
+</tr>
+<tr class="odd">
+<td>15</td>
+<td><strong>Monitoring</strong></td>
+<td>Alert on abnormal <code>Response</code> create rate per <code>study_id</code> (possible poisoning)</td>
+<td>IT</td>
+<td style="text-align: center;">☐</td>
+</tr>
+<tr class="even">
+<td>16</td>
+<td><strong>Research attestation</strong></td>
+<td>Confirm lab policy: external release = T0 aggregates only; cell <em>n</em> ≥ 5</td>
+<td>Research PI</td>
+<td style="text-align: center;">☐</td>
+</tr>
+<tr class="odd">
+<td>17</td>
+<td><strong>Incident</strong></td>
+<td>Define procedure if microdata CSV is emailed or uploaded to non-approved storage</td>
+<td>IT / IRB</td>
+<td style="text-align: center;">☐</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Sign-off (optional):</strong> System owner _______________ Date __________ | Security/IT reviewer _______________ Date __________</p>
+</section>
+<section id="appendix-c-document-control" class="level2">
+<h2 class="anchored" data-anchor-id="appendix-c-document-control">Appendix C — Document control</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 40%">
+<col style="width: 27%">
+<col style="width: 31%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Version</th>
+<th>Date</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1.0</td>
+<td>2026-05-16</td>
+<td>Initial report; <em>N</em> = 20–500; aggregate-primary release</td>
+</tr>
+<tr class="even">
+<td>1.1</td>
+<td>2026-05-16</td>
+<td>K-Dense Mermaid integration; Jupyter-free Quarto render</td>
+</tr>
+<tr class="odd">
+<td>1.2</td>
+<td>2026-05-16</td>
+<td>Appendix B IT one-page checklist</td>
+</tr>
+<tr class="even">
+<td>1.3</td>
+<td>2026-05-16</td>
+<td>§4.5 simulation narrative, figures, descriptive-table release policy</td>
+</tr>
+<tr class="odd">
+<td>1.4</td>
+<td>2026-05-16</td>
+<td>Mermaid <code>%%|</code> fig-cap fix; §1.2 open science (Castille et al., 2022)</td>
+</tr>
+<tr class="even">
+<td>1.5</td>
+<td>2026-05-16</td>
+<td>HTML theme (<code>mosaic-report.scss</code>); TOC/numbering cleanup</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<ul>
+<li>Castille, C. M., Kreamer, L. M., Albritton, B. H., Banks, G. C., &amp; Rogelberg, S. G. (2022). The open science challenge: Adopt one practice that enacts widely shared values. <em>Journal of Business and Psychology</em>, <em>37</em>(3), 459–467. <a href="https://doi.org/10.1007/s10869-022-09806-2" class="uri">https://doi.org/10.1007/s10869-022-09806-2</a></li>
+<li>K-Dense AI. (2026). <em>Scientific agent skills</em> (markdown-mermaid-writing, scientific-writing). <a href="https://github.com/K-Dense-AI/scientific-agent-skills" class="uri">https://github.com/K-Dense-AI/scientific-agent-skills</a></li>
+<li>National Institute of Standards and Technology. <em>Guide to protecting the confidentiality of PII</em> (NIST SP 800-122; see also NIST Privacy Framework). <a href="https://www.nist.gov/privacy-framework" class="uri">https://www.nist.gov/privacy-framework</a></li>
+<li>U.S. Department of Health and Human Services. (2012). <em>Guidance on de-identification under the HIPAA Privacy Rule</em>. <a href="https://www.hhs.gov/hipaa/for-professionals/privacy/special-topics/de-identification/index.html" class="uri">https://www.hhs.gov/hipaa/for-professionals/privacy/special-topics/de-identification/index.html</a></li>
+</ul>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+<script src="mosaic_effect_technical_report_files/libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

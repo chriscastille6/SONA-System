@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"><title>Mosaic simulation</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  body { font-family: system-ui, sans-serif; margin: 24px; max-width: 900px; color: #222; }
+  h1 { font-size: 1.35rem; } h2 { font-size: 1.05rem; margin-top: 2rem; }
+  canvas { max-width: 100%; margin-bottom: 1.5rem; }
+  .note { color: #555; font-size: 0.9rem; }
+</style>
+</head><body>
+<h1>Mosaic / re-identification simulation</h1>
+<p class="note">Source: mosaic_simulation_results.csv · P(unique) = share in singleton QI cell · K=5</p>
+<h2>Student cohort — P(unique)</h2>
+<canvas id="student"></canvas>
+<h2>Student — fraction with k &lt; 5 (exact age + status)</h2>
+<canvas id="belowk"></canvas>
+<h2>HR cohort — P(unique)</h2>
+<canvas id="hr"></canvas>
+<h2>Roster linkage & mitigations (N=100)</h2>
+<canvas id="linkage"></canvas>
+<canvas id="mit"></canvas>
+<script>
+const DATA = {"student": [{"label": "age_band / status", "x": [20, 30, 50, 100, 200, 500], "y": [14.4, 10.7, 7.1, 3.7, 1.7, 0.6]}, {"label": "age_exact", "x": [20, 30, 50, 100, 200, 500], "y": [43.8, 29.9, 16.1, 6.9, 3.9, 2.0]}, {"label": "age_exact / status", "x": [20, 30, 50, 100, 200, 500], "y": [55.7, 43.3, 29.5, 17.5, 11.3, 5.3]}, {"label": "age_band / status / week", "x": [20, 30, 50, 100, 200, 500], "y": [41.0, 30.5, 20.6, 12.3, 7.1, 3.0]}], "hr": [{"label": "race", "x": [20, 30, 50, 100, 200, 500], "y": [6.8, 4.0, 1.9, 0.4, 0.0, 0.0]}, {"label": "race / job", "x": [20, 30, 50, 100, 200, 500], "y": [24.4, 17.3, 11.0, 5.1, 1.9, 0.3]}, {"label": "race / job / years", "x": [20, 30, 50, 100, 200, 500], "y": [59.7, 48.3, 34.5, 20.1, 10.8, 3.8]}, {"label": "race / job / years / creds", "x": [20, 30, 50, 100, 200, 500], "y": [85.2, 78.6, 67.8, 50.5, 32.8, 16.1]}], "linkage": {"x": [], "y": []}};
+const mitData = [{"mitigation": "none", "p_unique_mean": 0.1750766666666666, "frac_below_k_mean": 0.5476966666666667}, {"mitigation": "age_bands", "p_unique_mean": 0.0368066666666666, "frac_below_k_mean": 0.1347633333333333}, {"mitigation": "suppress_k", "p_unique_mean": 0.0, "frac_below_k_mean": 0.0}];
+function lineChart(id, seriesList, yLabel) {
+  new Chart(document.getElementById(id), {
+    type: 'line',
+    data: {
+      labels: seriesList[0].x.map(String),
+      datasets: seriesList.map((s, i) => ({
+        label: s.label,
+        data: s.y,
+        tension: 0.2,
+        fill: false,
+      })),
+    },
+    options: {
+      scales: {
+        x: { title: { display: true, text: 'Sample size N' } },
+        y: { title: { display: true, text: yLabel }, min: 0, max: 100 },
+      },
+    },
+  });
+}
+lineChart('student', DATA.student, 'P(unique) %');
+lineChart('hr', DATA.hr, 'P(unique) %');
+new Chart(document.getElementById('linkage'), {
+  type: 'line',
+  data: {
+    labels: DATA.linkage.x.map(String),
+    datasets: [{ label: 'P(linkage)', data: DATA.linkage.y, borderColor: '#b45309' }],
+  },
+  options: { scales: { y: { min: 0, max: 15, title: { display: true, text: '%' } } } },
+});
+new Chart(document.getElementById('mit'), {
+  type: 'bar',
+  data: {
+    labels: mitData.map(r => r.mitigation),
+    datasets: [
+      { label: 'P(unique) %', data: mitData.map(r => (r.p_unique_mean*100).toFixed(1)) },
+      { label: 'Below K %', data: mitData.map(r => (r.frac_below_k_mean*100).toFixed(1)) },
+    ],
+  },
+});
+const bk = [{"x": [20, 30, 50, 100, 200, 500], "y": [99.3, 97.0, 87.5, 54.8, 28.0, 18.0]}];
+new Chart(document.getElementById('belowk'), {
+  type: 'line',
+  data: { labels: bk[0].x.map(String), datasets: [{ label: 'k < 5', data: bk[0].y, borderColor: '#dc2626' }] },
+  options: { scales: { y: { min: 0, max: 100, title: { display: true, text: '% of sample' } } } },
+});
+</script>
+</body></html>
