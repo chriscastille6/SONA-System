@@ -79,6 +79,7 @@ urlpatterns = [
     path('<uuid:study_id>/protocol/submit/', views.protocol_submit, name='protocol_submit'),
     path('protocol/submissions/', views.protocol_submission_list, name='protocol_submission_list'),
     path('protocol/submissions/<uuid:submission_id>/', views.protocol_submission_detail, name='protocol_submission_detail'),
+    path('protocol/submissions/<uuid:submission_id>/pdf/', views.protocol_pdf_download, name='protocol_pdf_download'),
     path('protocol/submissions/<uuid:submission_id>/college-rep-review/', views.protocol_college_rep_review, name='protocol_college_rep_review'),
     path('protocol/submissions/<uuid:submission_id>/assign-reviewers/', views.protocol_assign_reviewers, name='protocol_assign_reviewers'),
     path('protocol/submissions/<uuid:submission_id>/decision/', views.protocol_make_decision, name='protocol_make_decision'),

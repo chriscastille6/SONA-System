@@ -2048,6 +2048,44 @@ def protocol_submission_detail(request, submission_id):
 
 
 @login_required
+def protocol_pdf_download(request, submission_id):
+    """Generate and download a formal legacy HSIRB Request for Review PDF."""
+    submission = get_object_or_404(ProtocolSubmission, id=submission_id)
+    try:
+        study = submission.study if submission.study_id else None
+    except Exception:
+        study = None
+
+    # Check access (include co-investigators: text list or PRAMS users)
+    is_co_i = bool(
+        (request.user.email and submission.co_investigators and request.user.email.lower() in submission.co_investigators.lower())
+        or submission.co_investigator_users.filter(pk=request.user.pk).exists()
+    )
+    can_view = (
+        request.user.is_staff or
+        getattr(request.user, 'is_admin', False) or
+        (request.user.is_researcher and study and study.researcher == request.user) or
+        is_co_i or
+        submission.college_rep == request.user or
+        submission.chair_reviewer == request.user or
+        submission.reviewers.filter(id=request.user.id).exists()
+    )
+    
+    if not can_view:
+        messages.error(request, 'Access denied.')
+        return redirect('home')
+
+    from .irb_legacy_pdf import build_legacy_irb_pdf
+    pdf_bytes = build_legacy_irb_pdf(submission)
+
+    response = HttpResponse(pdf_bytes, content_type='application/pdf')
+    safe_title = "".join([c if c.isalnum() else "_" for c in submission.safe_study_title])[:30]
+    filename = f"HSIRB_Application_{safe_title}_{submission_id.hex[:6]}.pdf"
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+    return response
+
+
+@login_required
 @require_http_methods(["POST"])
 def protocol_college_rep_review(request, submission_id):
     """College rep makes initial determination."""

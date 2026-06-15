@@ -738,9 +738,10 @@
                     View AI Review
                 </a>
                 {% endif %}
-                {% else %}
-                <p class="text-muted mb-0">Study record no longer available. Protocol details below are preserved for review.</p>
                 {% endif %}
+                <a href="{% url 'studies:protocol_pdf_download' submission.id %}" class="btn btn-outline-danger" target="_blank">
+                    <i class="bi bi-file-earmark-pdf"></i> Download Legacy HSIRB Form (PDF)
+                </a>
                 <a href="{% url 'studies:amendment_list' submission.id %}" class="btn btn-outline-secondary">
                     View All Amendments
                 </a>
