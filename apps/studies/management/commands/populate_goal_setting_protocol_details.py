@@ -208,7 +208,7 @@ class Command(BaseCommand):
         submission.continuation_of_previous = False
 
         submission.pi_name = "Dr. Christopher Castille"
-        submission.pi_title = "Associate Professor"
+        submission.pi_title = "Assistant Professor"
         submission.pi_department = "Management and Marketing"
         submission.pi_email = "christopher.castille@nicholls.edu"
         submission.pi_phone = "985-449-7015"
