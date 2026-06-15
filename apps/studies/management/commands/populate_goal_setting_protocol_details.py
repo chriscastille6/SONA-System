@@ -193,7 +193,7 @@ class Command(BaseCommand):
 
         submission.data_access = (
             "PI (Dr. Christopher Castille), Co-Is (Adrien Maught, Kaitlin Gravois, Dr. Ann-Marie "
-            "Castille), and authorized ARIM collaborators. Anonymized data shared publicly via OSF."
+            "Castille, Dr. Samantha Falgout), and authorized ARIM collaborators. Anonymized data shared publicly via OSF."
         )
 
         submission.consent_procedures = (
@@ -215,13 +215,14 @@ class Command(BaseCommand):
         submission.co_investigators = (
             "Mr. Adrien Maught, adrien.maught@nicholls.edu, 985-448-4194\n"
             "Mrs. Kaitlin Gravois, kaitlin.gravois@nicholls.edu, 985-448-4187\n"
-            "Dr. Ann-Marie R. Castille, ann-marie.castille@nicholls.edu, 985-448-4738"
+            "Dr. Ann-Marie R. Castille, ann-marie.castille@nicholls.edu, 985-448-4738\n"
+            "Dr. Samantha Falgout, samantha.falgout@nicholls.edu, 985-448-4193"
         )
 
         submission.citi_training_completion = (
             "All investigators have completed CITI Program training. Dr. Christopher Castille "
             "(Faculty Researchers), Dr. Ann-Marie Castille, Kaitlin Gravois (Faculty Researchers), "
-            "Adrien Maught (Social/Behavioral RCR). Certificates on file."
+            "Adrien Maught (Social/Behavioral RCR), Dr. Samantha Falgout. Certificates on file."
         )
 
         submission.involves_vulnerable_populations = False
