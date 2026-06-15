@@ -205,7 +205,7 @@ class Command(BaseCommand):
         )
 
         submission.estimated_start_date = "Fall 2024"
-        submission.estimated_completion_date = "Spring 2025"
+        submission.estimated_completion_date = "Spring 2027"
         submission.funding_source = "Nicholls State University Research Council"
         submission.continuation_of_previous = False
 
