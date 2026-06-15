@@ -66,8 +66,7 @@ class Command(BaseCommand):
             "Productivity Report, pay themselves from their $14 envelope ($10 flat for do-your-best/mere/personal; "
             "$7 base + $1 per round met for reward goal), and place their reports in a sealed envelope.\n\n"
             "7. Follow-Up Survey: Manipulation checks (goal recall, goal type), attention check, "
-            "and an open-ended data quality check (whether to use their data). Optional scales: HEXACO-60, "
-            "Moral Identity, Need for Achievement.\n\n"
+            "and an open-ended data quality check (whether to use their data).\n\n"
             "8. Debriefing: Immediate verbal debriefing to minimize information diffusion; full debrief sheet is provided."
         )
 
@@ -170,9 +169,8 @@ class Command(BaseCommand):
         )
 
         submission.data_collection_methods = (
-            "Paper workbooks (anagram responses, goal commitment), productivity report (self-rated "
-            "performance), follow-up survey (manipulation checks, HEXACO-60, Moral Identity, Need for "
-            "Achievement). Optional participant ID generator. Data coded by researchers A/B; Researcher C "
+            "Paper workbooks (anagram responses, goal commitment, trait loss aversion), productivity report (self-rated "
+            "performance), follow-up survey (manipulation checks). Data coded by researchers A/B; Researcher C "
             "(Castille) links via unique anagram and replaces with new ID. Stored on OSF."
         )
 
@@ -278,7 +276,7 @@ class Command(BaseCommand):
             "Appendix E: Informed consent form\n"
             "Appendix F: Recruitment flyer\n"
             "Addendum 1: Procedural modifications (H4, H5, follow-up survey, 4th condition, "
-            "personality measures, experimenter script, course credit)"
+            "experimenter script, course credit)"
         )
 
         submission.study_contact_name = "Dr. Christopher Castille"
