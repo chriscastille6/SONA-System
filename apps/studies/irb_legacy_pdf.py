@@ -284,38 +284,38 @@ def build_legacy_irb_pdf(submission) -> bytes:
     story.append(KeepTogether(sig_lines))
 
     # =========================================================================
-    # APPENDICES SECTION
+    # APPENDICES SECTION & HIGH-FIDELITY PDF APPENDICES MERGER (using PyMuPDF)
     # =========================================================================
-    # Look for material assets to dynamically build verbatim appendices
-    materials_path = Path(settings.BASE_DIR) / 'apps' / 'studies' / 'assets' / 'irb' / 'goal-setting' / 'materials'
-    if materials_path.exists():
-        appendices = [
-            ("Appendix A: Informed Consent Statement", "consent_form.txt"),
-            ("Appendix B: Recruitment Flyer & Information Letter", "recruitment_flyer.txt"),
-            ("Appendix C: Anagram Task Workbook (Study Instrument)", "anagram_workbook.txt"),
-            ("Appendix D: Participant Productivity Report", "productivity_report.txt"),
-            ("Appendix E: Debriefing & Appreciation Letter", "debriefing.txt"),
-        ]
-        
-        has_appended_appendix_header = False
-        for title, filename in appendices:
-            file_path = materials_path / filename
-            if file_path.exists():
-                story.append(PageBreak())
-                if not has_appended_appendix_header:
-                    story.append(Paragraph("NICHOLLS STATE UNIVERSITY", title_univ))
-                    story.append(Paragraph("HUMAN SUBJECTS INSTITUTIONAL REVIEW BOARD", title_board))
-                    story.append(Paragraph("STUDY MATERIALS & APPENDICES", title_form))
-                    story.append(Spacer(1, 0.2 * inch))
-                    has_appended_appendix_header = True
-                
-                story.append(Paragraph(title, section_head))
-                try:
-                    content = file_path.read_text(encoding='utf-8')
-                    story.append(Paragraph(clean_text_with_linebreaks(content), body_text))
-                except Exception as e:
-                    story.append(Paragraph(f"Error loading appendix content: {e}", body_text))
-
     doc.build(story, canvasmaker=NumberedCanvas)
-    buf.seek(0)
-    return buf.getvalue()
+    reportlab_pdf_bytes = buf.getvalue()
+
+    try:
+        import fitz
+        pdf_materials_path = Path(settings.BASE_DIR) / 'apps' / 'studies' / 'assets' / 'irb' / 'goal-setting' / 'materials' / 'pdf'
+        if pdf_materials_path.exists():
+            main_doc = fitz.open(stream=reportlab_pdf_bytes, filetype="pdf")
+            
+            # List of high-fidelity PDFs to append in logical, structured order
+            pdf_appendices = [
+                ("Appendix A: Recruitment Flyer / Announcement", "Recruitment_version2_20260312.pdf"),
+                ("Appendix B: Informed Consent Statement", "ConsentForm_version2_20260312.pdf"),
+                ("Appendix C: Anagram Task Workbook (Study Instrument)", "Workbook_version2_20260312.pdf"),
+                ("Appendix D: Participant Productivity Report", "ProductivityReport_version2_20260312.pdf"),
+                ("Appendix E: Debriefing & Appreciation Letter", "Feedback_version2_20260312.pdf"),
+                ("Appendix F: Approved UWaterloo Master Protocol", "UWaterloo protocol March 2026.pdf"),
+                ("Appendix G: Psychological Science Registered Report Manuscript", "PsychScience manuscript RR2 - final.pdf"),
+            ]
+            
+            for title, filename in pdf_appendices:
+                pdf_file_path = pdf_materials_path / filename
+                if pdf_file_path.exists():
+                    append_doc = fitz.open(pdf_file_path)
+                    main_doc.insert_pdf(append_doc)
+            
+            combined_bytes = main_doc.write()
+            main_doc.close()
+            return combined_bytes
+    except Exception as e:
+        pass
+
+    return reportlab_pdf_bytes
