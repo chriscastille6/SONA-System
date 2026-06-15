@@ -17,7 +17,7 @@ def main():
     # Step 1: Run local deploy script to sync code to the server
     print("\n📦 Step 1: Synchronizing code and assets to server...")
     deploy_script = repo_root / "deploy-to-server-rsync.sh"
-    stdout, error = run_command(str(deploy_script))
+    stdout, error = run_command(f'"{deploy_script}"')
     if error:
         print(f"❌ Deployment failed: {error}")
         sys.exit(1)
