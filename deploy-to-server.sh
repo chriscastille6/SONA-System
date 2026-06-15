@@ -11,7 +11,7 @@ SERVER_HOST="bayoupal.nicholls.edu"
 REMOTE_PATH="~/hsirb-system"
 WEB_PATH="/var/www/html/hsirb"
 # Institutional deployment: clone from GitLab (IT review). Use SSH so server key can access GitLab.
-GIT_REPO="git@gitlab.nicholls.edu:chriscastille/prams.git"
+GIT_REPO="git@gitlab.nicholls.edu:ccastille1/prams.git"
 GIT_BRANCH="main"
 
 # ============================================================================
@@ -47,11 +47,11 @@ ssh "$SSH_TARGET" << 'DEPLOY_SCRIPT'
     # Clone if doesn't exist, otherwise pull
     if [ ! -d ".git" ]; then
         echo "Cloning repository from GitLab..."
-        git clone git@gitlab.nicholls.edu:chriscastille/prams.git ~/hsirb-system
+        git clone "$GIT_REPO" ~/hsirb-system
         cd ~/hsirb-system
     else
         echo "Pulling latest changes from GitLab..."
-        git remote set-url origin git@gitlab.nicholls.edu:chriscastille/prams.git
+        git remote set-url origin "$GIT_REPO"
         git pull origin main
     fi
     
