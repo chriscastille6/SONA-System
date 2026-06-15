@@ -32,70 +32,86 @@ class Command(BaseCommand):
         self.stdout.write(f'✓ Found submission: {submission.protocol_number}')
 
         # ================================================================
-        # PROTOCOL DETAILS FROM IRB APPLICATION + ADDENDUM 1
+        # PROTOCOL DETAILS FROM IRB APPLICATION + ADDENDUM 1 (HUMANIZED)
         # ================================================================
         self.stdout.write('\n📝 Populating protocol fields...')
 
         submission.protocol_description = (
-            "Replication of Schweitzer, Ordóñez, and Douma (2004) examining whether goal setting "
-            "motivates unethical behavior. Participants complete anagram tasks under four experimental "
-            "conditions: (i) do your best, (ii) mere goal (90th percentile from pilot), (iii) reward goal "
-            "(same goal + $7 base + $1 per round met), and (iv) personal goal (mere goal without 'prior students' "
-            "reference). Participants have the opportunity to overstate performance and (in reward goal) "
-            "take unearned cash. Sponsored by ARIM (Advancement of Replications Initiative in Management) "
-            "and aligned with the master multi-site global research project."
+            "This study is a local replication of the foundational Schweitzer, Ordóñez, and Douma (2004) "
+            "experiment examining whether performance goals drive unethical behavior. Participants complete "
+            "anagram puzzles under one of four conditions: do-your-best, mere goal, reward goal, or "
+            "personal goal. This design directly addresses several methodological limitations of the "
+            "original 2004 study, tests key boundary conditions—specifically trait loss aversion and "
+            "goal proximity—and contributes to a multi-site global replication project."
         )
 
         submission.population_description = (
-            "Undergraduate students and working professionals. Multi-site study across universities "
-            "(e.g., Nicholls State University, University of Waterloo, Otto Beisheim School of Management, "
-            "UC Louvain, Florida Atlantic University). At Nicholls: students from BSAD 101 (Powell 140). "
-            "All participants must be 18 or older. Participation is voluntary."
+            "Undergraduate students enrolled in Business Administration courses (specifically BSAD 101, "
+            "meeting in Powell 140) at Nicholls State University, as well as working professionals. "
+            "All participants must be 18 years of age or older."
         )
 
         submission.research_procedures = (
-            "1. Consent: Participants read and sign informed consent. Materials are assigned randomly for a double-blind design.\n\n"
-            "2. Practice Rounds: Two 1-minute anagram rounds (create words from 7 letters) to familiarize with the task rules.\n\n"
-            "3. Condition Assignment: Random assignment to do your best, mere goal, reward goal, or personal goal. "
-            "Goal conditions receive the site-calibrated 90th percentile target from pilot (e.g., 9 words).\n\n"
-            "4. Performance Rounds: Seven 1-minute anagram rounds where participants solve word puzzles.\n\n"
-            "5. Anagram Pilot / Linking Round: An 8th round is completed (presented as an anagram pilot round) "
-            "using an anagram unique to each participant. This unique anagram acts as a secure, double-blind "
-            "linking key to correlate the workbook with the anonymous self-reported Productivity Report.\n\n"
-            "6. Self-Payment: Experimenters leave the room. Participants check their work, complete the anonymous "
-            "Productivity Report, pay themselves from their $14 envelope ($10 flat for do-your-best/mere/personal; "
-            "$7 base + $1 per round met for reward goal), and place their reports in a sealed envelope.\n\n"
-            "7. Follow-Up Survey: Manipulation checks (goal recall, goal type), attention check, "
-            "and an open-ended data quality check (whether to use their data).\n\n"
-            "8. Debriefing: Full debrief sheet/letter will be distributed to participants via email after data collection has fully concluded to prevent information diffusion across classes."
+            "1. Consent: Participants enter the lab in groups of up to 20, review and sign the informed "
+            "consent form, which is collected separately to preserve anonymity.\n\n"
+            "2. Practice: Participants complete two 1-minute practice rounds to learn the rules of the "
+            "anagram task.\n\n"
+            "3. Condition assignment: Participants are randomly assigned to one of four conditions: "
+            "'do your best', 'mere goal', 'personal goal', or 'reward goal'. Goal conditions receive the "
+            "site-calibrated target.\n\n"
+            "4. Performance rounds: Participants complete seven 1-minute anagram rounds, solving word "
+            "puzzles in their paper workbooks.\n\n"
+            "5. Anonymized linking: In an eighth round, participants solve a unique anagram. This unique "
+            "word serves as a double-blind identifier to match actual workbook scores with their self-reported "
+            "productivity report without collecting names.\n\n"
+            "6. Private self-payment: The researcher leaves the room. Participants grade their own work, "
+            "fill out an anonymous productivity report, pay themselves from a cash envelope ($14 total starting "
+            "balance), and deposit the report and any unearned cash into a secure box.\n\n"
+            "7. Demographics and traits: Participants complete a brief questionnaire covering demographics, "
+            "manipulation checks, and individual difference scales (including trait loss aversion, "
+            "HEXACO-60, and moral identity).\n\n"
+            "8. Debriefing: The researcher returns and hands each participant a written debriefing sheet "
+            "explaining the study's scientific purpose and replication goals."
         )
 
         submission.research_objectives = (
-            "To replicate Schweitzer et al. (2004) findings on goal setting and unethical behavior: "
-            "(1) People with specific unmet goals overstate more than do-your-best; (2) Reward goals "
-            "increase overstating vs. mere goals; (3) Proximity to goal (just shy) increases overstating; "
-            "(4) Personal goals reduce overstating vs. mere/reward; (5) Proximity × goal commitment "
-            "moderates overstating."
+            "Our primary objective is to conduct a constructive replication of the foundational "
+            "Schweitzer et al. (2004) study, correcting its methodological limitations while maintaining "
+            "its core strengths. Second, we aim to investigate when and for whom performance goals lead "
+            "to unethical behavior. By testing how trait loss aversion and goal proximity influence "
+            "overstatement, we provide a direct empirical test of the loss aversion mechanism "
+            "theorized by Ordóñez and Wu (2013). These findings will help strengthen the empirical basis "
+            "of the goal-setting literature and offer new theoretical insights for behavioral ethics."
         )
 
         submission.research_questions = (
-            "H1: People with specific, unmet goals overstate performance more than do-your-best.\n"
-            "H2: Unmet reward goals increase overstating vs. unmet mere goals.\n"
-            "H3: People just shy of goal overstate more than those far from goal.\n"
-            "H4: Personal goals (unmet) reduce overstating vs. mere (H4a) or reward (H4b) goals.\n"
-            "H5: Proximity × goal commitment: most overstating when just shy + highly committed."
+            "H1. People with specific challenging goals (i.e., personal, mere, or reward goals) are more "
+            "likely to overstate their performance than people without specific challenging goals "
+            "(i.e., do-your-best condition).\n"
+            "H2. Challenging goal type is related to overstating performance. People with reward goals "
+            "are more likely to overstate their performance than those with mere goals, who in turn "
+            "are more likely to overstate their performance than those with personal goals.\n"
+            "H3a. People who fail to reach their goal by a smaller margin are more likely to overstate "
+            "their performance than if they were to fail to reach their goal by a larger margin.\n"
+            "H3b. People who reach their goal are less likely to overstate their performance than if "
+            "they failed to reach the goal.\n"
+            "H4. People with greater trait loss aversion are more likely to overstate their performance.\n"
+            "H5. The relationship between trait loss aversion and overstating behavior is amplified in "
+            "trials where people failed their goal by a smaller margin than when they failed by a larger margin."
         )
 
         submission.educational_justification = (
-            "ARIM initiative uses replication-focused research to help students and faculty learn "
-            "scientific research skills. Dr. Christopher Castille (PI) and Dr. Ann-Marie R. Castille support "
-            "junior scholars and co-investigators (Dr. Adrien Maught, Dr. Kaitlin Gravois, Dr. Samantha Falgout). "
-            "Design builds on Schweitzer et al. (2004)."
+            "This project is part of a global multi-site initiative designed to train student researchers "
+            "and junior faculty in rigorous, open-science replication methodologies. By engaging with "
+            "a conditionally accepted Registered Report, local co-investigators and research assistants "
+            "gain firsthand experience in pre-registration, double-blind administration, and collaborative "
+            "behavioral science research."
         )
 
         submission.recruitment_method = (
-            "Classroom visits with flyer (Appendix F). Instructors may offer bonus points or course credit. "
-            "Flyer mentions up to $14 cash reward."
+            "Recruitment will occur via classroom visits using an approved informational flyer. "
+            "Instructors may offer course credit or bonus points for participation, and the flyer "
+            "mentions a cash reward of up to $14.00."
         )
 
         submission.inclusion_criteria = (
@@ -104,104 +120,119 @@ class Command(BaseCommand):
         )
 
         submission.exclusion_criteria = (
-            "- Under 18\n"
-            "- Children and other criteria per IRB guidelines"
+            "- Individuals under 18 years of age"
         )
 
         submission.recruitment_script = (
-            "You are invited to participate in a research study on decision making. This study has "
-            "received ethics clearance from the IRB at Nicholls State University. You may receive "
-            "bonus points, course credit, or cash (up to $14) depending on your instructor. "
-            "Participation takes ~1 hour. All data are anonymous."
+            "You are invited to participate in a research study examining how individuals make decisions "
+            "during cognitive tasks. This study takes approximately one hour and has received ethics "
+            "clearance from the Institutional Review Board. Depending on your instructor's policy, you "
+            "may receive course credit, bonus points, or earn up to $14.00 in cash. Participation is "
+            "completely voluntary, and all data collected are anonymous."
         )
 
         submission.benefits_to_subjects = (
-            "Small cash reward (~$10 for do your best/mere/personal; up to $14 for reward goal). "
-            "Bonus points or course credit if instructor approves."
+            "Participants receive direct financial compensation through the self-payment procedure, "
+            "keeping at least $7.00 and up to $14.00 (averaging about $10.00) depending on their experimental "
+            "condition. They also receive a detailed debriefing sheet explaining the logic and value of "
+            "open-science replication research."
         )
 
         submission.benefits_to_others = (
-            "Knowledge about whether goal setting practices drive unethical behavior; insights "
-            "for managers and employees."
+            "Providing managers and organizations with empirically validated insights into when and for "
+            "whom specific performance goals prompt unethical behavior, helping design more ethical "
+            "incentive systems."
         )
 
         submission.benefits_to_society = (
-            "Understanding how goal setting influences ethical decision-making; informing practices "
-            "to mitigate unethical behavior while preserving performance benefits."
+            "Strengthening the empirical foundation of the dark-side of goal setting literature, "
+            "generating a shared understanding between goal setting and behavioral ethics scholars, "
+            "and developing novel theoretical insights to guide organizational practices."
         )
 
         submission.payment_compensation = (
-            "Participants receive an envelope containing $14 at the start of the study. "
-            "Those in the do-your-best, mere goal, and personal goal conditions are instructed to keep a flat $10. "
-            "Those in the reward goal condition are instructed to keep a base of $7 plus $1 for each round in "
-            "which they met their goal (maximum $14). All participants return any unearned cash in a sealed "
-            "envelope placed in a secure collection box, completely privately."
+            "All participants receive an envelope containing $14.00 at the start of the session. "
+            "Those in the 'do your best', 'mere goal', and 'personal goal' conditions are instructed to "
+            "keep $10.00. Those in the 'reward goal' condition are instructed to keep $7.00 plus an "
+            "additional $1.00 for each round they met their goal (on average, they receive approximately $10.00). "
+            "All participants return any unearned cash in a sealed envelope placed in a secure collection "
+            "box while the researcher is out of the room. This process ensures complete privacy and guarantees "
+            "every participant receives at least $7.00."
         )
 
         submission.costs_to_subjects = (
-            "Approximately 1 hour. No monetary cost (participants receive compensation)."
+            "Participation requires approximately one hour of time. There are no financial costs to "
+            "the subjects."
         )
 
         submission.review_type_justification = (
-            "Exempt under Category 2 of the revised Common Rule (45 CFR 46.104(d)(2)): "
-            "Data are obtained through educational tests (cognitive/anagram task) and standard survey "
-            "procedures. Information is recorded in such a manner that the identity of the human "
-            "subjects cannot be readily ascertained, directly or through identifiers linked to the "
-            "subjects. The double-blind design ensures anonymous participation, where a unique 8th-round "
-            "anagram safely correlates performance to reports without ever identifying individual students. Minimal risk."
+            "The study qualifies for exempt review under Category 2 of the revised Common Rule "
+            "(45 CFR 46.104(d)(2)). Data are collected via behavioral tests (an anagram task) and "
+            "survey procedures. No participant names, IDs, or other identifying information are "
+            "recorded on any data collection sheets, ensuring participants cannot be identified, "
+            "directly or through linked identifiers. While we correlate task performance with "
+            "self-reported productivity reports using a unique eighth-round anagram, this linking "
+            "mechanism is entirely anonymous and never associated with any student identity."
         )
 
         submission.exemption_category = "Exempt Category 2 (45 CFR 46.104(d)(2))"
         submission.expedited_category = ""
 
         submission.risk_statement = (
-            "Minimal risk. Task may be mildly upsetting but no more than everyday work life. "
-            "Participants may overstate performance or take unearned money; data are anonymous. "
-            "Psychological support available (Nicholls Counseling Center)."
+            "The study presents minimal risk. The anagram task may cause mild frustration or "
+            "performance anxiety, but no more than everyday schoolwork or standard puzzles. While "
+            "participants have an opportunity to over-report performance or keep unearned money, "
+            "all data are completely anonymous and cannot be linked to individual identities."
         )
 
         submission.risk_mitigation = (
-            "- Double-blind: experimenters do not know condition\n"
-            "- Anonymous: no names on materials; materials randomly assigned\n"
-            "- Self-payment in private; experimenters leave room\n"
-            "- Unique anagram links data without identifying participants\n"
-            "- Delayed debriefing via email at study conclusion\n"
-            "- Counseling resources provided"
+            "To protect participants, the design is double-blind, and no names or student IDs are ever "
+            "written on the study workbooks or productivity reports. Signed consent forms are collected "
+            "and stored separately. The researcher leaves the room during grading, self-payment, and "
+            "report submission. A unique eighth-round anagram is used for anonymous data linking. "
+            "Finally, participants receive a detailed debriefing, and contact information for the "
+            "Nicholls Counseling Center is provided."
         )
 
         submission.data_collection_methods = (
-            "Paper workbooks (anagram responses, goal commitment, trait loss aversion), productivity report (self-rated "
-            "performance), follow-up survey (manipulation checks). Data coded by researchers A/B; Researcher C "
-            "(Castille) links via unique anagram and replaces with new ID. Stored on OSF."
+            "Data collection uses paper-and-pencil materials, including a task workbook (practice and "
+            "performance anagram rounds, goal commitment, trait loss aversion, and demographics), "
+            "a separate productivity report for self-reported performance, and a follow-up survey for "
+            "manipulation and data quality checks. Hard copies are collected in a secure box."
         )
 
         submission.data_storage = (
-            "Open Science Framework (https://osf.io/f5u39/). Encrypted, access controls. "
-            "Anonymous data; no identifiers. Paper copies retained 5-7 years per APA guidelines."
+            "Hard-copy workbooks and productivity reports are stored in a locked office in the "
+            "Department of Management and Marketing at Nicholls State University. De-identified, "
+            "anonymized electronic datasets are maintained on secure, password-protected computers "
+            "and shared publicly on the Open Science Framework (OSF) to facilitate open-science collaboration."
         )
 
         submission.confidentiality_procedures = (
-            "- No names or identifying info on workbooks\n"
-            "- Unique anagram links data but not to person\n"
-            "- Researcher C replaces anagram with new ID before analysis\n"
-            "- Anonymized dataset shared for replication"
+            "Participants remain completely anonymous. No names, email addresses, or student IDs are "
+            "written on the workbooks, productivity reports, or survey forms. Signed consent forms are "
+            "stored in a separate locked cabinet from the raw data sheets. Anonymized data are linked via "
+            "a unique eighth-round anagram rather than any personal identifier, and the de-identified "
+            "spreadsheet is shared publicly on the OSF."
         )
 
         submission.data_retention = (
-            "Paper files 5-7 years per APA guidelines. Anonymized dataset shared via OSF for "
-            "replication and meta-analysis."
+            "Paper materials will be retained in a locked office for five to seven years in accordance "
+            "with APA guidelines, after which they will be shredded. The anonymized electronic dataset "
+            "will be preserved indefinitely on the OSF for replication and meta-analysis."
         )
 
         submission.data_access = (
-            "PI (Dr. Christopher Castille), Co-Is (Dr. Ann-Marie R. Castille, Dr. Samantha Falgout, "
-            "Dr. Kaitlin Gravois, Dr. Adrien Maught), and authorized ARIM collaborators. "
-            "Anonymized data shared publicly via OSF."
+            "The principal investigator and local co-investigators have access to the raw paper materials. "
+            "De-identified, anonymous data are shared with our research collaborators across the multi-site "
+            "initiative and made publicly available on the Open Science Framework (OSF)."
         )
 
         submission.consent_procedures = (
-            "Written informed consent at start. Consent form includes purpose, procedures, risks, "
-            "benefits, voluntary participation, right to withdraw, anonymity, contact info. "
-            "Participation indicates consent. Students may decline and complete alternative assignment."
+            "Participants provide written informed consent before beginning the session. The consent form "
+            "details the study's purpose, procedures, risks, and benefits, emphasizing that participation "
+            "is entirely voluntary and that they may withdraw at any time without penalty. Students who "
+            "choose not to participate are offered an equivalent alternative assignment for equal course credit."
         )
 
         submission.estimated_start_date = "Fall 2024"
@@ -239,37 +270,44 @@ class Command(BaseCommand):
             "and other ARIM partner institutions."
         )
         submission.cultural_considerations = (
-            "Site-specific consent and counseling resources. Demographics include ethnic origin and "
-            "English proficiency for non-English sites."
+            "Each international site secures local ethics clearance and provides site-specific consent "
+            "documents and student support resources. Surveys are adjusted for local language proficiency "
+            "where applicable."
         )
 
         submission.financial_interest_none = True
         submission.financial_interest_disclosure = ""
 
         submission.data_monitoring_plan = (
-            "Three researchers code data separately. Researcher A: workbooks (performance, commitment, "
-            "demographics). Researcher B: productivity report and payment. Researcher C: links via "
-            "unique anagram, replaces with new ID. Prevents any single researcher from identifying participants."
+            "To maintain strict anonymity, data entry is split among three researchers. One researcher "
+            "codes the performance workbooks, a second researcher codes the productivity reports and "
+            "self-payment sheets, and a third researcher (the PI) merges the electronic files using "
+            "the unique eighth-round anagram. This workflow ensures that no single researcher can connect "
+            "a participant's actual performance with their self-payment and self-reported productivity."
         )
 
         submission.oversight_procedures = (
-            "PI (Dr. Christopher Castille) oversees data collection. Multi-site IRBs oversee local "
-            "sites. ARIM consortium coordination. Data coding split to prevent identification."
+            "The PI oversees local data collection and compliance. Multi-site coordination is "
+            "managed through the ARIM consortium, and each collaborating university obtains local "
+            "ethics approval for its respective participants."
         )
 
         submission.publication_plan = (
-            "Results submitted to peer-reviewed journals (e.g., Academy of Management Journal). "
-            "All data aggregated and anonymous. OSF pre-registration for replication."
+            "The study results will be submitted to peer-reviewed academic journals, specifically "
+            "Psychological Science, as part of the multi-site Registered Report. All findings will be "
+            "presented in aggregate form, ensuring individual responses remain anonymous."
         )
 
         submission.data_sharing_plan = (
-            "Anonymized dataset shared via Open Science Framework (osf.io/f5u39/) for replication "
-            "and meta-analysis. No identifying information."
+            "Anonymized electronic datasets will be posted on the Open Science Framework (OSF) to "
+            "permit verification, comparison across sites, and future meta-analyses, with no "
+            "identifying information shared."
         )
 
         submission.participant_access_to_results = (
-            "Debriefing email sent after data collection. Participants may request summary from "
-            "research team (kaitlin.gravois@nicholls.edu)."
+            "A written debriefing sheet is provided at the end of the session. Participants may also "
+            "request a summary of the aggregated findings from the research team by emailing the "
+            "principal investigator."
         )
 
         submission.appendices_notes = (
@@ -288,8 +326,9 @@ class Command(BaseCommand):
         submission.study_contact_email = "christopher.castille@nicholls.edu"
         submission.study_contact_phone = "985-449-7015"
         submission.irb_contact_notes = (
-            "ARIM initiative: arimweb.org. This study is part of a multi-site replication. "
-            "Protocol valid per IRB approval. Addendum 1 (Procedural Modifications) approved."
+            "This study is part of a multi-site global replication under the Advancement of Replications "
+            "Initiative in Management (ARIM). The protocol and Addendum 1 (procedural modifications) have "
+            "been approved and align with the master protocol."
         )
 
         submission.save()
