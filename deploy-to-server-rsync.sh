@@ -32,7 +32,7 @@ rsync -avz --delete \
   --exclude='node_modules' \
   "$REPO_ROOT/" "${SERVER_USER}@${SERVER_HOST}:~/${REMOTE_PATH}/"
 
-echo "Running migrate, collectstatic, restart on server..."
-ssh "${SERVER_USER}@${SERVER_HOST}" "cd ~/${REMOTE_PATH} && source venv/bin/activate && python manage.py migrate --noinput && python manage.py collectstatic --noinput && echo 'Restarting app...' && (sudo systemctl restart hsirb-system 2>/dev/null || true)"
+echo "Running migrate, collectstatic, populate_protocol, cleanup, restart on server..."
+ssh "${SERVER_USER}@${SERVER_HOST}" "cd ~/${REMOTE_PATH} && source venv/bin/activate && python manage.py migrate --noinput && python manage.py collectstatic --noinput && python manage.py populate_goal_setting_protocol_details && python manage.py cleanup_test_studies && echo 'Restarting app...' && (sudo systemctl restart hsirb-system 2>/dev/null || true)"
 echo "Done. Test: https://bayoupal.nicholls.edu/hsirb/"
 echo "If restart failed, SSH in and run: sudo systemctl restart hsirb-system"
