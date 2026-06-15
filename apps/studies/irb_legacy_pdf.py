@@ -283,6 +283,39 @@ def build_legacy_irb_pdf(submission) -> bytes:
     ]
     story.append(KeepTogether(sig_lines))
 
+    # =========================================================================
+    # APPENDICES SECTION
+    # =========================================================================
+    # Look for material assets to dynamically build verbatim appendices
+    materials_path = Path(settings.BASE_DIR) / 'apps' / 'studies' / 'assets' / 'irb' / 'goal-setting' / 'materials'
+    if materials_path.exists():
+        appendices = [
+            ("Appendix A: Informed Consent Statement", "consent_form.txt"),
+            ("Appendix B: Recruitment Flyer & Information Letter", "recruitment_flyer.txt"),
+            ("Appendix C: Anagram Task Workbook (Study Instrument)", "anagram_workbook.txt"),
+            ("Appendix D: Participant Productivity Report", "productivity_report.txt"),
+            ("Appendix E: Debriefing & Appreciation Letter", "debriefing.txt"),
+        ]
+        
+        has_appended_appendix_header = False
+        for title, filename in appendices:
+            file_path = materials_path / filename
+            if file_path.exists():
+                story.append(PageBreak())
+                if not has_appended_appendix_header:
+                    story.append(Paragraph("NICHOLLS STATE UNIVERSITY", title_univ))
+                    story.append(Paragraph("HUMAN SUBJECTS INSTITUTIONAL REVIEW BOARD", title_board))
+                    story.append(Paragraph("STUDY MATERIALS & APPENDICES", title_form))
+                    story.append(Spacer(1, 0.2 * inch))
+                    has_appended_appendix_header = True
+                
+                story.append(Paragraph(title, section_head))
+                try:
+                    content = file_path.read_text(encoding='utf-8')
+                    story.append(Paragraph(clean_text_with_linebreaks(content), body_text))
+                except Exception as e:
+                    story.append(Paragraph(f"Error loading appendix content: {e}", body_text))
+
     doc.build(story, canvasmaker=NumberedCanvas)
     buf.seek(0)
     return buf.getvalue()
