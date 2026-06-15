@@ -89,7 +89,7 @@ class Command(BaseCommand):
         submission.educational_justification = (
             "ARIM initiative uses replication-focused research to help students and faculty learn "
             "scientific research skills. Dr. Christopher Castille (PI) and Dr. Ann-Marie R. Castille support "
-            "junior scholars and co-investigators (Mr. Adrien Maught, Mrs. Kaitlin Gravois, Dr. Samantha Falgout). "
+            "junior scholars and co-investigators (Dr. Adrien Maught, Dr. Kaitlin Gravois, Dr. Samantha Falgout). "
             "Design builds on Schweitzer et al. (2004)."
         )
 
@@ -194,7 +194,7 @@ class Command(BaseCommand):
 
         submission.data_access = (
             "PI (Dr. Christopher Castille), Co-Is (Dr. Ann-Marie R. Castille, Dr. Samantha Falgout, "
-            "Mrs. Kaitlin Gravois, Mr. Adrien Maught), and authorized ARIM collaborators. "
+            "Dr. Kaitlin Gravois, Dr. Adrien Maught), and authorized ARIM collaborators. "
             "Anonymized data shared publicly via OSF."
         )
 
@@ -217,15 +217,15 @@ class Command(BaseCommand):
         submission.co_investigators = (
             "Dr. Ann-Marie R. Castille (Associate Professor of Management), ann-marie.castille@nicholls.edu, 985-448-4738\n"
             "Dr. Samantha Falgout (Assistant Professor of Accounting), samantha.falgout@nicholls.edu, 985-448-4193\n"
-            "Mrs. Kaitlin Gravois (Instructor of Management / MBA), kaitlin.gravois@nicholls.edu, 985-448-4187\n"
-            "Mr. Adrien Maught (Instructor / Student Researcher), adrien.maught@nicholls.edu, 985-448-4194"
+            "Dr. Kaitlin Gravois (Instructor of Management / MBA), kaitlin.gravois@nicholls.edu, 985-448-4187\n"
+            "Dr. Adrien Maught (Instructor / Student Researcher), adrien.maught@nicholls.edu, 985-448-4194"
         )
 
         submission.citi_training_completion = (
             "All investigators have completed CITI Program training. Dr. Christopher Castille "
             "(Faculty Researchers), Dr. Ann-Marie R. Castille (Faculty Researchers), "
-            "Dr. Samantha Falgout (Faculty Researchers), Mrs. Kaitlin Gravois (Faculty Researchers), "
-            "Mr. Adrien Maught (Social/Behavioral RCR). Certificates on file."
+            "Dr. Samantha Falgout (Faculty Researchers), Dr. Kaitlin Gravois (Faculty Researchers), "
+            "Dr. Adrien Maught (Social/Behavioral RCR). Certificates on file."
         )
 
         submission.involves_vulnerable_populations = False

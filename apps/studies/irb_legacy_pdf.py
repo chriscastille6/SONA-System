@@ -14,7 +14,8 @@ from reportlab.platypus import (
     Spacer,
     Table,
     TableStyle,
-    KeepTogether
+    KeepTogether,
+    Image
 )
 from reportlab.pdfgen import canvas as pdf_canvas
 
@@ -149,6 +150,13 @@ def build_legacy_irb_pdf(submission) -> bytes:
     # =========================================================================
     # PAGE 1: COVER PREAMBLE & PROCEDURES
     # =========================================================================
+    import os
+    logo_path = "/Users/ccastille/.cursor/projects/Users-ccastille-Documents-GitHub-SONA-System/assets/image-3692823e-13cc-4d71-87c9-875833604dab.png"
+    if os.path.exists(logo_path):
+        img = Image(logo_path, width=1.8 * inch, height=1.2 * inch)
+        img.hAlign = 'CENTER'
+        story.append(img)
+        story.append(Spacer(1, 4))
     story.append(Paragraph("NICHOLLS STATE UNIVERSITY", title_univ))
     story.append(Paragraph("HUMAN SUBJECTS INSTITUTIONAL REVIEW BOARD", title_board))
     
@@ -191,6 +199,11 @@ def build_legacy_irb_pdf(submission) -> bytes:
     # =========================================================================
     # PAGE 2: BASIC PROJECT INFORMATION
     # =========================================================================
+    if os.path.exists(logo_path):
+        img2 = Image(logo_path, width=1.8 * inch, height=1.2 * inch)
+        img2.hAlign = 'CENTER'
+        story.append(img2)
+        story.append(Spacer(1, 4))
     story.append(Paragraph("NICHOLLS STATE UNIVERSITY", title_univ))
     story.append(Paragraph("HUMAN SUBJECTS INSTITUTIONAL REVIEW BOARD", title_board))
     story.append(Paragraph("PROJECT INFORMATION FORM", title_form))

@@ -90,7 +90,7 @@ class Command(BaseCommand):
             'kaitlin.gravois@nicholls.edu',
             'ann-marie.castille@nicholls.edu',
         ]
-        co_i_str = 'Mr. Adrien Maught, Mrs. Kaitlin Gravois, Dr. Ann-Marie R. Castille'
+        co_i_str = 'Dr. Adrien Maught, Dr. Kaitlin Gravois, Dr. Ann-Marie R. Castille'
 
         # Get or create college rep (Business - Jon Murphy)
         jon_murphy = User.objects.filter(

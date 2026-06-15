@@ -18,7 +18,8 @@ from reportlab.platypus import (
     Spacer,
     Table,
     TableStyle,
-    KeepTogether
+    KeepTogether,
+    Image
 )
 
 def build_nicholls_flyer():
@@ -125,6 +126,12 @@ def build_nicholls_flyer():
     story.append(Spacer(1, 0.25 * inch))
 
     # 2. Catching Title
+    logo_path = "/Users/ccastille/.cursor/projects/Users-ccastille-Documents-GitHub-SONA-System/assets/image-3692823e-13cc-4d71-87c9-875833604dab.png"
+    if os.path.exists(logo_path):
+        img = Image(logo_path, width=1.5 * inch, height=1.0 * inch)
+        img.hAlign = 'CENTER'
+        story.append(img)
+        story.append(Spacer(1, 0.1 * inch))
     story.append(Paragraph("A Study in Decision Making", style_title))
     story.append(Spacer(1, 0.1 * inch))
 
@@ -133,8 +140,11 @@ def build_nicholls_flyer():
         "You are invited to participate in an exciting, multi-site global research study on organizational "
         "decision-making. This study is part of a larger collaborative initiative (ARIM) and has received "
         "formal ethics clearance from the Human Subjects Institutional Review Board (HSIRB) at Nicholls State University. "
-        "The project is being conducted locally by <b>Dr. Christopher Castille</b> (Associate Professor of Management), "
-        "<b>Dr. Samantha Falgout</b> (Assistant Professor of Accounting), and our student research team."
+        "The project is being conducted locally by <b>Dr. Christopher Castille</b> (Associate Professor of Management, Primary Investigator), "
+        "<b>Dr. Ann-Marie R. Castille</b> (Associate Professor of Management, Co-Investigator), "
+        "<b>Dr. Samantha Falgout</b> (Assistant Professor of Accounting, Co-Investigator), "
+        "<b>Dr. Kaitlin Gravois</b> (Instructor of Management / MBA, Co-Investigator), and "
+        "<b>Dr. Adrien Maught</b> (Instructor / Student Researcher, Co-Investigator) from Nicholls State University."
     )
     story.append(Paragraph(invitation_text, style_body))
     story.append(Spacer(1, 0.15 * inch))
@@ -201,5 +211,113 @@ def build_nicholls_flyer():
     doc.build(story)
     print(f"Successfully generated Nicholls branded flyer at: {pdf_path}")
 
+def build_pdf_from_text(txt_filename, pdf_filename):
+    base_dir = Path(__file__).resolve().parent.parent
+    materials_dir = base_dir / "apps" / "studies" / "assets" / "irb" / "goal-setting" / "materials"
+    txt_path = materials_dir / txt_filename
+    pdf_path = materials_dir / "pdf" / pdf_filename
+    
+    with open(txt_path, 'r', encoding='utf-8') as f:
+        content = f.read()
+        
+    doc = SimpleDocTemplate(
+        str(pdf_path),
+        pagesize=letter,
+        rightMargin=0.75 * inch,
+        leftMargin=0.75 * inch,
+        topMargin=0.75 * inch,
+        bottomMargin=0.75 * inch
+    )
+    
+    styles = getSampleStyleSheet()
+    
+    style_title = ParagraphStyle(
+        name="DocTitle_" + txt_filename.split('.')[0],
+        fontName="Helvetica-Bold",
+        fontSize=15,
+        leading=19,
+        textColor=colors.HexColor("#A6192E"), # Nicholls Red
+        alignment=TA_CENTER,
+        spaceAfter=12
+    )
+    
+    style_heading = ParagraphStyle(
+        name="DocHeading_" + txt_filename.split('.')[0],
+        fontName="Helvetica-Bold",
+        fontSize=11,
+        leading=14,
+        textColor=colors.HexColor("#111827"),
+        alignment=TA_LEFT,
+        spaceBefore=10,
+        spaceAfter=5,
+        keepWithNext=True
+    )
+    
+    style_body = ParagraphStyle(
+        name="DocBody_" + txt_filename.split('.')[0],
+        fontName="Helvetica",
+        fontSize=9.5,
+        leading=13.5,
+        textColor=colors.HexColor("#374151"),
+        alignment=TA_JUSTIFY,
+        spaceAfter=8
+    )
+
+    style_center = ParagraphStyle(
+        name="DocCenter_" + txt_filename.split('.')[0],
+        fontName="Helvetica",
+        fontSize=9.5,
+        leading=13.5,
+        textColor=colors.HexColor("#374151"),
+        alignment=TA_CENTER,
+        spaceAfter=8
+    )
+    
+    story = []
+    
+    logo_path = "/Users/ccastille/.cursor/projects/Users-ccastille-Documents-GitHub-SONA-System/assets/image-3692823e-13cc-4d71-87c9-875833604dab.png"
+    if os.path.exists(logo_path):
+        img = Image(logo_path, width=1.5 * inch, height=1.0 * inch)
+        img.hAlign = 'CENTER'
+        story.append(img)
+        story.append(Spacer(1, 0.15 * inch))
+        
+    paragraphs = content.split('\n\n')
+    for p in paragraphs:
+        p_text = p.strip()
+        if not p_text:
+            continue
+            
+        p_text = p_text.replace('\n', '<br/>')
+        
+        is_title = p_text in [
+            "INFORMED CONSENT STATEMENT/INFORMATION LETTER", 
+            "FEEDBACK/APPRECIATION LETTER", 
+            "A Study in Decision Making"
+        ]
+        is_heading = p_text in [
+            "Information", "Risks", "Benefits", 
+            "Confidentiality of Your Information", 
+            "Remuneration", "Contact", "Participation", 
+            "Feedback and Publication", "CONSENT"
+        ]
+        
+        if is_title:
+            story.append(Paragraph(p_text, style_title))
+        elif is_heading:
+            story.append(Paragraph(p_text, style_heading))
+        elif "@nicholls.edu" in p_text or p_text.startswith("Dr. ") or p_text.startswith("Mrs. ") or p_text.startswith("Mr. "):
+            story.append(Paragraph(p_text, style_center))
+        elif p_text.startswith("____________________") or "Signature of Participant" in p_text:
+            story.append(Spacer(1, 0.1 * inch))
+            story.append(Paragraph(p_text.replace('\t', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'), style_body))
+        else:
+            story.append(Paragraph(p_text, style_body))
+            
+    doc.build(story)
+    print(f"Successfully generated {pdf_filename} from {txt_filename}")
+
 if __name__ == "__main__":
     build_nicholls_flyer()
+    build_pdf_from_text("consent_form.txt", "ConsentForm_version2_20260312.pdf")
+    build_pdf_from_text("debriefing.txt", "Feedback_version2_20260312.pdf")
