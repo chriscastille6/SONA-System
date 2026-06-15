@@ -71,7 +71,9 @@ class Command(BaseCommand):
                 self.stdout.write(self.style.WARNING("No protocol submission found for this study."))
                 data['protocol'] = None
 
+            import os
             output_path = 'tmp/live_protocol_dump.json'
+            os.makedirs(os.path.dirname(output_path), exist_ok=True)
             with open(output_path, 'w', encoding='utf-8') as f:
                 json.dump(data, f, indent=2, ensure_ascii=False)
             
