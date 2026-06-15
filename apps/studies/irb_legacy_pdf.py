@@ -314,7 +314,7 @@ def build_legacy_irb_pdf(submission) -> bytes:
                 ("Appendix B: Informed Consent Statement", "ConsentForm_version2_20260312.pdf"),
                 ("Appendix C: Anagram Task Workbook (Study Instrument)", "Workbook_version2_20260312.pdf"),
                 ("Appendix D: Participant Productivity Report", "ProductivityReport_version2_20260312.pdf"),
-                ("Appendix E: Debriefing & Appreciation Letter", "Feedback_version2_20260312.pdf"),
+                ("Appendix E: Debriefing & Appreciation Letter (to be distributed at study conclusion)", "Feedback_version2_20260312.pdf"),
                 ("Appendix F: Approved UWaterloo Master Protocol", "UWaterloo protocol March 2026.pdf"),
                 ("Appendix G: Psychological Science Registered Report Manuscript", "PsychScience manuscript RR2 - final.pdf"),
             ]

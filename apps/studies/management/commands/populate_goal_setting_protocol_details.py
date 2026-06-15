@@ -67,7 +67,7 @@ class Command(BaseCommand):
             "$7 base + $1 per round met for reward goal), and place their reports in a sealed envelope.\n\n"
             "7. Follow-Up Survey: Manipulation checks (goal recall, goal type), attention check, "
             "and an open-ended data quality check (whether to use their data).\n\n"
-            "8. Debriefing: Immediate verbal debriefing to minimize information diffusion; full debrief sheet is provided."
+            "8. Debriefing: Full debrief sheet/letter will be distributed to participants via email after data collection has fully concluded to prevent information diffusion across classes."
         )
 
         submission.research_objectives = (
@@ -165,7 +165,7 @@ class Command(BaseCommand):
             "- Anonymous: no names on materials; materials randomly assigned\n"
             "- Self-payment in private; experimenters leave room\n"
             "- Unique anagram links data without identifying participants\n"
-            "- Debriefing after data collection\n"
+            "- Delayed debriefing via email at study conclusion\n"
             "- Counseling resources provided"
         )
 
@@ -217,15 +217,15 @@ class Command(BaseCommand):
         submission.co_investigators = (
             "Dr. Ann-Marie R. Castille (Associate Professor of Management), ann-marie.castille@nicholls.edu, 985-448-4738\n"
             "Dr. Samantha Falgout (Assistant Professor of Accounting), samantha.falgout@nicholls.edu, 985-448-4193\n"
-            "Dr. Kaitlin Gravois (Instructor of Management / MBA), kaitlin.gravois@nicholls.edu, 985-448-4187\n"
-            "Dr. Adrien Maught (Instructor / Student Researcher), adrien.maught@nicholls.edu, 985-448-4194"
+            "Dr. Kaitlin Gravois (Instructor of Management), kaitlin.gravois@nicholls.edu, 985-448-4187\n"
+            "Dr. Adrien Maught (Instructor of Management), adrien.maught@nicholls.edu, 985-448-4194"
         )
 
         submission.citi_training_completion = (
             "All investigators have completed CITI Program training. Dr. Christopher Castille "
             "(Faculty Researchers), Dr. Ann-Marie R. Castille (Faculty Researchers), "
             "Dr. Samantha Falgout (Faculty Researchers), Dr. Kaitlin Gravois (Faculty Researchers), "
-            "Dr. Adrien Maught (Social/Behavioral RCR). Certificates on file."
+            "Dr. Adrien Maught (Social/Behavioral RCR). Certificates are pending / to be submitted upon request."
         )
 
         submission.involves_vulnerable_populations = False
@@ -273,12 +273,13 @@ class Command(BaseCommand):
         )
 
         submission.appendices_notes = (
-            "Appendix A: Detailed study goals and hypotheses\n"
-            "Appendix B: Anagram materials, goal commitment, demographics, answer sheet\n"
-            "Appendix C: Procedure details\n"
-            "Appendix D: Debriefing materials\n"
-            "Appendix E: Informed consent form\n"
-            "Appendix F: Recruitment flyer\n"
+            "Appendix A: Recruitment Flyer / Announcement\n"
+            "Appendix B: Informed Consent Statement\n"
+            "Appendix C: Anagram Task Workbook (Study Instrument)\n"
+            "Appendix D: Participant Productivity Report\n"
+            "Appendix E: Debriefing & Appreciation Letter (to be distributed at study conclusion)\n"
+            "Appendix F: Approved UWaterloo Master Protocol\n"
+            "Appendix G: Psychological Science Registered Report Manuscript\n"
             "Addendum 1: Procedural modifications (H4, H5, follow-up survey, 4th condition, "
             "experimenter script, course credit)"
         )

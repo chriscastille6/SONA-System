@@ -140,11 +140,11 @@ def build_nicholls_flyer():
         "You are invited to participate in an exciting, multi-site global research study on organizational "
         "decision-making. This study is part of a larger collaborative initiative (ARIM) and has received "
         "formal ethics clearance from the Human Subjects Institutional Review Board (HSIRB) at Nicholls State University. "
-        "The project is being conducted locally by <b>Dr. Christopher Castille</b> (Associate Professor of Management, Primary Investigator), "
-        "<b>Dr. Ann-Marie R. Castille</b> (Associate Professor of Management, Co-Investigator), "
-        "<b>Dr. Samantha Falgout</b> (Assistant Professor of Accounting, Co-Investigator), "
-        "<b>Dr. Kaitlin Gravois</b> (Instructor of Management / MBA, Co-Investigator), and "
-        "<b>Dr. Adrien Maught</b> (Instructor / Student Researcher, Co-Investigator) from Nicholls State University."
+        "The project is being conducted locally by <b>Dr. Christopher Castille</b> (Primary Investigator), "
+        "<b>Dr. Ann-Marie R. Castille</b> (Co-Investigator), "
+        "<b>Dr. Samantha Falgout</b> (Co-Investigator), "
+        "<b>Dr. Kaitlin Gravois</b> (Co-Investigator), and "
+        "<b>Dr. Adrien Maught</b> (Co-Investigator) from Nicholls State University."
     )
     story.append(Paragraph(invitation_text, style_body))
     story.append(Spacer(1, 0.15 * inch))
@@ -200,15 +200,19 @@ def build_nicholls_flyer():
     story.append(t_details)
     story.append(Spacer(1, 0.3 * inch))
 
-    # 5. Formal University Disclaimer Footer
-    footer_text = (
-        "Nicholls State University  ·  College of Business Administration  ·  HSIRB Approved Protocol: IRB 2024-07-30-001 CBA<br/>"
-        "For questions about your rights as a participant, contact the Nicholls HSIRB Chair (Dr. Alaina Daigle, 985-448-4697)."
-    )
-    story.append(Paragraph(footer_text, style_footer))
+    # 5. Formal University Disclaimer Footer via canvas callback to ensure single-page alignment
+    def draw_footer(canvas, doc):
+        canvas.saveState()
+        canvas.setFont("Helvetica", 8.5)
+        canvas.setFillColor(colors.HexColor("#6b7280"))
+        text1 = "Nicholls State University  ·  College of Business Administration  ·  HSIRB Approved Protocol: IRB 2024-07-30-001 CBA"
+        text2 = "For questions about your rights as a participant, contact the Nicholls HSIRB Chair (Dr. Alaina Daigle, 985-448-4697)."
+        canvas.drawCentredString(8.5 * inch / 2.0, 0.55 * inch, text1)
+        canvas.drawCentredString(8.5 * inch / 2.0, 0.35 * inch, text2)
+        canvas.restoreState()
 
     # Build PDF
-    doc.build(story)
+    doc.build(story, onFirstPage=draw_footer)
     print(f"Successfully generated Nicholls branded flyer at: {pdf_path}")
 
 def build_pdf_from_text(txt_filename, pdf_filename):
@@ -273,6 +277,16 @@ def build_pdf_from_text(txt_filename, pdf_filename):
         spaceAfter=8
     )
     
+    style_likert = ParagraphStyle(
+        name="DocLikert_" + txt_filename.split('.')[0],
+        fontName="Helvetica",
+        fontSize=9,
+        leading=11,
+        textColor=colors.HexColor("#374151"),
+        alignment=TA_LEFT,
+        spaceAfter=4
+    )
+    
     story = []
     
     logo_path = "/Users/ccastille/.cursor/projects/Users-ccastille-Documents-GitHub-SONA-System/assets/image-3692823e-13cc-4d71-87c9-875833604dab.png"
@@ -297,20 +311,53 @@ def build_pdf_from_text(txt_filename, pdf_filename):
         ]
         is_heading = p_text in [
             "Information", "Risks", "Benefits", 
-            "Confidentiality of Your Information", 
+            "Confidentiality of Your Information", "Confidentiality",
             "Remuneration", "Contact", "Participation", 
             "Feedback and Publication", "CONSENT"
         ]
+        
+        is_likert_option = p_text in [
+            "Strongly disagree", "Disagree", "Neutral", "Agree", "Strongly agree",
+            "Not at all", "Slightly", "Moderately", "Quite a bit", "Extremely"
+        ]
+        
+        # A contact line is short and contains identifying titles/emails
+        is_contact_line = (
+            ("@nicholls.edu" in p_text or p_text.startswith("Dr. ") or p_text.startswith("Mrs. ") or p_text.startswith("Mr. "))
+            and len(p_text) < 100
+        )
         
         if is_title:
             story.append(Paragraph(p_text, style_title))
         elif is_heading:
             story.append(Paragraph(p_text, style_heading))
-        elif "@nicholls.edu" in p_text or p_text.startswith("Dr. ") or p_text.startswith("Mrs. ") or p_text.startswith("Mr. "):
+        elif is_likert_option:
+            story.append(Paragraph(p_text, style_likert))
+        elif is_contact_line:
             story.append(Paragraph(p_text, style_center))
-        elif p_text.startswith("____________________") or "Signature of Participant" in p_text:
-            story.append(Spacer(1, 0.1 * inch))
-            story.append(Paragraph(p_text.replace('\t', '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'), style_body))
+        elif "Signature of Participant" in p_text or p_text.startswith("____________________"):
+            sig_data = [
+                [
+                    Paragraph("_____________________________", style_body),
+                    Paragraph("_____________________________", style_body),
+                    Paragraph("_________________", style_body)
+                ],
+                [
+                    Paragraph("Name of Participant", style_body),
+                    Paragraph("Signature of Participant", style_body),
+                    Paragraph("Date", style_body)
+                ]
+            ]
+            sig_table = Table(sig_data, colWidths=[2.5 * inch, 3.0 * inch, 1.5 * inch])
+            sig_table.setStyle(TableStyle([
+                ('VALIGN', (0,0), (-1,-1), 'TOP'),
+                ('BOTTOMPADDING', (0,0), (-1,-1), 2),
+                ('TOPPADDING', (0,0), (-1,-1), 2),
+                ('LEFTPADDING', (0,0), (-1,-1), 0),
+                ('RIGHTPADDING', (0,0), (-1,-1), 10),
+            ]))
+            story.append(Spacer(1, 0.2 * inch))
+            story.append(sig_table)
         else:
             story.append(Paragraph(p_text, style_body))
             
@@ -321,3 +368,5 @@ if __name__ == "__main__":
     build_nicholls_flyer()
     build_pdf_from_text("consent_form.txt", "ConsentForm_version2_20260312.pdf")
     build_pdf_from_text("debriefing.txt", "Feedback_version2_20260312.pdf")
+    build_pdf_from_text("anagram_workbook.txt", "Workbook_version2_20260312.pdf")
+    build_pdf_from_text("productivity_report.txt", "ProductivityReport_version2_20260312.pdf")
