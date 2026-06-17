@@ -155,6 +155,10 @@ class IRBAnalyzer:
                 except OSError:
                     materials['protocol_html'] = ''
         
+        # Gather submitted protocol and consent
+        submitted = await sync_to_async(self._get_submitted_protocol_and_consent)(self.review)
+        materials.update(submitted)
+        
         return materials
     
     def _extract_document_text(self, doc: ReviewDocument) -> str:
@@ -335,6 +339,48 @@ class IRBAnalyzer:
         
         # Save all fields
         self.review.save()
+
+    @staticmethod
+    def _get_submitted_protocol_and_consent(review) -> Dict[str, Any]:
+        """
+        Gather submitted protocol and consent text for a review.
+        """
+        from apps.studies.models import ProtocolSubmission
+        from apps.studies.views import _get_informed_consent_display
+        
+        # Find linked or fallback submission
+        submission = review.protocol_submission.first()
+        if not submission:
+            submission = ProtocolSubmission.objects.filter(
+                study=review.study,
+                status='submitted'
+            ).order_by('-submitted_at').first()
+            
+        result = {}
+        if submission:
+            # Build submitted protocol text
+            proto_parts = []
+            if submission.protocol_description:
+                proto_parts.append(f"## Protocol description\n\n{submission.protocol_description}")
+            if submission.research_procedures:
+                proto_parts.append(f"## Research procedures\n\n{submission.research_procedures}")
+            if submission.consent_procedures:
+                proto_parts.append(f"## Consent procedures\n\n{submission.consent_procedures}")
+            if submission.risk_statement:
+                proto_parts.append(f"## Risk statement\n\n{submission.risk_statement}")
+            if submission.confidentiality_procedures:
+                proto_parts.append(f"## Confidentiality procedures\n\n{submission.confidentiality_procedures}")
+            
+            result['submitted_protocol'] = '\n\n'.join(proto_parts) if proto_parts else ''
+            
+            # Build consent page
+            consent_val = _get_informed_consent_display(submission, review.study)
+            result['consent_page'] = consent_val or ''
+            
+        if review.study and getattr(review.study, 'consent_text', None):
+            result['participant_consent_text'] = review.study.consent_text
+            
+        return result
 
 
 

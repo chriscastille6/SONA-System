@@ -1,5 +1,5 @@
 #!/bin/bash
-# Deploy from your local repo (e.g. GitHub SONA System) to bayoupal via rsync.
+# Deploy from your local repo (e.g. GitHub PRAMS) to bayoupal via rsync.
 # No git pull on the server - use this when server→GitLab/GitHub is slow or broken.
 #
 # Usage: run from repo root on your Mac:

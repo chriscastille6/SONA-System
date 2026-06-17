@@ -60,3 +60,29 @@ scripts/node_modules/
 
 # FERPA redacted prompt scratch files (Cursor hook)
 .cursor/ferpa-redacted/
+
+# Virtual environments
+.venv/
+venv312/
+
+# Unrelated non-app folders
+Teaching/
+IRB_Automation_Toolkit/
+approved irb/
+
+# Root level reference documents and logs
+/*.md
+!/README.md
+!/setup_instructions.md
+/*.pdf
+/*.html
+/*.docx
+/*.txt
+!/requirements.txt
+!/runtime.txt
+/*.Rmd
+/*.json
+!/railway.json
+!/package.json
+!/.cursor/mcp.json
+

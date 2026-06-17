@@ -4,12 +4,11 @@ Participant Recruitment and Management System (PRAMS) for university research: s
 
 **Production:** [https://bayoupal.nicholls.edu/hsirb/](https://bayoupal.nicholls.edu/hsirb/)
 
-## Repositories
+## Repository
 
-| Remote | URL | Use |
-|--------|-----|-----|
-| **GitLab (canonical)** | [gitlab.nicholls.edu/ccastille1/prams](https://gitlab.nicholls.edu/ccastille1/prams) | Institutional IT review and production deploys |
-| **GitHub (mirror)** | [github.com/chriscastille6/SONA-System](https://github.com/chriscastille6/SONA-System) | Backup / public mirror of application code |
+The canonical repository for PRAMS is hosted on the Nicholls State University GitLab instance:
+
+- **GitLab (canonical):** [gitlab.nicholls.edu/ccastille1/prams](https://gitlab.nicholls.edu/ccastille1/prams) (used for institutional IT review and production deploys)
 
 Push to GitLab `main`, then deploy to the server (see [Deployment](#deployment)).
 

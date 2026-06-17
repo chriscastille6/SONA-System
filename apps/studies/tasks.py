@@ -16,6 +16,7 @@ from datetime import timedelta
 from typing import Tuple
 
 from .models import Signup, Study, Response, IRBReviewerAssignment, StudyUpdate, ProtocolSubmission, AnonymousSignup
+from apps.studies.sms import send_signup_sms
 import importlib
 
 logger = logging.getLogger(__name__)
@@ -367,13 +368,21 @@ If you received this message, no further action is necessary.
 @shared_task
 def send_24h_reminders():
     """Send 24-hour reminders for upcoming sessions."""
+    from django.db.models import Q
+    
     now = timezone.now()
     start_window = now + timedelta(hours=23, minutes=30)
     end_window = now + timedelta(hours=24, minutes=30)
     
+    sms_enabled = getattr(settings, 'STUDY_SMS_REMINDERS_ENABLED', False)
+    
+    q_filter = Q(reminder_24h_sent=False)
+    if sms_enabled:
+        q_filter |= Q(reminder_24h_sms_sent=False)
+        
     signups = Signup.objects.filter(
+        q_filter,
         status='booked',
-        reminder_24h_sent=False,
         timeslot__starts_at__gte=start_window,
         timeslot__starts_at__lt=end_window,
         timeslot__is_cancelled=False
@@ -381,10 +390,11 @@ def send_24h_reminders():
     
     count = 0
     for signup in signups:
-        try:
-            send_mail(
-                subject=f'Reminder: Study tomorrow - {signup.timeslot.study.title}',
-                message=f'''
+        if not signup.reminder_24h_sent:
+            try:
+                send_mail(
+                    subject=f'Reminder: Study tomorrow - {signup.timeslot.study.title}',
+                    message=f'''
 Hello {signup.participant.first_name},
 
 This is a reminder that you have a research study scheduled tomorrow:
@@ -401,30 +411,47 @@ Thank you for participating in research!
 
 {settings.INSTITUTION_NAME}
 {settings.SITE_NAME}
-                '''.strip(),
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[signup.participant.email],
-                fail_silently=False,
-            )
-            signup.reminder_24h_sent = True
-            signup.save(update_fields=['reminder_24h_sent'])
-            count += 1
-        except Exception as e:
-            print(f"Failed to send 24h reminder to {signup.participant.email}: {e}")
+                    '''.strip(),
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[signup.participant.email],
+                    fail_silently=False,
+                )
+                signup.reminder_24h_sent = True
+                signup.save(update_fields=['reminder_24h_sent'])
+                count += 1
+            except Exception as e:
+                print(f"Failed to send 24h reminder to {signup.participant.email}: {e}")
+                
+        if sms_enabled and not signup.reminder_24h_sms_sent:
+            try:
+                res = send_signup_sms(signup, "24h")
+                if res.get('sent'):
+                    signup.reminder_24h_sms_sent = True
+                    signup.save(update_fields=['reminder_24h_sms_sent'])
+            except Exception as e:
+                print(f"Failed to send 24h SMS to {signup.participant.email}: {e}")
     
-    return f"Sent {count} 24-hour reminders"
+    return f"Sent {count} 24-hour email reminders"
 
 
 @shared_task
 def send_2h_reminders():
     """Send 2-hour reminders for upcoming sessions."""
+    from django.db.models import Q
+    
     now = timezone.now()
     start_window = now + timedelta(hours=1, minutes=45)
     end_window = now + timedelta(hours=2, minutes=15)
     
+    sms_enabled = getattr(settings, 'STUDY_SMS_REMINDERS_ENABLED', False)
+    
+    q_filter = Q(reminder_2h_sent=False)
+    if sms_enabled:
+        q_filter |= Q(reminder_2h_sms_sent=False)
+        
     signups = Signup.objects.filter(
+        q_filter,
         status='booked',
-        reminder_2h_sent=False,
         timeslot__starts_at__gte=start_window,
         timeslot__starts_at__lt=end_window,
         timeslot__is_cancelled=False
@@ -432,10 +459,11 @@ def send_2h_reminders():
     
     count = 0
     for signup in signups:
-        try:
-            send_mail(
-                subject=f'Reminder: Study in 2 hours - {signup.timeslot.study.title}',
-                message=f'''
+        if not signup.reminder_2h_sent:
+            try:
+                send_mail(
+                    subject=f'Reminder: Study in 2 hours - {signup.timeslot.study.title}',
+                    message=f'''
 Hello {signup.participant.first_name},
 
 This is a reminder that you have a research study in 2 hours:
@@ -451,18 +479,27 @@ Thank you!
 
 {settings.INSTITUTION_NAME}
 {settings.SITE_NAME}
-                '''.strip(),
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[signup.participant.email],
-                fail_silently=False,
-            )
-            signup.reminder_2h_sent = True
-            signup.save(update_fields=['reminder_2h_sent'])
-            count += 1
-        except Exception as e:
-            print(f"Failed to send 2h reminder to {signup.participant.email}: {e}")
+                    '''.strip(),
+                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    recipient_list=[signup.participant.email],
+                    fail_silently=False,
+                )
+                signup.reminder_2h_sent = True
+                signup.save(update_fields=['reminder_2h_sent'])
+                count += 1
+            except Exception as e:
+                print(f"Failed to send 2h reminder to {signup.participant.email}: {e}")
+                
+        if sms_enabled and not signup.reminder_2h_sms_sent:
+            try:
+                res = send_signup_sms(signup, "2h")
+                if res.get('sent'):
+                    signup.reminder_2h_sms_sent = True
+                    signup.save(update_fields=['reminder_2h_sms_sent'])
+            except Exception as e:
+                print(f"Failed to send 2h SMS to {signup.participant.email}: {e}")
     
-    return f"Sent {count} 2-hour reminders"
+    return f"Sent {count} 2-hour email reminders"
 
 
 @shared_task

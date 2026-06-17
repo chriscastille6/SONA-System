@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PRAMS — IT Review & Security Guide</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --nicholls-red: #C41230;
+      --nicholls-red-dark: #8B0E21;
+      --slate-dark: #0F172A;
+      --slate-medium: #334155;
+      --slate-light: #F8FAFC;
+      --border-color: #E2E8F0;
+      --accent-green: #0F766E;
+      --accent-blue: #0369A1;
+    }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      color: #334155;
+      background-color: #F1F5F9;
+      scroll-behavior: smooth;
+    }
+    .navbar-brand-custom {
+      font-weight: 700;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .navbar-custom {
+      background-color: var(--nicholls-red);
+      border-bottom: 4px solid var(--nicholls-red-dark);
+    }
+    .sidebar {
+      background-color: white;
+      border-right: 1px solid var(--border-color);
+      height: calc(100vh - 56px);
+      position: sticky;
+      top: 56px;
+      overflow-y: auto;
+      padding: 2rem 1rem;
+    }
+    .sidebar .nav-link {
+      color: var(--slate-medium);
+      font-weight: 500;
+      padding: 0.75rem 1rem;
+      border-radius: 0.375rem;
+      margin-bottom: 0.25rem;
+      transition: all 0.2s ease;
+    }
+    .sidebar .nav-link:hover {
+      background-color: var(--slate-light);
+      color: var(--nicholls-red);
+    }
+    .sidebar .nav-link.active {
+      background-color: rgba(196, 18, 48, 0.08);
+      color: var(--nicholls-red);
+      font-weight: 600;
+    }
+    .main-content {
+      padding: 2.5rem;
+    }
+    .card-custom {
+      border: 1px solid var(--border-color);
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      background-color: white;
+      margin-bottom: 1.5rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card-custom:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+    }
+    .card-header-custom {
+      background-color: var(--slate-light);
+      border-bottom: 1px solid var(--border-color);
+      padding: 1rem 1.25rem;
+      font-weight: 600;
+      color: var(--slate-dark);
+      border-top-left-radius: 0.75rem !important;
+      border-top-right-radius: 0.75rem !important;
+    }
+    .badge-custom {
+      font-weight: 600;
+      padding: 0.35em 0.65em;
+      border-radius: 0.375rem;
+    }
+    .badge-rbac {
+      background-color: rgba(3, 105, 161, 0.1);
+      color: var(--accent-blue);
+    }
+    .badge-ferpa {
+      background-color: rgba(15, 118, 110, 0.1);
+      color: var(--accent-green);
+    }
+    .badge-security {
+      background-color: rgba(196, 18, 48, 0.1);
+      color: var(--nicholls-red);
+    }
+    .code-block {
+      font-family: 'JetBrains Mono', ui-monospace, monospace;
+      font-size: 0.875rem;
+      background-color: var(--slate-dark);
+      color: #E2E8F0;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      overflow-x: auto;
+      border: 1px solid #1E293B;
+      margin-bottom: 1.5rem;
+    }
+    .code-keyword { color: #F43F5E; font-weight: bold; }
+    .code-class { color: #38BDF8; font-weight: bold; }
+    .code-string { color: #34D399; }
+    .code-comment { color: #64748B; font-style: italic; }
+    .code-decorator { color: #FBBF24; }
+    .hero-section {
+      background: linear-gradient(135deg, var(--slate-dark) 0%, var(--slate-medium) 100%);
+      color: white;
+      padding: 3rem 2rem;
+      border-radius: 0.75rem;
+      margin-bottom: 2.5rem;
+      border-left: 6px solid var(--nicholls-red);
+    }
+    .table-custom th {
+      background-color: var(--slate-light);
+      color: var(--slate-dark);
+      font-weight: 600;
+    }
+    .table-custom td {
+      vertical-align: middle;
+    }
+    .audit-step {
+      border-left: 3px solid var(--nicholls-red);
+      padding-left: 1.25rem;
+      margin-bottom: 1.5rem;
+    }
+    .audit-step-number {
+      font-weight: 700;
+      color: var(--nicholls-red);
+      font-size: 1.1rem;
+      margin-bottom: 0.25rem;
+    }
+    .callout-box {
+      background-color: rgba(196, 18, 48, 0.03);
+      border-left: 4px solid var(--nicholls-red);
+      padding: 1.25rem;
+      border-radius: 0.375rem;
+      margin-bottom: 1.5rem;
+    }
+    .callout-box-title {
+      font-weight: 600;
+      color: var(--nicholls-red-dark);
+      margin-bottom: 0.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top shadow-sm">
+    <div class="container-fluid">
+      <span class="navbar-brand navbar-brand-custom">
+        <i class="bi bi-shield-check me-2"></i>Nicholls State University PRAMS
+      </span>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <span class="nav-link text-white active">IT Security Review Guide</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Sidebar Navigation -->
+      <div class="col-md-3 col-lg-2 d-none d-md-block sidebar shadow-sm">
+        <div class="nav flex-column nav-pills">
+          <a class="nav-link active" href="#overview"><i class="bi bi-info-circle me-2"></i>Overview</a>
+          <a class="nav-link" href="#purpose"><i class="bi bi-journal-text me-2"></i>Purpose of PRAMS</a>
+          <a class="nav-link" href="#security"><i class="bi bi-grid-3x3-gap me-2"></i>Security Dashboard</a>
+          <a class="nav-link" href="#ferpa"><i class="bi bi-person-lock me-2"></i>FERPA & Identity</a>
+          <a class="nav-link" href="#anonymous"><i class="bi bi-eye-slash me-2"></i>Anonymous Booking</a>
+          <a class="nav-link" href="#separation"><i class="bi bi-database-lock me-2"></i>Data Separation</a>
+          <a class="nav-link" href="#audit"><i class="bi bi-terminal me-2"></i>Audit & Review</a>
+        </div>
+      </div>
+
+      <!-- Main Content Area -->
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 main-content">
+        
+        <!-- Hero Section -->
+        <div id="overview" class="hero-section shadow-sm">
+          <div class="row align-items-center">
+            <div class="col-md-8">
+              <h1 class="display-5 fw-bold mb-2">IT Security & Compliance Review Guide</h1>
+              <p class="lead mb-0">Technical evaluation of the Participant Recruitment and Management System (PRAMS) for Nicholls State University.</p>
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+              <span class="badge bg-light text-dark badge-custom me-2 shadow-sm">Version 1.0.0</span>
+              <span class="badge bg-danger badge-custom shadow-sm">Confidential</span>
+            </div>
+          </div>
+          <hr class="my-4 opacity-25">
+          <div class="row text-white-50">
+            <div class="col-sm-4">
+              <small class="d-block text-uppercase tracking-wider fw-bold">Prepared For</small>
+              <span class="text-white fw-medium">Nicholls IT Security & CIO</span>
+            </div>
+            <div class="col-sm-4 mt-2 mt-sm-0">
+              <small class="d-block text-uppercase tracking-wider fw-bold">Compliance Scope</small>
+              <span class="text-white fw-medium">FERPA, IRB (45 CFR 46), NIST</span>
+            </div>
+            <div class="col-sm-4 mt-2 mt-sm-0">
+              <small class="d-block text-uppercase tracking-wider fw-bold">Date of Review</small>
+              <span class="text-white fw-medium">June 2026</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 1: Purpose of PRAMS -->
+        <section id="purpose" class="mb-5">
+          <div class="d-flex align-items-center mb-3">
+            <div class="bg-danger text-white p-2 rounded-3 me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+              <i class="bi bi-journal-text fs-5"></i>
+            </div>
+            <h2 class="h3 mb-0 text-dark fw-bold">1. Scope and Purpose of PRAMS</h2>
+          </div>
+          <div class="card-custom p-4">
+            <p class="lead">The Participant Recruitment and Management System (PRAMS) is a custom, internal web-based platform designed specifically to support and automate research workflows at Nicholls State University.</p>
+            
+            <div class="callout-box bg-light border-start border-danger border-3 p-3 mb-4 rounded-end">
+              <h5 class="fw-bold text-dark"><i class="bi bi-info-circle text-danger me-2"></i>Primary Scope: Active Research Support</h5>
+              <p class="small text-muted mb-2">At this point in time, PRAMS is hosted through Dr. Christopher Castille's institutional website (`bayoupal.nicholls.edu/hsirb/`) and is used <strong>primarily for Dr. Castille's own research program</strong>. In preparing and configuring this tool, Dr. Castille has actively consulted with the current Human Subjects Institutional Review Board (HSIRB) chair, <strong>Dr. Alaina Daigle</strong>, to ensure compliance, procedural alignment, and utility.</p>
+              <p class="small text-muted mb-0">While primarily optimized for Dr. Castille's research, the application's design is fully extensible: if other researchers or instructors on campus wish to utilize PRAMS for their own studies or courses in the future, they are welcome to do so simply by registering an account on the platform.</p>
+            </div>
+
+            <h5 class="fw-bold text-dark mb-3">Principal Automation Goals</h5>
+            <p>PRAMS was developed to make it significantly easier for Dr. Castille to accomplish four key research and administrative objectives in a highly automated, streamlined manner:</p>
+            
+            <div class="row mt-2">
+              <div class="col-md-6 mb-3">
+                <div class="p-3 border rounded-3 bg-light h-100">
+                  <h6 class="fw-bold text-dark mb-2"><i class="bi bi-rocket-takeoff text-danger me-2"></i>1. Study Launch & Collection</h6>
+                  <p class="small text-muted mb-0">Launches active, IRB-approved studies for immediate data collection, managing secure booking timeslots, locations, and participant sign-ups smoothly.</p>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="p-3 border rounded-3 bg-light h-100">
+                  <h6 class="fw-bold text-dark mb-2"><i class="bi bi-chat-heart text-danger me-2"></i>2. Community Engagement Reporting</h6>
+                  <p class="small text-muted mb-0">Simplifies the process of updating the IRB regarding any community engagement activities, public outreach, or localized research events experienced during studies.</p>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="p-3 border rounded-3 bg-light h-100">
+                  <h6 class="fw-bold text-dark mb-2"><i class="bi bi-share text-danger me-2"></i>3. Lab Insight Sharing</h6>
+                  <p class="small text-muted mb-0">Facilitates the automated sharing of aggregated research insights, performance metrics, and study conclusions directly with the research lab members.</p>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="p-3 border rounded-3 bg-light h-100">
+                  <h6 class="fw-bold text-dark mb-2"><i class="bi bi-gear-wide-connected text-danger me-2"></i>4. End-to-End Automation</h6>
+                  <p class="small text-muted mb-0">Unifies and automates tasks 1–3, reducing manual coordination, paper logs, and human administrative errors in research tracking.</p>
+                </div>
+              </div>
+            </div>
+
+            <h5 class="fw-bold text-dark mt-4 mb-3">Benefits to Institutional Review Board (IRB) Efficiency</h5>
+            <p class="mb-0">Beyond supporting individual researcher workflows, utilizing PRAMS provides major benefits for the overall efficacy of the Nicholls State University HSIRB. The platform is designed to make it much easier for the IRB to function efficiently and effectively by enabling them to:
+              <ul class="small text-muted mt-2">
+                <li><strong>Increase Throughput:</strong> Approve and monitor more studies within a secure, centralized system.</li>
+                <li><strong>Robust Documentation:</strong> Maintain complete, immutable, digital records of all protocol reviews, amendments, and approvals.</li>
+                <li><strong>Responsive Communication:</strong> Rapidly respond to researchers regarding review decisions, missing documentation, or audit requirements.</li>
+              </ul>
+            </p>
+          </div>
+        </section>
+
+        <!-- Section 2: Security Architecture Dashboard -->
+        <section id="security" class="mb-5">
+          <div class="d-flex align-items-center mb-3">
+            <div class="bg-danger text-white p-2 rounded-3 me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+              <i class="bi bi-grid-3x3-gap fs-5"></i>
+            </div>
+            <h2 class="h3 mb-0 text-dark fw-bold">2. Security Architecture Dashboard</h2>
+          </div>
+          
+          <div class="row">
+            <!-- Card 1: RBAC -->
+            <div class="col-md-6 mb-4">
+              <div class="card h-100 card-custom">
+                <div class="card-header-custom d-flex justify-content-between align-items-center">
+                  <span><i class="bi bi-people text-danger me-2"></i>Role-Based Access Control</span>
+                  <span class="badge badge-custom badge-rbac">RBAC</span>
+                </div>
+                <div class="card-body p-4">
+                  <p class="small">PRAMS enforces strict Role-Based Access Control (RBAC) at the <strong>view layer</strong> on every single backend route. This ensures that users can only perform actions and access data appropriate to their designated role.</p>
+                  <ul class="small text-muted ps-3">
+                    <li><strong>Roles:</strong> Administrator, IRB Member, Researcher, Instructor, and Participant.</li>
+                    <li><strong>Self-Registration:</strong> Strictly restricted to the <code>Participant</code> role. All elevated roles are assigned by administrators or via secure, single-use invitation flows.</li>
+                    <li><strong>Object-Level Scoping:</strong> Queries are scoped to the authenticated user. For example, researchers can only retrieve studies they own, and instructors can only view courses they teach.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 2: IDOR Protection -->
+            <div class="col-md-6 mb-4">
+              <div class="card h-100 card-custom">
+                <div class="card-header-custom d-flex justify-content-between align-items-center">
+                  <span><i class="bi bi-shield-lock text-danger me-2"></i>IDOR Mitigation</span>
+                  <span class="badge badge-custom badge-security">Security</span>
+                </div>
+                <div class="card-body p-4">
+                  <p class="small">Insecure Direct Object Reference (IDOR) vulnerabilities are mitigated by ensuring that database lookups do not rely solely on client-supplied primary keys without ownership validation.</p>
+                  <ul class="small text-muted ps-3">
+                    <li><strong>Scoped Lookups:</strong> Views resolve objects using ownership-scoped queries (e.g., <code>get_object_or_404(Study, id=study_id, researcher=request.user)</code>).</li>
+                    <li><strong>404-for-Unauthorized:</strong> To prevent resource enumeration and information disclosure, unauthorized access attempts return a standard <code>404 Not Found</code> rather than a <code>403 Forbidden</code> where appropriate.</li>
+                    <li><strong>Opaque References:</strong> Sensitive public-facing endpoints (such as anonymous booking confirmations) use secure, non-sequential UUIDs and session-scoped confirmation keys.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 3: Password & Auth Security -->
+            <div class="col-md-6 mb-4">
+              <div class="card h-100 card-custom">
+                <div class="card-header-custom d-flex justify-content-between align-items-center">
+                  <span><i class="bi bi-key text-danger me-2"></i>Password & Auth Security</span>
+                  <span class="badge badge-custom badge-security">Security</span>
+                </div>
+                <div class="card-body p-4">
+                  <p class="small">PRAMS leverages Django's robust, industry-standard authentication framework to handle user sessions, password resets, and credentials securely.</p>
+                  <ul class="small text-muted ps-3">
+                    <li><strong>NIST-Aligned Hashing:</strong> Passwords are hashed using Argon2 or PBKDF2 with high iteration counts, protecting against brute-force and rainbow table attacks.</li>
+                    <li><strong>Session Security:</strong> In production, cookies are configured with <code>HttpOnly</code>, <code>Secure</code>, and <code>SameSite=Lax</code> flags to prevent cross-site scripting (XSS) and cross-site request forgery (CSRF) session hijacking.</li>
+                    <li><strong>SSO Readiness:</strong> The authentication layer is isolated from authorization logic, allowing seamless integration with campus Single Sign-On (SAML2, OAuth2, or OIDC) in the future.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 4: Secrets & Environment -->
+            <div class="col-md-6 mb-4">
+              <div class="card h-100 card-custom">
+                <div class="card-header-custom d-flex justify-content-between align-items-center">
+                  <span><i class="bi bi-gear text-danger me-2"></i>Secrets & Env Management</span>
+                  <span class="badge badge-custom badge-security">Security</span>
+                </div>
+                <div class="card-body p-4">
+                  <p class="small">No sensitive credentials, API keys, or database passwords are stored in the codebase. PRAMS strictly adheres to modern Twelve-Factor App methodology for configuration.</p>
+                  <ul class="small text-muted ps-3">
+                    <li><strong>Environment Variables:</strong> All secrets (including <code>SECRET_KEY</code>, database URLs, email host credentials, and participant export salts) are read from system environment variables.</li>
+                    <li><strong>Git Isolation:</strong> Local configuration files (such as <code>.env</code>) are explicitly ignored via <code>.gitignore</code> and are never committed to the repository.</li>
+                    <li><strong>Production Hardening:</strong> The application enforces that a secure, non-default <code>SECRET_KEY</code> is provided when <code>DEBUG = False</code>, preventing startup under insecure default configurations.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 3: FERPA & Identity Protection -->
+        <section id="ferpa" class="mb-5">
+          <div class="d-flex align-items-center mb-3">
+            <div class="bg-danger text-white p-2 rounded-3 me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+              <i class="bi bi-person-lock fs-5"></i>
+            </div>
+            <h2 class="h3 mb-0 text-dark fw-bold">3. FERPA & Identity Protection</h2>
+          </div>
+          
+          <div class="card-custom p-4">
+            <p class="lead">Protecting student privacy and complying with the Family Educational Rights and Privacy Act (FERPA) is a core design requirement of PRAMS.</p>
+            
+            <h5 class="fw-bold text-dark mt-4 mb-3">Standard Participant Accounts (SSO/Credit Readiness)</h5>
+            <p>For standard studies where students will participate to earn course credit, PRAMS is fully designed to collect basic student identifiers (name, email, student ID) to facilitate automated credit tracking. <strong>Note:</strong> To maintain an extremely conservative data privacy posture during this launch phase, automated credit allocation is currently deactivated; course credit and incentives are handled manually by the research team outside of the application. However, when standard credit accounts are enabled, strict architectural controls are implemented to isolate and protect this Personally Identifiable Information (PII):</p>
+            
+            <div class="row mb-4">
+              <div class="col-md-4">
+                <div class="p-3 border rounded-3 bg-light text-center h-100">
+                  <i class="bi bi-shield-lock-fill text-danger fs-3 mb-2 d-block"></i>
+                  <h6 class="fw-bold text-dark mb-1">Restricted Access</h6>
+                  <p class="small text-muted mb-0">Only authorized school officials (instructors and administrators) can view student names and IDs for credit verification. Researchers never see student IDs.</p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="p-3 border rounded-3 bg-light text-center h-100">
+                  <i class="bi bi-server text-danger fs-3 mb-2 d-block"></i>
+                  <h6 class="fw-bold text-dark mb-1">Database Isolation</h6>
+                  <p class="small text-muted mb-0">Student account records are stored in separate tables from research response data, preventing direct association between a student's identity and their survey responses.</p>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="p-3 border rounded-3 bg-light text-center h-100">
+                  <i class="bi bi-hash text-danger fs-3 mb-2 d-block"></i>
+                  <h6 class="fw-bold text-dark mb-1">System-Specific Salting</h6>
+                  <p class="small text-muted mb-0">For research exports, a secure, environment-defined salt (<code>PARTICIPANT_EXPORT_SALT</code>) is used to generate stable, opaque, 32-character hex identifiers via HMAC-SHA256.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="callout-box">
+              <div class="callout-box-title"><i class="bi bi-info-circle-fill me-2"></i>Why System-Specific Salting Matters</div>
+              <p class="small text-muted mb-0">By using a unique, system-specific salt to hash student identifiers for research exports, PRAMS ensures that the resulting anonymous identifiers cannot be reversed or linked to other external research databases. Even if the same student participates in studies across different systems, their data remains completely un-linkable, eliminating the risk of re-identification via record linkage (the "mosaic effect").</p>
+            </div>
+
+            <!-- Architectural Design Notes: SSO, Traceability, and Anonymity -->
+            <div class="card bg-light border-0 p-3 mt-4 rounded-3">
+              <h6 class="fw-bold text-dark"><i class="bi bi-shield-fill-check text-success me-2"></i>SSO Integration and Anonymity: Architectural Design Comment</h6>
+              <p class="small text-muted mb-2"><strong>The Security/Anonymity Tradeoff:</strong> From an IT administration perspective, establishing campus Single Sign-On (SSO) integration is highly desirable because it provides complete **traceability**, identity verification, and central access logging. This is incredibly beneficial for securing the admin, researcher, and instructor panels. However, introducing mandatory SSO authentication can represent a design concern if students wish to sign up for voluntary research studies under a high expectation of complete anonymity.</p>
+              <p class="small text-muted mb-2"><strong>Co-Existence Strategy (Unified Security + Open Booking):</strong> PRAMS handles this trade-off gracefully by separating access controls into two distinct functional channels:</p>
+              <ul class="small text-muted ps-3 mb-2">
+                <li><strong>SSO-Secured Management (High Traceability):</strong> All researchers, administrators, and instructors authenticate via Nicholls SSO. This secures administrative controllers, audit logs, and researcher configurations, providing full corporate traceability where privileged data access occurs.</li>
+                <li><strong>Open Public Signup (Anonymity-Preserving):</strong> To preserve participant anonymity for sensitive or cash-compensated research (such as goal-setting trials), student booking endpoints remain decoupled from the SSO authentication flow. These endpoints utilize the <em>Anonymous Booking Module</em> (detailed in Section 4), relying on one-way UUIDs and temporary rate limits rather than institutional user profiles.</li>
+              </ul>
+              <p class="small text-muted mb-0"><strong>Alternative: Pseudo-SSO Signups (Identifiable but Isolated):</strong> If campus policies require that <em>all</em> students authenticate via SSO to book slots (preventing public spam), PRAMS can be configured to require SSO login but <strong>immediately drop/minimize identity metadata</strong> upon successful authentication. At the time of booking, the system would verify the student's active status via SSO, generate a cryptographically salted participant hash, and store <em>only</em> that hash on the reservation, instantly throwing away any username, student ID, or email. This ensures both identity verification (preventing slot-flooding) and database-level participant anonymity.</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 4: Anonymous Booking Module -->
+        <section id="anonymous" class="mb-5">
+          <div class="d-flex align-items-center mb-3">
+            <div class="bg-danger text-white p-2 rounded-3 me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+              <i class="bi bi-eye-slash fs-5"></i>
+            </div>
+            <h2 class="h3 mb-0 text-dark fw-bold">4. Anonymous Booking Module</h2>
+          </div>
+          
+          <div class="card-custom p-4">
+            <p class="lead">For cash-compensated or completely voluntary studies where no course credit is awarded, PRAMS provides a specialized <strong>Anonymous Booking</strong> module.</p>
+            <p>This module is crucial for ensuring complete participant anonymity and compliance with strict IRB requirements for sensitive research topics. It allows participants to book a timeslot without creating a user account or providing any identifying information.</p>
+
+            <div class="table-responsive my-4">
+              <table class="table table-bordered table-custom shadow-sm">
+                <thead>
+                  <tr>
+                    <th>Data Attribute</th>
+                    <th>Stored in <code>AnonymousSignup</code>?</th>
+                    <th>FERPA Education Record?</th>
+                    <th>Security & Privacy Controls</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="fw-bold">Student Name / Email</td>
+                    <td><span class="badge bg-danger badge-custom">NO</span></td>
+                    <td>No</td>
+                    <td>No fields exist in the database table; completely bypassed.</td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold">Student ID / Login</td>
+                    <td><span class="badge bg-danger badge-custom">NO</span></td>
+                    <td>No</td>
+                    <td>Zero integration or link to student institutional login or email.</td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold">Booking Reference</td>
+                    <td><span class="badge bg-success badge-custom">YES</span></td>
+                    <td>No</td>
+                    <td>An auto-generated, opaque UUID used solely for cancellation.</td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold">Cancellation PIN</td>
+                    <td><span class="badge bg-success badge-custom">YES</span></td>
+                    <td>No</td>
+                    <td>A random 4-digit PIN, shown only once to the student on booking.</td>
+                  </tr>
+                  <tr>
+                    <td class="fw-bold">IP Address / User Agent</td>
+                    <td><span class="badge bg-warning text-dark badge-custom">AUDIT ONLY</span></td>
+                    <td>No</td>
+                    <td>Stored in append-only <code>AuditLog</code> for rate limiting and abuse protection; never linked to research data.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <h5 class="fw-bold text-dark mt-4 mb-3">The <code>AnonymousSignup</code> Database Model</h5>
+            <p class="small text-muted">The database schema confirms that the <code>AnonymousSignup</code> table contains absolutely no student PII or foreign keys to the <code>User</code> table. Below is the actual Django model implementation:</p>
+            
+            <div class="code-block">
+<span class="code-keyword">class</span> <span class="code-class">AnonymousSignup</span>(models.Model):
+    <span class="code-comment">"""Anonymous timeslot booking — no user account or PII."""</span>
+
+    STATUS_CHOICES = [
+        (<span class="code-string">'booked'</span>, <span class="code-string">'Booked'</span>),
+        (<span class="code-string">'cancelled'</span>, <span class="code-string">'Cancelled'</span>),
+    ]
+
+    id = models.UUIDField(primary_key=<span class="code-keyword">True</span>, default=uuid.uuid4, editable=<span class="code-keyword">False</span>)
+    timeslot = models.ForeignKey(
+        Timeslot,
+        on_delete=models.CASCADE,
+        related_name=<span class="code-string">'anonymous_signups'</span>,
+    )
+    booking_reference = models.UUIDField(
+        default=uuid.uuid4,
+        unique=<span class="code-keyword">True</span>,
+        editable=<span class="code-keyword">False</span>,
+        help_text=<span class="code-string">'Reference shown to participant for cancellation'</span>,
+    )
+    cancellation_pin = models.CharField(max_length=<span class="code-string">4</span>, help_text=<span class="code-string">'4-digit PIN for cancellation'</span>)
+    status = models.CharField(max_length=<span class="code-string">20</span>, choices=STATUS_CHOICES, default=<span class="code-string">'booked'</span>, db_index=<span class="code-keyword">True</span>)
+    consent_text_version = models.TextField(help_text=<span class="code-string">'Copy of consent text at time of signup'</span>)
+    booked_at = models.DateTimeField(auto_now_add=<span class="code-keyword">True</span>)
+    cancelled_at = models.DateTimeField(null=<span class="code-keyword">True</span>, blank=<span class="code-keyword">True</span>)</div>
+
+            <div class="callout-box mb-0">
+              <div class="callout-box-title"><i class="bi bi-shield-fill-check me-2"></i>Anonymous Booking Threat Controls</div>
+              <ul class="small text-muted mb-0 ps-3">
+                <li><strong>Slot Flooding Prevention:</strong> Strict IP-based rate limits are enforced on bookings (default: 5 bookings per hour) to prevent malicious slot exhaustion.</li>
+                <li><strong>PIN Brute Force Protection:</strong> IP-based rate limits are enforced on cancellations (default: 15 attempts per 15 minutes), combined with constant-time PIN comparison and generic error messages ("Booking not found or PIN invalid") to prevent enumeration.</li>
+                <li><strong>IDOR Success Page Protection:</strong> Confirmation screens are rendered using a one-time session key (<code>anonymous_booking_id</code>) rather than a public, guessable URL.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 5: Data Separation & Security of Student Identity -->
+        <section id="separation" class="mb-5">
+          <div class="d-flex align-items-center mb-3">
+            <div class="bg-danger text-white p-2 rounded-3 me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+              <i class="bi bi-database-lock fs-5"></i>
+            </div>
+            <h2 class="h3 mb-0 text-dark fw-bold">5. Separation of Research Responses & Contact Info</h2>
+          </div>
+          
+          <div class="card-custom p-4">
+            <p class="lead">A common challenge in research is the need to collect survey responses anonymously while still allowing participants to opt-in to receive follow-up materials, study results, or infographics via email.</p>
+            <p>If the email is stored in the same database table as the survey responses, the responses are no longer anonymous. PRAMS solves this problem through a robust, <strong>architectural separation of datasets</strong>.</p>
+
+            <div class="row my-4">
+              <div class="col-md-6">
+                <div class="p-3 border rounded-3 bg-light h-100">
+                  <h6 class="fw-bold text-dark mb-2"><i class="bi bi-file-earmark-text text-danger me-2"></i>The <code>Response</code> Model</h6>
+                  <p class="small text-muted">Stores the actual research survey or assessment data submitted by the participant. It is identified solely by an anonymous, random <code>session_id</code> (UUID). It contains absolutely no student names, emails, or student IDs in its payload.</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="p-3 border rounded-3 bg-light h-100">
+                  <h6 class="fw-bold text-dark mb-2"><i class="bi bi-envelope text-danger me-2"></i>The <code>StudyEmailContact</code> Model</h6>
+                  <p class="small text-muted">Stores the participant's email address in a completely separate table. While it can store an optional <code>session_id</code> to link the email to a response session (if submitted in the same flow), access to this table is strictly restricted.</p>
+                </div>
+              </div>
+            </div>
+
+            <h5 class="fw-bold text-dark mt-4 mb-3">Database Implementations</h5>
+            <p class="small text-muted">The separation is enforced at the database schema level, preventing accidental or unauthorized linkage of student identities with their research responses:</p>
+
+            <div class="code-block">
+<span class="code-keyword">class</span> <span class="code-class">Response</span>(models.Model):
+    <span class="code-comment">"""Protocol response submitted by a participant."""</span>
+    id = models.UUIDField(primary_key=<span class="code-keyword">True</span>, default=uuid.uuid4, editable=<span class="code-keyword">False</span>)
+    study = models.ForeignKey(Study, on_delete=models.CASCADE, related_name=<span class="code-string">'responses'</span>)
+    session_id = models.UUIDField(default=uuid.uuid4, db_index=<span class="code-keyword">True</span>, help_text=<span class="code-string">"Anonymous session identifier"</span>)
+    payload = models.JSONField(help_text=<span class="code-string">"JSON data submitted from protocol"</span>)
+    created_at = models.DateTimeField(auto_now_add=<span class="code-keyword">True</span>, db_index=<span class="code-keyword">True</span>)
+    ip_address = models.GenericIPAddressField(null=<span class="code-keyword">True</span>, blank=<span class="code-keyword">True</span>)
+    user_agent = models.TextField(blank=<span class="code-keyword">True</span>)
+
+<span class="code-keyword">class</span> <span class="code-class">StudyEmailContact</span>(models.Model):
+    <span class="code-comment">"""
+    Optional email signup for sending study infographics.
+    Stored in a separate dataset from Response payloads for IRB/privacy clarity.
+    """</span>
+    id = models.UUIDField(primary_key=<span class="code-keyword">True</span>, default=uuid.uuid4, editable=<span class="code-keyword">False</span>)
+    study = models.ForeignKey(Study, on_delete=models.CASCADE, related_name=<span class="code-string">'infographic_contacts'</span>)
+    email = models.EmailField()
+    session_id = models.UUIDField(null=<span class="code-keyword">True</span>, blank=<span class="code-keyword">True</span>, db_index=<span class="code-keyword">True</span>)
+    created_at = models.DateTimeField(auto_now_add=<span class="code-keyword">True</span>, db_index=<span class="code-keyword">True</span>)</div>
+
+            <div class="callout-box mb-0">
+              <div class="callout-box-title"><i class="bi bi-shield-lock-fill me-2"></i>Security Controls on Linkage</div>
+              <ul class="small text-muted mb-0 ps-3">
+                <li><strong>Database Permissions:</strong> Access to the <code>StudyEmailContact</code> table is restricted. Researchers cannot query or export this table alongside the <code>Response</code> table.</li>
+                <li><strong>No Automatic Merging:</strong> Export utilities strictly separate survey response datasets from email contact lists. No merge of these tables is permitted without explicit, audited IRB approval and oversight.</li>
+                <li><strong>Audit Trails:</strong> Any cross-table queries or administrative access to the <code>StudyEmailContact</code> table are captured in the system's append-only audit logs.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 6: Audit & Review Instructions -->
+        <section id="audit" class="mb-5">
+          <div class="d-flex align-items-center mb-3">
+            <div class="bg-danger text-white p-2 rounded-3 me-3 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+              <i class="bi bi-terminal fs-5"></i>
+            </div>
+            <h2 class="h3 mb-0 text-dark fw-bold">6. Audit & Review Instructions for IT Security Staff</h2>
+          </div>
+          
+          <div class="card-custom p-4">
+            <p class="lead">Nicholls State University IT Security staff can independently audit and verify the security posture of the PRAMS application by following the steps below.</p>
+            
+            <div class="audit-step">
+              <div class="audit-step-number">Step 1: Inspect the Repository & Codebase</div>
+              <p class="small text-muted">Access the GitLab repository and review the overall project structure. Focus on the core application directories:</p>
+              <ul class="small text-muted ps-3">
+                <li><code>apps/studies/</code>: Contains the core models, views, and business logic for studies, signups, and IRB tracking.</li>
+                <li><code>apps/prams/</code>: Contains the API and catalog single-page application (SPA) views.</li>
+                <li><code>config/</code>: Contains the global settings and routing configurations.</li>
+              </ul>
+            </div>
+
+            <div class="audit-step">
+              <div class="audit-step-number">Step 2: Verify Security Settings</div>
+              <p class="small text-muted">Open <code>config/settings.py</code> and verify the following production-hardening settings:</p>
+              <ul class="small text-muted ps-3">
+                <li>Confirm that <code>DEBUG = False</code> is enforced in production.</li>
+                <li>Verify that security cookies are enabled: <code>SESSION_COOKIE_SECURE = True</code> and <code>CSRF_COOKIE_SECURE = True</code>.</li>
+                <li>Ensure that <code>SECURE_SSL_REDIRECT = True</code> is enabled to force HTTPS.</li>
+                <li>Check that the password hashing backends are aligned with NIST standards (e.g., Argon2 or PBKDF2).</li>
+              </ul>
+            </div>
+
+            <div class="audit-step">
+              <div class="audit-step-number">Step 3: Audit Routes and Access Controls</div>
+              <p class="small text-muted">Inspect <code>apps/studies/views.py</code> and <code>apps/prams/views.py</code> to confirm that role-based access controls are active:</p>
+              <ul class="small text-muted ps-3">
+                <li>Verify that all sensitive views are protected by authentication decorators (e.g., <code>@login_required</code>) or custom role-checking mixins.</li>
+                <li>Ensure that no state-changing views bypass CSRF protection (e.g., avoid <code>@csrf_exempt</code> unless strictly token-secured).</li>
+                <li>Confirm that views querying database objects scope their lookups to the authenticated user's role and ownership.</li>
+              </ul>
+            </div>
+
+            <div class="audit-step">
+              <div class="audit-step-number">Step 4: Verify Secrets Isolation</div>
+              <p class="small text-muted">Review the environment configuration files:</p>
+              <ul class="small text-muted ps-3">
+                <li>Verify that <code>.env</code> is listed in the root <code>.gitignore</code> file to prevent secrets from being committed.</li>
+                <li>Inspect <code>env.example</code> to confirm that all required secrets (database credentials, email settings, and <code>PARTICIPANT_EXPORT_SALT</code>) are documented without actual values.</li>
+              </ul>
+            </div>
+
+            <div class="audit-step mb-0">
+              <div class="audit-step-number">Step 5: Audit Database Schemas & Data Separation</div>
+              <p class="small text-muted">Open <code>apps/studies/models.py</code> and review the table definitions:</p>
+              <ul class="small text-muted ps-3">
+                <li>Verify that the <code>AnonymousSignup</code> model contains no fields for student names, emails, or IDs.</li>
+                <li>Confirm that the <code>Response</code> model payload is stored as a <code>JSONField</code> and contains no direct links to student accounts.</li>
+                <li>Verify that the <code>StudyEmailContact</code> model is defined as a separate table and that access to it is restricted.</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center text-muted py-4 border-top mt-5">
+          <p class="small mb-0">&copy; 2026 Nicholls State University. All rights reserved.</p>
+          <p class="small text-muted">Participant Recruitment and Management System (PRAMS) — IT Security & Compliance Documentation.</p>
+        </footer>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- Bootstrap 5 Bundle JS (includes Popper) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
