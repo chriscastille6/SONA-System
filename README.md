@@ -1,131 +1,164 @@
-# Research Participant Recruitment System
+# PRAMS — Research Participant Recruitment System
 
-A lean, participant recruitment and study management platform (PRAMS) for university psychology research departments.
+Participant Recruitment and Management System (PRAMS) for university research: study scheduling, IRB protocol workflows, and participant sign-up. Built for Nicholls State University HSIRB use on **bayoupal**.
 
-**Repositories**
-- **GitHub (public/shell):** [chriscastille6/prams-system](https://github.com/chriscastille6/prams-system) — code only, no institutional data; clone from here to use or adapt the product.
-- **GitLab (institutional/IT):** [chriscastille/prams](https://gitlab.nicholls.edu/chriscastille/prams) — deployment and IT review at Nicholls; production deploys from here.
+**Production:** [https://bayoupal.nicholls.edu/hsirb/](https://bayoupal.nicholls.edu/hsirb/)
+
+## Repositories
+
+| Remote | URL | Use |
+|--------|-----|-----|
+| **GitLab (canonical)** | [gitlab.nicholls.edu/ccastille1/prams](https://gitlab.nicholls.edu/ccastille1/prams) | Institutional IT review and production deploys |
+| **GitHub (mirror)** | [github.com/chriscastille6/SONA-System](https://github.com/chriscastille6/SONA-System) | Backup / public mirror of application code |
+
+Push to GitLab `main`, then deploy to the server (see [Deployment](#deployment)).
 
 ## Features
 
-### MVP (Phase 1)
-- **User Management**: Admin, Researcher, Instructor, and Participant roles
-- **Study Management**: Create lab and online studies with flexible scheduling
-- **Participant Recruitment**: Browse eligible studies, book timeslots, manage bookings
-- **Prescreening**: Configurable questionnaire to match participants with studies
-- **Eligibility Rules**: Age, language, course enrollment, participation history filters
-- **Credit System**: Track and award research credits automatically
-- **Email Notifications**: Booking confirmations, reminders (24h/2h), credit alerts
-- **No-Show Management**: Track attendance, enforce cancellation windows, limit no-shows
-- **Reporting**: Course credit reports (CSV), study participation analytics
+### Participant recruitment
+- **Browse studies** — lab and online studies with eligibility rules
+- **Account-based booking** — participants register, book timeslots, track credits
+- **Anonymous booking** — public sign-up with booking reference + PIN only (no login); QR-friendly landing pages, live signup counts, `.ics` calendar download
+- **Prescreening** — configurable questionnaire for study matching
+- **Email notifications** — booking confirmations and reminders (when SMTP is configured)
 
-## Tech Stack
+### Researcher & IRB
+- **Study & timeslot management** — scheduling, roster, attendance
+- **IRB protocol submission** — enter, submit, and track protocol workflows in PRAMS
+- **AI-assisted IRB review** — multi-agent protocol analysis (optional; requires API keys)
+- **Credit ledger** — course credit tracking and reporting (optional; some studies use cash compensation only)
+- **Reporting** — participation analytics and CSV exports
 
-- **Backend**: Django 5.0 + Django REST Framework
-- **Database**: PostgreSQL 16
-- **Task Queue**: Celery + Redis (for email reminders)
-- **Frontend**: Django Templates + HTMX + Alpine.js
-- **Email**: SMTP (configurable)
-- **Deployment**: Docker + Docker Compose
+## Tech stack
 
-## Quick Start
+- **Backend:** Django 5.0, Django REST Framework
+- **Database:** PostgreSQL (SQLite supported for local dev)
+- **Tasks:** Celery + Redis (email reminders, background jobs)
+- **Frontend:** Django templates, Bootstrap 5, HTMX
+- **Production:** Gunicorn behind Apache on `bayoupal.nicholls.edu` (`/hsirb/` mount)
+
+Docker Compose files are included for optional containerized local or cloud setups.
+
+## Quick start (local)
 
 ### Prerequisites
-- Python 3.11+
-- PostgreSQL 16+
-- Redis 7+
-- Docker & Docker Compose (optional)
+- Python 3.12+
+- PostgreSQL 16+ (or use SQLite for basic local dev)
+- Redis 7+ (optional; needed for Celery)
 
-### Local Development
+### Setup
 
-1. **Clone and setup environment**
 ```bash
-cd "/Users/ccastille/Documents/GitHub/PRAMS"
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+git clone https://gitlab.nicholls.edu/ccastille1/prams.git
+cd prams
+python -m venv .venv
+source .venv/bin/activate
 pip install -r requirements.txt
-```
 
-2. **Configure environment**
-```bash
-cp .env.example .env
-# Edit .env with your database credentials and settings
-```
+cp env.example .env
+# Edit .env: SECRET_KEY, DATABASE_URL, SITE_URL, etc.
 
-3. **Initialize database**
-```bash
 python manage.py migrate
 python manage.py createsuperuser
-```
-
-4. **Run development server**
-```bash
 python manage.py runserver
 ```
 
-5. **Run Celery worker** (separate terminal)
+Open [http://127.0.0.1:8000/](http://127.0.0.1:8000/).
+
+**Celery** (separate terminal, if using reminders/background tasks):
+
 ```bash
 celery -A config worker -l info
 celery -A config beat -l info
 ```
 
-Access the application at `http://localhost:8000`
+### Anonymous sign-up (example)
 
-## Project Structure
+After creating a study with `allows_anonymous_booking=True` and open timeslots:
+
+- Local: `/studies/signup/<study-slug>/`
+- Production: `https://bayoupal.nicholls.edu/hsirb/studies/signup/<study-slug>/`
+
+See `docs/ANONYMOUS_BOOKING_SECURITY.md` for security controls.
+
+## Project structure
 
 ```
-recruitment_system/
-├── config/              # Django project settings
+prams/
+├── config/                 # Django settings, URLs, Celery
 ├── apps/
-│   ├── accounts/        # User management, auth, profiles
-│   ├── studies/         # Studies, timeslots, signups
-│   ├── prescreening/    # Prescreen questions and responses
-│   ├── credits/         # Credit transactions and ledger
-│   ├── courses/         # Courses, enrollments, instructor management
-│   └── reporting/       # Analytics and CSV exports
-├── templates/           # HTML templates
-├── static/              # CSS, JS, images
-└── requirements.txt     # Python dependencies
+│   ├── accounts/           # Users, roles, CITI certificates
+│   ├── studies/            # Studies, timeslots, signups, IRB protocols
+│   ├── prescreening/
+│   ├── credits/
+│   ├── courses/
+│   └── reporting/
+├── templates/
+├── static/
+├── scripts/                # Flyer/build helpers, deploy utilities
+├── docs/                   # IT security, deployment, IRB handoffs
+├── deploy-to-server-rsync.sh
+└── requirements.txt
 ```
 
-## User Roles
+## User roles
 
 | Role | Capabilities |
 |------|-------------|
-| **Admin** | System settings, manage all users/studies/courses, global reports |
-| **Researcher** | Create studies, manage timeslots, mark attendance, grant credits |
-| **Instructor** | View course enrollments, download credit reports |
-| **Participant** | Complete prescreen, browse studies, book timeslots, track credits |
+| **Admin** | System settings, users, global configuration |
+| **Researcher** | Create studies, manage timeslots/rosters, submit IRB protocols |
+| **Instructor** | Course enrollments, credit reports |
+| **Participant** | Prescreen, browse studies, book timeslots, track credits |
+| **IRB member** | Review assigned protocols |
 
-## Deployment Recommendations
+Anonymous participants have no account; they book via public URLs only.
 
-### Low-Budget Hosting (~$25-60/month)
-- **App**: Fly.io, Render, or Railway ($7-20/mo)
-- **Database**: Managed PostgreSQL ($15-30/mo)
-- **Email**: Amazon SES (<$5/mo)
-- **Monitoring**: Sentry free tier
+## Deployment
 
-### University Infrastructure (Preferred)
-- Deploy on university VM (Ubuntu 22.04 LTS)
-- Use campus PostgreSQL cluster
-- Leverage university SMTP relay (free)
-- SSO via SAML/OIDC (Phase 3)
+### Nicholls production (bayoupal)
+
+1. Push to GitLab: `git push gitlab main`  
+   (HTTPS token help: `docs/GITLAB_PUSH_HTTPS.md`)
+2. Deploy from your Mac:
+
+```bash
+./deploy-to-server-rsync.sh
+```
+
+This rsyncs code to `bayoupal.nicholls.edu:~/hsirb-system/`, runs migrations, `collectstatic`, and attempts a service restart.
+
+3. If the site serves stale code after deploy, reload Gunicorn on the server:
+
+```bash
+kill -HUP $(pgrep -f 'hsirb-system/venv/bin/gunicorn' | head -1)
+```
+
+Full server setup: `HSIRB_DEPLOYMENT_GUIDE.md`.
+
+### Other hosting
+
+- **University VM** — Gunicorn + PostgreSQL + campus SMTP (see `CAMPUS_SERVER_DEPLOYMENT.md`)
+- **Railway / Render** — `RAILWAY_DEPLOYMENT_GUIDE.md`, `RENDER_DEPLOYMENT_GUIDE.md`
+- **Docker** — `docker-compose.yml` for local or small deployments
+
+Set `SITE_URL`, `FORCE_SCRIPT_NAME=/hsirb`, and `ALLOWED_HOSTS` for production. See `env.example`.
+
+## Documentation
+
+| Topic | File |
+|-------|------|
+| HSIRB server deploy | `HSIRB_DEPLOYMENT_GUIDE.md` |
+| GitLab push (HTTPS) | `docs/GITLAB_PUSH_HTTPS.md` |
+| Anonymous booking security | `docs/ANONYMOUS_BOOKING_SECURITY.md` |
+| IT compliance summary | `IT_EXECUTIVE_COMPLIANCE_SUMMARY.md` |
+| Quick local reference | `QUICKSTART.md` |
 
 ## License
 
-MIT License. See [LICENSE](LICENSE) for the full text.
+MIT License. See [LICENSE](LICENSE).
 
-**Dependencies:** PyMuPDF is licensed under AGPL-3.0. If you distribute a modified version of this software, you must comply with the AGPL (e.g., offer corresponding source code).
+**Dependencies:** PyMuPDF is AGPL-3.0. If you distribute a modified version, comply with AGPL source-offer requirements.
 
 ## Acknowledgments
 
-This system was designed and implemented with AI assistance. Inspired by [Sona Systems](https://www.sona-systems.com), a leading research participant management platform used by over 1,500 institutions globally.
-
-This project is not affiliated with, endorsed by, or connected to Sona Systems, Ltd. "Sona Systems" and "SONA" are trademarks of Sona Systems, Ltd. This software is an independent implementation of participant recruitment and study management.
-
-### References
-Sona Systems, Ltd. (2025). *Participant recruitment & study management made simple*. Retrieved October 2, 2025, from https://www.sona-systems.com
-
-
-
-
+Developed with AI assistance for Nicholls State University research operations. This is an independent participant-recruitment platform and is not affiliated with any commercial study-management vendor.
