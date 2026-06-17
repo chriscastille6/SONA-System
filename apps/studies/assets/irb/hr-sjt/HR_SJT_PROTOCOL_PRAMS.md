@@ -259,7 +259,7 @@ The consent form is stored electronically in the PRAMS system as part of the res
 
 ## Quick Checklist
 
-- [x] Replace all "SONA" references with "PRAMS"
+- [x] Replace legacy third-party platform references with "PRAMS"
 - [x] Use "may receive" or "potentially receiving" for course credit
 - [x] Add "Feedback reports are made available" to compensation
 - [ ] Update dates (start: ~2 weeks out, completion: ~6 months) – do at submission

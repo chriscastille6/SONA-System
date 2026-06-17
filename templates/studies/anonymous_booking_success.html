@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}Booking Confirmed - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h2>Booking Confirmed</h2>
+
+        <div class="card mt-3 border-success">
+            <div class="card-body">
+                <h5 class="card-title">{{ signup.timeslot.study.title }}</h5>
+                <p><strong>Date:</strong> {{ signup.timeslot.starts_at|date:"l, F d, Y" }}</p>
+                <p><strong>Time:</strong> {{ signup.timeslot.starts_at|time:"g:i A" }} - {{ signup.timeslot.ends_at|time:"g:i A" }}</p>
+                {% if signup.timeslot.location %}
+                    <p><strong>Location:</strong> {{ signup.timeslot.location }}</p>
+                {% endif %}
+
+                <div class="alert alert-warning mt-4">
+                    <p class="mb-2"><strong>Save these details.</strong> You will need them to cancel your booking.</p>
+                    <p class="mb-1"><strong>Booking reference:</strong></p>
+                    <p class="font-monospace fs-5 mb-3">{{ signup.booking_reference }}</p>
+                    <p class="mb-1"><strong>Cancellation PIN:</strong></p>
+                    <p class="font-monospace fs-4 mb-0">{{ signup.cancellation_pin }}</p>
+                </div>
+
+                <a href="{% url 'studies:timeslot_ical' signup.timeslot.id %}" class="btn btn-primary">
+                    Download Calendar Invite (.ics)
+                </a>
+                <a href="{% url 'studies:detail' signup.timeslot.study.id %}" class="btn btn-secondary ms-2">Back to Study</a>
+                <a href="{% url 'studies:anonymous_cancel_signup' %}" class="btn btn-outline-danger ms-2">Cancel Booking</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

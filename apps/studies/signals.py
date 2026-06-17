@@ -100,3 +100,4 @@ def log_participant_consent(sender, instance, created, **kwargs):
             },
         )
 
+

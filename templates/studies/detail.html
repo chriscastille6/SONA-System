@@ -11,7 +11,11 @@
             <div class="card-body">
                 <div class="mb-3">
                     <span class="badge bg-info">{{ study.get_mode_display }}</span>
-                    <span class="badge bg-success">{{ study.credit_value }} credits</span>
+                    {% if study.allows_anonymous_booking and study.credit_value == 0 %}
+                        <span class="badge bg-secondary">No account required</span>
+                    {% else %}
+                        <span class="badge bg-success">{{ study.credit_value }} credits</span>
+                    {% endif %}
                     <span class="badge bg-secondary">{{ study.duration_minutes }} minutes</span>
                 </div>
                 
@@ -22,7 +26,9 @@
                 <ul>
                     <li><strong>Researcher:</strong> {{ study.researcher.get_full_name }}</li>
                     <li><strong>Duration:</strong> {{ study.duration_minutes }} minutes</li>
-                    <li><strong>Credits:</strong> {{ study.credit_value }}</li>
+                    {% if not study.allows_anonymous_booking or study.credit_value > 0 %}
+                        <li><strong>Credits:</strong> {{ study.credit_value }}</li>
+                    {% endif %}
                     {% if study.mode == 'online' and study.external_link %}
                         <li><strong>Study Link:</strong> <a href="{{ study.external_link }}" target="_blank">{{ study.external_link }}</a></li>
                     {% endif %}
@@ -41,6 +47,48 @@
             <div class="alert alert-info mt-3">
                 <strong>Classroom-Based Study:</strong> This study is conducted in specific classrooms and is not available for general signup. IRB monitoring information is available to authorized personnel.
             </div>
+        {% elif study.allows_anonymous_booking %}
+            {% if signup_stats %}
+                <p class="mt-3">
+                    <span class="badge bg-primary">{{ signup_stats.total }} signed up so far</span>
+                </p>
+            {% endif %}
+            <h3 class="mt-4">Available Timeslots</h3>
+            <p class="text-muted">Sign up without creating an account. You will receive a booking reference and cancellation PIN.</p>
+
+            {% if timeslots %}
+                <div class="list-group mt-3">
+                    {% for timeslot in timeslots %}
+                        <div class="list-group-item {% if timeslot.is_full %}list-group-item-secondary{% endif %}">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h6 class="mb-1">{{ timeslot.starts_at|date:"l, F d, Y" }}</h6>
+                                    <p class="mb-1">{{ timeslot.starts_at|time:"g:i A" }} - {{ timeslot.ends_at|time:"g:i A" }}</p>
+                                    {% if timeslot.location %}
+                                        <small class="text-muted">Location: {{ timeslot.location }}</small>
+                                    {% endif %}
+                                    <br>
+                                    <small class="text-muted">{{ timeslot.current_signups }}/{{ timeslot.capacity }} spots filled</small>
+                                </div>
+                                <div>
+                                    {% if timeslot.is_full %}
+                                        <span class="badge bg-secondary">Full</span>
+                                    {% else %}
+                                        <a href="{% url 'studies:anonymous_book_timeslot' timeslot.id %}" class="btn btn-primary btn-sm">Sign Up</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <p class="mt-3">
+                    <a href="{% url 'studies:anonymous_cancel_signup' %}">Cancel an existing booking</a>
+                </p>
+            {% else %}
+                <div class="alert alert-warning">
+                    No available timeslots at this time. Please check back later.
+                </div>
+            {% endif %}
         {% elif study.mode == 'online' and study.external_link %}
             {% if user.is_authenticated and user.is_participant %}
                 <div class="mt-4">
@@ -99,7 +147,3 @@
     </div>
 </div>
 {% endblock %}
-
-
-
-

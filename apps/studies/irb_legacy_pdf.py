@@ -22,9 +22,10 @@ from reportlab.pdfgen import canvas as pdf_canvas
 
 class NumberedCanvas(pdf_canvas.Canvas):
     """Custom canvas to compute total page count and draw standard running footers with legacy HSIRB page numbering."""
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, start_page=1, **kwargs):
         super().__init__(*args, **kwargs)
         self.pages = []
+        self.start_page = start_page
 
     def showPage(self):
         self.pages.append(dict(self.__dict__))
@@ -46,11 +47,170 @@ class NumberedCanvas(pdf_canvas.Canvas):
         self.line(0.75 * inch, 0.75 * inch, letter[0] - 0.75 * inch, 0.75 * inch)
 
         # Draw legacy page indicator: "HSIRB X"
+        page_num = self.start_page + self._pageNumber - 1
         self.setFont("Helvetica", 9)
         self.setFillColor(colors.HexColor("#4b5563")) # slate gray
         self.drawString(0.75 * inch, 0.55 * inch, "NICHOLLS STATE UNIVERSITY  ·  HSIRB")
-        self.drawRightString(letter[0] - 0.75 * inch, 0.55 * inch, f"HSIRB {self._pageNumber}")
+        self.drawRightString(letter[0] - 0.75 * inch, 0.55 * inch, f"HSIRB {page_num}")
         self.restoreState()
+
+
+# Appendix PDFs merged after the main HSIRB form. Each tuple is (label, short title, filename).
+GOAL_SETTING_PDF_APPENDICES = [
+    ("A", "Pilot Recruitment Flyer", "Recruitment_pilot_20260312.pdf"),
+    ("A2", "Main Study Recruitment Flyer", "Recruitment_main_study_20260312.pdf"),
+    ("B", "Informed Consent Statement", "ConsentForm_version2_20260312.pdf"),
+    ("C", "Anagram Task Workbook (Study Instrument)", "Workbook_version2_20260312.pdf"),
+    ("D", "Participant Productivity Report", "ProductivityReport_version2_20260312.pdf"),
+    ("E", "Pilot Study Appreciation Letter", "Feedback_pilot_20260312.pdf"),
+    ("E2", "Main Study Debriefing & Appreciation Letter", "Feedback_main_20260312.pdf"),
+    ("F", "Approved UWaterloo Master Protocol", "UWaterloo protocol March 2026.pdf"),
+    ("G", "Psychological Science Registered Report Manuscript", "PsychScience manuscript RR2 - final.pdf"),
+    ("H", "Psychological Science Stage 1 In-Principle Acceptance Letter", "PsychScience_ScholarOne_acceptance_letter.pdf"),
+]
+
+
+def _hsirb_logo_path() -> Path | None:
+    logo_path = Path(
+        "/Users/ccastille/.cursor/projects/Users-ccastille-Documents-GitHub-SONA-System/"
+        "assets/image-3692823e-13cc-4d71-87c9-875833604dab.png"
+    )
+    return logo_path if logo_path.exists() else None
+
+
+def _build_appendices_list_page(start_page: int, appendices: list[tuple[str, str, str]]) -> bytes:
+    """Build a single list-of-appendices page."""
+    buf = io.BytesIO()
+    doc = SimpleDocTemplate(
+        buf,
+        pagesize=letter,
+        rightMargin=0.75 * inch,
+        leftMargin=0.75 * inch,
+        topMargin=0.85 * inch,
+        bottomMargin=0.95 * inch,
+        title="HSIRB Application — List of Appendices",
+    )
+
+    title_univ = ParagraphStyle(
+        name="ListUniv",
+        fontName="Helvetica-Bold",
+        fontSize=15,
+        leading=18,
+        textColor=colors.HexColor("#A6192E"),
+        alignment=TA_CENTER,
+        spaceAfter=3,
+    )
+    title_board = ParagraphStyle(
+        name="ListBoard",
+        fontName="Helvetica-Bold",
+        fontSize=12,
+        leading=14,
+        textColor=colors.HexColor("#1f2937"),
+        alignment=TA_CENTER,
+        spaceAfter=12,
+    )
+    title_form = ParagraphStyle(
+        name="ListForm",
+        fontName="Helvetica-Bold",
+        fontSize=11,
+        leading=13,
+        textColor=colors.HexColor("#1f2937"),
+        alignment=TA_CENTER,
+        spaceAfter=18,
+    )
+    list_label_style = ParagraphStyle(
+        name="ListLabel",
+        fontName="Helvetica-Bold",
+        fontSize=10,
+        leading=12,
+        textColor=colors.HexColor("#A6192E"),
+        alignment=TA_LEFT,
+    )
+    list_title_style = ParagraphStyle(
+        name="ListTitle",
+        fontName="Helvetica",
+        fontSize=10,
+        leading=12,
+        textColor=colors.HexColor("#374151"),
+        alignment=TA_LEFT,
+    )
+
+    story = []
+    logo_path = _hsirb_logo_path()
+    if logo_path:
+        img = Image(str(logo_path), width=1.8 * inch, height=1.2 * inch)
+        img.hAlign = "CENTER"
+        story.append(img)
+        story.append(Spacer(1, 4))
+    story.append(Paragraph("NICHOLLS STATE UNIVERSITY", title_univ))
+    story.append(Paragraph("HUMAN SUBJECTS INSTITUTIONAL REVIEW BOARD", title_board))
+    story.append(Paragraph("LIST OF APPENDICES", title_form))
+
+    list_rows = []
+    for label, short_title, _filename in appendices:
+        list_rows.append([
+            Paragraph(f"Appendix {label}", list_label_style),
+            Paragraph(short_title, list_title_style),
+        ])
+    list_table = Table(list_rows, colWidths=[1.35 * inch, 5.65 * inch])
+    list_table.setStyle(TableStyle([
+        ("VALIGN", (0, 0), (-1, -1), "TOP"),
+        ("BOTTOMPADDING", (0, 0), (-1, -1), 8),
+        ("TOPPADDING", (0, 0), (-1, -1), 8),
+        ("LINEBELOW", (0, 0), (-1, -1), 0.5, colors.HexColor("#e2e8f0")),
+    ]))
+    story.append(list_table)
+
+    doc.build(
+        story,
+        canvasmaker=lambda *args, **kwargs: NumberedCanvas(*args, start_page=start_page, **kwargs),
+    )
+    return buf.getvalue()
+
+
+def _build_appendix_title_page(start_page: int, label: str, short_title: str) -> bytes:
+    """Build a single centered title page for one appendix section."""
+    buf = io.BytesIO()
+    doc = SimpleDocTemplate(
+        buf,
+        pagesize=letter,
+        rightMargin=0.75 * inch,
+        leftMargin=0.75 * inch,
+        topMargin=0.85 * inch,
+        bottomMargin=0.95 * inch,
+        title=f"HSIRB Application — Appendix {label}",
+    )
+
+    appendix_label_style = ParagraphStyle(
+        name="TitleAppendixLabel",
+        fontName="Helvetica-Bold",
+        fontSize=22,
+        leading=26,
+        textColor=colors.HexColor("#A6192E"),
+        alignment=TA_CENTER,
+        spaceAfter=10,
+    )
+    appendix_title_style = ParagraphStyle(
+        name="TitleAppendixTitle",
+        fontName="Helvetica",
+        fontSize=13,
+        leading=17,
+        textColor=colors.HexColor("#1f2937"),
+        alignment=TA_CENTER,
+        spaceAfter=6,
+    )
+
+    story = [
+        Spacer(1, 2.75 * inch),
+        Paragraph(f"Appendix {label}", appendix_label_style),
+        Paragraph(short_title, appendix_title_style),
+    ]
+
+    doc.build(
+        story,
+        canvasmaker=lambda *args, **kwargs: NumberedCanvas(*args, start_page=start_page, **kwargs),
+    )
+    return buf.getvalue()
 
 
 def build_legacy_irb_pdf(submission) -> bytes:
@@ -150,10 +310,9 @@ def build_legacy_irb_pdf(submission) -> bytes:
     # =========================================================================
     # PAGE 1: COVER PREAMBLE & PROCEDURES
     # =========================================================================
-    import os
-    logo_path = "/Users/ccastille/.cursor/projects/Users-ccastille-Documents-GitHub-SONA-System/assets/image-3692823e-13cc-4d71-87c9-875833604dab.png"
-    if os.path.exists(logo_path):
-        img = Image(logo_path, width=1.8 * inch, height=1.2 * inch)
+    logo_path = _hsirb_logo_path()
+    if logo_path:
+        img = Image(str(logo_path), width=1.8 * inch, height=1.2 * inch)
         img.hAlign = 'CENTER'
         story.append(img)
         story.append(Spacer(1, 4))
@@ -199,8 +358,8 @@ def build_legacy_irb_pdf(submission) -> bytes:
     # =========================================================================
     # PAGE 2: BASIC PROJECT INFORMATION
     # =========================================================================
-    if os.path.exists(logo_path):
-        img2 = Image(logo_path, width=1.8 * inch, height=1.2 * inch)
+    if logo_path:
+        img2 = Image(str(logo_path), width=1.8 * inch, height=1.2 * inch)
         img2.hAlign = 'CENTER'
         story.append(img2)
         story.append(Spacer(1, 4))
@@ -307,28 +466,47 @@ def build_legacy_irb_pdf(submission) -> bytes:
         pdf_materials_path = Path(settings.BASE_DIR) / 'apps' / 'studies' / 'assets' / 'irb' / 'goal-setting' / 'materials' / 'pdf'
         if pdf_materials_path.exists():
             main_doc = fitz.open(stream=reportlab_pdf_bytes, filetype="pdf")
-            
-            # List of high-fidelity PDFs to append in logical, structured order
-            pdf_appendices = [
-                ("Appendix A: Recruitment Flyer / Announcement", "Recruitment_version2_20260312.pdf"),
-                ("Appendix B: Informed Consent Statement", "ConsentForm_version2_20260312.pdf"),
-                ("Appendix C: Anagram Task Workbook (Study Instrument)", "Workbook_version2_20260312.pdf"),
-                ("Appendix D: Participant Productivity Report", "ProductivityReport_version2_20260312.pdf"),
-                ("Appendix E: Debriefing & Appreciation Letter (to be distributed at study conclusion)", "Feedback_version2_20260312.pdf"),
-                ("Appendix F: Approved UWaterloo Master Protocol", "UWaterloo protocol March 2026.pdf"),
-                ("Appendix G: Psychological Science Registered Report Manuscript", "PsychScience manuscript RR2 - final.pdf"),
+            main_page_count = len(main_doc)
+
+            # Source PDFs in materials/pdf/. Appendix B consent is built from consent_form.docx
+            # via scripts/build_consent_from_docx.sh (LibreOffice). Flyers (A, A2) use ReportLab
+            # via scripts/generate_goal_setting_flyer.py. Appendices C–E and F–H are high-fidelity
+            # source PDFs (not .txt conversions).
+            present_appendices = [
+                (label, short_title, filename)
+                for label, short_title, filename in GOAL_SETTING_PDF_APPENDICES
+                if (pdf_materials_path / filename).exists()
             ]
-            
-            for title, filename in pdf_appendices:
-                pdf_file_path = pdf_materials_path / filename
-                if pdf_file_path.exists():
+
+            if present_appendices:
+                next_page = main_page_count + 1
+
+                list_pdf_bytes = _build_appendices_list_page(next_page, present_appendices)
+                list_doc = fitz.open(stream=list_pdf_bytes, filetype="pdf")
+                list_page_count = len(list_doc)
+                main_doc.insert_pdf(list_doc)
+                list_doc.close()
+                next_page += list_page_count
+
+                for label, short_title, filename in present_appendices:
+                    title_pdf_bytes = _build_appendix_title_page(next_page, label, short_title)
+                    title_doc = fitz.open(stream=title_pdf_bytes, filetype="pdf")
+                    title_page_count = len(title_doc)
+                    main_doc.insert_pdf(title_doc)
+                    title_doc.close()
+                    next_page += title_page_count
+
+                    pdf_file_path = pdf_materials_path / filename
                     append_doc = fitz.open(pdf_file_path)
+                    append_page_count = len(append_doc)
                     main_doc.insert_pdf(append_doc)
+                    append_doc.close()
+                    next_page += append_page_count
             
             combined_bytes = main_doc.write()
             main_doc.close()
             return combined_bytes
-    except Exception as e:
+    except Exception:
         pass
 
     return reportlab_pdf_bytes

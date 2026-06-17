@@ -64,6 +64,7 @@
                             </form>
                         </li>
                     {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{% url 'studies:list' %}">Browse Studies</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'accounts:login' %}">Login</a></li>
                         <li class="nav-item"><a class="nav-link" href="{% url 'accounts:register' %}">Register</a></li>
                     {% endif %}
@@ -88,11 +89,8 @@
     <footer class="bg-light py-4 mt-5">
         <div class="container text-center text-muted">
             <p>{{ INSTITUTION_NAME }}</p>
-            <p class="small mb-1">
+            <p class="small mb-0">
                 Research Participant Management System. Developed with AI assistance.
-            </p>
-            <p class="small text-muted mb-0">
-                Inspired by the proven workflows of <a href="https://www.sona-systems.com" target="_blank" rel="noopener" class="text-decoration-none">Sona Systems</a>.
             </p>
         </div>
     </footer>

@@ -24,7 +24,7 @@ class Command(BaseCommand):
 
         # Get or create the study
         study, study_created = Study.objects.get_or_create(
-            slug='goal-setting',
+            slug=GOAL_SETTING_STUDY_SLUG,
             defaults={
                 'title': 'A Study in Decision Making',
                 'description': (
@@ -38,6 +38,7 @@ class Command(BaseCommand):
                 'is_active': True,
                 'is_approved': True,
                 'irb_status': 'pending',  # Will be updated to approved below
+                'allows_anonymous_booking': True,
                 'osf_enabled': True,
                 'osf_project_id': 'f5u39',
                 'osf_link': 'https://osf.io/f5u39/',
@@ -46,12 +47,18 @@ class Command(BaseCommand):
 
         # Update OSF fields if study already exists
         if not study_created:
+            updated_fields = []
             if not study.osf_enabled or study.osf_link != 'https://osf.io/f5u39/':
                 study.osf_enabled = True
                 study.osf_project_id = 'f5u39'
                 study.osf_link = 'https://osf.io/f5u39/'
-                study.save(update_fields=['osf_enabled', 'osf_project_id', 'osf_link'])
-                self.stdout.write(self.style.SUCCESS('✓ Updated OSF link: https://osf.io/f5u39/'))
+                updated_fields.extend(['osf_enabled', 'osf_project_id', 'osf_link'])
+            if not study.allows_anonymous_booking:
+                study.allows_anonymous_booking = True
+                updated_fields.append('allows_anonymous_booking')
+            if updated_fields:
+                study.save(update_fields=updated_fields)
+                self.stdout.write(self.style.SUCCESS('✓ Updated study settings (OSF / anonymous booking)'))
 
         # PI: Dr. Christopher Castille
         pi, pi_created = User.objects.get_or_create(

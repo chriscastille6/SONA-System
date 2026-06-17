@@ -1,7 +1,8 @@
 from django.conf import settings
 from django.core import mail
+from django.shortcuts import resolve_url
 from django.test import TestCase, override_settings
-from django.urls import reverse
+from django.urls import clear_script_prefix, reverse, set_script_prefix
 
 from apps.accounts.models import User
 
@@ -76,10 +77,7 @@ class PasswordChangeFlowTests(TestCase):
     def test_password_change_redirects_when_anonymous(self):
         response = self.client.get(reverse("accounts:password_change"))
         self.assertEqual(response.status_code, 302)
-        self.assertTrue(
-            response.url.startswith(settings.LOGIN_URL)
-            or settings.LOGIN_URL in response.url
-        )
+        self.assertIn(resolve_url(settings.LOGIN_URL), response.url)
 
     def test_password_change_post_updates_password(self):
         self.client.login(email=self.user.email, password="OriginalPassword123!")
@@ -102,3 +100,24 @@ class PasswordChangeFlowTests(TestCase):
         response = self.client.get(reverse("accounts:password_change"))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "accounts/password_change.html")
+
+
+@override_settings(
+    FORCE_SCRIPT_NAME="/hsirb",
+    LOGIN_URL="accounts:login",
+    ALLOWED_HOSTS=["testserver", "localhost", "127.0.0.1"],
+)
+class LoginRedirectPrefixTests(TestCase):
+    def setUp(self):
+        set_script_prefix("/hsirb/")
+
+    def tearDown(self):
+        clear_script_prefix()
+
+    def test_anonymous_protocol_submission_redirects_to_prefixed_login(self):
+        # Request path as Gunicorn sees it (Apache strips /hsirb/ before proxying).
+        response = self.client.get(
+            "/studies/protocol/submissions/7a858688-fee9-4b0a-992d-2371f273db7d/"
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(response.url.startswith("/hsirb/accounts/login/"))

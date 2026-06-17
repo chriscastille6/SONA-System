@@ -6,6 +6,7 @@ Protocol: IRB 2024-07-30-001 CBA
 from django.core.management.base import BaseCommand
 from apps.accounts.models import User
 from apps.studies.models import Study, ProtocolSubmission
+from apps.studies.goal_setting_study import GOAL_SETTING_STUDY_SLUG
 
 
 class Command(BaseCommand):
@@ -14,7 +15,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write('📋 Populating Goal Setting Protocol Details...\n')
 
-        study = Study.objects.filter(slug='goal-setting').first()
+        study = Study.objects.filter(slug=GOAL_SETTING_STUDY_SLUG).first()
         if not study:
             self.stdout.write(self.style.ERROR('✗ Goal Setting study not found'))
             return
@@ -109,9 +110,11 @@ class Command(BaseCommand):
         )
 
         submission.recruitment_method = (
-            "Recruitment will occur via classroom visits using an approved informational flyer. "
-            "Instructors may offer course credit or bonus points for participation, and the flyer "
-            "mentions a cash reward of up to $14.00."
+            "Recruitment will occur via classroom visits using approved informational flyers. "
+            "Two flyer versions are included in the HSIRB packet (Appendix A for pilot sessions, "
+            "Appendix A2 for main study); only the version matching the session is shown to "
+            "participants. Instructors may offer course credit or bonus points for participation. "
+            "The main-study flyer mentions a cash reward of up to $14.00; the pilot flyer does not."
         )
 
         submission.inclusion_criteria = (
@@ -229,10 +232,11 @@ class Command(BaseCommand):
         )
 
         submission.consent_procedures = (
-            "Participants provide written informed consent before beginning the session. The consent form "
-            "details the study's purpose, procedures, risks, and benefits, emphasizing that participation "
-            "is entirely voluntary and that they may withdraw at any time without penalty. Students who "
-            "choose not to participate are offered an equivalent alternative assignment for equal course credit."
+            "Participants provide written informed consent by signing the consent form before beginning "
+            "the session. The consent form details the study's purpose, procedures, risks, and benefits, "
+            "emphasizing that participation is entirely voluntary and that they may withdraw at any time "
+            "without penalty. Students who choose not to participate are offered an equivalent alternative "
+            "assignment for equal course credit."
         )
 
         submission.estimated_start_date = "Fall 2024"
@@ -248,8 +252,8 @@ class Command(BaseCommand):
         submission.co_investigators = (
             "Dr. Ann-Marie R. Castille (Associate Professor of Management), ann-marie.castille@nicholls.edu, 985-448-4738\n"
             "Dr. Samantha Falgout (Assistant Professor of Accounting), samantha.falgout@nicholls.edu, 985-448-4193\n"
-            "Dr. Kaitlin Gravois (Instructor of Management), kaitlin.gravois@nicholls.edu, 985-448-4187\n"
-            "Dr. Adrien Maught (Instructor of Management), adrien.maught@nicholls.edu, 985-448-4194"
+            "Dr. Kaitlin Gravois (Assistant Professor of Marketing), kaitlin.gravois@nicholls.edu, 985-448-4187\n"
+            "Dr. Adrien Maught (Assistant Professor of Marketing), adrien.maught@nicholls.edu, 985-448-4194"
         )
 
         submission.citi_training_completion = (
@@ -311,13 +315,17 @@ class Command(BaseCommand):
         )
 
         submission.appendices_notes = (
-            "Appendix A: Recruitment Flyer / Announcement\n"
+            "Appendix A: Pilot Recruitment Flyer (no cash compensation language; used for pilot sessions only)\n"
+            "Appendix A2: Main Study Recruitment Flyer (includes cash compensation up to $14.00; used for main data collection)\n"
+            "Internal IRB note: Both flyers are submitted for HSIRB review. Participants see only the flyer "
+            "that matches their session (pilot or main study).\n"
             "Appendix B: Informed Consent Statement\n"
             "Appendix C: Anagram Task Workbook (Study Instrument)\n"
             "Appendix D: Participant Productivity Report\n"
             "Appendix E: Debriefing & Appreciation Letter (to be distributed at study conclusion)\n"
             "Appendix F: Approved UWaterloo Master Protocol\n"
             "Appendix G: Psychological Science Registered Report Manuscript\n"
+            "Appendix H: Psychological Science Stage 1 In-Principle Acceptance Letter\n"
             "Addendum 1: Procedural modifications (H4, H5, follow-up survey, 4th condition, "
             "experimenter script, course credit)"
         )

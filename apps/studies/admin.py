@@ -10,6 +10,7 @@ from .models import (
     Study,
     Timeslot,
     Signup,
+    AnonymousSignup,
     Response,
     StudyEmailContact,
     StudentDataConsent,
@@ -193,6 +194,22 @@ class SignupAdmin(admin.ModelAdmin):
     search_fields = ['participant__email', 'timeslot__study__title']
     raw_id_fields = ['timeslot', 'participant']
     readonly_fields = ['booked_at', 'consented_at']
+
+
+@admin.register(AnonymousSignup)
+class AnonymousSignupAdmin(admin.ModelAdmin):
+    list_display = ['timeslot', 'booking_reference', 'status', 'booked_at']
+    list_filter = ['status', 'booked_at']
+    search_fields = ['timeslot__study__title', 'booking_reference']
+    raw_id_fields = ['timeslot']
+    readonly_fields = [
+        'id',
+        'booking_reference',
+        'cancellation_pin',
+        'booked_at',
+        'cancelled_at',
+        'consent_text_version',
+    ]
 
 
 @admin.register(Response)

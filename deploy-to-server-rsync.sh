@@ -4,11 +4,19 @@
 #
 # Usage: run from repo root on your Mac:
 #   ./deploy-to-server-rsync.sh
+#   ./deploy-to-server-rsync.sh --skip-populate   # skip populate_goal_setting_protocol_details
 #
 # Requires: rsync, ssh access to bayoupal. Server keeps its own .git and venv;
 # we only sync application code and then run migrate/collectstatic/restart.
 
 set -e
+SKIP_POPULATE=false
+for arg in "$@"; do
+  case "$arg" in
+    --skip-populate) SKIP_POPULATE=true ;;
+  esac
+done
+
 SERVER_USER="ccastille"
 SERVER_HOST="bayoupal.nicholls.edu"
 REMOTE_PATH="hsirb-system"
@@ -32,7 +40,13 @@ rsync -avz --delete \
   --exclude='node_modules' \
   "$REPO_ROOT/" "${SERVER_USER}@${SERVER_HOST}:~/${REMOTE_PATH}/"
 
-echo "Running migrate, collectstatic, populate_protocol, cleanup, restart on server..."
-ssh "${SERVER_USER}@${SERVER_HOST}" "cd ~/${REMOTE_PATH} && source venv/bin/activate && python manage.py migrate --noinput && python manage.py collectstatic --noinput && python manage.py populate_goal_setting_protocol_details && python manage.py cleanup_test_studies && echo 'Restarting app...' && (sudo systemctl restart hsirb-system 2>/dev/null || true)"
+if [ "$SKIP_POPULATE" = true ]; then
+  echo "Running migrate, collectstatic, cleanup, restart on server (--skip-populate)..."
+  POPULATE_CMD=""
+else
+  echo "Running migrate, collectstatic, populate_protocol, cleanup, restart on server..."
+  POPULATE_CMD="python manage.py populate_goal_setting_protocol_details && "
+fi
+ssh "${SERVER_USER}@${SERVER_HOST}" "cd ~/${REMOTE_PATH} && source venv/bin/activate && python manage.py migrate --noinput && python manage.py collectstatic --noinput && ${POPULATE_CMD}python manage.py cleanup_test_studies && echo 'Restarting app...' && (sudo systemctl restart hsirb-system 2>/dev/null || true)"
 echo "Done. Test: https://bayoupal.nicholls.edu/hsirb/"
 echo "If restart failed, SSH in and run: sudo systemctl restart hsirb-system"

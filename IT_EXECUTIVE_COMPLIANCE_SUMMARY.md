@@ -30,6 +30,7 @@ The system is a custom, internal web application that replaces SONA for **federa
 | **IDOR (access to other users’ data)** | All sensitive views resolve objects with **ownership or role scope** (e.g. `Signup` by participant or by study researcher). Unauthorized access returns 404 where appropriate to avoid information disclosure. |
 | **Cross-database linkage** | For research exports, a **system-specific salt** (from environment) is used to derive opaque participant identifiers so hashes from this system cannot be reversed or linked to other anonymous research databases. |
 | **CSRF** | Django CSRF middleware enabled; forms and state-changing requests use CSRF tokens. Protocol submission API uses token-based or same-origin submission (no blanket CSRF exemption). |
+| **Anonymous booking abuse** | IP rate limits on book/cancel; PIN checked with constant-time compare; generic cancel errors; audit trail with IP/user-agent (no student PII stored). |
 | **SQL injection** | ORM used throughout; no raw SQL with user input. Management scripts that use raw SQL use parameterized or controlled inputs. |
 | **XSS** | User-supplied content is escaped in templates; message display avoids unsafe HTML unless strictly controlled/sanitized. |
 
@@ -65,6 +66,7 @@ The following were addressed in code and configuration:
 - **L-2:** Course list and detail require authentication.
 - **L-3:** Signal-based audit logs documented; view-created logs can include IP/user-agent.
 - **L-4:** Course credits CSV access logged for audit; FERPA data access restricted to instructor/admin.
+- **Anonymous booking:** Public slot sign-up without accounts uses no student PII, CSRF-protected POST, IP rate limits, constant-time PIN verification, session-scoped confirmation, IRB-gated studies only, and audit logs with IP/user-agent. See `docs/ANONYMOUS_BOOKING_SECURITY.md`.
 
 ---
 

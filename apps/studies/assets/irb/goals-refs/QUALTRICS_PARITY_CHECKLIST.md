@@ -26,7 +26,7 @@ Use this checklist if you use **Qualtrics** (or another host) instead—or to ve
 ## Timing & credits
 
 - [ ] Pilot **median completion time** is consistent with **15–25 minutes**; adjust listing if not.
-- [ ] Credit value in PRAMS study record matches what participants see (**0.5** SONA credit unless amended).
+- [ ] Credit value in PRAMS study record matches what participants see (**0.5** research credit unless amended).
 
 ## After checklist
 

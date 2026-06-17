@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block title %}Confirm Sign-Up - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <h2>Confirm Sign-Up</h2>
+        <p class="text-muted">No account required. You will receive a booking reference and cancellation PIN.</p>
+
+        <div class="card mt-3">
+            <div class="card-body">
+                <h5 class="card-title">{{ timeslot.study.title }}</h5>
+
+                <p><strong>Date:</strong> {{ timeslot.starts_at|date:"l, F d, Y" }}</p>
+                <p><strong>Time:</strong> {{ timeslot.starts_at|time:"g:i A" }} - {{ timeslot.ends_at|time:"g:i A" }}</p>
+                {% if timeslot.location %}
+                    <p><strong>Location:</strong> {{ timeslot.location }}</p>
+                {% endif %}
+                <p><strong>Duration:</strong> {{ timeslot.study.duration_minutes }} minutes</p>
+
+                <div class="alert alert-warning">
+                    <strong>Cancellation Policy:</strong> You can cancel up to {{ CANCELLATION_WINDOW_HOURS }} hours before the session starts using your booking reference and PIN.
+                </div>
+
+                {% if timeslot.study.consent_text %}
+                    <h6>Informed Consent</h6>
+                    <div class="alert alert-info small">
+                        {{ timeslot.study.consent_text|linebreaks }}
+                    </div>
+                {% endif %}
+
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="consent" required>
+                        <label class="form-check-label" for="consent">
+                            I have read and agree to participate in this study
+                        </label>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Confirm Sign-Up</button>
+                        <a href="{% url 'studies:detail' timeslot.study.id %}" class="btn btn-secondary">Back</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

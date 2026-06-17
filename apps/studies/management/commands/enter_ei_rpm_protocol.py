@@ -82,7 +82,7 @@ align with their actual performance.
 Participants will be undergraduate students enrolled in psychology and business courses at 
 Nicholls State University. Participants must be at least 18 years of age. There are no 
 specific exclusion criteria beyond age requirements. Participants will be recruited through 
-the SONA system and will receive course credit for participation.
+the PRAMS system and will receive course credit for participation.
         '''.strip()
         
         submission.research_procedures = '''
@@ -112,7 +112,7 @@ The study involves the following procedures:
 7. **Debriefing**: Participants will receive a comprehensive debriefing explaining the study's purpose, 
    the Dunning-Kruger effect, and resources for further learning about emotional intelligence.
 
-All data collection will occur online through the SONA system. The entire procedure takes approximately 
+All data collection will occur online through the PRAMS system. The entire procedure takes approximately 
 30-40 minutes to complete.
         '''.strip()
         
@@ -157,10 +157,10 @@ This research serves educational purposes by:
         
         # Recruitment
         submission.recruitment_method = '''
-Participants will be recruited through the SONA (System for Online Research) platform. 
+Participants will be recruited through PRAMS (Participant Recruitment and Management System). 
 Students enrolled in psychology and business courses that offer research participation credit 
-will be able to view and sign up for this study through the SONA system. Recruitment materials 
-will be posted on the SONA system with a clear description of the study requirements, duration, 
+will be able to view and sign up for this study through the PRAMS system. Recruitment materials 
+will be posted on the PRAMS system with a clear description of the study requirements, duration, 
 and credit value.
         '''.strip()
         
@@ -181,7 +181,7 @@ Requirements: Must be 18 years of age or older
         submission.inclusion_criteria = '''
 - Must be at least 18 years of age
 - Must be currently enrolled as a student at Nicholls State University
-- Must be enrolled in a course that offers research participation credit through SONA
+- Must be enrolled in a course that offers research participation credit through PRAMS
 - Must have access to a computer or device with internet connection
 - Must be able to view video content and complete online assessments
         '''.strip()
@@ -218,7 +218,7 @@ This research contributes to:
         '''.strip()
         
         submission.payment_compensation = '''
-Participants will receive 1.0 course credit through the SONA system for their participation. 
+Participants will receive 1.0 course credit through the PRAMS system for their participation. 
 No monetary compensation will be provided.
         '''.strip()
         
@@ -233,7 +233,7 @@ This study qualifies for exempt status under Category D (Educational settings, a
 because:
 
 1. The study involves minimal risk to participants (online surveys and assessments)
-2. All data collection is anonymous - participants are identified only by SONA ID numbers
+2. All data collection is anonymous - participants are identified only by PRAMS ID numbers
 3. The study involves standard educational and psychological assessment procedures
 4. No sensitive topics or vulnerable populations are involved
 5. Participants are adults (18+) who can provide informed consent
@@ -241,7 +241,7 @@ because:
 7. All procedures are standard in educational research settings
 
 The study involves only anonymous data collection through online assessments, with no collection 
-of identifying information beyond SONA ID numbers (which are already anonymized in the system).
+of identifying information beyond PRAMS ID numbers (which are already anonymized in the system).
         '''.strip()
         
         # Risks
@@ -256,7 +256,7 @@ This study involves minimal risk to participants. The primary potential risks ar
    is compensated with course credit.
 
 3. **Privacy concerns**: While all data is anonymized, there is a minimal risk of data breach. 
-   However, no personally identifying information is collected beyond SONA ID numbers.
+   However, no personally identifying information is collected beyond PRAMS ID numbers.
 
 The risks in this study are no greater than those encountered in normal daily activities or 
 routine educational assessments.
@@ -268,7 +268,7 @@ Risks are mitigated through:
 1. **Comprehensive debriefing**: All participants receive detailed debriefing explaining the study 
    purpose, their performance, and the Dunning-Kruger effect in a supportive, educational context.
 
-2. **Anonymization**: All data is collected with SONA ID numbers only - no names, email addresses, 
+2. **Anonymization**: All data is collected with PRAMS ID numbers only - no names, email addresses, 
    or other identifying information is collected.
 
 3. **Voluntary participation**: Participants can withdraw at any time without penalty.
@@ -282,7 +282,7 @@ Risks are mitigated through:
         
         # Data Handling
         submission.data_collection_methods = '''
-Data will be collected through the SONA online platform using the following methods:
+Data will be collected through the PRAMS online platform using the following methods:
 
 1. **Demographic and background information**: Collected through online forms
 2. **Self-estimate assessments**: Collected through online rating scales and percentile estimates
@@ -291,23 +291,23 @@ Data will be collected through the SONA online platform using the following meth
 5. **Feedback responses**: Collected through online forms after performance feedback
 
 All data collection occurs through secure, encrypted online forms. Data is automatically stored 
-in the SONA database system with SONA ID numbers as the only identifier.
+in the PRAMS database system with PRAMS ID numbers as the only identifier.
         '''.strip()
         
         submission.data_storage = '''
 All data will be stored securely on password-protected servers maintained by Nicholls State University. 
-Data will be stored in the SONA system database, which uses industry-standard encryption and security 
+Data will be stored in the PRAMS system database, which uses industry-standard encryption and security 
 measures. Access to data is restricted to the principal investigator and authorized research team members.
 
-Data will be stored with SONA ID numbers only - no personally identifying information (names, 
+Data will be stored with PRAMS ID numbers only - no personally identifying information (names, 
 email addresses, etc.) will be stored with the research data.
         '''.strip()
         
         submission.confidentiality_procedures = '''
 Confidentiality is maintained through:
 
-1. **Anonymization**: Participants are identified only by SONA ID numbers, which are already 
-   anonymized in the SONA system. No names, email addresses, or other identifying information 
+1. **Anonymization**: Participants are identified only by PRAMS ID numbers, which are already 
+   anonymized in the PRAMS system. No names, email addresses, or other identifying information 
    is collected or stored with research data.
 
 2. **Secure access**: Only the principal investigator and authorized research team members have 
@@ -340,7 +340,7 @@ All data access is logged and monitored.
         
         # Consent Procedures
         submission.consent_procedures = '''
-Informed consent will be obtained electronically through the SONA system before participants 
+Informed consent will be obtained electronically through the PRAMS system before participants 
 begin the study. The consent process includes:
 
 1. **Consent form display**: Participants will see a comprehensive consent form explaining the 
@@ -358,7 +358,7 @@ begin the study. The consent process includes:
 5. **Contact information**: The consent form includes contact information for the principal 
    investigator and IRB for questions or concerns.
 
-The consent form is stored electronically in the SONA system as part of the research record.
+The consent form is stored electronically in the PRAMS system as part of the research record.
         '''.strip()
         
         # Investigator Information
@@ -429,7 +429,7 @@ and aggregated.
 Participants who are interested in learning about the study results can:
 - Contact the principal investigator to request a summary of findings
 - Access published results through academic journals (when published)
-- Receive information about publications through the SONA system (if they opt in)
+- Receive information about publications through the PRAMS system (if they opt in)
 
 A summary of findings will be prepared and made available to participants upon request after 
 data analysis is complete.
@@ -438,11 +438,11 @@ data analysis is complete.
         # Appendices
         submission.appendices_notes = '''
 Supporting documents include:
-- Consent form (stored in SONA system)
+- Consent form (stored in PRAMS system)
 - Emotional Intelligence Assessment items and scenarios
 - Raven's Progressive Matrices test materials
 - Debriefing materials and resources
-- Recruitment materials posted on SONA system
+- Recruitment materials posted on PRAMS system
 
 All materials are available for IRB review upon request.
         '''.strip()

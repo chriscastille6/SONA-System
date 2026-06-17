@@ -11,6 +11,7 @@ def site_settings(request):
         'INSTITUTION_NAME': settings.INSTITUTION_NAME,
         'SITE_URL': settings.SITE_URL,
         'PLATFORM_SUPPORT_EMAIL': getattr(settings, 'PLATFORM_SUPPORT_EMAIL', ''),
+        'CANCELLATION_WINDOW_HOURS': settings.CANCELLATION_WINDOW_HOURS,
     }
 
 

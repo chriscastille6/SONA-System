@@ -15,7 +15,7 @@ from django.conf import settings
 from datetime import timedelta
 from typing import Tuple
 
-from .models import Signup, Study, Response, IRBReviewerAssignment, StudyUpdate, ProtocolSubmission
+from .models import Signup, Study, Response, IRBReviewerAssignment, StudyUpdate, ProtocolSubmission, AnonymousSignup
 import importlib
 
 logger = logging.getLogger(__name__)
@@ -159,6 +159,55 @@ Thank you,
         return f"Notified {submission.college_rep.email}"
     except Exception as exc:
         return f"Failed to notify college representative: {exc}"
+
+
+def notify_researcher_about_anonymous_signup(signup: AnonymousSignup) -> str:
+    """Email the study researcher when an anonymous slot is booked (no participant PII)."""
+    timeslot = signup.timeslot
+    study = timeslot.study
+    researcher = study.researcher
+    if not researcher or not researcher.email:
+        return "No researcher email configured."
+
+    if not getattr(settings, 'EMAIL_HOST', ''):
+        return "Email not configured; researcher was not notified."
+
+    roster_link = f"{settings.SITE_URL}/studies/researcher/{study.id}/roster/"
+    starts_local = timezone.localtime(timeslot.starts_at)
+    location = timeslot.location or "See study details"
+    remaining = timeslot.available_capacity
+
+    subject = f"Anonymous slot booked: {study.title}"
+    message = f"""
+Hello {researcher.get_full_name() or 'Researcher'},
+
+An anonymous participant has signed up for your study.
+
+Study: {study.title}
+Timeslot: {starts_local.strftime('%A, %B %d, %Y at %I:%M %p')}
+Location: {location}
+Spots remaining in this timeslot: {remaining}
+
+View your roster:
+{roster_link}
+
+No participant identifiers are stored for anonymous sign-ups.
+
+Thank you,
+{settings.SITE_NAME}
+"""
+
+    try:
+        send_mail(
+            subject=subject,
+            message=message.strip(),
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[researcher.email],
+            fail_silently=False,
+        )
+        return f"Notified {researcher.email}"
+    except Exception as exc:
+        return f"Failed to notify researcher: {exc}"
 
 
 def notify_reviewers_about_assignment(submission: ProtocolSubmission) -> str:

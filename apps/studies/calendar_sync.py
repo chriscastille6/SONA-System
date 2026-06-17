@@ -65,7 +65,7 @@ def build_timeslot_event_payload(timeslot: Timeslot):
         f"Study: {timeslot.study.title}",
         f"Capacity: {timeslot.capacity}",
         f"Active signups: {timeslot.current_signups}",
-        f"Manage in SONA: {manage_url}",
+        f"Manage sign-ups: {manage_url}",
     ]
     if timeslot.notes:
         description_lines.extend(["", "Internal notes:", timeslot.notes.strip()])

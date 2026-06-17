@@ -4,7 +4,7 @@ Views for studies app.
 from django.db.models import Prefetch, Q
 from django.db import models, transaction
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import JsonResponse, Http404, HttpResponse
+from django.http import JsonResponse, Http404, HttpResponse, HttpResponsePermanentRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils import timezone
@@ -18,6 +18,7 @@ import json
 import logging
 import re
 import uuid
+from datetime import timezone as dt_timezone
 from pathlib import Path
 
 import markdown
@@ -27,6 +28,7 @@ from .models import (
     Study,
     Timeslot,
     Signup,
+    AnonymousSignup,
     Response,
     StudyEmailContact,
     StudentDataConsent,
@@ -38,12 +40,24 @@ from .models import (
     CollegeRepresentative,
     ProtocolAmendment,
 )
-from .irb_utils import assign_college_rep, route_submission, get_irb_chair
+from .irb_utils import assign_college_rep, route_submission, get_irb_chair, studies_for_researcher_dashboard
 from .mngt425_consent_pdf import build_exhibits_consent_pdf, safe_pdf_filename
 from .tasks import (
     run_sequential_bayes_monitoring,
     run_irb_ai_review,
     notify_irb_members_about_update,
+)
+from .signup_stats import get_study_signup_stats
+from .qr_utils import build_signup_qr_png
+from .anonymous_booking_security import (
+    INVALID_CANCEL_MESSAGE,
+    booking_rate_limits,
+    cancel_rate_limits,
+    finalize_anonymous_signup,
+    log_anonymous_cancel_audit,
+    parse_booking_reference,
+    pins_match,
+    rate_limit_response,
 )
 from apps.credits.models import AuditLog
 
@@ -61,7 +75,7 @@ def user_can_access_study(user, study):
 
 def extam4_summary_html(request):
     """Serve the EXT-AM4 / goals-refs PRAMS summary HTML (file locations, quick reference). Deployed at /studies/docs/extam4-summary/."""
-    path = Path(settings.BASE_DIR) / "docs" / "EXTAM4_SONA_SUMMARY.html"
+    path = Path(settings.BASE_DIR) / "docs" / "EXTAM4_PRAMS_SUMMARY.html"
     if not path.exists():
         raise Http404("Summary not found.")
     try:
@@ -178,6 +192,74 @@ def study_list(request):
     return render(request, 'studies/list.html', {'studies': studies})
 
 
+def _public_anonymous_study(slug):
+    return get_object_or_404(
+        Study.active_approved,
+        slug=slug,
+        allows_anonymous_booking=True,
+    )
+
+
+def _redirect_legacy_goal_setting_signup(request, suffix=''):
+    """Permanent redirect from old marketing slug to neutral public slug."""
+    from apps.studies.goal_setting_study import GOAL_SETTING_STUDY_SLUG
+    if suffix == 'count.json':
+        name = 'studies:public_study_signup_count'
+    elif suffix == 'qr.png':
+        name = 'studies:public_study_signup_qr'
+    else:
+        name = 'studies:public_study_signup'
+    return HttpResponsePermanentRedirect(
+        reverse(name, kwargs={'slug': GOAL_SETTING_STUDY_SLUG})
+    )
+
+
+def public_study_signup(request, slug):
+    """
+    Marketing / QR landing page for anonymous sign-up (stable slug URL, no login).
+    """
+    study = _public_anonymous_study(slug)
+    timeslots = study.timeslots.filter(
+        starts_at__gte=timezone.now(),
+        is_cancelled=False,
+    ).order_by('starts_at')
+    stats = get_study_signup_stats(study)
+    signup_url = request.build_absolute_uri(
+        reverse('studies:public_study_signup', kwargs={'slug': slug})
+    )
+    return render(request, 'studies/public_study_signup.html', {
+        'study': study,
+        'timeslots': timeslots,
+        'signup_stats': stats,
+        'signup_url': signup_url,
+        'qr_image_url': reverse('studies:public_study_signup_qr', kwargs={'slug': slug}),
+    })
+
+
+def public_study_signup_count(request, slug):
+    """JSON signup totals for live counters (aggregate only, no PII)."""
+    study = _public_anonymous_study(slug)
+    stats = get_study_signup_stats(study)
+    return JsonResponse({
+        'study_slug': slug,
+        'total_signups': stats['total'],
+        'anonymous_signups': stats['anonymous'],
+        'registered_signups': stats['registered'],
+    })
+
+
+def public_study_signup_qr(request, slug):
+    """Serve QR code PNG for embedding in flyers and web pages."""
+    _public_anonymous_study(slug)
+    signup_url = request.build_absolute_uri(
+        reverse('studies:public_study_signup', kwargs={'slug': slug})
+    )
+    png = build_signup_qr_png(signup_url)
+    response = HttpResponse(png, content_type='image/png')
+    response['Cache-Control'] = 'public, max-age=3600'
+    return response
+
+
 def study_detail(request, pk):
     """Study detail view. Uses active_approved so expired studies return 404 (IRB compliance)."""
     study = get_object_or_404(Study.active_approved, pk=pk)
@@ -187,17 +269,22 @@ def study_detail(request, pk):
         starts_at__gte=timezone.now(),
         is_cancelled=False
     ).order_by('starts_at')
-    
-    return render(request, 'studies/detail.html', {
+
+    context = {
         'study': study,
-        'timeslots': timeslots
-    })
+        'timeslots': timeslots,
+    }
+    if study.allows_anonymous_booking:
+        context['signup_stats'] = get_study_signup_stats(study)
+    return render(request, 'studies/detail.html', context)
 
 
 @login_required
 def book_timeslot(request, pk):
     """Book a timeslot. Study must be active_approved (IRB compliance)."""
     timeslot = get_object_or_404(Timeslot, pk=pk)
+    if timeslot.study.allows_anonymous_booking:
+        return redirect('studies:anonymous_book_timeslot', pk=pk)
     if not Study.active_approved.filter(pk=timeslot.study_id).exists():
         raise Http404("Study is not available for signup.")
     
@@ -255,6 +342,143 @@ def cancel_signup(request, pk):
     return render(request, 'studies/cancel_confirm.html', {'signup': signup})
 
 
+def _anonymous_booking_allowed(timeslot):
+    """Whether this timeslot accepts anonymous public booking."""
+    study = timeslot.study
+    if not study.allows_anonymous_booking:
+        return False
+    if not Study.active_approved.filter(pk=study.pk).exists():
+        return False
+    if timeslot.is_cancelled or timeslot.is_past:
+        return False
+    return True
+
+
+def anonymous_book_timeslot(request, pk):
+    """Book a timeslot without a participant account."""
+    timeslot = get_object_or_404(Timeslot, pk=pk)
+    if not _anonymous_booking_allowed(timeslot):
+        raise Http404('This timeslot is not available for anonymous sign-up.')
+
+    if request.method == 'POST':
+        limit, window = booking_rate_limits()
+        limited = rate_limit_response(request, 'book', limit, window)
+        if limited:
+            return limited
+        with transaction.atomic():
+            timeslot = Timeslot.objects.select_for_update().get(pk=pk)
+            if not _anonymous_booking_allowed(timeslot):
+                raise Http404('This timeslot is not available for anonymous sign-up.')
+            if timeslot.is_full:
+                messages.error(request, 'This timeslot is full.')
+                return redirect('studies:detail', pk=timeslot.study_id)
+            signup = AnonymousSignup.objects.create(
+                timeslot=timeslot,
+                consent_text_version=timeslot.study.consent_text,
+            )
+        finalize_anonymous_signup(signup, request)
+        request.session['anonymous_booking_id'] = str(signup.id)
+        return redirect('studies:anonymous_booking_success')
+
+    return render(request, 'studies/anonymous_book_confirm.html', {'timeslot': timeslot})
+
+
+def anonymous_booking_success(request):
+    """Show booking reference and cancellation PIN after anonymous sign-up."""
+    signup_id = request.session.pop('anonymous_booking_id', None)
+    if not signup_id:
+        messages.info(request, 'No recent booking to display.')
+        return redirect('studies:list')
+    signup = get_object_or_404(
+        AnonymousSignup.objects.select_related('timeslot', 'timeslot__study'),
+        pk=signup_id,
+        status='booked',
+    )
+    return render(request, 'studies/anonymous_booking_success.html', {'signup': signup})
+
+
+def _format_ical_datetime(dt):
+    """Format datetime for iCal (UTC)."""
+    if timezone.is_naive(dt):
+        dt = timezone.make_aware(dt)
+    return dt.astimezone(dt_timezone.utc).strftime('%Y%m%dT%H%M%SZ')
+
+
+@require_http_methods(['GET'])
+def timeslot_ical(request, pk):
+    """Download a .ics calendar invite for a timeslot (no PII)."""
+    timeslot = get_object_or_404(
+        Timeslot.objects.select_related('study'),
+        pk=pk,
+    )
+    study = timeslot.study
+    if not study.allows_anonymous_booking:
+        raise Http404()
+    if not Study.active_approved.filter(pk=study.pk).exists():
+        raise Http404()
+
+    starts_utc = timeslot.starts_at
+    ends_utc = timeslot.ends_at
+    title_esc = (study.title or 'Study').replace('\\', '\\\\').replace(';', '\\;').replace(',', '\\,')
+    location = (timeslot.location or '').replace('\\', '\\\\').replace(';', '\\;').replace(',', '\\,')
+    location_line = f'LOCATION:{location}\r\n' if location else ''
+    ics = (
+        'BEGIN:VCALENDAR\r\n'
+        'VERSION:2.0\r\n'
+        'PRODID:-//PRAMS//Study Calendar//EN\r\n'
+        'BEGIN:VEVENT\r\n'
+        f'UID:timeslot-{timeslot.id}@prams\r\n'
+        f'DTSTAMP:{_format_ical_datetime(timezone.now())}\r\n'
+        f'DTSTART:{_format_ical_datetime(starts_utc)}\r\n'
+        f'DTEND:{_format_ical_datetime(ends_utc)}\r\n'
+        f'SUMMARY:{title_esc}\r\n'
+        f'DESCRIPTION:{title_esc}\r\n'
+        f'{location_line}'
+        'END:VEVENT\r\n'
+        'END:VCALENDAR\r\n'
+    )
+    response = HttpResponse(ics, content_type='text/calendar; charset=utf-8')
+    response['Content-Disposition'] = f'attachment; filename="study-timeslot-{timeslot.id}.ics"'
+    return response
+
+
+def anonymous_cancel_signup(request):
+    """Cancel an anonymous booking using reference and PIN."""
+    if request.method == 'POST':
+        limit, window = cancel_rate_limits()
+        limited = rate_limit_response(request, 'cancel', limit, window)
+        if limited:
+            return limited
+        booking_reference = request.POST.get('booking_reference', '').strip()
+        cancellation_pin = request.POST.get('cancellation_pin', '').strip()
+        ref_uuid = parse_booking_reference(booking_reference)
+        if not ref_uuid or not cancellation_pin:
+            messages.error(request, 'Booking reference and cancellation PIN are required.')
+            log_anonymous_cancel_audit(None, request, 'invalid_input')
+        else:
+            signup = AnonymousSignup.objects.filter(
+                booking_reference=ref_uuid,
+                status='booked',
+            ).select_related('timeslot', 'timeslot__study').first()
+            if not signup or not pins_match(signup.cancellation_pin, cancellation_pin):
+                messages.error(request, INVALID_CANCEL_MESSAGE)
+                log_anonymous_cancel_audit(signup, request, 'invalid_credentials')
+            elif not signup.timeslot.can_cancel:
+                messages.error(
+                    request,
+                    'Cancellation window has closed. Please contact the research team.',
+                )
+                log_anonymous_cancel_audit(signup, request, 'window_closed')
+            else:
+                study_id = signup.timeslot.study_id
+                signup.cancel()
+                log_anonymous_cancel_audit(signup, request, 'cancelled')
+                messages.success(request, 'Your booking has been cancelled.')
+                return redirect('studies:detail', pk=study_id)
+
+    return render(request, 'studies/anonymous_cancel.html')
+
+
 @login_required
 def my_bookings(request):
     """View participant's bookings."""
@@ -275,17 +499,8 @@ def researcher_dashboard(request):
         messages.error(request, 'Access denied.')
         return redirect('home')
     
-    # Get ALL studies by this researcher (not just those with protocol submissions)
-    # Also include studies where user is listed as co-investigator in protocol submissions
-    from django.db.models import Q
-    from apps.studies.models import ProtocolSubmission
-    
-    # Use Q objects to combine queries safely (PI, or co-I via text or PRAMS user link)
-    studies = Study.objects.filter(
-        Q(researcher=request.user) |
-        Q(protocol_submissions__co_investigators__icontains=request.user.email) |
-        Q(protocol_submissions__co_investigator_users=request.user)
-    ).distinct().order_by('-created_at')
+    # PI, co-I (text), or linked PRAMS co-I; sorted by last_worked_on (see irb_utils).
+    studies = studies_for_researcher_dashboard(request.user)
     
     # Annotate each study with draft and submitted protocol info
     # Defer detailed protocol fields that may not exist in the database yet
@@ -424,10 +639,16 @@ def study_roster(request, pk):
     signups = Signup.objects.filter(timeslot__study=study).select_related(
         'participant', 'timeslot'
     ).order_by('-booked_at')
-    
+    anonymous_signups = AnonymousSignup.objects.filter(
+        timeslot__study=study,
+    ).select_related('timeslot').order_by('-booked_at')
+
     return render(request, 'studies/roster.html', {
         'study': study,
-        'signups': signups
+        'signups': signups,
+        'anonymous_signups': anonymous_signups,
+        'total_roster_count': signups.count() + anonymous_signups.count(),
+        'signup_stats': get_study_signup_stats(study),
     })
 
 

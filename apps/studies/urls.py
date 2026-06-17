@@ -3,6 +3,7 @@ URL patterns for studies app.
 """
 from django.urls import path
 from . import views
+from .goal_setting_study import GOAL_SETTING_STUDY_SLUG_LEGACY
 
 app_name = 'studies'
 
@@ -12,12 +13,33 @@ urlpatterns = [
     path('irb-standards/', views.social_science_irb_standards, name='social_science_irb_standards'),
     path('irb-standards/diagram-1/', views.social_science_irb_diagram_1, name='social_science_irb_diagram_1'),
     path('irb-standards/diagram-2/', views.social_science_irb_diagram_2, name='social_science_irb_diagram_2'),
+    # Legacy marketing URL → neutral public slug (no "goal-setting" for participants)
+    path(
+        f'signup/{GOAL_SETTING_STUDY_SLUG_LEGACY}/',
+        views._redirect_legacy_goal_setting_signup,
+    ),
+    path(
+        f'signup/{GOAL_SETTING_STUDY_SLUG_LEGACY}/count.json',
+        lambda request: views._redirect_legacy_goal_setting_signup(request, 'count.json'),
+    ),
+    path(
+        f'signup/{GOAL_SETTING_STUDY_SLUG_LEGACY}/qr.png',
+        lambda request: views._redirect_legacy_goal_setting_signup(request, 'qr.png'),
+    ),
+    # Public anonymous sign-up (stable slug URLs for QR / marketing)
+    path('signup/<slug:slug>/', views.public_study_signup, name='public_study_signup'),
+    path('signup/<slug:slug>/count.json', views.public_study_signup_count, name='public_study_signup_count'),
+    path('signup/<slug:slug>/qr.png', views.public_study_signup_qr, name='public_study_signup_qr'),
     # Browse studies
     path('', views.study_list, name='list'),
     path('<uuid:pk>/', views.study_detail, name='detail'),
     
     # Timeslot booking
     path('timeslot/<uuid:pk>/book/', views.book_timeslot, name='book_timeslot'),
+    path('timeslot/<uuid:pk>/book-anonymous/', views.anonymous_book_timeslot, name='anonymous_book_timeslot'),
+    path('timeslot/<uuid:pk>/ical/', views.timeslot_ical, name='timeslot_ical'),
+    path('anonymous-booking/success/', views.anonymous_booking_success, name='anonymous_booking_success'),
+    path('anonymous-booking/cancel/', views.anonymous_cancel_signup, name='anonymous_cancel_signup'),
     path('signup/<uuid:pk>/cancel/', views.cancel_signup, name='cancel_signup'),
     
     # My bookings (participant)

@@ -6,6 +6,8 @@ from pathlib import Path
 from datetime import timedelta
 
 from django.conf import settings
+from django.db.models import DateTimeField, F, Max, Q
+from django.db.models.functions import Coalesce, Greatest
 from django.utils import timezone
 from apps.studies.models import CollegeRepresentative, ProtocolSubmission, Study
 
@@ -115,6 +117,39 @@ def create_or_update_protocol_from_json(study, protocol_path, researcher):
     assign_college_rep(submission)
 
     return submission
+
+
+def studies_for_researcher_dashboard(user):
+    """
+    Studies visible on My Studies (PI, co-investigator text, or linked PRAMS co-I),
+    sorted by most recently worked on (descending).
+
+    ``last_worked_on`` is the latest of Study.updated_at, protocol submission
+    submitted_at/decided_at, and amendment submitted_at on related records.
+    """
+    return (
+        Study.objects.filter(
+            Q(researcher=user)
+            | Q(protocol_submissions__co_investigators__icontains=user.email)
+            | Q(protocol_submissions__co_investigator_users=user)
+        )
+        .annotate(
+            _last_protocol_submitted=Max('protocol_submissions__submitted_at'),
+            _last_protocol_decided=Max('protocol_submissions__decided_at'),
+            _last_amendment_submitted=Max('protocol_submissions__amendments__submitted_at'),
+        )
+        .annotate(
+            last_worked_on=Greatest(
+                F('updated_at'),
+                Coalesce(F('_last_protocol_submitted'), F('updated_at')),
+                Coalesce(F('_last_protocol_decided'), F('updated_at')),
+                Coalesce(F('_last_amendment_submitted'), F('updated_at')),
+                output_field=DateTimeField(),
+            ),
+        )
+        .distinct()
+        .order_by('-last_worked_on')
+    )
 
 
 def get_college_from_department(department):

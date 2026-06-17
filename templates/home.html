@@ -16,8 +16,9 @@
                     <div class="card h-100">
                         <div class="card-body">
                             <h3 class="card-title">For Participants</h3>
-                            <p class="card-text">Browse research studies, earn course credits, and contribute to science.</p>
-                            <a href="{% url 'accounts:register' %}" class="btn btn-primary">Get Started</a>
+                            <p class="card-text">Browse open studies and sign up for a session. Selected studies require <strong>no account</strong> — you receive a booking reference and PIN only.</p>
+                            <a href="{% url 'studies:list' %}" class="btn btn-primary">Browse Studies</a>
+                            <p class="text-muted small mt-3 mb-0">Need research credits? <a href="{% url 'accounts:register' %}">Create a participant account</a>.</p>
                         </div>
                     </div>
                 </div>

@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign Up — {{ study.title }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 offset-lg-2">
+        <div class="text-center mb-4">
+            <h2>{{ study.title }}</h2>
+            <p class="lead text-muted mb-2">No account required — sign up in under a minute.</p>
+            <p class="mb-0">
+                <span class="badge bg-primary fs-6" id="signup-count-badge">
+                    {{ signup_stats.total }} signed up so far
+                </span>
+            </p>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <p>{{ study.description|linebreaks }}</p>
+                <p class="text-muted small mb-0">
+                    Duration: {{ study.duration_minutes }} minutes ·
+                    Researcher: {{ study.researcher.get_full_name }}
+                </p>
+            </div>
+        </div>
+
+        <h3 class="h5">Choose a session</h3>
+        {% if timeslots %}
+            <div class="list-group mb-3">
+                {% for timeslot in timeslots %}
+                    <div class="list-group-item {% if timeslot.is_full %}list-group-item-secondary{% endif %}">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                            <div>
+                                <strong>{{ timeslot.starts_at|date:"l, F d, Y" }}</strong><br>
+                                {{ timeslot.starts_at|time:"g:i A" }} – {{ timeslot.ends_at|time:"g:i A" }}
+                                {% if timeslot.location %}<br><small class="text-muted">{{ timeslot.location }}</small>{% endif %}
+                                <br><small class="text-muted">{{ timeslot.current_signups }}/{{ timeslot.capacity }} spots filled</small>
+                            </div>
+                            <div>
+                                {% if timeslot.is_full %}
+                                    <span class="badge bg-secondary">Full</span>
+                                {% else %}
+                                    <a href="{% url 'studies:anonymous_book_timeslot' timeslot.id %}" class="btn btn-primary">Sign Up</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-warning">No sessions are open right now. Please check back soon.</div>
+        {% endif %}
+
+        <p class="small text-muted">
+            <a href="{% url 'studies:anonymous_cancel_signup' %}">Cancel an existing booking</a>
+            (you will need your booking reference and PIN).
+        </p>
+    </div>
+    <div class="col-lg-2 d-none d-lg-block text-center">
+        <p class="small text-muted">Scan to share</p>
+        <img src="{% url 'studies:public_study_signup_qr' study.slug %}" alt="QR code to sign up" width="160" height="160" class="border">
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function () {
+  const badge = document.getElementById('signup-count-badge');
+  if (!badge) return;
+  const countUrl = "{% url 'studies:public_study_signup_count' study.slug %}";
+  function refreshCount() {
+    fetch(countUrl, { headers: { 'Accept': 'application/json' } })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (typeof data.total_signups === 'number') {
+          badge.textContent = data.total_signups + ' signed up so far';
+        }
+      })
+      .catch(function () {});
+  }
+  setInterval(refreshCount, 60000);
+})();
+</script>
+{% endblock %}

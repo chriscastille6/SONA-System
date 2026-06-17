@@ -138,8 +138,10 @@ USE_I18N = True
 USE_TZ = True
 
 # URL Prefix (for deployment behind /hsirb/ path)
-# Only set if explicitly configured (for campus server deployment)
+# Apache proxies /hsirb/ → Gunicorn root; Django must know the public mount path.
 FORCE_SCRIPT_NAME = _config('FORCE_SCRIPT_NAME', default=None)
+if not FORCE_SCRIPT_NAME and 'bayoupal.nicholls.edu' in ALLOWED_HOSTS:
+    FORCE_SCRIPT_NAME = '/hsirb'
 
 # Static files (CSS, JavaScript, Images)
 # Auto-detect if we're on campus server and adjust URLs
@@ -251,6 +253,16 @@ REMINDER_HOURS_BEFORE = _config('REMINDER_HOURS_BEFORE', default='24,2', cast=Cs
 
 # CSRF Settings
 CSRF_TRUSTED_ORIGINS = _config('CSRF_TRUSTED_ORIGINS', default='http://localhost:8000', cast=Csv())
+
+# Anonymous public booking (rate limits per client IP)
+ANONYMOUS_BOOKING_RATE_LIMIT_BOOK = _config('ANONYMOUS_BOOKING_RATE_LIMIT_BOOK', default=5, cast=int)
+ANONYMOUS_BOOKING_RATE_LIMIT_BOOK_WINDOW = _config(
+    'ANONYMOUS_BOOKING_RATE_LIMIT_BOOK_WINDOW', default=3600, cast=int
+)
+ANONYMOUS_BOOKING_RATE_LIMIT_CANCEL = _config('ANONYMOUS_BOOKING_RATE_LIMIT_CANCEL', default=15, cast=int)
+ANONYMOUS_BOOKING_RATE_LIMIT_CANCEL_WINDOW = _config(
+    'ANONYMOUS_BOOKING_RATE_LIMIT_CANCEL_WINDOW', default=900, cast=int
+)
 CSRF_COOKIE_HTTPONLY = True
 CSRF_USE_SESSIONS = False
 
@@ -304,10 +316,10 @@ LOGGING = {
 # Create logs directory
 os.makedirs(BASE_DIR / 'logs', exist_ok=True)
 
-# Login/Logout URLs
-LOGIN_URL = '/accounts/login/'
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+# Login/Logout URLs (named patterns respect FORCE_SCRIPT_NAME for /hsirb/ deployment)
+LOGIN_URL = 'accounts:login'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
 
 
 

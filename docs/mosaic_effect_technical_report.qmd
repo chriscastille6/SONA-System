@@ -1,6 +1,6 @@
 ---
 title: "Mosaic Effect Risk and Mitigation"
-subtitle: "Technical Report for IT and Research Operations — SONA / PRAMS"
+subtitle: "Technical Report for IT and Research Operations — PRAMS"
 author: "People Analytics Lab of the Bayou"
 date: last-modified
 date-format: "MMMM D, YYYY"
@@ -79,7 +79,7 @@ This report uses the following abbreviations:
 
 ## Executive summary
 
-The SONA / PRAMS platform collects protocol responses as flexible JSON while operating in a FERPA-aware, IRB-governed environment. For studies with sample sizes between **20 and 500**, the intended public disclosure path is **not row-level microdata** but **aggregates and inferential statistics** (means, proportions, confidence intervals, Bayes factors, and test statistics) that support scientific claims. That choice materially lowers re-identification risk, yet it does not eliminate the **mosaic effect**: the risk that a person becomes identifiable when quasi-identifiers, behavioral data, and auxiliary records (signups, emails, timing, external identifiers) are combined across systems or releases.
+The PRAMS platform collects protocol responses as flexible JSON while operating in a FERPA-aware, IRB-governed environment. For studies with sample sizes between **20 and 500**, the intended public disclosure path is **not row-level microdata** but **aggregates and inferential statistics** (means, proportions, confidence intervals, Bayes factors, and test statistics) that support scientific claims. That choice materially lowers re-identification risk, yet it does not eliminate the **mosaic effect**: the risk that a person becomes identifiable when quasi-identifiers, behavioral data, and auxiliary records (signups, emails, timing, external identifiers) are combined across systems or releases.
 
 This report is written for two audiences who share accountability. **IT professionals** must understand where identifiers and metadata enter the stack, how exports and backups propagate them, and which access controls bound insider and pipeline risk. **Research operations** must apply **statistical disclosure control (SDC)** so that internal analysis files and any exceptional microdata handoffs do not undermine the aggregate-first publication strategy. A Monte Carlo simulation (§4.5) quantifies how often participants are unique on realistic quasi-identifiers at *N* = 20–500 and supports a practical release rule: **external handoffs should be descriptive-statistics tables unless the study is very large relative to the fields collected.** The diagrams below summarize data flow and disclosure tiers; later sections map controls to concrete models and code paths in this repository.
 

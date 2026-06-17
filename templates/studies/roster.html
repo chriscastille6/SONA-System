@@ -14,7 +14,14 @@
                     </h2>
                 </div>
                 <div class="card-body">
-                    {% if signups %}
+                    <p class="mb-3">
+                        <strong>Active sign-ups:</strong>
+                        {{ signup_stats.total }}
+                        {% if signup_stats.anonymous %}
+                            ({{ signup_stats.anonymous }} anonymous{% if signup_stats.registered %}, {{ signup_stats.registered }} with accounts{% endif %})
+                        {% endif %}
+                    </p>
+                    {% if signups or anonymous_signups %}
                         <div class="table-responsive">
                             <table class="table table-hover">
                                 <thead>
@@ -82,6 +89,27 @@
                                             </td>
                                         </tr>
                                     {% endfor %}
+                                    {% for signup in anonymous_signups %}
+                                        <tr class="{% if signup.status == 'cancelled' %}table-secondary{% endif %}">
+                                            <td><strong>Anonymous participant</strong></td>
+                                            <td><span class="text-muted">—</span></td>
+                                            <td>
+                                                <strong>{{ signup.timeslot.starts_at|date:"M j, Y" }}</strong><br>
+                                                <small class="text-muted">{{ signup.timeslot.starts_at|time:"g:i A" }}</small>
+                                                <br>
+                                                <small class="text-muted">{{ signup.timeslot.current_signups }}/{{ signup.timeslot.capacity }} in slot</small>
+                                            </td>
+                                            <td>{{ signup.booked_at|date:"M j, Y g:i A" }}</td>
+                                            <td>
+                                                {% if signup.status == 'booked' %}
+                                                    <span class="badge bg-primary">Booked</span>
+                                                {% elif signup.status == 'cancelled' %}
+                                                    <span class="badge bg-secondary">Cancelled</span>
+                                                {% endif %}
+                                            </td>
+                                            <td><span class="text-muted">Anonymous sign-up</span></td>
+                                        </tr>
+                                    {% endfor %}
                                 </tbody>
                             </table>
                         </div>
@@ -91,7 +119,7 @@
                             <div class="col-md-3">
                                 <div class="card bg-primary text-white">
                                     <div class="card-body text-center">
-                                        <h5>{{ signups|length }}</h5>
+                                        <h5>{{ total_roster_count }}</h5>
                                         <small>Total Signups</small>
                                     </div>
                                 </div>

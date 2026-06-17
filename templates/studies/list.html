@@ -24,7 +24,11 @@
                                 
                                 <div class="mb-2">
                                     <span class="badge bg-info">{{ study.get_mode_display }}</span>
-                                    <span class="badge bg-success">{{ study.credit_value }} credits</span>
+                                    {% if study.allows_anonymous_booking and study.credit_value == 0 %}
+                                        <span class="badge bg-secondary">No account required</span>
+                                    {% else %}
+                                        <span class="badge bg-success">{{ study.credit_value }} credits</span>
+                                    {% endif %}
                                     <span class="badge bg-secondary">{{ study.duration_minutes }} min</span>
                                 </div>
                                 
@@ -42,7 +46,9 @@
                                             <i class="bi bi-play-circle"></i> Start Study
                                         </a>
                                     {% endif %}
-                                    <a href="{% url 'studies:detail' study.id %}" class="btn btn-outline-primary btn-sm">View Details</a>
+                                    <a href="{% url 'studies:detail' study.id %}" class="btn btn-outline-primary btn-sm">
+                                        {% if study.allows_anonymous_booking %}Sign Up{% else %}View Details{% endif %}
+                                    </a>
                                 </div>
                             </div>
                         </div>

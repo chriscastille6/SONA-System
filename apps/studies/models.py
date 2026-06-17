@@ -1,6 +1,8 @@
 """
 Study, timeslot, and signup models.
 """
+import random
+import string
 import uuid
 from datetime import timedelta
 from django.db import models
@@ -75,6 +77,10 @@ class Study(models.Model):
     is_classroom_based = models.BooleanField(
         default=False,
         help_text="Classroom-based study (not available for general signup, IRB monitoring only)"
+    )
+    allows_anonymous_booking = models.BooleanField(
+        default=False,
+        help_text="Allow public sign-up without a participant account (token + PIN only)"
     )
     
     # Eligibility criteria (JSON)
@@ -217,10 +223,10 @@ class Study(models.Model):
     
     @property
     def total_signups(self):
-        """Count total signups across all timeslots."""
-        return self.timeslots.aggregate(
-            total=models.Count('signups')
-        )['total'] or 0
+        """Count active signups across all timeslots (registered + anonymous)."""
+        registered = Signup.objects.filter(timeslot__study=self).exclude(status='cancelled').count()
+        anonymous = AnonymousSignup.objects.filter(timeslot__study=self, status='booked').count()
+        return registered + anonymous
     
     @property
     def available_slots(self):
@@ -400,6 +406,22 @@ class Timeslot(models.Model):
     notes = models.TextField(blank=True, help_text="Internal notes for researcher")
     
     is_cancelled = models.BooleanField(default=False)
+
+    google_calendar_event_id = models.CharField(
+        max_length=255,
+        blank=True,
+        db_index=True,
+        help_text='Google Calendar event id used for one-way sync',
+    )
+    google_calendar_last_synced_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        help_text='Last successful Google Calendar sync time',
+    )
+    google_calendar_sync_error = models.TextField(
+        blank=True,
+        help_text='Last Google Calendar sync error message',
+    )
     
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -419,8 +441,10 @@ class Timeslot(models.Model):
     
     @property
     def current_signups(self):
-        """Count active signups (not cancelled)."""
-        return self.signups.exclude(status='cancelled').count()
+        """Count active signups (registered and anonymous, not cancelled)."""
+        registered = self.signups.exclude(status='cancelled').count()
+        anonymous = self.anonymous_signups.exclude(status='cancelled').count()
+        return registered + anonymous
     
     @property
     def available_capacity(self):
@@ -479,6 +503,8 @@ class Signup(models.Model):
     # Reminders sent
     reminder_24h_sent = models.BooleanField(default=False)
     reminder_2h_sent = models.BooleanField(default=False)
+    reminder_24h_sms_sent = models.BooleanField(default=False)
+    reminder_2h_sms_sent = models.BooleanField(default=False)
     
     # Notes
     participant_notes = models.TextField(blank=True, help_text="Notes from participant")
@@ -523,6 +549,63 @@ class Signup(models.Model):
             profile = self.participant.profile
             profile.no_show_count += 1
             profile.save()
+
+
+def generate_cancellation_pin():
+    """Generate a random 4-digit numeric PIN for anonymous cancellation."""
+    return ''.join(random.choices(string.digits, k=4))
+
+
+class AnonymousSignup(models.Model):
+    """Anonymous timeslot booking — no user account or PII."""
+
+    STATUS_CHOICES = [
+        ('booked', 'Booked'),
+        ('cancelled', 'Cancelled'),
+    ]
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    timeslot = models.ForeignKey(
+        Timeslot,
+        on_delete=models.CASCADE,
+        related_name='anonymous_signups',
+    )
+    booking_reference = models.UUIDField(
+        default=uuid.uuid4,
+        unique=True,
+        editable=False,
+        help_text='Reference shown to participant for cancellation',
+    )
+    cancellation_pin = models.CharField(max_length=4, help_text='4-digit PIN for cancellation')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='booked', db_index=True)
+    consent_text_version = models.TextField(help_text='Copy of consent text at time of signup')
+    booked_at = models.DateTimeField(auto_now_add=True)
+    cancelled_at = models.DateTimeField(null=True, blank=True)
+
+    class Meta:
+        db_table = 'anonymous_signups'
+        verbose_name = 'Anonymous Signup'
+        verbose_name_plural = 'Anonymous Signups'
+        ordering = ['-booked_at']
+        indexes = [
+            models.Index(fields=['timeslot', 'status']),
+            models.Index(fields=['booking_reference']),
+        ]
+
+    def __str__(self):
+        return f"Anonymous signup for {self.timeslot}"
+
+    def save(self, *args, **kwargs):
+        if not self.cancellation_pin:
+            self.cancellation_pin = generate_cancellation_pin()
+        super().save(*args, **kwargs)
+
+    def cancel(self):
+        """Mark anonymous signup as cancelled."""
+        if self.status == 'booked':
+            self.status = 'cancelled'
+            self.cancelled_at = timezone.now()
+            self.save()
 
 
 class Response(models.Model):

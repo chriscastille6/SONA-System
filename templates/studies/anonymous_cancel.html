@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Cancel Anonymous Booking - {{ SITE_NAME }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+        <h2>Cancel Booking</h2>
+        <p class="text-muted">Enter the booking reference and cancellation PIN from your confirmation screen.</p>
+
+        <div class="card mt-3">
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="booking_reference" class="form-label">Booking reference</label>
+                        <input type="text" class="form-control font-monospace" id="booking_reference" name="booking_reference" required autocomplete="off">
+                    </div>
+                    <div class="mb-3">
+                        <label for="cancellation_pin" class="form-label">Cancellation PIN</label>
+                        <input type="text" class="form-control font-monospace" id="cancellation_pin" name="cancellation_pin" maxlength="4" pattern="[0-9]{4}" required autocomplete="off">
+                    </div>
+                    <button type="submit" class="btn btn-danger">Cancel Booking</button>
+                    <a href="{% url 'studies:list' %}" class="btn btn-secondary ms-2">Back to Studies</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

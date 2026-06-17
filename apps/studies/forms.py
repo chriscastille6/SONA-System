@@ -16,6 +16,7 @@ class StudyForm(forms.ModelForm):
             'mode',
             'credit_value',
             'is_classroom_based',
+            'allows_anonymous_booking',
             'consent_text',
             'involves_deception',
             'is_active',
@@ -44,6 +45,7 @@ class StudyForm(forms.ModelForm):
                 'placeholder': 'Enter the consent form text that participants must agree to...'
             }),
             'is_classroom_based': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
+            'allows_anonymous_booking': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'involves_deception': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
             'is_active': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
@@ -54,11 +56,13 @@ class StudyForm(forms.ModelForm):
             'credit_value': 'Credits Offered',
             'consent_text': 'Consent Form Text',
             'is_classroom_based': 'Classroom-based study (not for general signup)',
+            'allows_anonymous_booking': 'Allow anonymous sign-up (no participant account)',
             'involves_deception': 'Involves deception (requires IRB Chair review)',
             'is_active': 'Make study active (visible to participants)',
         }
         help_texts = {
             'is_classroom_based': 'Check if this study is only for students in a specific class',
+            'allows_anonymous_booking': 'Participants sign up with a booking reference and PIN only (no login)',
             'involves_deception': 'Check if the study involves any form of deception',
         }
 

@@ -1,3 +1,4 @@
+import argparse
 import sys
 import subprocess
 import time
@@ -11,17 +12,32 @@ def run_command(cmd, shell=True):
         return None, e.stderr.strip() or e.stdout.strip()
 
 def main():
+    parser = argparse.ArgumentParser(description="Deploy via rsync and verify goal-setting protocol data.")
+    parser.add_argument(
+        "--skip-populate",
+        action="store_true",
+        help="Pass --skip-populate to deploy script; skips live DB verification (requires populate).",
+    )
+    args = parser.parse_args()
+
     print("🔄 Starting Automated Deployment & Live Database Verification Loop...")
     repo_root = Path(__file__).resolve().parent.parent
-    
+
     # Step 1: Run local deploy script to sync code to the server
     print("\n📦 Step 1: Synchronizing code and assets to server...")
     deploy_script = repo_root / "deploy-to-server-rsync.sh"
-    stdout, error = run_command(f'"{deploy_script}"')
+    deploy_cmd = f'"{deploy_script}"'
+    if args.skip_populate:
+        deploy_cmd += " --skip-populate"
+    stdout, error = run_command(deploy_cmd)
     if error:
         print(f"❌ Deployment failed: {error}")
         sys.exit(1)
     print("✅ Files synced and server commands executed successfully.")
+
+    if args.skip_populate:
+        print("\n⏭️  Skipping Step 2: verification requires populate_goal_setting_protocol_details.")
+        return
 
     # Step 2: Loop & Verify until live database is perfectly populated and matching
     print("\n🧪 Step 2: Verifying live database fields on server...")
@@ -35,8 +51,8 @@ def main():
         f"ssh {server_user}@{server_host} \"cd ~/{remote_path} && source venv/bin/activate && "
         "python manage.py shell -c '"
         "from apps.studies.models import Study, ProtocolSubmission; "
-        "s = Study.objects.get(slug=\\\"goal-setting\\\"); "
-        "sub = ProtocolSubmission.objects.get(study=s); "
+        "s = Study.objects.get(slug=\\\"decision-making\\\"); "
+        "sub = ProtocolSubmission.objects.get(study=s, protocol_number=\\\"IRB 2024-07-30-001 CBA\\\"); "
         "print(\\\"TITLE:\\\", s.title); "
         "print(\\\"PI_TITLE:\\\", sub.pi_title); "
         "print(\\\"END_DATE:\\\", sub.estimated_completion_date); "
@@ -65,7 +81,7 @@ def main():
                 
         # Define expectations
         title_ok = db_state.get("TITLE") == "A Study in Decision Making"
-        pi_title_ok = db_state.get("PI_TITLE") == "Associate Professor"
+        pi_title_ok = db_state.get("PI_TITLE") == "Associate Professor of Management"
         end_date_ok = db_state.get("END_DATE") == "Spring 2027"
         co_i_ok = db_state.get("MEMBER_COUNT") == "4"  # Castille (Associate), Falgout (Assistant), Ann-Marie (Associate), Gravois (Doctorate), Maught (Doctorate) -> 4 Co-Is with "Dr." title
         cleanup_ok = db_state.get("CLEANUP") == "True"
