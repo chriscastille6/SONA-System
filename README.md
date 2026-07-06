@@ -97,6 +97,22 @@ recruitment_system/
 | **Instructor** | View course enrollments, download credit reports |
 | **Participant** | Complete prescreen, browse studies, book timeslots, track credits |
 
+## Cloud + GitLab deployment
+
+PRAMS deploys to production through **GitLab** at [gitlab.nicholls.edu/chriscastille/prams](https://gitlab.nicholls.edu/chriscastille/prams).
+
+**Approval workflow:** push branch → merge request → CI tests → you approve merge → manual **deploy:production** in GitLab CI.
+
+```bash
+./scripts/push-to-gitlab.sh          # push current branch to GitLab
+```
+
+Full guide: [docs/PRAMS_CLOUD_GITLAB_DEPLOY.md](docs/PRAMS_CLOUD_GITLAB_DEPLOY.md)
+
+Cloud demo hosts (Render/Railway) use `render.yaml`, `env.cloud.template`, and PRAMS naming (`prams-system`, not SONA).
+
+**Next rollout:** Google MCP Toolbox for Databases + MindsDB universal SQL layer — see [docs/MCP_DATA_LAYER.md](docs/MCP_DATA_LAYER.md).
+
 ## Deployment Recommendations
 
 ### Low-Budget Hosting (~$25-60/month)

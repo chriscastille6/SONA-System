@@ -759,7 +759,7 @@ class SheldonReplicationStudy {
         this.data.completionTime = new Date().toISOString();
         this.data.durationSeconds = Math.floor((Date.now() - this.startTime) / 1000);
         
-        // Submit to SONA API
+        // Submit to PRAMS API
         (async () => {
             try {
                 const res = await fetch(`/api/studies/${STUDY_ID}/submit/`, {
@@ -768,9 +768,9 @@ class SheldonReplicationStudy {
                     body: JSON.stringify(this.data)
                 });
                 const out = await res.json();
-                console.log('✓ SONA submission successful:', out);
+                console.log('✓ PRAMS submission successful:', out);
             } catch (e) { 
-                console.error('✗ SONA submit error:', e);
+                console.error('✗ PRAMS submit error:', e);
                 // Continue anyway - data saved to localStorage as backup
             }
         })();

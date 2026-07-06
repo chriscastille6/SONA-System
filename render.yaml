@@ -1,10 +1,10 @@
-# Render Blueprint Configuration
-# This file allows you to define your entire stack in code
+# Render Blueprint Configuration for PRAMS
 # Deploy with: render blueprint
+# Docs: docs/PRAMS_CLOUD_GITLAB_DEPLOY.md
 
 services:
   - type: web
-    name: sona-system
+    name: prams-system
     env: python
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn config.wsgi:application --bind 0.0.0.0:$PORT
@@ -18,16 +18,16 @@ services:
       - key: INSTITUTION_NAME
         value: Nicholls State University
       - key: SITE_NAME
-        value: Research Participant System
+        value: Participant Recruitment and Management System (PRAMS)
       - key: DATABASE_URL
         fromDatabase:
-          name: sona-database
+          name: prams-database
           property: connectionString
       - key: RENDER
         value: true
 
 databases:
-  - name: sona-database
-    databaseName: sona_db
-    user: sona_user
+  - name: prams-database
+    databaseName: prams_db
+    user: prams_user
     plan: free

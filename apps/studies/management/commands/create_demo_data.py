@@ -17,7 +17,7 @@ class Command(BaseCommand):
     help = 'Creates template study with hypothetical participants, signups, and data'
 
     def handle(self, *args, **options):
-        self.stdout.write(self.style.SUCCESS('Creating demo data for SONA System...'))
+        self.stdout.write(self.style.SUCCESS('Creating demo data for PRAMS...'))
         
         # Create admin user
         admin = self.create_admin()
