@@ -4,28 +4,36 @@
       "command": "npx",
       "args": ["-y", "@railway/mcp-server"]
     },
-    "prams-postgres": {
-      "comment": "Direct PRAMS PostgreSQL via Google MCP Toolbox. Set env vars before use.",
+    "prams-mindsdb": {
       "command": "npx",
-      "args": ["-y", "@toolbox-sdk/server", "--prebuilt", "postgres", "--stdio"],
+      "args": [
+        "-y",
+        "@toolbox-sdk/server",
+        "--prebuilt=mindsdb",
+        "--stdio"
+      ],
+      "env": {
+        "MINDSDB_HOST": "127.0.0.1",
+        "MINDSDB_PORT": "47335",
+        "MINDSDB_DATABASE": "mindsdb",
+        "MINDSDB_USER": "mindsdb",
+        "MINDSDB_PASS": ""
+      }
+    },
+    "prams-postgres": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@toolbox-sdk/server",
+        "--prebuilt=postgres",
+        "--stdio"
+      ],
       "env": {
         "POSTGRES_HOST": "127.0.0.1",
         "POSTGRES_PORT": "5432",
         "POSTGRES_DATABASE": "recruitment_db",
         "POSTGRES_USER": "postgres",
         "POSTGRES_PASSWORD": "postgres"
-      }
-    },
-    "prams-mindsdb": {
-      "comment": "Universal SQL layer (GitLab, Gmail, S3, etc.). Start docker-compose.mcp.yml first.",
-      "command": "npx",
-      "args": ["-y", "@toolbox-sdk/server", "--prebuilt", "mysql", "--stdio"],
-      "env": {
-        "MYSQL_HOST": "127.0.0.1",
-        "MYSQL_PORT": "47335",
-        "MYSQL_DATABASE": "mindsdb",
-        "MYSQL_USER": "mindsdb",
-        "MYSQL_PASSWORD": ""
       }
     }
   }

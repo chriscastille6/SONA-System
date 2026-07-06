@@ -113,6 +113,11 @@ Cloud demo hosts (Render/Railway) use `render.yaml`, `env.cloud.template`, and P
 
 **Next rollout:** Google MCP Toolbox for Databases + MindsDB universal SQL layer — see [docs/MCP_DATA_LAYER.md](docs/MCP_DATA_LAYER.md).
 
+```bash
+cp config/mcp/env.mcp.template config/mcp/.env
+./scripts/mcp-start.sh   # MindsDB + federated GitLab/PostgreSQL for agents
+```
+
 ## Deployment Recommendations
 
 ### Low-Budget Hosting (~$25-60/month)

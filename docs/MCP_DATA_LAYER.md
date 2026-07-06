@@ -1,8 +1,13 @@
-# PRAMS MCP Data Layer — Roadmap
+# PRAMS MCP Data Layer
 
-PRAMS AI agents (IRB review, protocol assistance) currently read from Django/PostgreSQL only. Most institutional knowledge lives elsewhere: email, Slack, GitLab, Salesforce, S3, Jira, and internal docs.
+PRAMS AI agents (IRB review, protocol assistance, deploy approval) need more than PostgreSQL. Institutional knowledge lives in GitLab MRs, email, Slack, docs, and CRM systems.
 
-This document describes the planned **universal SQL data layer** using **MindsDB** + **Google MCP Toolbox for Databases**.
+This stack gives agents **one SQL interface** over all of it:
+
+1. **MindsDB** — universal SQL layer over 200+ sources (PostgreSQL, GitLab, Gmail, S3, Salesforce, …)
+2. **Google MCP Toolbox for Databases** — MCP server so Cursor/agents run SQL securely via `mindsdb-execute-sql`
+
+MindsDB exposes federated sources through its **MySQL API** (port 47335). MCP Toolbox connects there; agents never need to know which backend served the rows.
 
 ## Architecture
 
@@ -12,70 +17,81 @@ flowchart TB
     Agent[AI Agent]
   end
 
-  subgraph mcp [MCP Layer]
-    Toolbox[Google MCP Toolbox for Databases]
+  subgraph mcp [Google MCP Toolbox]
+    Tools[mindsdb-execute-sql / mindsdb-sql]
   end
 
-  subgraph sql [Universal SQL]
-    MindsDB[MindsDB MySQL API]
+  subgraph mindsdb [MindsDB MySQL API :47335]
+    SQL[Universal SQL]
   end
 
-  subgraph sources [Data Sources]
+  subgraph sources [Federated Sources]
     PG[(PRAMS PostgreSQL)]
-    GitLab[GitLab]
-    Gmail[Gmail]
+    GL[GitLab MRs + Issues]
+    Mail[Gmail]
     Slack[Slack]
     S3[S3 / Docs]
     CRM[Salesforce]
   end
 
-  Agent -->|MCP tools| Toolbox
-  Toolbox -->|MySQL protocol| MindsDB
-  MindsDB --> PG
-  MindsDB --> GitLab
-  MindsDB --> Gmail
-  MindsDB --> Slack
-  MindsDB --> S3
-  MindsDB --> CRM
+  Agent -->|MCP| Tools
+  Tools -->|MySQL| SQL
+  SQL --> PG
+  SQL --> GL
+  SQL --> Mail
+  SQL --> Slack
+  SQL --> S3
+  SQL --> CRM
 ```
 
-## Why this stack
-
-| Component | Role |
-|-----------|------|
-| **Google MCP Toolbox for Databases** | Open-source MCP server; agents call SQL tools securely over MCP |
-| **MindsDB** | Universal SQL layer over 200+ sources; exposes everything as MySQL |
-| **PRAMS PostgreSQL** | Primary app database (participants, studies, IRB records) |
-
-From the agent's perspective: run SQL, get context back. The agent does not need to know whether rows came from GitLab, Gmail, or PRAMS.
-
-## Capabilities unlocked
-
-- **One SQL interface** for PRAMS DB + GitLab issues/MRs + institutional docs
-- **Cross-source joins** — e.g. link open GitLab MRs to IRB protocol submissions
-- **Unstructured data** — MindsDB ML handlers for emails, PDFs, review text
-- **Simple MCP tools, expanded reach** — same Cursor/PRAMS agent config, more context
-
-## Phase 1 — Local dev stack (now)
-
-Start MindsDB + MCP Toolbox alongside PRAMS:
+## Quick start
 
 ```bash
-docker compose -f docker-compose.mcp.yml up -d
+cp config/mcp/env.mcp.template config/mcp/.env
+# Set GITLAB_API_KEY and PRAMS_POSTGRES_* as needed
+
+./scripts/mcp-start.sh
 ```
 
-Files:
+Then enable **`prams-mindsdb`** in `.cursor/mcp.json`. Cursor loads Google's prebuilt MindsDB tools automatically.
 
-- `docker-compose.mcp.yml` — MindsDB + MCP Toolbox services
-- `.cursor/mcp.json` — Cursor MCP server entries (Toolbox + existing Railway)
+| Endpoint | URL |
+|----------|-----|
+| MindsDB editor | http://127.0.0.1:47334 |
+| MySQL API | 127.0.0.1:47335 (user `mindsdb`, no password) |
 
-Configure MindsDB to connect PRAMS PostgreSQL:
+## MCP Toolbox configuration
+
+Official prebuilt: `--prebuilt=mindsdb` ([docs](https://mcp-toolbox.dev/integrations/mindsdb/prebuilt-configs/mindsdb/))
+
+Required environment variables:
+
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `MINDSDB_HOST` | `127.0.0.1` | MindsDB host |
+| `MINDSDB_PORT` | `47335` | MySQL wire port |
+| `MINDSDB_DATABASE` | `mindsdb` | Database name |
+| `MINDSDB_USER` | `mindsdb` | Username |
+| `MINDSDB_PASS` | *(empty)* | Password |
+
+Tools exposed to agents:
+
+- **`mindsdb-execute-sql`** — run SQL across all connected sources
+- **`mindsdb-sql`** — parameterized SQL (safer for production)
+
+Direct PRAMS PostgreSQL (without federation) is also available via **`prams-postgres`** (`--prebuilt=postgres`) in `.cursor/mcp.json`.
+
+## Federated sources (PRAMS defaults)
+
+`scripts/mcp-bootstrap.sh` registers:
+
+### PRAMS PostgreSQL → `prams_postgres`
 
 ```sql
-CREATE DATABASE prams
+CREATE DATABASE IF NOT EXISTS prams_postgres
 WITH ENGINE = 'postgres',
 PARAMETERS = {
-  "host": "db",
+  "host": "host.docker.internal",
   "port": 5432,
   "database": "recruitment_db",
   "user": "postgres",
@@ -83,78 +99,90 @@ PARAMETERS = {
 };
 ```
 
-## Phase 2 — GitLab + docs (next)
+### GitLab → `prams_gitlab`
 
-Connect institutional sources PRAMS agents need most:
+Requires `GITLAB_API_KEY` in `config/mcp/.env`.
 
-1. **GitLab** — MRs, issues, pipeline status for deploy approval context
-2. **S3 / Google Drive** — IRB PDFs, protocol attachments
-3. **Email (SMTP/IMAP)** — PI correspondence (scrub PII in agent prompts; FERPA)
+```sql
+CREATE DATABASE IF NOT EXISTS prams_gitlab
+WITH ENGINE = 'gitlab',
+PARAMETERS = {
+  "repository": "chriscastille/prams",
+  "api_key": "your-token",
+  "url": "https://gitlab.nicholls.edu"
+};
+```
 
-Example cross-source query (conceptual):
+Tables: `merge_requests`, `issues`.
+
+### Adding more sources
+
+MindsDB supports 200+ integrations. Examples:
+
+```sql
+-- Gmail
+CREATE DATABASE prams_gmail
+WITH ENGINE = 'gmail',
+PARAMETERS = {"username": "...", "password": "..."};
+
+-- Slack
+CREATE DATABASE prams_slack
+WITH ENGINE = 'slack',
+PARAMETERS = {"token": "xoxb-..."};
+
+-- S3
+CREATE DATABASE prams_s3
+WITH ENGINE = 's3',
+PARAMETERS = {"aws_access_key_id": "...", "aws_secret_access_key": "...", "bucket": "..."};
+```
+
+See [MindsDB integrations](https://docs.mindsdb.com/integrations/data-integrations/all-data-integrations).
+
+## Cross-source queries
+
+Example: open GitLab MRs alongside PRAMS studies ([full list](../config/mcp/example-queries.sql)):
 
 ```sql
 SELECT
+  s.id AS study_id,
   s.title AS study_title,
-  g.title AS open_mr_title,
-  g.state AS mr_state
-FROM prams.studies_study s
-JOIN gitlab.merge_requests g
-  ON g.description ILIKE CONCAT('%', s.slug, '%')
-WHERE g.state = 'opened';
+  mr.title AS mr_title,
+  mr.state AS mr_state
+FROM prams_postgres.studies_study s
+JOIN prams_gitlab.merge_requests mr
+  ON mr.description LIKE CONCAT('%', s.slug, '%')
+WHERE mr.state = 'opened';
 ```
 
-## Phase 3 — Production (campus/cloud)
+This is the pattern from the MCP Toolbox + MindsDB demo: one SQL call, multiple enterprise sources, no ETL pipeline.
 
-- Run MindsDB on an internal network segment (not public internet).
-- MCP Toolbox binds to localhost; Cursor/agents connect via VPN or SSH tunnel.
-- Read-only DB credentials for agent queries; no write access to production PRAMS via MCP unless explicitly approved.
-- Audit log all agent SQL (MindsDB query log + PRAMS AuditLog).
+## Capabilities
+
+- **One SQL interface** for PRAMS DB + GitLab + email + docs
+- **Cross-datasource joins** — link deploy MRs to IRB protocol submissions
+- **ML on unstructured data** — MindsDB handlers for text/PDF when needed
+- **Simple MCP tools, massive reach** — two tools (`execute-sql`, `sql`) cover everything
+
+## Rollout phases
+
+| Phase | Scope | Status |
+|-------|-------|--------|
+| **1 — Local dev** | MindsDB + bootstrap + Cursor MCP | ✅ `docker-compose.mcp.yml`, scripts |
+| **2 — GitLab + docs** | MR/issue federation, S3 IRB PDFs | 🔜 set `GITLAB_API_KEY`, add S3 handler |
+| **3 — Production** | Internal network, read-only creds, audit | Planned |
 
 ## Security & FERPA
 
-- **Never** expose student PII through MindsDB to agents without RBAC views (anonymized exports only).
-- Use `PARTICIPANT_EXPORT_SALT` patterns for cross-system linkage.
-- Prefer read replicas or views that strip direct identifiers.
-- MCP Toolbox: restrict tools to `query` only; disable DDL.
-
-## Cursor MCP configuration
-
-See `.cursor/mcp.json`. After starting the stack:
-
-```json
-{
-  "mcpServers": {
-    "prams-database": {
-      "command": "npx",
-      "args": ["-y", "@google-cloud/mcp-toolbox-databases", "--prebuilt", "postgres", "--stdio"],
-      "env": {
-        "POSTGRES_HOST": "127.0.0.1",
-        "POSTGRES_PORT": "5432",
-        "POSTGRES_DATABASE": "recruitment_db",
-        "POSTGRES_USER": "postgres",
-        "POSTGRES_PASSWORD": "postgres"
-      }
-    },
-    "mindsdb": {
-      "command": "npx",
-      "args": ["-y", "@google-cloud/mcp-toolbox-databases", "--prebuilt", "mysql", "--stdio"],
-      "env": {
-        "MYSQL_HOST": "127.0.0.1",
-        "MYSQL_PORT": "47335",
-        "MYSQL_DATABASE": "mindsdb",
-        "MYSQL_USER": "mindsdb",
-        "MYSQL_PASSWORD": ""
-      }
-    }
-  }
-}
-```
-
-Adjust host/port to match `docker-compose.mcp.yml`. Prebuilt names may change as Google releases updates — check [MCP Toolbox for Databases](https://github.com/googleapis/genai-toolbox) docs.
+- **Never** expose student PII to agents without anonymized views.
+- Use Django export salt (`PARTICIPANT_EXPORT_SALT`) for cross-system linkage.
+- Prefer read replicas and views that strip direct identifiers.
+- Restrict MCP to **SELECT** queries; no DDL via agents.
+- Log agent SQL (MindsDB + PRAMS AuditLog) in production.
 
 ## References
 
-- [Google MCP Toolbox for Databases](https://github.com/googleapis/genai-toolbox) (open source)
-- [MindsDB](https://github.com/mindsdb/mindsdb) — universal SQL over federated sources
+- [Google MCP Toolbox for Databases](https://github.com/googleapis/mcp-toolbox) (formerly genai-toolbox)
+- [MCP Toolbox MindsDB prebuilt](https://mcp-toolbox.dev/integrations/mindsdb/prebuilt-configs/mindsdb/)
+- [MindsDB + MCP Toolbox announcement](https://medium.com/mindsdb/mindsdb-supercharges-googles-mcp-toolbox-with-unstructured-data-support-969792a9febc)
+- [MindsDB GitLab integration](https://docs.mindsdb.com/integrations/app-integrations/gitlab)
 - PRAMS deploy: [PRAMS_CLOUD_GITLAB_DEPLOY.md](./PRAMS_CLOUD_GITLAB_DEPLOY.md)

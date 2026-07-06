@@ -34,6 +34,7 @@ local_settings.py
 # Environment variables
 .env
 .env.local
+config/mcp/.env
 
 # IDEs
 .vscode/

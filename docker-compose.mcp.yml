@@ -1,37 +1,26 @@
-# MCP data layer for PRAMS agents
-# Start: docker compose -f docker-compose.mcp.yml up -d
+# MCP data layer for PRAMS agents (MindsDB universal SQL + MCP Toolbox)
+# Start: ./scripts/mcp-start.sh
 # Docs: docs/MCP_DATA_LAYER.md
 
 services:
   mindsdb:
     image: mindsdb/mindsdb:latest
     ports:
-      - "47334:47334"   # HTTP API
+      - "47334:47334"   # HTTP API + SQL editor
       - "47335:47335"   # MySQL wire protocol (MCP Toolbox connects here)
     environment:
+      MINDSDB_APIS: http,mysql
       MINDSDB_STORAGE_PATH: /root/mindsdb_storage
     volumes:
       - mindsdb_data:/root/mindsdb_storage
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:47334/api/status"]
-      interval: 15s
+      interval: 10s
       timeout: 5s
-      retries: 10
-      start_period: 60s
-
-  # Optional: direct PostgreSQL MCP for PRAMS app DB (without MindsDB federation)
-  # Uncomment when MCP Toolbox image/env vars are configured for your environment.
-  #
-  # mcp-toolbox:
-  #   image: ghcr.io/googleapis/genai-toolbox:latest
-  #   ports:
-  #     - "5000:5000"
-  #   environment:
-  #     TOOLBOX_MYSQL_HOST: mindsdb
-  #     TOOLBOX_MYSQL_PORT: 47335
-  #   depends_on:
-  #     mindsdb:
-  #       condition: service_healthy
+      retries: 12
+      start_period: 90s
 
 volumes:
   mindsdb_data:
