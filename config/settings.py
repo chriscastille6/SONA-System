@@ -38,6 +38,9 @@ if RENDER_ENVIRONMENT:
     # Trust Render's proxy headers
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
+# GitLab CI / institutional deployment marker (no host changes; used for logging/docs)
+GITLAB_CI = _config('GITLAB_CI', default=None)
+
 # AI Review Feature Gating
 AI_REVIEW_ENABLED = _config('AI_REVIEW_ENABLED', default='True', cast=bool)
 

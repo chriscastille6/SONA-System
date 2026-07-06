@@ -3,8 +3,38 @@
     "Railway": {
       "command": "npx",
       "args": ["-y", "@railway/mcp-server"]
+    },
+    "prams-mindsdb": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@toolbox-sdk/server",
+        "--prebuilt=mindsdb",
+        "--stdio"
+      ],
+      "env": {
+        "MINDSDB_HOST": "127.0.0.1",
+        "MINDSDB_PORT": "47335",
+        "MINDSDB_DATABASE": "mindsdb",
+        "MINDSDB_USER": "mindsdb",
+        "MINDSDB_PASS": ""
+      }
+    },
+    "prams-postgres": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@toolbox-sdk/server",
+        "--prebuilt=postgres",
+        "--stdio"
+      ],
+      "env": {
+        "POSTGRES_HOST": "127.0.0.1",
+        "POSTGRES_PORT": "5432",
+        "POSTGRES_DATABASE": "recruitment_db",
+        "POSTGRES_USER": "postgres",
+        "POSTGRES_PASSWORD": "postgres"
+      }
     }
   }
 }
-
-

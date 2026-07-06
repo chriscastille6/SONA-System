@@ -5,7 +5,7 @@ set -euo pipefail
 PORT_NUM="${PORT:-8000}"
 
 echo "=========================================="
-echo "SONA System Starting"
+echo "PRAMS Starting"
 echo "Port: ${PORT_NUM}"
 echo "=========================================="
 
@@ -27,4 +27,3 @@ echo "=========================================="
 
 # Start Gunicorn with the actual port number
 exec python -m gunicorn config.wsgi:application --bind 0.0.0.0:"${PORT_NUM}" --workers 2 --timeout 120
-

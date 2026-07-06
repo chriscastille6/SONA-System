@@ -1,0 +1,107 @@
+# GitLab CI/CD for PRAMS
+# Institutional repo: git@gitlab.nicholls.edu:chriscastille/prams.git
+#
+# Workflow:
+#   1. Push a branch and open a merge request.
+#   2. CI runs validate + test automatically.
+#   3. Merge to main after MR approval.
+#   4. Click "Play" on deploy:production (manual approval gate).
+#
+# Required CI/CD variables (Settings → CI/CD → Variables):
+#   DEPLOY_SSH_PRIVATE_KEY  (masked) — deploy key for bayoupal
+#   DEPLOY_HOST             bayoupal.nicholls.edu
+#   DEPLOY_USER             ccastille
+#   DEPLOY_PATH               ~/hsirb-system
+#
+# Optional protected environment approvals:
+#   Settings → CI/CD → Protected environments → production → Required approvals
+
+stages:
+  - validate
+  - test
+  - deploy
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+  POSTGRES_DB: prams_ci
+  POSTGRES_USER: prams_ci
+  POSTGRES_PASSWORD: prams_ci
+  DATABASE_URL: "postgresql://prams_ci:prams_ci@postgres:5432/prams_ci"
+  SECRET_KEY: "ci-only-not-for-production"
+  DEBUG: "False"
+  ALLOWED_HOSTS: "localhost,127.0.0.1"
+  SITE_NAME: "PRAMS CI"
+
+cache:
+  key: "${CI_COMMIT_REF_SLUG}"
+  paths:
+    - .cache/pip
+    - venv/
+
+.default_python:
+  image: python:3.11-slim
+  before_script:
+    - apt-get update -qq && apt-get install -y -qq postgresql-client libpq-dev build-essential
+    - python -m venv venv
+    - source venv/bin/activate
+    - pip install --upgrade pip
+    - pip install -r requirements.txt
+
+validate:django:
+  extends: .default_python
+  stage: validate
+  script:
+    - python manage.py check --deploy
+    - python manage.py makemigrations --check --dry-run
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+test:django:
+  extends: .default_python
+  stage: test
+  services:
+    - name: postgres:16-alpine
+      alias: postgres
+  script:
+    - python manage.py migrate --noinput
+    - python manage.py collectstatic --noinput
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+deploy:production:
+  stage: deploy
+  image: alpine:3.20
+  environment:
+    name: production
+    url: https://bayoupal.nicholls.edu/hsirb/
+    deployment_tier: production
+  before_script:
+    - apk add --no-cache openssh-client bash git
+    - mkdir -p ~/.ssh
+    - echo "$DEPLOY_SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_ed25519
+    - chmod 600 ~/.ssh/id_ed25519
+    - ssh-keyscan -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts
+  script:
+    - bash scripts/gitlab-ci-deploy.sh
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: manual
+  allow_failure: false
+
+deploy:cloud-demo:
+  stage: deploy
+  image: alpine:3.20
+  environment:
+    name: cloud-demo
+    url: $PRAMS_CLOUD_URL
+    deployment_tier: staging
+  script:
+    - echo "Cloud demo deploy is configured in Render/Railway dashboards."
+    - echo "Push to GitLab main; Render/Railway auto-deploy from connected repo."
+    - echo "See docs/PRAMS_CLOUD_GITLAB_DEPLOY.md for setup."
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+      when: manual
+  allow_failure: true

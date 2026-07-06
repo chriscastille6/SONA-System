@@ -1,7 +1,7 @@
 {
-  "name": "sona-scripts",
+  "name": "prams-scripts",
   "private": true,
-  "description": "SONA System PDF and document generation scripts",
+  "description": "PRAMS PDF and document generation scripts",
   "dependencies": {
     "puppeteer": "^24.25.0"
   }
