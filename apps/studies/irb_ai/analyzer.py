@@ -126,7 +126,10 @@ class IRBAnalyzer:
                 'credit_value': str(s.credit_value),
             }
         study_info = await sync_to_async(_get_study_info)()
-        materials = {'study_info': study_info}
+        materials = {
+            'study_info': study_info,
+            'study_id': str(self.review.study_id),
+        }
         
         # Extract text from uploaded documents
         docs = await sync_to_async(list)(self.review.documents.all())

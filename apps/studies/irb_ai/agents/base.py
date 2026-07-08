@@ -10,8 +10,11 @@ import os
 import urllib.request
 import urllib.error
 from pathlib import Path
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Optional
 from django.conf import settings
+
+from apps.studies.irb_ai.audit import log_ai_api_call
+from apps.studies.irb_ai.ferpa_screener import FERPAPromptScreener
 
 
 class BaseAgent:
@@ -25,6 +28,7 @@ class BaseAgent:
         self.client = self._initialize_client()
         # For Ollama: base URL (e.g. http://localhost:11434 or http://bayoupal:11434)
         self.ollama_base_url = getattr(settings, 'IRB_AI_OLLAMA_BASE_URL', 'http://localhost:11434').rstrip('/')
+        self.ferpa_screener = FERPAPromptScreener()
     
     def load_criteria(self) -> Dict[str, Any]:
         """
@@ -80,9 +84,12 @@ class BaseAgent:
             return self._placeholder_analysis()
         
         prompt = self.build_prompt(materials)
-        
+        study_id = materials.get('study_id')
+        if study_id is not None:
+            study_id = str(study_id)
+
         try:
-            response = await self._call_ai_api(prompt)
+            response = await self._call_ai_api(prompt, study_id=study_id)
             return self.parse_findings(response)
         except Exception as e:
             return {
@@ -104,6 +111,12 @@ class BaseAgent:
         """
         prompt_parts = [
             f"You are an expert IRB reviewer specializing in {self.get_focus_area()}.",
+            "\n\nFERPA COMPLIANCE INSTRUCTIONS:",
+            "- Treat any student-identifiable content in materials as FERPA-protected education records.",
+            "- When uncertain whether data is FERPA-protected, assume FERPA applies.",
+            "- Flag identifiable student names combined with academic context (grades, enrollment, assessments).",
+            "- Recommend de-identification or human review when materials may contain education records.",
+            "- Do not suggest transmitting identifiable student education records to external parties.",
             "\n\nIRB REVIEW CRITERIA:",
             json.dumps(self.criteria, indent=2),
             "\n\nSTUDY MATERIALS TO REVIEW:",
@@ -190,13 +203,14 @@ class BaseAgent:
         except urllib.error.URLError as e:
             raise ValueError(f"Ollama request failed: {e}") from e
 
-    async def _call_ai_api(self, prompt: str) -> str:
+    async def _call_ai_api(self, prompt: str, study_id: Optional[str] = None) -> str:
         """
         Call the AI API with the constructed prompt.
         Supports Anthropic, OpenAI, Ollama (local/server LLM), and Google Gemini.
 
         Args:
             prompt: The full prompt to send
+            study_id: Optional study UUID for audit metadata
 
         Returns:
             API response text
@@ -204,16 +218,31 @@ class BaseAgent:
         if not self.client:
             raise ValueError("AI client not initialized - check API key or Ollama URL configuration")
 
+        screening = self.ferpa_screener.screen(prompt, self.provider)
+        if not screening.allowed:
+            log_ai_api_call(
+                agent_name=self.agent_name,
+                provider=self.provider,
+                model=self.model,
+                prompt=prompt,
+                response='',
+                screening_metadata={**screening.to_metadata(), 'blocked': True},
+                study_id=study_id,
+            )
+            raise ValueError(screening.message)
+
+        outbound_prompt = screening.redacted_prompt if screening.flags else prompt
+
         if self.provider == 'anthropic':
             message = self.client.messages.create(
                 model=self.model,
                 max_tokens=4096,
                 messages=[{
                     "role": "user",
-                    "content": prompt
+                    "content": outbound_prompt
                 }]
             )
-            return message.content[0].text
+            response_text = message.content[0].text
 
         elif self.provider == 'openai':
             response = self.client.chat.completions.create(
@@ -221,29 +250,40 @@ class BaseAgent:
                 max_tokens=4096,
                 messages=[{
                     "role": "user",
-                    "content": prompt
+                    "content": outbound_prompt
                 }]
             )
-            return response.choices[0].message.content
+            response_text = response.choices[0].message.content
 
         elif self.provider == 'gemini':
             import asyncio
             def _gemini_sync():
                 resp = self.client.models.generate_content(
                     model=self.model,
-                    contents=prompt,
+                    contents=outbound_prompt,
                 )
                 return resp.text or ""
             loop = asyncio.get_event_loop()
-            return await loop.run_in_executor(None, _gemini_sync)
+            response_text = await loop.run_in_executor(None, _gemini_sync)
 
         elif self.provider == 'ollama':
             import asyncio
             loop = asyncio.get_event_loop()
-            return await loop.run_in_executor(None, self._call_ollama_sync, prompt)
+            response_text = await loop.run_in_executor(None, self._call_ollama_sync, outbound_prompt)
 
         else:
             raise ValueError(f"Unsupported provider: {self.provider}")
+
+        log_ai_api_call(
+            agent_name=self.agent_name,
+            provider=self.provider,
+            model=self.model,
+            prompt=outbound_prompt,
+            response=response_text,
+            screening_metadata=screening.to_metadata(),
+            study_id=study_id,
+        )
+        return response_text
     
     def parse_findings(self, response: str) -> Dict[str, Any]:
         """

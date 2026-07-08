@@ -74,4 +74,16 @@ The system’s security architecture is designed to meet **Tier-1/Tier-2** expec
 
 ---
 
+### FERPA legal corpus and mapping (July 2026)
+
+For authoritative FERPA sources and PRAMS-specific control mapping, see:
+
+- [docs/ferpa/ferpa_corpus.json](docs/ferpa/ferpa_corpus.json) — curated statute, regulations, leading cases, SPPO letters
+- [docs/ferpa/FERPA_COMPLIANCE_MAPPING.md](docs/ferpa/FERPA_COMPLIANCE_MAPPING.md) — violation tests, dual-mode classification, control matrix
+- [scripts/build_ferpa_corpus.py](scripts/build_ferpa_corpus.py) — update corpus from CourtListener and SPPO archives
+
+AI-related FERPA controls (prompt screening, hash-based API audit logging) are implemented in `apps/studies/irb_ai/ferpa_screener.py` and `apps/studies/irb_ai/audit.py`.
+
+---
+
 *Supporting technical details and prior findings are in `SECURITY_COMPLIANCE_REMEDIATION_LIST.md`.*
