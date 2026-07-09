@@ -276,6 +276,7 @@ Universities are facing increased scrutiny over **student data leaving instituti
 
 | Document | Audience |
 |----------|----------|
+| [DEAN_AND_CHAIR_ONE_PAGER.md](DEAN_AND_CHAIR_ONE_PAGER.md) | Deans & chairs — one-page summary |
 | [DEAN_AND_CHAIR_GUIDE.md](DEAN_AND_CHAIR_GUIDE.md) | College deans, department heads, chairs |
 | [DR_YOUNG_BRIEFING_SCRIPT.md](DR_YOUNG_BRIEFING_SCRIPT.md) | AVP Academic Affairs — 30-second script |
 | [NICHOLLS_AI_USE_INVENTORY.md](NICHOLLS_AI_USE_INVENTORY.md) | bayouops / IT — AI inventory |

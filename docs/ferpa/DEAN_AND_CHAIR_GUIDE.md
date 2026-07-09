@@ -1,6 +1,7 @@
 # PRAMS Guide for Deans and Department Heads
 
 **Audience:** College deans, department heads, program coordinators  
+**One-page version:** [DEAN_AND_CHAIR_ONE_PAGER.md](DEAN_AND_CHAIR_ONE_PAGER.md) ← **start here**  
 **Institution:** Nicholls State University  
 **Purpose:** Explain what PRAMS is, what it means for faculty research, and why leadership should not be alarmed  
 **Shorter versions:** [DR_YOUNG_BRIEFING_SCRIPT.md](DR_YOUNG_BRIEFING_SCRIPT.md) (30 sec) | [NICHOLLS_AI_USE_INVENTORY.md](NICHOLLS_AI_USE_INVENTORY.md) (IT)  
