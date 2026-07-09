@@ -214,6 +214,8 @@ Institutions using OpenAI/Anthropic/Gemini should:
 
 | Document | Audience |
 |----------|----------|
+| [NICHOLLS_AI_USE_INVENTORY.md](NICHOLLS_AI_USE_INVENTORY.md) | bayouops / IT — one-page AI use inventory for GitLab review |
+| [DR_YOUNG_BRIEFING_SCRIPT.md](DR_YOUNG_BRIEFING_SCRIPT.md) | Dr. Kaisa Young (AVP Academic Affairs) — 30-second briefing script |
 | [PRESIDENT_EXECUTIVE_BRIEF.md](PRESIDENT_EXECUTIVE_BRIEF.md) | President / executive leadership — board-ready summary |
 | [ferpa_corpus.json](ferpa_corpus.json) | Legal — curated statute, cases, SPPO letters |
 - [FERPA_AUDIT_REPORT.md](../../FERPA_AUDIT_REPORT.md) — February 2026 code audit
