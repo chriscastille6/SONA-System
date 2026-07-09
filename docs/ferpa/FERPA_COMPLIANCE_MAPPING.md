@@ -212,7 +212,10 @@ Institutions using OpenAI/Anthropic/Gemini should:
 
 ## 9. References
 
-- [ferpa_corpus.json](ferpa_corpus.json) — curated legal sources
+| Document | Audience |
+|----------|----------|
+| [PRESIDENT_EXECUTIVE_BRIEF.md](PRESIDENT_EXECUTIVE_BRIEF.md) | President / executive leadership — board-ready summary |
+| [ferpa_corpus.json](ferpa_corpus.json) | Legal — curated statute, cases, SPPO letters |
 - [FERPA_AUDIT_REPORT.md](../../FERPA_AUDIT_REPORT.md) — February 2026 code audit
 - [FEDERAL_AUDIT_SURVIVAL_NO_CREDIT.md](../../FEDERAL_AUDIT_SURVIVAL_NO_CREDIT.md) — no-credit deployment mode
 - [IT_EXECUTIVE_COMPLIANCE_SUMMARY.md](../../IT_EXECUTIVE_COMPLIANCE_SUMMARY.md) — executive summary

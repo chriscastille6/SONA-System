@@ -78,6 +78,7 @@ The system’s security architecture is designed to meet **Tier-1/Tier-2** expec
 
 For authoritative FERPA sources and PRAMS-specific control mapping, see:
 
+- [docs/ferpa/PRESIDENT_EXECUTIVE_BRIEF.md](docs/ferpa/PRESIDENT_EXECUTIVE_BRIEF.md) — board-ready brief for executive leadership
 - [docs/ferpa/ferpa_corpus.json](docs/ferpa/ferpa_corpus.json) — curated statute, regulations, leading cases, SPPO letters
 - [docs/ferpa/FERPA_COMPLIANCE_MAPPING.md](docs/ferpa/FERPA_COMPLIANCE_MAPPING.md) — violation tests, dual-mode classification, control matrix
 - [scripts/build_ferpa_corpus.py](scripts/build_ferpa_corpus.py) — update corpus from CourtListener and SPPO archives
