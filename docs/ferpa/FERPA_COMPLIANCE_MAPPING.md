@@ -214,6 +214,7 @@ Institutions using OpenAI/Anthropic/Gemini should:
 
 | Document | Audience |
 |----------|----------|
+| [DEAN_AND_CHAIR_GUIDE.md](DEAN_AND_CHAIR_GUIDE.md) | College deans, department heads, program coordinators |
 | [NICHOLLS_AI_USE_INVENTORY.md](NICHOLLS_AI_USE_INVENTORY.md) | bayouops / IT — one-page AI use inventory for GitLab review |
 | [DR_YOUNG_BRIEFING_SCRIPT.md](DR_YOUNG_BRIEFING_SCRIPT.md) | Dr. Kaisa Young (AVP Academic Affairs) — 30-second briefing script |
 | [PRESIDENT_EXECUTIVE_BRIEF.md](PRESIDENT_EXECUTIVE_BRIEF.md) | President / executive leadership — board-ready summary |

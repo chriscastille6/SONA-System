@@ -276,6 +276,9 @@ Universities are facing increased scrutiny over **student data leaving instituti
 
 | Document | Audience |
 |----------|----------|
+| [DEAN_AND_CHAIR_GUIDE.md](DEAN_AND_CHAIR_GUIDE.md) | College deans, department heads, chairs |
+| [DR_YOUNG_BRIEFING_SCRIPT.md](DR_YOUNG_BRIEFING_SCRIPT.md) | AVP Academic Affairs — 30-second script |
+| [NICHOLLS_AI_USE_INVENTORY.md](NICHOLLS_AI_USE_INVENTORY.md) | bayouops / IT — AI inventory |
 | [FERPA_COMPLIANCE_MAPPING.md](FERPA_COMPLIANCE_MAPPING.md) | Legal, IRB, IT — full control matrix |
 | [ferpa_corpus.json](ferpa_corpus.json) | Legal — curated statute, cases, SPPO letters |
 | [IT_EXECUTIVE_COMPLIANCE_SUMMARY.md](../../IT_EXECUTIVE_COMPLIANCE_SUMMARY.md) | CIO — technical security posture |

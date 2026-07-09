@@ -78,6 +78,7 @@ The system’s security architecture is designed to meet **Tier-1/Tier-2** expec
 
 For authoritative FERPA sources and PRAMS-specific control mapping, see:
 
+- [docs/ferpa/DEAN_AND_CHAIR_GUIDE.md](docs/ferpa/DEAN_AND_CHAIR_GUIDE.md) — guide for college deans and department heads
 - [docs/ferpa/NICHOLLS_AI_USE_INVENTORY.md](docs/ferpa/NICHOLLS_AI_USE_INVENTORY.md) — one-page AI inventory for bayouops/GitLab review
 - [docs/ferpa/DR_YOUNG_BRIEFING_SCRIPT.md](docs/ferpa/DR_YOUNG_BRIEFING_SCRIPT.md) — 30-second briefing for AVP Academic Affairs
 - [docs/ferpa/PRESIDENT_EXECUTIVE_BRIEF.md](docs/ferpa/PRESIDENT_EXECUTIVE_BRIEF.md) — board-ready brief for executive leadership

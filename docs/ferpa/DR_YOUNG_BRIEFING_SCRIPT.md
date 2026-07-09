@@ -3,7 +3,7 @@
 **Audience:** Dr. Kaisa Young, Assistant Vice President for Academic Affairs  
 **Context:** PRAMS research infrastructure; Louisiana AI executive orders; no Nicholls AI policy yet  
 **Tone:** Academic affairs, not IT jargon  
-**Full backup:** [PRESIDENT_EXECUTIVE_BRIEF.md](PRESIDENT_EXECUTIVE_BRIEF.md) | [NICHOLLS_AI_USE_INVENTORY.md](NICHOLLS_AI_USE_INVENTORY.md)
+**Full backup:** [PRESIDENT_EXECUTIVE_BRIEF.md](PRESIDENT_EXECUTIVE_BRIEF.md) | [DEAN_AND_CHAIR_GUIDE.md](DEAN_AND_CHAIR_GUIDE.md) | [NICHOLLS_AI_USE_INVENTORY.md](NICHOLLS_AI_USE_INVENTORY.md)
 
 ---
 
