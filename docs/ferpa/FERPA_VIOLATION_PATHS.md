@@ -357,6 +357,7 @@ flowchart TD
 ## Related documents
 
 - [LOUISIANA_AI_FERPA_COMPLIANCE_STACK.md](LOUISIANA_AI_FERPA_COMPLIANCE_STACK.md) — Governor EOs, Regents, legislation + FERPA
+- [STUDENT_DATA_TAXONOMY.md](STUDENT_DATA_TAXONOMY.md) — Tier I / II / III definitions
 - [FERPA_COMPLIANCE_MAPPING.md](FERPA_COMPLIANCE_MAPPING.md) — Control matrix
 - [NICHOLLS_AI_USE_INVENTORY.md](NICHOLLS_AI_USE_INVENTORY.md) — AI touchpoint inventory
 - [DEAN_AND_CHAIR_ONE_PAGER.md](DEAN_AND_CHAIR_ONE_PAGER.md) — Printable summary
