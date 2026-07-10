@@ -15,9 +15,12 @@
 | Concern | Reality for PRAMS |
 |---------|-------------------|
 | FERPA / student privacy | Default: **voluntary research, no course credit** → smaller privacy scope |
-| Louisiana AI executive orders | **Nicholls-hosted**; **no DeepSeek** or banned foreign AI |
-| News (SNHU, etc.) | Those cases = **advertising trackers on student portals** — not this system |
-| Shadow IT | Code reviewed via **bayouops GitLab + IT** before production |
+| **Governor EO 25-103 / 25-109** | **Nicholls-hosted**; **no DeepSeek**; **no sensitive data in unapproved AI**; **IT/CIO path** |
+| **Board of Regents AI policy** | Secure, ethical use documented; campus policy pending |
+| News (SNHU, etc.) | **Advertising trackers** — not this system |
+| Shadow IT | **bayouops GitLab + IT** before production |
+
+**Full stack:** [LOUISIANA_AI_FERPA_COMPLIANCE_STACK.md](LOUISIANA_AI_FERPA_COMPLIANCE_STACK.md)
 
 **One-line story:** *IT-reviewed, Louisiana-hosted faculty research infrastructure — not professors running ChatGPT on students.*
 

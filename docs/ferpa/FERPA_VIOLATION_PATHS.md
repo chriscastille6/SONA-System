@@ -1,6 +1,7 @@
 # Technical FERPA Violation Paths — PRAMS
 
 **Purpose:** Name **concrete technical scenarios** that create FERPA violation **risk** or clear regulatory violations, with diagrams deans and IT can follow.  
+**Louisiana layer:** [LOUISIANA_AI_FERPA_COMPLIANCE_STACK.md](LOUISIANA_AI_FERPA_COMPLIANCE_STACK.md) — Governor EOs, Regents, legislation stacked on FERPA  
 **Audience:** Deans, department heads, IRB, IT, faculty, project lead  
 **Data tiers:** [STUDENT_DATA_TAXONOMY.md](STUDENT_DATA_TAXONOMY.md) (Tier I / II / III)  
 **Controls:** [FERPA_COMPLIANCE_MAPPING.md](FERPA_COMPLIANCE_MAPPING.md)
@@ -323,9 +324,39 @@ flowchart LR
 
 ---
 
+## Louisiana executive orders — additional violation layer
+
+A single technical mistake can fail **FERPA** and **Louisiana AI EOs** simultaneously. See [LOUISIANA_AI_FERPA_COMPLIANCE_STACK.md](LOUISIANA_AI_FERPA_COMPLIANCE_STACK.md).
+
+```mermaid
+flowchart TD
+    Paste[Paste Tier II roster into ChatGPT]
+
+    Paste --> FERPA[FERPA: improper disclosure\nPII from education records]
+    Paste --> EO109[EO 25-109: sensitive information\ninto unapproved AI]
+    Paste --> Regents[Regents: misuse undermining\nsystem security]
+    Paste --> IT[Bypasses bayouops CIO review]
+
+    FERPA --> Multi[Multi-layer failure]
+    EO109 --> Multi
+    Regents --> Multi
+    IT --> Multi
+```
+
+| Technical action | FERPA | EO 25-109 (Landry) |
+|------------------|-------|---------------------|
+| Tier II → external LLM | Violation risk | **Sensitive data in AI** — EO violation risk |
+| DeepSeek on campus machine | FERPA risk if student data used | **Explicitly banned** for universities |
+| Tier II → Cursor | Violation risk | Sensitive data in AI |
+| Anonymous Response on bayoupal, no AI | Generally OK | OK |
+| Ollama on bayoupal, IT-approved, redacted text | Lower risk | **CIO-approved** path |
+| PRAMS runtime AI disabled | OK | **Safest EO posture** |
+
+---
+
 ## Related documents
 
-- [STUDENT_DATA_TAXONOMY.md](STUDENT_DATA_TAXONOMY.md) — Tier I / II / III definitions
+- [LOUISIANA_AI_FERPA_COMPLIANCE_STACK.md](LOUISIANA_AI_FERPA_COMPLIANCE_STACK.md) — Governor EOs, Regents, legislation + FERPA
 - [FERPA_COMPLIANCE_MAPPING.md](FERPA_COMPLIANCE_MAPPING.md) — Control matrix
 - [NICHOLLS_AI_USE_INVENTORY.md](NICHOLLS_AI_USE_INVENTORY.md) — AI touchpoint inventory
 - [DEAN_AND_CHAIR_ONE_PAGER.md](DEAN_AND_CHAIR_ONE_PAGER.md) — Printable summary

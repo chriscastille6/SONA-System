@@ -25,13 +25,15 @@ Student **experiment responses** are stored **anonymously** when PRAMS runs with
 
 ## Why you are hearing about this now
 
-Three conversations are happening at once on campus. They sound related but are different:
+Three conversations are happening at once on campus. They sound related but are different — see **[LOUISIANA_AI_FERPA_COMPLIANCE_STACK.md](LOUISIANA_AI_FERPA_COMPLIANCE_STACK.md)** for the full layered picture.
 
 | Conversation | What it is really about | Should deans worry? |
 |--------------|-------------------------|-------------------|
-| **FERPA / student privacy** | Keeping identifiable academic records (grades, enrollment) private | **Low** if studies are voluntary and not for credit |
-| **Louisiana AI executive orders** | No hostile foreign AI; institutional control of data | **Low** — PRAMS is Nicholls-hosted; banned platforms not used |
-| **National news (SNHU, etc.)** | Student portals leaking GPA to Google/TikTok | **Not applicable** — PRAMS does not work that way |
+| **FERPA / student privacy** | Keeping identifiable academic records private | **Low** if studies are voluntary and not for credit |
+| **Governor EO 25-103 / 25-109** | No hostile foreign AI (DeepSeek); CIO approval; no **sensitive** data in AI; dataset cleansing | **Low** if PRAMS stays on bayoupal, AI off or Ollama-only, IT-reviewed |
+| **Board of Regents (Oct 2025)** | Responsible, ethical, secure AI in public higher ed | **Low** — documented inventory; campus policy pending |
+| **HR 320 (2025)** | Promote AI **education** for students and faculty development | **Opportunity** — not a ban on research tools |
+| **National news (SNHU, etc.)** | Student portals leaking GPA to Google/TikTok | **Not applicable** |
 
 Administration’s concern is often **impression management**: *Can we defend this if the Governor’s office, Board of Regents, or a parent asks?*  
 
@@ -129,15 +131,15 @@ Nicholls does **not** yet have a campus-wide AI policy. Leadership is cautious b
 
 ## Louisiana and Board of Regents — dean-level framing
 
-You do not need to cite executive order numbers in a faculty meeting. Use the themes:
+Full stack: **[LOUISIANA_AI_FERPA_COMPLIANCE_STACK.md](LOUISIANA_AI_FERPA_COMPLIANCE_STACK.md)**
 
-| State expectation | How PRAMS aligns |
-|-------------------|------------------|
-| Keep Louisiana data under institutional control | Hosted on **bayoupal**, not random cloud vendors |
-| No hostile foreign AI | DeepSeek and similar **not used** |
-| IT approval before AI systems | Code goes through **bayouops GitLab review** |
-| Responsible AI in higher ed (Regents, Oct 2025) | Documented inventory; AI optional and disable-able |
-| Protect students | Anonymous research storage; access controls |
+| Source | Theme | PRAMS alignment |
+|--------|-------|---------------|
+| **EO JML 25-109** (Landry, Sep 2025) | No DeepSeek/hostile foreign AI; universities are targets; **CIO approval**; **no sensitive data in AI** | DeepSeek not used; bayouops path; AI off by default |
+| **EO JML 25-103** (Aug 2025) | AI inventory; dataset **cleansing**; acquisition policies | [NICHOLLS_AI_USE_INVENTORY.md](NICHOLLS_AI_USE_INVENTORY.md); screener + synthetic dev |
+| **Board of Regents** (Oct 2025) | Prohibit AI misuse harming **security/integrity**; encourage ethical research use | RBAC, RLS, violation-path docs |
+| **HR 320** (2025, passed) | Promote AI **literacy** — not reckless AI on student data | Faculty teach AI; PRAMS protects data |
+| **HB 1184** (2026, pending) | Ban foreign-adversary AI **procurement** | Watch; aligns with EO if enacted |
 
 **One sentence for a college council agenda:**
 

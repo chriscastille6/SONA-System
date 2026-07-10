@@ -38,6 +38,8 @@ This brief answers three questions leadership is asking:
 
 ## 1. What the Headlines Actually Show
 
+See **[LOUISIANA_AI_FERPA_COMPLIANCE_STACK.md](LOUISIANA_AI_FERPA_COMPLIANCE_STACK.md)** for Governor Landry executive orders (JML 25-103, 25-109), Board of Regents policy, and Louisiana legislation layered on FERPA.
+
 Recent university litigation involves **unauthorized disclosure of identifiable student academic data to third-party analytics companies** — not generative AI protocol review.
 
 | Case (status) | Allegation | Relevance to PRAMS |

@@ -6,9 +6,9 @@
 **Review path:** bayouops GitLab → IT review → deployment  
 **Prepared for:** bayouops, IT, Academic Affairs, executive leadership  
 **Date:** July 2026  
-**Related:** [PRESIDENT_EXECUTIVE_BRIEF.md](PRESIDENT_EXECUTIVE_BRIEF.md) | [FERPA_COMPLIANCE_MAPPING.md](FERPA_COMPLIANCE_MAPPING.md)
+**Related:** [LOUISIANA_AI_FERPA_COMPLIANCE_STACK.md](LOUISIANA_AI_FERPA_COMPLIANCE_STACK.md) | [PRESIDENT_EXECUTIVE_BRIEF.md](PRESIDENT_EXECUTIVE_BRIEF.md) | [FERPA_COMPLIANCE_MAPPING.md](FERPA_COMPLIANCE_MAPPING.md)
 
-This one-page inventory satisfies Louisiana Board of Regents and state executive-order expectations to **document AI use cases** before institution-wide AI policy is finalized. PRAMS can operate with **all runtime AI disabled**.
+This inventory satisfies **Louisiana EO JML 25-103/25-109** (inventory, cleansing, CIO path), **Board of Regents** expectations, and **FERPA** documentation before institution-wide AI policy is finalized.
 
 ---
 

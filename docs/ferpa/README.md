@@ -8,6 +8,7 @@ Quick links for Nicholls leadership, IT, and faculty.
 |------|----------|
 | **Deans & department heads** | [One-page summary](DEAN_AND_CHAIR_ONE_PAGER.md) · [Full guide](DEAN_AND_CHAIR_GUIDE.md) |
 | **Data types (I / II / III)** | [Student data taxonomy](STUDENT_DATA_TAXONOMY.md) |
+| **Louisiana AI + FERPA stack** | [Compliance stack — EOs, Regents, legislation](LOUISIANA_AI_FERPA_COMPLIANCE_STACK.md) |
 | **Technical violation paths** | [FERPA violation paths — diagrams](FERPA_VIOLATION_PATHS.md) |
 | **AVP Academic Affairs** | [30-second briefing script](DR_YOUNG_BRIEFING_SCRIPT.md) |
 | **President / cabinet** | [Executive brief](PRESIDENT_EXECUTIVE_BRIEF.md) |
@@ -17,7 +18,7 @@ Quick links for Nicholls leadership, IT, and faculty.
 ## All documents
 
 - [STUDENT_DATA_TAXONOMY.md](STUDENT_DATA_TAXONOMY.md) — Tier I / II / III student data framework
-- [FERPA_VIOLATION_PATHS.md](FERPA_VIOLATION_PATHS.md) — technical violations, LLM and database diagrams
+- [LOUISIANA_AI_FERPA_COMPLIANCE_STACK.md](LOUISIANA_AI_FERPA_COMPLIANCE_STACK.md) — Governor EOs, Regents, legislation layered on FERPA
 - [DEAN_AND_CHAIR_ONE_PAGER.md](DEAN_AND_CHAIR_ONE_PAGER.md) — printable one-pager
 - [DEAN_AND_CHAIR_GUIDE.md](DEAN_AND_CHAIR_GUIDE.md) — dean and chair guide
 - [DR_YOUNG_BRIEFING_SCRIPT.md](DR_YOUNG_BRIEFING_SCRIPT.md) — AVP Academic Affairs script
