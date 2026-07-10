@@ -87,10 +87,13 @@ This is the most important section for deans briefing faculty.
 
 ### Two kinds of data (kept separate on purpose)
 
-| Type | Examples | Who sees it | FERPA sensitivity |
-|------|----------|-------------|-------------------|
-| **Scheduling / participation** | Who signed up, attended, consented | Study researcher, IRB (as needed) | **Higher** if linked to course credit |
-| **Research responses** | Survey answers, reaction times, choices in your protocol | Researcher sees **anonymous** exports | **Lower** — not linked to student identity in the database |
+See **[STUDENT_DATA_TAXONOMY.md](STUDENT_DATA_TAXONOMY.md)** for the full three-tier framework (student-generated · student-linked · synthetic/de-identified).
+
+| Type | Tier | Examples | Who sees it | FERPA sensitivity |
+|------|------|----------|-------------|-------------------|
+| **Student-generated content** | I | Essay, survey text, task responses | Researcher via **anonymous** export | Depends on whether student put PII in the text |
+| **Scheduling / participation** | II | Who signed up, attended, consented | Study researcher, IRB (as needed) | **Higher** if linked to course credit |
+| **Synthetic / de-identified** | III | Demo data, anonymous response DB, salted export IDs | Dev, reporting, analysis | **Lowest** when fully synthetic or properly de-linked |
 
 **Key design point:** When a student completes your protocol, their answers go into a **response database keyed by a random session ID** — not by name or student ID. That is intentional and documented for IRB and FERPA review.
 

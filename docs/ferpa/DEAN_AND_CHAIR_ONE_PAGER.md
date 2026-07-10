@@ -25,10 +25,16 @@
 
 ## How it works (simple)
 
+**Three kinds of student-related data** (see [STUDENT_DATA_TAXONOMY.md](STUDENT_DATA_TAXONOMY.md)):
+
+| Tier | What | PRAMS example |
+|------|------|---------------|
+| **I — Student-generated** | What they wrote/said (may or may not include PII) | Essay or survey in protocol |
+| **II — Student-linked** | Clearly tied to identity | Signup roster, student ID, credit |
+| **III — Synthetic / de-identified** | Real content **without** identity link, or fake demo data | Anonymous `Response` DB; synthetic demos |
+
 ```
-Faculty protocol → PRAMS (bayoupal) → Student signs up voluntarily → Anonymous response database
-                         ↑
-              Scheduling roster (researcher only)     Results (no name attached)
+Faculty protocol → PRAMS (bayoupal) → Student signs up (Tier II roster) → Anonymous response store (Tier I, no name link)
 ```
 
 | Old (SONA / ad hoc) | PRAMS |
