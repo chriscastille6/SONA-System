@@ -2,7 +2,7 @@
 
 **Purpose:** Give deans, IRB, IT, and faculty a shared vocabulary for **what kind of data** we handle and **what protections** each tier requires.  
 **Audience:** Deans, department heads, IRB, IT, project lead  
-**Related:** [FERPA_COMPLIANCE_MAPPING.md](FERPA_COMPLIANCE_MAPPING.md) | [DEAN_AND_CHAIR_ONE_PAGER.md](DEAN_AND_CHAIR_ONE_PAGER.md)
+**Related:** [FERPA_VIOLATION_PATHS.md](FERPA_VIOLATION_PATHS.md) | [FERPA_COMPLIANCE_MAPPING.md](FERPA_COMPLIANCE_MAPPING.md) | [DEAN_AND_CHAIR_ONE_PAGER.md](DEAN_AND_CHAIR_ONE_PAGER.md)
 
 ---
 

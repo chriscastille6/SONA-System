@@ -90,6 +90,8 @@ A **regulatory FERPA violation** occurs when an educational agency or institutio
 
 ### Not conclusive (use "violation risk" language)
 
+See **[FERPA_VIOLATION_PATHS.md](FERPA_VIOLATION_PATHS.md)** for technical diagrams (LLM touchpoints, database paths, Tier I/II/III).
+
 | Topic | Why unsettled | PRAMS implication |
 |-------|---------------|-------------------|
 | Email as education record | SPPO declined to adopt *Tulare* in Middleton 2025 finding | Email notifications are lower risk but not zero risk |

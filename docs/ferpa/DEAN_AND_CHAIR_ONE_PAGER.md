@@ -47,6 +47,8 @@ Faculty protocol → PRAMS (bayoupal) → Student signs up (Tier II roster) → 
 
 ## AI — what chairs should tell faculty
 
+See [FERPA_VIOLATION_PATHS.md](FERPA_VIOLATION_PATHS.md) for **what counts as a technical violation** (LLM + database diagrams).
+
 | | |
 |-|-|
 | Students use AI in PRAMS? | **No** |
