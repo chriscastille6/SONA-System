@@ -98,13 +98,120 @@ PII_ENTITIES = ["PERSON", "EMAIL_ADDRESS", "US_SSN"]
 N_ROWS = 100
 RANDOM_SEED = 42
 
+# Deliberately fictional "students" for IT demos — Disney characters only.
+# FERPA RISK MITIGATION: Zero overlap with real registrant / SONA identities.
+DISNEY_CHARACTER_NAMES: tuple[str, ...] = (
+    "Mickey Mouse",
+    "Minnie Mouse",
+    "Donald Duck",
+    "Daisy Duck",
+    "Goofy Goof",
+    "Pluto Dog",
+    "Snow White",
+    "Cinderella Tremaine",
+    "Aurora Rose",
+    "Belle Beast",
+    "Ariel Mermaid",
+    "Jasmine Agrabah",
+    "Pocahontas Powhatan",
+    "Mulan Fa",
+    "Tiana Palace",
+    "Rapunzel Corona",
+    "Moana Waialiki",
+    "Raya Kumandra",
+    "Elsa Arendelle",
+    "Anna Arendelle",
+    "Olaf Snowman",
+    "Kristoff Bjorgman",
+    "Simba Pride",
+    "Nala Pride",
+    "Timon Meerkat",
+    "Pumbaa Warthog",
+    "Aladdin Street",
+    "Genie Lamp",
+    "Jafar Vizier",
+    "Abu Monkey",
+    "Peter Pan",
+    "Tinker Bell",
+    "Wendy Darling",
+    "Captain Hook",
+    "Woody Pride",
+    "Buzz Lightyear",
+    "Jessie Yodeling",
+    "Bo Peep",
+    "Rex Dinosaur",
+    "Hamm Piggy",
+    "Sulley Sullivan",
+    "Mike Wazowski",
+    "Boo Randall",
+    "Remy Ratatouille",
+    "Linguini Gusteau",
+    "Wall-E Robot",
+    "Eve Probe",
+    "Stitch Experiment",
+    "Lilo Pelekai",
+    "Nemo Clownfish",
+    "Dory Blue",
+    "Marlin Clownfish",
+    "Lightning McQueen",
+    "Mater Tow",
+    "Sally Carrera",
+    "Merida DunBroch",
+    "Hiro Hamada",
+    "Baymax Care",
+    "Judy Hopps",
+    "Nick Wilde",
+    "Miguel Rivera",
+    "Hector Rivera",
+    "Mirabel Madrigal",
+    "Isabela Madrigal",
+    "Luisa Madrigal",
+    "Bruno Madrigal",
+    "Encanto Alma",
+    "Asha Rosas",
+    "Star Wish",
+    "Maui Demigod",
+    "Heihei Rooster",
+    "Pua Pig",
+    "Quasimodo Bell",
+    "Esmeralda NotreDame",
+    "Phoebus Captain",
+    "Hercules Hero",
+    "Megara Thebes",
+    "Philoctetes Trainer",
+    "Hades Underworld",
+    "Mushu Dragon",
+    "Cri-Kee Cricket",
+    "Shang Li",
+    "Kuzco Emperor",
+    "Pacha Village",
+    "Yzma Palace",
+    "Kronk Spinach",
+    "Robin Hood",
+    "Maid Marian",
+    "Little John",
+    "Baloo Bear",
+    "Mowgli Man-Cub",
+    "Bagheera Panther",
+    "Dumbo Elephant",
+    "Bambi Deer",
+    "Thumper Rabbit",
+    "Flower Skunk",
+    "Pinocchio Puppet",
+    "Jiminy Cricket",
+    "Geppetto Woodcarver",
+    "Beast Castle",
+    "Gaston Hunter",
+)
+
 
 def generate_dummy_student_data(n_rows: int = N_ROWS, seed: int = RANDOM_SEED) -> pd.DataFrame:
     """
     Step 0 — Generate 100 rows of FAKE student data for PoC testing only.
 
     FERPA RISK MITIGATION:
-    - Uses Faker (synthetic names/emails/SSNs). No real education records.
+    - Names are Disney characters (obviously non-student). Emails/SSNs are
+      Faker-synthetic. No real education records.
     - University_Name is set to "Nicholls State University" so Step 1 can
       prove institutional anonymization works end-to-end.
     - Reviewers: replace this function with a local CSV loader ONLY after
@@ -113,15 +220,26 @@ def generate_dummy_student_data(n_rows: int = N_ROWS, seed: int = RANDOM_SEED) -
     fake = Faker()
     Faker.seed(seed)
 
+    if n_rows > len(DISNEY_CHARACTER_NAMES):
+        raise ValueError(
+            f"PoC supports at most {len(DISNEY_CHARACTER_NAMES)} Disney-named "
+            f"dummy rows; requested {n_rows}."
+        )
+
     rows = []
     for i in range(n_rows):
+        name = DISNEY_CHARACTER_NAMES[i]
+        # Institutional-looking fake mailbox so Presidio EMAIL_ADDRESS fires
+        # on a Nicholls-style domain without using any real student address.
+        local_part = re.sub(r"[^a-z0-9]+", ".", name.lower()).strip(".")
+        email = f"{local_part}@students.nicholls.edu"
         # Deterministic-ish fake SSN format for Presidio US_SSN detection.
         # Still synthetic — not a real Social Security Number.
         ssn = fake.ssn()
         rows.append(
             {
-                "Name": fake.name(),
-                "Email": fake.unique.email(),
+                "Name": name,
+                "Email": email,
                 "SSN": ssn,
                 "GPA": round(fake.pyfloat(min_value=2.0, max_value=4.0, right_digits=2), 2),
                 "Personality_Score": round(
@@ -132,7 +250,7 @@ def generate_dummy_student_data(n_rows: int = N_ROWS, seed: int = RANDOM_SEED) -
         )
 
     df = pd.DataFrame(rows)
-    print(f"[Step 0] Generated {len(df)} FAKE student rows (PoC / DEVELOPMENT tier only).")
+    print(f"[Step 0] Generated {len(df)} FAKE Disney-named rows (PoC / DEVELOPMENT tier only).")
     print("         No real education records are present in this dataframe.")
     return df
 
