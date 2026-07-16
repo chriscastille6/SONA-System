@@ -126,6 +126,18 @@ What we *can* enforce in this repo:
 
 **Required habit:** redact locally → run the pre-upload scanner → only then attach. Prefer typed error text over screenshots of rosters or gradebooks.
 
+**OCR** = Optical Character Recognition: software that reads text *inside* an image (for example an email visible in a screenshot) so the scanner can flag it. Without OCR, the pre-upload script cannot see text in pixels and fail-closes unless you attest the image is synthetic-only.
+
+Workstation setup for OCR:
+
+```bash
+# Debian/Ubuntu
+sudo apt-get install -y tesseract-ocr
+python3 -m venv .venv-ferpa-poc && source .venv-ferpa-poc/bin/activate
+pip install -r scripts/requirements-ferpa-deid-poc.txt
+python scripts/ferpa_scan_image_before_upload.py screenshot.png
+```
+
 ### 12. Does NIST CAISI change our local-first data rules?
 
 **Not directly.** NIST’s [Center for AI Standards and Innovation (CAISI)](https://www.nist.gov/caisi) focuses on measuring and securing **commercial AI systems**, voluntary standards, and evaluations of AI capabilities that may pose national-security-relevant risks. It is not a FERPA handbook and does not replace campus IT rules for education records.
