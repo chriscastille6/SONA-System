@@ -48,6 +48,11 @@ local_settings.py
 htmlcov/
 .pytest_cache/
 
+# Local FERPA de-id / synthesis PoC working artifacts (never commit)
+step2_human_audit_sample.csv
+final_safe_synthetic_data.csv
+.venv-ferpa-poc/
+
 # Celery
 celerybeat-schedule
 
