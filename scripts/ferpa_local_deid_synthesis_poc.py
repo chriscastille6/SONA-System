@@ -15,8 +15,9 @@ Demonstrate a 100% local, air-gap-friendly pipeline that:
   5) Generates synthetic data with SDV (local Gaussian Copula)
   6) Removes any exact 1:1 "clone" rows (overfitting / re-identification risk)
   7) Applies a mosaic-attack gate (quasi-identifier k-map + DCR near-match cull)
-  8) Runs the Distractor Variable Protocol (drive DCR *violations* to zero)
-  9) Exports only the verified synthetic file for potential later cloud upload
+  8) Dilutes with distractor variables + distractor cases; keeps a LOCAL-ONLY
+     linkage key so analysts know what to cut/keep on-device
+  9) Exports only the diluted file (never the linkage key) for cloud candidacy
 
 LEGAL / FERPA LIABILITY NOTES (for reviewers)
 ---------------------------------------------
@@ -36,11 +37,11 @@ LEGAL / FERPA LIABILITY NOTES (for reviewers)
   (b) drops synthetic rows whose QID bin matches a singleton scrubbed class,
   and (c) drops synthetic rows whose Distance to Closest Record (DCR) is below
   a configured floor. Export is blocked if too few rows survive.
-- IMPORTANT: DCR distance == 0 would mean a clone (BAD). The Distractor Variable
-  Protocol (Step 6) drives DCR *violations* to zero — i.e., every exported row
-  must sit at/above the DCR floor on true QIDs — then injects independent
-  distractor columns that inflate naive full-vector nearest-neighbor matching
-  without touching analytic QIDs used for research utility.
+- IMPORTANT: DCR distance == 0 would mean a clone (BAD). Step 6 drives DCR
+  *violations* to zero on analytic rows, then dilutes the release with
+  distractor variables AND distractor cases. A true linking key is retained
+  ONLY on-device so local analysts know what to cut/keep; that key must never
+  be uploaded. The cloud-facing file is the diluted table without role labels.
 - No network calls are required by this script's core libraries when models are
   already installed locally. Do not point Presidio/SDV at remote services.
 
@@ -104,6 +105,7 @@ AUDIT_CSV = WORK_DIR / "step2_human_audit_sample.csv"
 ATTESTATION_LOG = WORK_DIR / "step2_human_audit_attestation.jsonl"
 MOSAIC_REPORT = WORK_DIR / "step5_mosaic_risk_report.json"
 DISTRACTOR_REPORT = WORK_DIR / "step6_distractor_protocol_report.json"
+LOCAL_LINKAGE_KEY = WORK_DIR / "local_only_linkage_key.json"
 FINAL_CSV = WORK_DIR / "final_safe_synthetic_data.csv"
 
 # ---------------------------------------------------------------------------
@@ -132,12 +134,13 @@ MIN_SAFE_EXPORT_ROWS = 50
 SYNTHETIC_OVERSAMPLE_FACTOR = 10
 
 # ---------------------------------------------------------------------------
-# Distractor Variable Protocol (DVP)
-# Goal: DCR *violations* == 0 for every exported row (NOT DCR distance == 0).
+# Distractor dilution (variables + cases) + local-only linkage key
+# Goal: DCR *violations* == 0 for every cloud-facing row; on-device key says
+# what to cut/keep. DCR distance == 0 remains forbidden (clone).
 # ---------------------------------------------------------------------------
-# Labeled distractors keep the PoC honest for IT/IRB review. A production
-# policy could rename them to blend into a codebook; the privacy property is
-# independence from true QIDs, not the column title.
+# Labeled distractor *variables* keep the PoC honest for IT/IRB review.
+# Distractor *cases* are extra rows mixed into the export. Production policy
+# may covertly name decoy columns; privacy property is independence + key exile.
 DISTRACTOR_COLUMNS: tuple[str, ...] = (
     "Distractor_Focus_Index",
     "Distractor_Teamwork_Index",
@@ -151,6 +154,7 @@ DISTRACTOR_VALUE_RANGES: dict[str, tuple[float, float]] = {
     "Distractor_Campus_Engagement": (0.0, 50.0),
 }
 DISTRACTOR_MAX_RESAMPLE_ATTEMPTS = 25
+DISTRACTOR_CASE_DRAW_MULTIPLIER = 20  # draw extras, keep those passing DCR floor
 
 # Institutional brand strings to erase (hardcoded per PoC requirements).
 # LIABILITY MITIGATION: Even after PII redaction, institutional identifiers can
@@ -166,6 +170,8 @@ PII_ENTITIES = ["PERSON", "EMAIL_ADDRESS", "US_SSN"]
 
 N_ROWS = 100
 RANDOM_SEED = 42
+# Extra decoy rows mixed into the export (match analytic cohort => ~50/50 dilute).
+DISTRACTOR_CASE_COUNT = N_ROWS
 
 # Deliberately fictional "students" for IT demos — Disney characters only.
 # FERPA RISK MITIGATION: Zero overlap with real registrant / SONA identities.
@@ -928,142 +934,242 @@ def _draw_distractor_frame(n_rows: int, rng: np.random.Generator) -> pd.DataFram
     return pd.DataFrame(data)
 
 
-def apply_distractor_variable_protocol(
+def _draw_distractor_cases(
+    scrubbed_df: pd.DataFrame, n_wanted: int, rng: np.random.Generator
+) -> pd.DataFrame:
+    """
+    Build decoy *cases* (rows) with plausible QID-like values that still clear
+    the DCR floor vs scrubbed data — decoys must not accidentally near-clone
+    a real scrubbed student.
+    """
+    scrubbed_qid = scrubbed_df[list(QID_COLUMNS)].apply(pd.to_numeric, errors="coerce")
+    mins = scrubbed_qid.min()
+    maxs = scrubbed_qid.max()
+    draw_n = max(n_wanted * DISTRACTOR_CASE_DRAW_MULTIPLIER, n_wanted)
+    candidates = pd.DataFrame(
+        {
+            "Name": "<PERSON>",
+            "Email": "<EMAIL_ADDRESS>",
+            "SSN": "<US_SSN>",
+            "GPA": np.round(rng.uniform(float(mins["GPA"]), float(maxs["GPA"]), draw_n), 2),
+            "Personality_Score": np.round(
+                rng.uniform(
+                    float(mins["Personality_Score"]),
+                    float(maxs["Personality_Score"]),
+                    draw_n,
+                ),
+                1,
+            ),
+            "University_Name": INSTITUTION_REPLACEMENT,
+        }
+    )
+    dcr = compute_dcr_on_columns(candidates, scrubbed_df, QID_COLUMNS)
+    safe = candidates.loc[dcr >= DCR_MIN_THRESHOLD].reset_index(drop=True)
+    if len(safe) < n_wanted:
+        raise RuntimeError(
+            f"Could only mint {len(safe)} DCR-safe distractor cases; need {n_wanted}."
+        )
+    return safe.sample(n=n_wanted, random_state=int(rng.integers(0, 1_000_000))).reset_index(
+        drop=True
+    )
+
+
+def apply_distractor_dilution_protocol(
     synthetic_df: pd.DataFrame, scrubbed_df: pd.DataFrame
 ) -> tuple[pd.DataFrame, dict[str, Any]]:
     """
-    Step 6 — Distractor Variable Protocol (DVP).
+    Step 6 — Distractor dilution (variables + cases) with LOCAL-ONLY linking key.
 
-    CRITICAL SEMANTICS FOR IT REVIEW:
-    - "Bring DCR to zero" in this protocol means bring DCR *violations* to zero
-      (count of exported rows with DCR < threshold == 0).
-    - It does NOT mean set Distance-to-Closest-Record == 0. DCR distance 0 is a
-      clone / identity leak and is exactly what Steps 4–5 eliminate.
+    THREAT MODEL / INTENT:
+    - Cloud-facing release should frustrate re-identification (mosaic / linkage).
+    - On-device, analysts still need to know which rows/columns are analytic vs
+      decoy so they can cut/keep correctly for local research use.
+    - The linking key is the authoritative cut/keep map and MUST remain local.
+      Uploading it alongside the diluted CSV would defeat the dilution.
 
-    PROTOCOL STEPS:
-    1) Verify true-QID DCR violations are already zero (post mosaic gate).
-       Hard-fail if not — distractors must not be used to paper over QID risk.
-    2) Attach independent distractor variables to the export cohort.
-    3) Attach a matched distractor draw to an *internal* scrubbed copy used only
-       for naive full-vector DCR evaluation (never written to the audit CSV).
-    4) Resample distractors until naive full-vector DCR violations are also zero,
-       proving decoy dimensions push bulk nearest-neighbor matching away from
-       linkage usefulness for attackers who do not know the true QID set.
-    5) Emit step6_distractor_protocol_report.json for the security file.
+    PROTOCOL:
+    1) Require zero true-QID DCR violations on analytic synthetic rows.
+    2) Add distractor *variables* (columns) to analytic rows.
+    3) Mint distractor *cases* (rows) that also clear the DCR floor.
+    4) Add the same distractor variables to distractor cases.
+    5) Shuffle into one unlabeled export table.
+    6) Write local_only_linkage_key.json (row roles + column roles).
+    7) Return only the diluted table for final export (no role columns).
     """
     print(
-        "[Step 6] Distractor Variable Protocol — target: zero DCR violations "
-        "(not zero DCR distance)."
+        "[Step 6] Distractor dilution — variables + cases; "
+        "local-only linkage key for cut/keep."
     )
 
-    qid_dcr = compute_dcr_on_columns(synthetic_df, scrubbed_df, QID_COLUMNS)
+    analytic = synthetic_df.reset_index(drop=True).copy()
+    qid_dcr = compute_dcr_on_columns(analytic, scrubbed_df, QID_COLUMNS)
     qid_violations = int(np.sum(qid_dcr < DCR_MIN_THRESHOLD))
     if qid_violations != 0:
         print(
             f"[Step 6] PROTOCOL FAIL: {qid_violations} true-QID DCR violation(s) "
-            "remain after the mosaic gate. Distractors will not be used to mask this."
+            "remain after the mosaic gate."
         )
         sys.exit(2)
 
     rng = np.random.default_rng(RANDOM_SEED)
-    enriched: pd.DataFrame | None = None
-    naive_dcr: np.ndarray | None = None
-    attempts = 0
     eval_columns = tuple(QID_COLUMNS) + tuple(DISTRACTOR_COLUMNS)
 
+    # Distractor variables on analytic rows (resample until naive DCR is clean).
+    analytic_enriched: pd.DataFrame | None = None
+    naive_dcr_analytic: np.ndarray | None = None
+    attempts = 0
     for attempts in range(1, DISTRACTOR_MAX_RESAMPLE_ATTEMPTS + 1):
-        syn_distract = _draw_distractor_frame(len(synthetic_df), rng)
-        # Internal-only distractors on scrubbed for naive-attacker evaluation.
+        syn_distract = _draw_distractor_frame(len(analytic), rng)
         scrub_distract = _draw_distractor_frame(len(scrubbed_df), rng)
-        candidate = pd.concat(
-            [synthetic_df.reset_index(drop=True), syn_distract], axis=1
-        )
+        candidate = pd.concat([analytic, syn_distract], axis=1)
         scrubbed_eval = pd.concat(
             [scrubbed_df.reset_index(drop=True), scrub_distract], axis=1
         )
-        naive_dcr = compute_dcr_on_columns(candidate, scrubbed_eval, eval_columns)
-        naive_violations = int(np.sum(naive_dcr < DCR_MIN_THRESHOLD))
-        if naive_violations == 0:
-            enriched = candidate
+        naive_dcr_analytic = compute_dcr_on_columns(
+            candidate, scrubbed_eval, eval_columns
+        )
+        if int(np.sum(naive_dcr_analytic < DCR_MIN_THRESHOLD)) == 0:
+            analytic_enriched = candidate
             break
 
-    if enriched is None or naive_dcr is None:
-        report = {
-            "event": "distractor_variable_protocol",
-            "utc_timestamp": datetime.now(timezone.utc).isoformat(),
-            "protocol_passed": False,
-            "failure_reason": (
-                f"Unable to reach zero naive full-vector DCR violations within "
-                f"{DISTRACTOR_MAX_RESAMPLE_ATTEMPTS} distractor resamples."
-            ),
-            "qid_dcr_violations": qid_violations,
-            "attempts": DISTRACTOR_MAX_RESAMPLE_ATTEMPTS,
-        }
-        DISTRACTOR_REPORT.write_text(
-            json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    if analytic_enriched is None or naive_dcr_analytic is None:
+        print("[Step 6] PROTOCOL FAIL: could not clear naive DCR with distractor vars.")
+        sys.exit(2)
+
+    # Distractor cases (rows), DCR-safe vs scrubbed, then same distractor columns.
+    decoy_cases = _draw_distractor_cases(scrubbed_df, DISTRACTOR_CASE_COUNT, rng)
+    decoy_cases = pd.concat(
+        [decoy_cases, _draw_distractor_frame(len(decoy_cases), rng)], axis=1
+    )
+    decoy_dcr = compute_dcr_on_columns(decoy_cases, scrubbed_df, QID_COLUMNS)
+    if int(np.sum(decoy_dcr < DCR_MIN_THRESHOLD)) != 0:
+        print("[Step 6] PROTOCOL FAIL: distractor cases failed QID DCR floor.")
+        sys.exit(2)
+
+    analytic_enriched = analytic_enriched.copy()
+    analytic_enriched["_case_role"] = "analytic_synthetic"
+    analytic_enriched["_keep_for_local_analysis"] = True
+
+    decoy_cases = decoy_cases.copy()
+    decoy_cases["_case_role"] = "distractor_case"
+    decoy_cases["_keep_for_local_analysis"] = False
+
+    combined = pd.concat([analytic_enriched, decoy_cases], axis=0, ignore_index=True)
+    combined = combined.sample(frac=1.0, random_state=RANDOM_SEED).reset_index(drop=True)
+    combined.insert(0, "export_row_id", np.arange(len(combined), dtype=int))
+
+    # LOCAL-ONLY linking key: how to cut/keep on-device. Never upload this.
+    linkage = {
+        "event": "local_only_linkage_key",
+        "utc_timestamp": datetime.now(timezone.utc).isoformat(),
+        "WARNING": (
+            "ON-DEVICE ONLY. Do not upload, email, or commit this file. "
+            "It reveals which export rows/columns are analytic vs distractors "
+            "and would undo dilution if paired with the cloud CSV."
+        ),
+        "column_roles": {
+            **{c: "direct_identifier_token" for c in ("Name", "Email", "SSN")},
+            **{c: "true_quasi_identifier" for c in QID_COLUMNS},
+            "University_Name": "institutional_anonymized",
+            **{c: "distractor_variable" for c in DISTRACTOR_COLUMNS},
+            "export_row_id": "export_sequence_only",
+        },
+        "rows": [
+            {
+                "export_row_id": int(rec["export_row_id"]),
+                "case_role": rec["_case_role"],
+                "keep_for_local_analysis": bool(rec["_keep_for_local_analysis"]),
+            }
+            for rec in combined[
+                ["export_row_id", "_case_role", "_keep_for_local_analysis"]
+            ].to_dict("records")
+        ],
+        "counts": {
+            "analytic_synthetic": int((combined["_case_role"] == "analytic_synthetic").sum()),
+            "distractor_case": int((combined["_case_role"] == "distractor_case").sum()),
+            "total_export_rows": int(len(combined)),
+        },
+    }
+    LOCAL_LINKAGE_KEY.write_text(
+        json.dumps(linkage, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+
+    # Cloud-facing table: strip role/key columns.
+    export_df = combined.drop(
+        columns=["_case_role", "_keep_for_local_analysis", "export_row_id"]
+    )
+
+    # Final safety: every exported row (analytic + decoy) clears QID DCR floor.
+    all_dcr = compute_dcr_on_columns(export_df, scrubbed_df, QID_COLUMNS)
+    all_violations = int(np.sum(all_dcr < DCR_MIN_THRESHOLD))
+    if all_violations != 0:
+        print(
+            f"[Step 6] PROTOCOL FAIL: {all_violations} export row(s) under DCR floor "
+            "after dilution merge."
         )
-        print(f"[Step 6] PROTOCOL FAIL: {report['failure_reason']}")
         sys.exit(2)
 
     report = {
-        "event": "distractor_variable_protocol",
+        "event": "distractor_dilution_protocol",
         "utc_timestamp": datetime.now(timezone.utc).isoformat(),
         "protocol_passed": True,
         "semantics": (
-            "Zero DCR violations means every exported row has DCR >= "
-            f"{DCR_MIN_THRESHOLD}. DCR distance == 0 would be a clone and is forbidden."
+            "Zero DCR violations for all cloud-facing rows. "
+            "Local linkage key retained on-device for cut/keep; not in export."
         ),
-        "distractor_columns": list(DISTRACTOR_COLUMNS),
-        "distractor_ranges": {k: list(v) for k, v in DISTRACTOR_VALUE_RANGES.items()},
         "true_qid_columns": list(QID_COLUMNS),
+        "distractor_variables": list(DISTRACTOR_COLUMNS),
+        "n_analytic_cases": int(linkage["counts"]["analytic_synthetic"]),
+        "n_distractor_cases": int(linkage["counts"]["distractor_case"]),
+        "n_export_rows": int(len(export_df)),
         "dcr_min_threshold": DCR_MIN_THRESHOLD,
-        "qid_dcr_violations": 0,
-        "qid_dcr_min": float(qid_dcr.min()),
-        "qid_dcr_median": float(np.median(qid_dcr)),
-        "naive_full_vector_columns": list(eval_columns),
-        "naive_full_vector_dcr_violations": 0,
-        "naive_full_vector_dcr_min": float(naive_dcr.min()),
-        "naive_full_vector_dcr_median": float(np.median(naive_dcr)),
-        "distractor_resample_attempts_used": attempts,
-        "n_exported_rows": int(len(enriched)),
+        "qid_dcr_violations_export": 0,
+        "qid_dcr_min_export": float(all_dcr.min()),
+        "qid_dcr_min_analytic": float(qid_dcr.min()),
+        "naive_full_vector_dcr_min_analytic": float(naive_dcr_analytic.min()),
+        "distractor_variable_resample_attempts": attempts,
+        "local_linkage_key_path": str(LOCAL_LINKAGE_KEY.resolve()),
+        "cloud_export_must_exclude": str(LOCAL_LINKAGE_KEY.name),
         "note": (
-            "Distractors are independent of true QIDs. A knowledgeable attacker "
-            "who already knows the QID set can ignore them; Steps 4–5 remain the "
-            "binding control for that adversary. Distractors raise cost for naive "
-            "or schema-uncertain linkage and document a defense-in-depth layer."
+            "Dilution reduces re-identification utility of the released table. "
+            "The on-device key is required to recover analytic rows/columns locally. "
+            "Never transmit the key with the CSV."
         ),
     }
     DISTRACTOR_REPORT.write_text(
         json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8"
     )
+
     print(
-        f"[Step 6] DCR violations = 0 on true QIDs "
-        f"(min DCR={report['qid_dcr_min']:.4f})."
+        f"[Step 6] Analytic cases={report['n_analytic_cases']}; "
+        f"distractor cases={report['n_distractor_cases']}; "
+        f"export rows={report['n_export_rows']}."
     )
     print(
-        f"[Step 6] DCR violations = 0 on naive QID+distractor vector "
-        f"(min DCR={report['naive_full_vector_dcr_min']:.4f}) "
-        f"after {attempts} distractor draw(s)."
+        f"[Step 6] DCR violations = 0 on full export "
+        f"(min DCR={report['qid_dcr_min_export']:.4f})."
     )
-    print(f"[Step 6] Distractor protocol report -> {DISTRACTOR_REPORT.resolve()}")
-    return enriched, report
+    print(
+        f"[Step 6] LOCAL-ONLY linkage key -> {LOCAL_LINKAGE_KEY.resolve()} "
+        "(do not upload)."
+    )
+    print(f"[Step 6] Protocol report -> {DISTRACTOR_REPORT.resolve()}")
+    return export_df, report
 
 
 def export_final(synthetic_df: pd.DataFrame) -> Path:
     """
-    Step 7 — Final local export of institution-agnostic synthetic data.
+    Step 7 — Final local export of diluted, institution-agnostic synthetic data.
 
     CLOUD-UPLOAD GATE:
-    - Only this file is intended as a candidate for later upload, and only
-      after institutional policy review. The PoC itself performs no upload.
-    - Raw dummy data, audit CSV, attestation log, mosaic report, and
-      distractor protocol report remain local working artifacts.
+    - This CSV is the only cloud-candidate artifact from the PoC.
+    - local_only_linkage_key.json is intentionally excluded and must stay on-device.
     """
     synthetic_df.to_csv(FINAL_CSV, index=False)
     print(f"[Step 7] Wrote final safe synthetic data -> {FINAL_CSV.resolve()}")
     print(
-        "         Reminder: this PoC does NOT upload anything. Cloud transfer "
-        "requires a separate institutional approval workflow."
+        "         DO NOT upload local_only_linkage_key.json with this file. "
+        "Cloud transfer still requires a separate institutional approval workflow."
     )
     return FINAL_CSV
 
@@ -1101,21 +1207,22 @@ def main() -> int:
         ).reset_index(drop=True)
         print(f"[Step 5] Downsampled retained rows to target size n={N_ROWS}.")
 
-    # Step 6 — Distractor Variable Protocol: zero DCR violations + decoy columns.
-    synthetic_export, _dvp_report = apply_distractor_variable_protocol(
+    # Step 6 — Distractor vars + cases; local-only key for cut/keep.
+    synthetic_export, _dvp_report = apply_distractor_dilution_protocol(
         synthetic_safe, scrubbed
     )
 
-    # Step 7 — Export verified synthetic CSV (still local; no cloud upload).
+    # Step 7 — Export diluted CSV only (linkage key stays local).
     export_final(synthetic_export)
 
     print("=" * 72)
-    print("PoC complete. Artifacts (local only):")
+    print("PoC complete. Artifacts:")
     print(f"  - Audit sample : {AUDIT_CSV.resolve()}")
     print(f"  - Attestation  : {ATTESTATION_LOG.resolve()}")
     print(f"  - Mosaic report: {MOSAIC_REPORT.resolve()}")
     print(f"  - Distractor   : {DISTRACTOR_REPORT.resolve()}")
-    print(f"  - Final export : {FINAL_CSV.resolve()}")
+    print(f"  - LOCAL key    : {LOCAL_LINKAGE_KEY.resolve()}  << do not upload")
+    print(f"  - Cloud candidate CSV: {FINAL_CSV.resolve()}")
     print("=" * 72)
     return 0
 
