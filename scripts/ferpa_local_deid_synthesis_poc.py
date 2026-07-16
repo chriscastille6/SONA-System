@@ -22,8 +22,9 @@ LEGAL / FERPA LIABILITY NOTES (for reviewers)
   solely so IT can exercise the controls without touching FERPA-covered PII.
 - Automated redaction is necessary but NOT sufficient under FERPA / institutional
   policy. The mandatory human audit gate (Step 2) creates an explicit approval
-  artifact before synthesis proceeds — documenting that a responsible official
-  attested to legal de-identification.
+  artifact before synthesis proceeds — documenting that a named official
+  (full name + NetID) attested to legal de-identification, with UTC time
+  and a SHA-256 hash of the scrubbed audit CSV bound to that decision.
 - Synthetic data derived from scrubbed records is still treated as sensitive
   until clone-checked. Exact row matches can leak training examples (membership
   inference / overfitting), so Step 4 deletes clones before export.
@@ -41,14 +42,19 @@ Usage
     python3 scripts/ferpa_local_deid_synthesis_poc.py
 
 Human audit gate:
-    Type APPROVE to continue, or REJECT to halt.
+    Enter auditor full name, NetID, then type APPROVE or REJECT.
+    Each decision is appended to step2_human_audit_attestation.jsonl.
 =============================================================================
 """
 
 from __future__ import annotations
 
+import getpass
+import hashlib
+import json
 import re
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Iterable
 
@@ -81,6 +87,7 @@ from sdv.single_table import GaussianCopulaSynthesizer
 SCRIPT_DIR = Path(__file__).resolve().parent
 WORK_DIR = Path.cwd()
 AUDIT_CSV = WORK_DIR / "step2_human_audit_sample.csv"
+ATTESTATION_LOG = WORK_DIR / "step2_human_audit_attestation.jsonl"
 FINAL_CSV = WORK_DIR / "final_safe_synthetic_data.csv"
 
 # Institutional brand strings to erase (hardcoded per PoC requirements).
@@ -365,6 +372,61 @@ def anonymize_institution(df: pd.DataFrame) -> pd.DataFrame:
     return scrubbed
 
 
+def _sha256_file(path: Path) -> str:
+    """Content hash of the audit CSV — binds the sign-off to exact file bytes."""
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(65536), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def _os_session_user() -> str:
+    """Best-effort local OS account (not student PII) for workstation attribution."""
+    try:
+        return getpass.getuser()
+    except Exception:
+        return "UNKNOWN"
+
+
+def write_attestation_record(
+    *,
+    auditor_name: str,
+    auditor_netid: str,
+    decision: str,
+    row_count: int,
+) -> Path:
+    """
+    Append a durable local attestation record (JSON Lines).
+
+    LEGAL / IT ACCOUNTABILITY MITIGATION:
+    - Records WHO signed off (name + NetID), WHEN (UTC ISO-8601), WHAT they
+      decided (APPROVE/REJECT), and WHICH scrubbed file they reviewed
+      (path + SHA-256). This is the compliance artifact IT can retain.
+    - Does NOT log any student row contents — only a hash of the scrubbed
+      audit CSV — so the attestation log itself stays free of education-record
+      payloads while still proving file integrity at sign-off time.
+    - Append-only JSONL preserves prior decisions if the gate is re-run.
+    """
+    record = {
+        "event": "human_deidentification_attestation",
+        "utc_timestamp": datetime.now(timezone.utc).isoformat(),
+        "auditor_full_name": auditor_name,
+        "auditor_netid": auditor_netid,
+        "os_session_user": _os_session_user(),
+        "decision": decision,
+        "audit_csv_path": str(AUDIT_CSV.resolve()),
+        "audit_csv_sha256": _sha256_file(AUDIT_CSV),
+        "audit_row_count": row_count,
+        "script": str(Path(__file__).resolve()),
+    }
+    with ATTESTATION_LOG.open("a", encoding="utf-8") as handle:
+        handle.write(json.dumps(record, sort_keys=True) + "\n")
+    print(f"[Step 2] Attestation logged -> {ATTESTATION_LOG.resolve()}")
+    print(f"         SHA-256(audit CSV) = {record['audit_csv_sha256']}")
+    return ATTESTATION_LOG
+
+
 def human_in_the_loop_audit(scrubbed_df: pd.DataFrame) -> None:
     """
     Step 2 — CRITICAL human-in-the-loop security audit gate.
@@ -377,7 +439,10 @@ def human_in_the_loop_audit(scrubbed_df: pd.DataFrame) -> None:
       processing or potential cloud transfer.
     - Exporting 'step2_human_audit_sample.csv' creates an auditable artifact
       for compliance review. The script refuses to synthesize until APPROVE.
-    - Typing REJECT aborts with a non-zero exit — no synthetic file is written.
+    - Sign-off identity (full name + NetID), UTC timestamp, decision, and the
+      SHA-256 of the audit CSV are written to
+      'step2_human_audit_attestation.jsonl' for both APPROVE and REJECT.
+    - Typing REJECT aborts with a non-zero exit — no synthetic data is written.
     """
     scrubbed_df.to_csv(AUDIT_CSV, index=False)
     print(f"[Step 2] Wrote human audit sample -> {AUDIT_CSV.resolve()}")
@@ -386,29 +451,59 @@ def human_in_the_loop_audit(scrubbed_df: pd.DataFrame) -> None:
         "direct PII and institutional brand identifiers before continuing."
     )
 
-    prompt = (
+    print(
         "SECURITY AUDIT REQUIRED: Please open 'step2_human_audit_sample.csv' "
-        "and verify all PII and institutional identifiers are removed. "
-        "Type 'APPROVE' to confirm legal de-identification and proceed to "
-        "synthesis, or 'REJECT' to halt."
+        "and verify all PII and institutional identifiers are removed."
     )
 
-    # HARD STOP — do not proceed past this point without human attestation.
-    decision = input(prompt + "\n> ").strip()
+    # Identity prompts — required so IT can answer "who signed off?"
+    auditor_name = input("Auditor full name: ").strip()
+    if not auditor_name:
+        print("[Step 2] Auditor full name is required. Halting.")
+        sys.exit(1)
 
-    if decision == "APPROVE":
-        print("[Step 2] Human auditor APPROVED legal de-identification. Proceeding.")
-        return
-    if decision == "REJECT":
+    auditor_netid = input("Auditor NetID / institutional username: ").strip()
+    if not auditor_netid:
+        print("[Step 2] Auditor NetID is required. Halting.")
+        sys.exit(1)
+
+    decision = input(
+        "Type 'APPROVE' to confirm legal de-identification and proceed to "
+        "synthesis, or 'REJECT' to halt.\n> "
+    ).strip()
+
+    if decision not in {"APPROVE", "REJECT"}:
+        # Still log invalid attempts for accountability (decision recorded as-is).
+        write_attestation_record(
+            auditor_name=auditor_name,
+            auditor_netid=auditor_netid,
+            decision=f"INVALID:{decision}",
+            row_count=len(scrubbed_df),
+        )
         print(
-            "[Step 2] Human auditor REJECTED the scrubbed sample. "
-            "Halting. No synthetic data will be generated."
+            f"[Step 2] Invalid response {decision!r}. "
+            "Only exact 'APPROVE' or 'REJECT' are accepted. Halting."
         )
         sys.exit(1)
 
+    # Persist attestation BEFORE branching so REJECT is also retained.
+    write_attestation_record(
+        auditor_name=auditor_name,
+        auditor_netid=auditor_netid,
+        decision=decision,
+        row_count=len(scrubbed_df),
+    )
+
+    if decision == "APPROVE":
+        print(
+            f"[Step 2] {auditor_name} ({auditor_netid}) APPROVED "
+            "legal de-identification. Proceeding."
+        )
+        return
+
     print(
-        f"[Step 2] Invalid response {decision!r}. "
-        "Only exact 'APPROVE' or 'REJECT' are accepted. Halting."
+        f"[Step 2] {auditor_name} ({auditor_netid}) REJECTED the scrubbed "
+        "sample. Halting. No synthetic data will be generated."
     )
     sys.exit(1)
 
@@ -548,6 +643,7 @@ def main() -> int:
     print("=" * 72)
     print("PoC complete. Artifacts (local only):")
     print(f"  - Audit sample : {AUDIT_CSV.resolve()}")
+    print(f"  - Attestation  : {ATTESTATION_LOG.resolve()}")
     print(f"  - Final export : {FINAL_CSV.resolve()}")
     print("=" * 72)
     return 0
