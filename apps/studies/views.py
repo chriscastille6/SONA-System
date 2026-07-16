@@ -448,12 +448,17 @@ def study_roster(request, pk):
 
 @login_required
 def mark_attendance(request, pk):
-    """Mark attendance for signup."""
-    signup = get_object_or_404(Signup, pk=pk)
-    study = signup.timeslot.study
-    if study.researcher != request.user and not getattr(request.user, 'is_admin', False):
-        raise Http404()
-    
+    """Mark attendance for signup.
+
+    H-3: Scope the queryset to the caller's authorized studies before resolve
+    so unauthorized users get 404 (no PII render, no existence oracle via
+    redirect-after-load).
+    """
+    qs = Signup.objects.select_related('timeslot__study', 'participant')
+    if not getattr(request.user, 'is_admin', False):
+        qs = qs.filter(timeslot__study__researcher=request.user)
+    signup = get_object_or_404(qs, pk=pk)
+
     if request.method == 'POST':
         status = request.POST.get('status')
         if status == 'attended':
@@ -529,10 +534,12 @@ def goals_refs_live_survey(request):
     )
 
 
+@ensure_csrf_cookie
 def run_protocol(request, slug):
     """
     Serve the protocol HTML for a study.
     Uses active_approved so expired studies return 404 (IRB compliance).
+    Sets CSRF cookie so same-origin JSON submits can send X-CSRFToken (H-2).
     """
     if slug in _RUN_PROTOCOL_PREAPPROVAL_SLUGS:
         study = get_object_or_404(Study.objects.all(), slug=slug)
@@ -966,7 +973,10 @@ def protocol_study_documentation(request, slug):
 def submit_response(request, study_id):
     """
     Accept JSON protocol response submission.
-    
+
+    H-2: CSRF is enforced by CsrfViewMiddleware (no csrf_exempt). Clients must
+    send X-CSRFToken (from the csrf-token meta tag or hidden input) on POST.
+
     Expected POST body: JSON with response data
     Optional query param: session_id (otherwise generated)
     Uses active_approved so expired studies are rejected (IRB compliance).

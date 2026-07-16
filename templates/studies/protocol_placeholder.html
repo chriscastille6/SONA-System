@@ -57,9 +57,12 @@
                     
                     const response = await fetch('/api/studies/{{ study.id }}/submit/', {
                         method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
+                        headers: (typeof csrfHeaders === 'function')
+                            ? csrfHeaders()
+                            : {
+                                'Content-Type': 'application/json',
+                                'X-CSRFToken': (document.querySelector('meta[name="csrf-token"]') || {}).content || ''
+                            },
                         body: JSON.stringify(json)
                     });
                     
