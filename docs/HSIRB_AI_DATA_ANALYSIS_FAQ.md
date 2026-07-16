@@ -110,6 +110,19 @@ A proportionate statement is enough, for example:
 
 These are control patterns for IT review—not a requirement for every multilevel analysis request. Daily work should remain **local-first**.
 
+### 11. Does NIST CAISI change our local-first data rules?
+
+**Not directly.** NIST’s [Center for AI Standards and Innovation (CAISI)](https://www.nist.gov/caisi) focuses on measuring and securing **commercial AI systems**, voluntary standards, and evaluations of AI capabilities that may pose national-security-relevant risks. It is not a FERPA handbook and does not replace campus IT rules for education records.
+
+What *is* useful to borrow for PRAMS / HSIRB AI use:
+
+1. **Pre-deployment testing is not enough.** CAISI’s NIST AI 800-4 work on [post-deployment monitoring of AI systems](https://www.nist.gov/news-events/news/2026/03/new-report-challenges-monitoring-deployed-ai-systems) stresses that AI behavior in real use can differ from lab checks. For us, that means AI IRB helpers and coding assistants need ongoing review after they are turned on—not a one-time demo.
+2. **Monitor more than “did the model answer?”** Useful monitoring buckets from that CAISI/NIST framing include: functionality, operations, **human factors** (over-trust, unclear AI advice), **security/misuse**, **compliance** (FERPA / protocol scope), and broader impacts. Human-factors and compliance are the gaps most likely to matter in an IRB setting.
+3. **Treat AI evaluation results carefully.** CAISI has also highlighted that models can “cheat” or look stronger than they are on agentic evaluations. Do not treat a green AI IRB score as an audit sign-off.
+4. **Supply-chain / model provenance awareness.** If campus tools call external model APIs, know which vendor/model is used and that identifiable education records must not be the prompt payload (same local-first rule).
+
+**Bottom line:** Keep CAISI as an AI-*system* measurement lens. Keep FERPA local-first as the *data* rule. They complement each other; CAISI does not authorize sending student rows to cloud AI.
+
 ## Revision note
 
-This FAQ is intended for the HSIRB / PRAMS public guidance surface so “AI + student data + Cursor/R/Python” is no longer an undocumented open issue. Update this document when campus IT issues a more specific AI or data-handling standard.
+This FAQ is intended for the HSIRB / PRAMS public guidance surface so “AI + student data + Cursor/R/Python” is no longer an undocumented open issue. Update this document when campus IT issues a more specific AI or data-handling standard. References to NIST CAISI / NIST AI 800-4 should be refreshed if NIST revises that monitoring guidance.
