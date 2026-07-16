@@ -1047,18 +1047,21 @@ def apply_distractor_dilution_protocol(
         sys.exit(2)
 
     analytic_enriched = analytic_enriched.copy()
-    analytic_enriched["_case_role"] = "analytic_synthetic"
-    analytic_enriched["_keep_for_local_analysis"] = True
+    analytic_enriched["case_role"] = "analytic_synthetic"
+    analytic_enriched["keep_for_local_analysis"] = True
 
     decoy_cases = decoy_cases.copy()
-    decoy_cases["_case_role"] = "distractor_case"
-    decoy_cases["_keep_for_local_analysis"] = False
+    decoy_cases["case_role"] = "distractor_case"
+    decoy_cases["keep_for_local_analysis"] = False
 
     combined = pd.concat([analytic_enriched, decoy_cases], axis=0, ignore_index=True)
     combined = combined.sample(frac=1.0, random_state=RANDOM_SEED).reset_index(drop=True)
     combined.insert(0, "export_row_id", np.arange(len(combined), dtype=int))
 
     # LOCAL-ONLY linking key: how to cut/keep on-device. Never upload this.
+    row_map = combined.loc[
+        :, ["export_row_id", "case_role", "keep_for_local_analysis"]
+    ]
     linkage = {
         "event": "local_only_linkage_key",
         "utc_timestamp": datetime.now(timezone.utc).isoformat(),
@@ -1076,17 +1079,19 @@ def apply_distractor_dilution_protocol(
         },
         "rows": [
             {
-                "export_row_id": int(rec["export_row_id"]),
-                "case_role": rec["_case_role"],
-                "keep_for_local_analysis": bool(rec["_keep_for_local_analysis"]),
+                "export_row_id": int(export_row_id),
+                "case_role": str(case_role),
+                "keep_for_local_analysis": bool(keep_flag),
             }
-            for rec in combined[
-                ["export_row_id", "_case_role", "_keep_for_local_analysis"]
-            ].to_dict("records")
+            for export_row_id, case_role, keep_flag in row_map.itertuples(
+                index=False, name=None
+            )
         ],
         "counts": {
-            "analytic_synthetic": int((combined["_case_role"] == "analytic_synthetic").sum()),
-            "distractor_case": int((combined["_case_role"] == "distractor_case").sum()),
+            "analytic_synthetic": int(
+                (combined["case_role"] == "analytic_synthetic").sum()
+            ),
+            "distractor_case": int((combined["case_role"] == "distractor_case").sum()),
             "total_export_rows": int(len(combined)),
         },
     }
@@ -1096,7 +1101,7 @@ def apply_distractor_dilution_protocol(
 
     # Cloud-facing table: strip role/key columns.
     export_df = combined.drop(
-        columns=["_case_role", "_keep_for_local_analysis", "export_row_id"]
+        columns=["case_role", "keep_for_local_analysis", "export_row_id"]
     )
 
     # Final safety: every exported row (analytic + decoy) clears QID DCR floor.
