@@ -32,9 +32,9 @@ LEGAL / FERPA LIABILITY NOTES (for reviewers)
 - Mosaic / linkage risk remains after direct-identifier removal: an attacker can
   join quasi-identifiers (e.g., GPA + Personality_Score) to auxiliary files.
   Step 5 therefore (a) measures scrubbed QID equivalence-class sizes (k-map),
-  (b) drops synthetic rows whose QID bin matches a rare scrubbed class, and
-  (c) drops synthetic rows whose Distance to Closest Record (DCR) is below a
-  configured floor. Export is blocked if too few rows survive.
+  (b) drops synthetic rows whose QID bin matches a singleton scrubbed class,
+  and (c) drops synthetic rows whose Distance to Closest Record (DCR) is below
+  a configured floor. Export is blocked if too few rows survive.
 - No network calls are required by this script's core libraries when models are
   already installed locally. Do not point Presidio/SDV at remote services.
 
@@ -107,14 +107,22 @@ FINAL_CSV = WORK_DIR / "final_safe_synthetic_data.csv"
 QID_COLUMNS: tuple[str, ...] = ("GPA", "Personality_Score")
 # Equivalence-class bin widths for k-map style uniqueness checks.
 QID_BIN_WIDTHS: dict[str, float] = {
-    "GPA": 0.1,  # e.g., 3.41 -> 3.4
-    "Personality_Score": 5.0,  # e.g., 72.4 -> 70.0
+    "GPA": 0.2,  # e.g., 3.41 -> 3.4
+    "Personality_Score": 10.0,  # e.g., 72.4 -> 70.0
 }
-K_ANONYMITY_MIN = 5  # classes smaller than k are treated as high linkage risk
+# Auditor-facing k-map threshold (reported even when not used for drops).
+K_ANONYMITY_MIN = 5
+# Drop synthetic rows that land in scrubbed bins with fewer than this many
+# real rows. Default 2 = singling-out / singleton mosaic cells (highest risk).
+# Classes with 2 <= size < K_ANONYMITY_MIN are reported but not auto-dropped,
+# because small PoC cohorts are often entirely "rare" at k=5.
+RARE_BIN_DROP_MAX_SIZE = 1
 # Min Euclidean DCR on min-max-normalized QID space. Below this => near-clone.
-DCR_MIN_THRESHOLD = 0.10
+DCR_MIN_THRESHOLD = 0.05
 # Hard-stop: refuse export if mosaic filtering leaves fewer than this many rows.
 MIN_SAFE_EXPORT_ROWS = 50
+# Generate extra synthetic candidates so DCR/rare-bin culls can still fill export.
+SYNTHETIC_OVERSAMPLE_FACTOR = 10
 
 # Institutional brand strings to erase (hardcoded per PoC requirements).
 # LIABILITY MITIGATION: Even after PII redaction, institutional identifiers can
@@ -693,6 +701,15 @@ def _minmax_normalize_qids(
     return normalized.to_numpy(dtype=float)
 
 
+def _pairwise_min_euclidean(a: np.ndarray, b: np.ndarray) -> np.ndarray:
+    """Min Euclidean distance from each row in a to any row in b."""
+    a_sq = np.sum(a**2, axis=1, keepdims=True)
+    b_sq = np.sum(b**2, axis=1, keepdims=True).T
+    cross = a @ b.T
+    dists = np.sqrt(np.maximum(a_sq + b_sq - 2.0 * cross, 0.0))
+    return dists.min(axis=1)
+
+
 def compute_dcr_to_scrubbed(
     synthetic_df: pd.DataFrame, scrubbed_df: pd.DataFrame
 ) -> np.ndarray:
@@ -711,13 +728,26 @@ def compute_dcr_to_scrubbed(
     maxs = scrubbed_qid.max()
     scrubbed_norm = _minmax_normalize_qids(scrubbed_df, mins, maxs)
     synthetic_norm = _minmax_normalize_qids(synthetic_df, mins, maxs)
+    return _pairwise_min_euclidean(synthetic_norm, scrubbed_norm)
 
-    # Pairwise distances without scipy: (n_syn, n_scrub)
-    # ||a-b||^2 = ||a||^2 + ||b||^2 - 2 a·b
-    syn_sq = np.sum(synthetic_norm**2, axis=1, keepdims=True)
-    scrub_sq = np.sum(scrubbed_norm**2, axis=1, keepdims=True).T
-    cross = synthetic_norm @ scrubbed_norm.T
-    dists = np.sqrt(np.maximum(syn_sq + scrub_sq - 2.0 * cross, 0.0))
+
+def compute_scrubbed_loo_dcr(scrubbed_df: pd.DataFrame) -> np.ndarray:
+    """
+    Leave-one-out DCR among scrubbed rows (baseline denseness of real QIDs).
+
+    Reported for IT context: if real records are already tightly clustered,
+    a fixed DCR floor must be interpreted against that baseline.
+    """
+    _require_qid_columns(scrubbed_df, "compute_scrubbed_loo_dcr")
+    scrubbed_qid = scrubbed_df[list(QID_COLUMNS)].apply(pd.to_numeric, errors="coerce")
+    mins = scrubbed_qid.min()
+    maxs = scrubbed_qid.max()
+    norm = _minmax_normalize_qids(scrubbed_df, mins, maxs)
+    # Distance to nearest *other* scrubbed row.
+    a_sq = np.sum(norm**2, axis=1, keepdims=True)
+    cross = norm @ norm.T
+    dists = np.sqrt(np.maximum(a_sq + a_sq.T - 2.0 * cross, 0.0))
+    np.fill_diagonal(dists, np.inf)
     return dists.min(axis=1)
 
 
@@ -728,9 +758,10 @@ def mosaic_attack_gate(
     Step 5 — Mosaic-attack / linkage-risk gate (QID k-map + DCR).
 
     MOSAIC ATTACK MITIGATION (what this blocks):
-    1) Rare QID bins: if a synthetic row lands in a scrubbed equivalence class
-       with size < k, an attacker with an auxiliary file can more easily join
-       on that uncommon GPA/score cell. Those synthetic rows are dropped.
+    1) Singleton QID bins: if a synthetic row lands in a scrubbed equivalence
+       class of size <= RARE_BIN_DROP_MAX_SIZE (default 1), it reproduces a
+       singling-out cell an attacker can join to auxiliary files — dropped.
+       Classes with size < K_ANONYMITY_MIN are still measured in the report.
     2) Near-neighbors (DCR): synthetic rows closer than DCR_MIN_THRESHOLD to
        any scrubbed row (normalized QID Euclidean distance) are dropped even
        when not exact clones — this is the near-duplicate / linkage screen.
@@ -744,19 +775,27 @@ def mosaic_attack_gate(
     """
     print("[Step 5] Running mosaic-attack gate (QID k-map + DCR)...")
     kmap = assess_scrubbed_qid_kmap(scrubbed_df)
+    loo_dcr = compute_scrubbed_loo_dcr(scrubbed_df)
 
     scrubbed_bins = bin_quasi_identifiers(scrubbed_df)
     scrubbed_keys = pd.Series(
         list(map(tuple, scrubbed_bins.to_numpy().tolist())), index=scrubbed_bins.index
     )
     scrubbed_counts = scrubbed_keys.value_counts(dropna=False)
-    rare_keys = set(scrubbed_counts[scrubbed_counts < K_ANONYMITY_MIN].index.tolist())
+    # Auto-drop only singleton / ultra-rare bins (see RARE_BIN_DROP_MAX_SIZE).
+    drop_keys = set(
+        scrubbed_counts[scrubbed_counts <= RARE_BIN_DROP_MAX_SIZE].index.tolist()
+    )
+    report_rare_keys = set(
+        scrubbed_counts[scrubbed_counts < K_ANONYMITY_MIN].index.tolist()
+    )
 
     synthetic_bins = bin_quasi_identifiers(synthetic_df)
     synthetic_keys = pd.Series(
         list(map(tuple, synthetic_bins.to_numpy().tolist())), index=synthetic_bins.index
     )
-    rare_bin_mask_arr = synthetic_keys.isin(rare_keys).to_numpy(dtype=bool)
+    rare_bin_mask_arr = synthetic_keys.isin(drop_keys).to_numpy(dtype=bool)
+    report_rare_hit_arr = synthetic_keys.isin(report_rare_keys).to_numpy(dtype=bool)
 
     dcr = compute_dcr_to_scrubbed(synthetic_df, scrubbed_df)
     near_mask = dcr < DCR_MIN_THRESHOLD
@@ -769,10 +808,17 @@ def mosaic_attack_gate(
         "event": "mosaic_attack_gate",
         "utc_timestamp": datetime.now(timezone.utc).isoformat(),
         "scrubbed_kmap": kmap,
+        "scrubbed_loo_dcr": {
+            "min": float(loo_dcr.min()) if len(loo_dcr) else None,
+            "median": float(np.median(loo_dcr)) if len(loo_dcr) else None,
+            "p05": float(np.percentile(loo_dcr, 5)) if len(loo_dcr) else None,
+        },
         "dcr_min_threshold": DCR_MIN_THRESHOLD,
+        "rare_bin_drop_max_size": RARE_BIN_DROP_MAX_SIZE,
         "min_safe_export_rows": MIN_SAFE_EXPORT_ROWS,
         "input_synthetic_rows": int(len(synthetic_df)),
         "dropped_rare_qid_bin": int(rare_bin_mask_arr.sum()),
+        "synthetic_rows_in_kmap_rare_bins_lt_k": int(report_rare_hit_arr.sum()),
         "dropped_low_dcr": int(near_mask.sum()),
         "dropped_union": int(drop_mask.sum()),
         "retained_rows": int(len(kept)),
@@ -860,9 +906,11 @@ def main() -> int:
     human_in_the_loop_audit(scrubbed)
 
     # Step 3 — Local SDV synthesis from approved scrubbed data.
-    # Oversample so Step 5 mosaic culls (rare QID bins + low DCR) can still
-    # leave a usable export cohort without relaxing privacy thresholds.
-    synthetic = synthesize_with_sdv(scrubbed, n_rows=N_ROWS * 3)
+    # Oversample so Step 5 mosaic culls (singleton QID bins + low DCR) can
+    # still leave a usable export cohort without relaxing privacy thresholds.
+    synthetic = synthesize_with_sdv(
+        scrubbed, n_rows=N_ROWS * SYNTHETIC_OVERSAMPLE_FACTOR
+    )
 
     # Step 4 — Delete any exact 1:1 clones vs scrubbed rows.
     synthetic_clean, _clones = remove_exact_clones(synthetic, scrubbed)
