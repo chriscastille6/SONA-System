@@ -15,9 +15,9 @@ Demonstrate a 100% local, air-gap-friendly pipeline that:
   5) Generates synthetic data with SDV (local Gaussian Copula)
   6) Removes any exact 1:1 "clone" rows (overfitting / re-identification risk)
   7) Applies a mosaic-attack gate (quasi-identifier k-map + DCR near-match cull)
-  8) Dilutes with distractor variables + distractor cases; keeps a LOCAL-ONLY
-     linkage key so analysts know what to cut/keep on-device
-  9) Exports only the diluted file (never the linkage key) for cloud candidacy
+  8) Dilutes with distractor variables + distractor cases; keeps an ENCRYPTED
+     LOCAL-ONLY linkage key so analysts know what to cut/keep on-device
+  9) Enforces outbound DLP + prior APPROVE, then exports only the diluted CSV
 
 LEGAL / FERPA LIABILITY NOTES (for reviewers)
 ---------------------------------------------
@@ -95,17 +95,28 @@ from presidio_anonymizer.entities import OperatorConfig
 from sdv.metadata import Metadata
 from sdv.single_table import GaussianCopulaSynthesizer
 
-
 # ---------------------------------------------------------------------------
 # Paths — all artifacts stay on the local filesystem under this script's CWD.
 # ---------------------------------------------------------------------------
 SCRIPT_DIR = Path(__file__).resolve().parent
+if str(SCRIPT_DIR) not in sys.path:
+    sys.path.insert(0, str(SCRIPT_DIR))
+
+# Local enforcement helpers (DLP, encrypted linkage key, mandatory APPROVE).
+from ferpa_release_enforcement import (  # noqa: E402
+    enforce_release_gates,
+    write_encrypted_json,
+)
+
 WORK_DIR = Path.cwd()
 AUDIT_CSV = WORK_DIR / "step2_human_audit_sample.csv"
 ATTESTATION_LOG = WORK_DIR / "step2_human_audit_attestation.jsonl"
 MOSAIC_REPORT = WORK_DIR / "step5_mosaic_risk_report.json"
 DISTRACTOR_REPORT = WORK_DIR / "step6_distractor_protocol_report.json"
-LOCAL_LINKAGE_KEY = WORK_DIR / "local_only_linkage_key.json"
+ENFORCEMENT_REPORT = WORK_DIR / "step7_release_enforcement_report.json"
+# Encrypted cut/keep map + local Fernet key (never upload either with the CSV).
+LOCAL_LINKAGE_KEY_ENC = WORK_DIR / "local_only_linkage_key.json.enc"
+LOCAL_LINKAGE_FERNET_KEY = WORK_DIR / "local_only_linkage.key"
 FINAL_CSV = WORK_DIR / "final_safe_synthetic_data.csv"
 
 # ---------------------------------------------------------------------------
@@ -1095,9 +1106,9 @@ def apply_distractor_dilution_protocol(
             "total_export_rows": int(len(combined)),
         },
     }
-    LOCAL_LINKAGE_KEY.write_text(
-        json.dumps(linkage, indent=2, sort_keys=True) + "\n", encoding="utf-8"
-    )
+    # Encrypt at rest. Plaintext JSON is intentionally NOT written (enforcement
+    # will block release if a plaintext sibling appears in the work directory).
+    write_encrypted_json(linkage, LOCAL_LINKAGE_KEY_ENC, LOCAL_LINKAGE_FERNET_KEY)
 
     # Cloud-facing table: strip role/key columns.
     export_df = combined.drop(
@@ -1133,12 +1144,17 @@ def apply_distractor_dilution_protocol(
         "qid_dcr_min_analytic": float(qid_dcr.min()),
         "naive_full_vector_dcr_min_analytic": float(naive_dcr_analytic.min()),
         "distractor_variable_resample_attempts": attempts,
-        "local_linkage_key_path": str(LOCAL_LINKAGE_KEY.resolve()),
-        "cloud_export_must_exclude": str(LOCAL_LINKAGE_KEY.name),
+        "local_linkage_key_enc_path": str(LOCAL_LINKAGE_KEY_ENC.resolve()),
+        "local_fernet_key_path": str(LOCAL_LINKAGE_FERNET_KEY.resolve()),
+        "cloud_export_must_exclude": [
+            LOCAL_LINKAGE_KEY_ENC.name,
+            LOCAL_LINKAGE_FERNET_KEY.name,
+            "local_only_linkage_key.json",
+        ],
         "note": (
             "Dilution reduces re-identification utility of the released table. "
-            "The on-device key is required to recover analytic rows/columns locally. "
-            "Never transmit the key with the CSV."
+            "The on-device encrypted key is required to recover analytic rows/"
+            "columns locally. Never transmit the .enc or .key files with the CSV."
         ),
     }
     DISTRACTOR_REPORT.write_text(
@@ -1155,8 +1171,8 @@ def apply_distractor_dilution_protocol(
         f"(min DCR={report['qid_dcr_min_export']:.4f})."
     )
     print(
-        f"[Step 6] LOCAL-ONLY linkage key -> {LOCAL_LINKAGE_KEY.resolve()} "
-        "(do not upload)."
+        f"[Step 6] LOCAL-ONLY encrypted linkage key -> "
+        f"{LOCAL_LINKAGE_KEY_ENC.resolve()} (do not upload)."
     )
     print(f"[Step 6] Protocol report -> {DISTRACTOR_REPORT.resolve()}")
     return export_df, report
@@ -1166,15 +1182,24 @@ def export_final(synthetic_df: pd.DataFrame) -> Path:
     """
     Step 7 — Final local export of diluted, institution-agnostic synthetic data.
 
-    CLOUD-UPLOAD GATE:
-    - This CSV is the only cloud-candidate artifact from the PoC.
-    - local_only_linkage_key.json is intentionally excluded and must stay on-device.
+    CLOUD-UPLOAD GATE (enforced):
+    - Requires prior human APPROVE in the attestation log.
+    - Outbound DLP must pass (no emails/SSNs/institutional brand / non-tokens).
+    - Plaintext linkage key beside the release artifacts is a hard fail.
+    - Encrypted linkage key + Fernet key remain local-only.
     """
+    enforce_release_gates(
+        df=synthetic_df,
+        attestation_log=ATTESTATION_LOG,
+        work_dir=WORK_DIR,
+        report_path=ENFORCEMENT_REPORT,
+    )
     synthetic_df.to_csv(FINAL_CSV, index=False)
     print(f"[Step 7] Wrote final safe synthetic data -> {FINAL_CSV.resolve()}")
     print(
-        "         DO NOT upload local_only_linkage_key.json with this file. "
-        "Cloud transfer still requires a separate institutional approval workflow."
+        "         DO NOT upload local_only_linkage_key.json.enc or "
+        "local_only_linkage.key with this file. Cloud transfer still requires "
+        "a separate institutional approval workflow."
     )
     return FINAL_CSV
 
@@ -1226,7 +1251,9 @@ def main() -> int:
     print(f"  - Attestation  : {ATTESTATION_LOG.resolve()}")
     print(f"  - Mosaic report: {MOSAIC_REPORT.resolve()}")
     print(f"  - Distractor   : {DISTRACTOR_REPORT.resolve()}")
-    print(f"  - LOCAL key    : {LOCAL_LINKAGE_KEY.resolve()}  << do not upload")
+    print(f"  - LOCAL key    : {LOCAL_LINKAGE_KEY_ENC.resolve()}  << do not upload")
+    print(f"  - Fernet key   : {LOCAL_LINKAGE_FERNET_KEY.resolve()}  << do not upload")
+    print(f"  - Enforcement  : {ENFORCEMENT_REPORT.resolve()}")
     print(f"  - Cloud candidate CSV: {FINAL_CSV.resolve()}")
     print("=" * 72)
     return 0

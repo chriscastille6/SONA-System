@@ -58,7 +58,21 @@ Optional hardening for higher scrutiny (documented in the local PoC tooling):
 - Exact clone checks against the scrubbed source.
 - Quasi-identifier uniqueness reporting (k-map style).
 - DCR near-match culls (reject synthetic rows too close to real scrubbed rows).
-- Distractor **variables** and distractor **cases** in the cloud-facing file, with an **on-device linkage key** used only locally to cut/keep.
+- Distractor **variables** and distractor **cases** in the cloud-facing file, with an **on-device encrypted linkage key** used only locally to cut/keep.
+
+### 5a. What technical enforcement exists beyond “please follow the FAQ”?
+
+The local PoC adds **enforcement gates** (still not a full campus DLP/HSM program):
+
+| Control | What it does |
+|--------|----------------|
+| **`.cursorignore`** | Keeps local audit CSVs, linkage keys, identifiable drop folders, and env secrets out of default Cursor indexing / cloud-agent context |
+| **Mandatory APPROVE check** | Refuses to write the cloud-candidate CSV unless the attestation log contains a human `APPROVE` |
+| **Outbound DLP scan** | Blocks export if emails, SSN-shaped values, institutional brand strings, or non-token identifier columns remain |
+| **Encrypted linkage key** | Stores the cut/keep map as `local_only_linkage_key.json.enc` with a local Fernet key file; plaintext key beside the release is a hard fail |
+| **Packaging rule** | Cloud bundle = diluted CSV only; never the `.enc` / `.key` / attestation / audit sample |
+
+Campus production should still add network DLP, approved storage paths, and secrets-manager/HSM key custody. The PoC demonstrates enforceable local gates; it does not replace those controls.
 
 ### 6. Will distractors or privacy filters break outlier and multilevel analyses?
 
@@ -90,7 +104,11 @@ A proportionate statement is enough, for example:
 
 ## Related local tooling (optional)
 
-A development-tier proof of concept lives in the repository under `scripts/ferpa_local_deid_synthesis_poc.py`. It demonstrates local Presidio redaction, human `APPROVE`/`REJECT` attestation logging, synthetic generation, mosaic/DCR gates, distractor dilution, and a **local-only** linkage key. It is a control pattern for IT review—not a requirement for every multilevel analysis request.
+- `scripts/ferpa_local_deid_synthesis_poc.py` — full local release pipeline with enforcement gates  
+- `scripts/ferpa_release_enforcement.py` — reusable outbound DLP / encrypted-key helpers (`scan <file.csv>`)  
+- `.cursorignore` — path blocks for local sensitive artifacts  
+
+These are control patterns for IT review—not a requirement for every multilevel analysis request. Daily work should remain **local-first**.
 
 ## Revision note
 

@@ -53,9 +53,16 @@ step2_human_audit_sample.csv
 step2_human_audit_attestation.jsonl
 step5_mosaic_risk_report.json
 step6_distractor_protocol_report.json
+step7_release_enforcement_report.json
 local_only_linkage_key.json
+local_only_linkage_key.json.enc
+local_only_linkage.key
 final_safe_synthetic_data.csv
 .venv-ferpa-poc/
+data/raw/
+data/identifiable/
+data/local_only/
+exports/identifiable/
 
 # Celery
 celerybeat-schedule
