@@ -138,6 +138,22 @@ def social_science_irb_standards(request):
     })
 
 
+def hsirb_ai_data_analysis_faq(request):
+    """Public HSIRB FAQ: AI tools, local-first analysis, and education records."""
+    path = Path(settings.BASE_DIR) / "docs" / "HSIRB_AI_DATA_ANALYSIS_FAQ.md"
+    if not path.exists():
+        faq_html = "<p>FAQ document not found.</p>"
+    else:
+        try:
+            raw = path.read_text(encoding="utf-8")
+            faq_html = markdown.markdown(raw, extensions=["fenced_code", "tables"])
+        except OSError:
+            faq_html = "<p>Could not read FAQ document.</p>"
+    return render(request, 'studies/hsirb_ai_data_analysis_faq.html', {
+        'faq_html': faq_html,
+    })
+
+
 def _extract_social_science_mermaid_blocks():
     path = Path(settings.BASE_DIR) / "docs" / "SOCIAL_SCIENCE_IRB_STANDARDS.md"
     if not path.exists():

@@ -12,6 +12,7 @@ urlpatterns = [
     path('irb-standards/', views.social_science_irb_standards, name='social_science_irb_standards'),
     path('irb-standards/diagram-1/', views.social_science_irb_diagram_1, name='social_science_irb_diagram_1'),
     path('irb-standards/diagram-2/', views.social_science_irb_diagram_2, name='social_science_irb_diagram_2'),
+    path('irb-standards/ai-data-faq/', views.hsirb_ai_data_analysis_faq, name='hsirb_ai_data_analysis_faq'),
     # Browse studies
     path('', views.study_list, name='list'),
     path('<uuid:pk>/', views.study_detail, name='detail'),

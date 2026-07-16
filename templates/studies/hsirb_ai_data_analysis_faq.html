@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}HSIRB FAQ: AI Tools and Data Analysis{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 offset-lg-1">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'studies:social_science_irb_standards' %}">Social Science IRB Standards</a></li>
+                <li class="breadcrumb-item active">AI Tools &amp; Data Analysis FAQ</li>
+            </ol>
+        </nav>
+
+        <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap mb-4">
+            <div>
+                <h2>HSIRB FAQ: AI Tools and Data Analysis</h2>
+                <p class="lead mb-0">
+                    Local-first analysis support, education records, and when a de-identified release path is actually needed.
+                </p>
+            </div>
+            <span class="text-muted small">Source: <code>docs/HSIRB_AI_DATA_ANALYSIS_FAQ.md</code></span>
+        </div>
+
+        <div class="alert alert-info">
+            Default posture: keep row-level education records on approved local or campus systems.
+            AI assistants help with questions and code; they do not become an export channel for identifiable student data.
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-body standards-doc-body">
+                {{ faq_html|safe }}
+            </div>
+        </div>
+
+        <p class="text-center small mb-0">
+            <a href="{% url 'studies:social_science_irb_standards' %}">Social Science IRB Standards</a>
+        </p>
+    </div>
+</div>
+{% endblock %}
