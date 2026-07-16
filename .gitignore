@@ -51,6 +51,7 @@ htmlcov/
 # Local FERPA de-id / synthesis PoC working artifacts (never commit)
 step2_human_audit_sample.csv
 step2_human_audit_attestation.jsonl
+step5_mosaic_risk_report.json
 final_safe_synthetic_data.csv
 .venv-ferpa-poc/
 

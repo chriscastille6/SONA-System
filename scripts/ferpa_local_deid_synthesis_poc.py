@@ -14,7 +14,8 @@ Demonstrate a 100% local, air-gap-friendly pipeline that:
   4) HARD-STOPS for a human security audit before any synthesis
   5) Generates synthetic data with SDV (local Gaussian Copula)
   6) Removes any exact 1:1 "clone" rows (overfitting / re-identification risk)
-  7) Exports only the verified synthetic file for potential later cloud upload
+  7) Applies a mosaic-attack gate (quasi-identifier k-map + DCR near-match cull)
+  8) Exports only the verified synthetic file for potential later cloud upload
 
 LEGAL / FERPA LIABILITY NOTES (for reviewers)
 ---------------------------------------------
@@ -28,6 +29,12 @@ LEGAL / FERPA LIABILITY NOTES (for reviewers)
 - Synthetic data derived from scrubbed records is still treated as sensitive
   until clone-checked. Exact row matches can leak training examples (membership
   inference / overfitting), so Step 4 deletes clones before export.
+- Mosaic / linkage risk remains after direct-identifier removal: an attacker can
+  join quasi-identifiers (e.g., GPA + Personality_Score) to auxiliary files.
+  Step 5 therefore (a) measures scrubbed QID equivalence-class sizes (k-map),
+  (b) drops synthetic rows whose QID bin matches a rare scrubbed class, and
+  (c) drops synthetic rows whose Distance to Closest Record (DCR) is below a
+  configured floor. Export is blocked if too few rows survive.
 - No network calls are required by this script's core libraries when models are
   already installed locally. Do not point Presidio/SDV at remote services.
 
@@ -56,8 +63,9 @@ import re
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Iterable
+from typing import Any, Iterable
 
+import numpy as np
 import pandas as pd
 from faker import Faker
 
@@ -88,7 +96,25 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 WORK_DIR = Path.cwd()
 AUDIT_CSV = WORK_DIR / "step2_human_audit_sample.csv"
 ATTESTATION_LOG = WORK_DIR / "step2_human_audit_attestation.jsonl"
+MOSAIC_REPORT = WORK_DIR / "step5_mosaic_risk_report.json"
 FINAL_CSV = WORK_DIR / "final_safe_synthetic_data.csv"
+
+# ---------------------------------------------------------------------------
+# Mosaic-attack / linkage-risk controls (quasi-identifiers).
+# Direct identifiers are already tokenized; these columns can still re-identify
+# a student when joined to an external roster, gradebook, or survey file.
+# ---------------------------------------------------------------------------
+QID_COLUMNS: tuple[str, ...] = ("GPA", "Personality_Score")
+# Equivalence-class bin widths for k-map style uniqueness checks.
+QID_BIN_WIDTHS: dict[str, float] = {
+    "GPA": 0.1,  # e.g., 3.41 -> 3.4
+    "Personality_Score": 5.0,  # e.g., 72.4 -> 70.0
+}
+K_ANONYMITY_MIN = 5  # classes smaller than k are treated as high linkage risk
+# Min Euclidean DCR on min-max-normalized QID space. Below this => near-clone.
+DCR_MIN_THRESHOLD = 0.10
+# Hard-stop: refuse export if mosaic filtering leaves fewer than this many rows.
+MIN_SAFE_EXPORT_ROWS = 50
 
 # Institutional brand strings to erase (hardcoded per PoC requirements).
 # LIABILITY MITIGATION: Even after PII redaction, institutional identifiers can
@@ -571,8 +597,7 @@ def remove_exact_clones(
       exist; deleting them enforces a zero-exact-clone export for this PoC.
     - Comparison is row-by-row against the scrubbed (not raw) dataset, which
       matches the human-approved artifact under review.
-    - NOTE: This is an exact-match screen, not a full privacy budget / DCR
-      audit. IT may layer Distance to Closest Record (DCR) or k-map tests later.
+    - Exact-match only. Near-duplicates / mosaic linkage are handled in Step 5.
     """
     print("[Step 4] Running exact clone check (synthetic vs scrubbed)...")
 
@@ -583,7 +608,7 @@ def remove_exact_clones(
 
     keep_mask = []
     clones_removed = 0
-    for idx, row in enumerate(synthetic_norm.to_numpy().tolist()):
+    for row in synthetic_norm.to_numpy().tolist():
         if tuple(row) in scrubbed_keys:
             clones_removed += 1
             keep_mask.append(False)
@@ -598,17 +623,220 @@ def remove_exact_clones(
     return cleaned, clones_removed
 
 
+def _require_qid_columns(df: pd.DataFrame, context: str) -> None:
+    missing = [c for c in QID_COLUMNS if c not in df.columns]
+    if missing:
+        raise ValueError(f"{context}: missing quasi-identifier columns {missing}")
+
+
+def bin_quasi_identifiers(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Bin numeric QIDs into equivalence classes for k-map uniqueness checks.
+
+    MOSAIC MITIGATION:
+    - Continuous values are almost always unique; binning approximates how an
+      attacker would match 'about the same GPA / score' across datasets.
+    """
+    _require_qid_columns(df, "bin_quasi_identifiers")
+    binned = pd.DataFrame(index=df.index)
+    for col in QID_COLUMNS:
+        width = QID_BIN_WIDTHS[col]
+        values = pd.to_numeric(df[col], errors="coerce")
+        binned[col] = (np.floor(values / width) * width).round(10)
+    return binned
+
+
+def assess_scrubbed_qid_kmap(scrubbed_df: pd.DataFrame) -> dict[str, Any]:
+    """
+    Measure scrubbed-data quasi-identifier uniqueness (k-map style).
+
+    MOSAIC / LINKAGE RISK:
+    - Equivalence classes with size < K_ANONYMITY_MIN are high-risk join keys
+      against auxiliary files (rosters, gradebooks, other study extracts).
+    - This does not modify scrubbed data; it informs the synthetic filter and
+      produces an auditor-facing risk summary.
+    """
+    binned = bin_quasi_identifiers(scrubbed_df)
+    class_sizes = binned.value_counts(dropna=False)
+    rare_mask = class_sizes < K_ANONYMITY_MIN
+    rare_classes = int(rare_mask.sum())
+    rows_in_rare = int(class_sizes[rare_mask].sum()) if rare_classes else 0
+    report = {
+        "qid_columns": list(QID_COLUMNS),
+        "bin_widths": dict(QID_BIN_WIDTHS),
+        "k_anonymity_min": K_ANONYMITY_MIN,
+        "n_rows": int(len(scrubbed_df)),
+        "n_equivalence_classes": int(len(class_sizes)),
+        "n_rare_classes_lt_k": rare_classes,
+        "n_rows_in_rare_classes": rows_in_rare,
+        "min_class_size": int(class_sizes.min()) if len(class_sizes) else 0,
+        "median_class_size": float(class_sizes.median()) if len(class_sizes) else 0.0,
+        "share_rows_in_rare_classes": (
+            round(rows_in_rare / len(scrubbed_df), 4) if len(scrubbed_df) else 0.0
+        ),
+    }
+    print(
+        f"[Step 5a] Scrubbed QID k-map: {report['n_equivalence_classes']} classes; "
+        f"{rare_classes} rare (< k={K_ANONYMITY_MIN}); "
+        f"{rows_in_rare}/{len(scrubbed_df)} rows sit in rare classes."
+    )
+    return report
+
+
+def _minmax_normalize_qids(
+    frame: pd.DataFrame, mins: pd.Series, maxs: pd.Series
+) -> np.ndarray:
+    """Min-max normalize QID columns using scrubbed-data ranges."""
+    arr = frame[list(QID_COLUMNS)].apply(pd.to_numeric, errors="coerce").astype(float)
+    denom = (maxs - mins).replace(0, 1.0)
+    normalized = (arr - mins) / denom
+    return normalized.to_numpy(dtype=float)
+
+
+def compute_dcr_to_scrubbed(
+    synthetic_df: pd.DataFrame, scrubbed_df: pd.DataFrame
+) -> np.ndarray:
+    """
+    Distance to Closest Record (Euclidean) in min-max-normalized QID space.
+
+    Each synthetic row's DCR is min distance to any scrubbed row. Low DCR means
+    the synthetic point is a near-neighbor of a real (scrubbed) record — useful
+    for mosaic / membership attacks even when not an exact clone.
+    """
+    _require_qid_columns(synthetic_df, "compute_dcr_to_scrubbed/synthetic")
+    _require_qid_columns(scrubbed_df, "compute_dcr_to_scrubbed/scrubbed")
+
+    scrubbed_qid = scrubbed_df[list(QID_COLUMNS)].apply(pd.to_numeric, errors="coerce")
+    mins = scrubbed_qid.min()
+    maxs = scrubbed_qid.max()
+    scrubbed_norm = _minmax_normalize_qids(scrubbed_df, mins, maxs)
+    synthetic_norm = _minmax_normalize_qids(synthetic_df, mins, maxs)
+
+    # Pairwise distances without scipy: (n_syn, n_scrub)
+    # ||a-b||^2 = ||a||^2 + ||b||^2 - 2 a·b
+    syn_sq = np.sum(synthetic_norm**2, axis=1, keepdims=True)
+    scrub_sq = np.sum(scrubbed_norm**2, axis=1, keepdims=True).T
+    cross = synthetic_norm @ scrubbed_norm.T
+    dists = np.sqrt(np.maximum(syn_sq + scrub_sq - 2.0 * cross, 0.0))
+    return dists.min(axis=1)
+
+
+def mosaic_attack_gate(
+    synthetic_df: pd.DataFrame, scrubbed_df: pd.DataFrame
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """
+    Step 5 — Mosaic-attack / linkage-risk gate (QID k-map + DCR).
+
+    MOSAIC ATTACK MITIGATION (what this blocks):
+    1) Rare QID bins: if a synthetic row lands in a scrubbed equivalence class
+       with size < k, an attacker with an auxiliary file can more easily join
+       on that uncommon GPA/score cell. Those synthetic rows are dropped.
+    2) Near-neighbors (DCR): synthetic rows closer than DCR_MIN_THRESHOLD to
+       any scrubbed row (normalized QID Euclidean distance) are dropped even
+       when not exact clones — this is the near-duplicate / linkage screen.
+    3) Export hard-stop: if fewer than MIN_SAFE_EXPORT_ROWS survive, the script
+       refuses to write final_safe_synthetic_data.csv.
+
+    LIMITATION (documented for IT):
+    - This is a local PoC control, not a full differential-privacy budget or
+      attacker-model simulation against a real auxiliary dataset. It materially
+      reduces the obvious mosaic vectors present in this schema.
+    """
+    print("[Step 5] Running mosaic-attack gate (QID k-map + DCR)...")
+    kmap = assess_scrubbed_qid_kmap(scrubbed_df)
+
+    scrubbed_bins = bin_quasi_identifiers(scrubbed_df)
+    scrubbed_keys = pd.Series(
+        list(map(tuple, scrubbed_bins.to_numpy().tolist())), index=scrubbed_bins.index
+    )
+    scrubbed_counts = scrubbed_keys.value_counts(dropna=False)
+    rare_keys = set(scrubbed_counts[scrubbed_counts < K_ANONYMITY_MIN].index.tolist())
+
+    synthetic_bins = bin_quasi_identifiers(synthetic_df)
+    synthetic_keys = pd.Series(
+        list(map(tuple, synthetic_bins.to_numpy().tolist())), index=synthetic_bins.index
+    )
+    rare_bin_mask_arr = synthetic_keys.isin(rare_keys).to_numpy(dtype=bool)
+
+    dcr = compute_dcr_to_scrubbed(synthetic_df, scrubbed_df)
+    near_mask = dcr < DCR_MIN_THRESHOLD
+
+    drop_mask = rare_bin_mask_arr | near_mask
+    kept = synthetic_df.loc[~drop_mask].reset_index(drop=True)
+    kept_dcr = dcr[~drop_mask]
+
+    report: dict[str, Any] = {
+        "event": "mosaic_attack_gate",
+        "utc_timestamp": datetime.now(timezone.utc).isoformat(),
+        "scrubbed_kmap": kmap,
+        "dcr_min_threshold": DCR_MIN_THRESHOLD,
+        "min_safe_export_rows": MIN_SAFE_EXPORT_ROWS,
+        "input_synthetic_rows": int(len(synthetic_df)),
+        "dropped_rare_qid_bin": int(rare_bin_mask_arr.sum()),
+        "dropped_low_dcr": int(near_mask.sum()),
+        "dropped_union": int(drop_mask.sum()),
+        "retained_rows": int(len(kept)),
+        "dcr_stats_all_synthetic": {
+            "min": float(dcr.min()) if len(dcr) else None,
+            "median": float(np.median(dcr)) if len(dcr) else None,
+            "p05": float(np.percentile(dcr, 5)) if len(dcr) else None,
+        },
+        "dcr_stats_retained": {
+            "min": float(kept_dcr.min()) if len(kept_dcr) else None,
+            "median": float(np.median(kept_dcr)) if len(kept_dcr) else None,
+            "p05": float(np.percentile(kept_dcr, 5)) if len(kept_dcr) else None,
+        },
+        "export_blocked": False,
+        "block_reason": None,
+    }
+
+    MOSAIC_REPORT.write_text(json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+    print(
+        f"[Step 5] Dropped {report['dropped_rare_qid_bin']} rare-QID-bin row(s); "
+        f"{report['dropped_low_dcr']} low-DCR row(s); "
+        f"union={report['dropped_union']}. Retained {len(kept)}."
+    )
+    print(f"[Step 5] Mosaic risk report -> {MOSAIC_REPORT.resolve()}")
+
+    if len(kept) < MIN_SAFE_EXPORT_ROWS:
+        report["export_blocked"] = True
+        report["block_reason"] = (
+            f"Retained {len(kept)} rows < MIN_SAFE_EXPORT_ROWS={MIN_SAFE_EXPORT_ROWS}"
+        )
+        MOSAIC_REPORT.write_text(
+            json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+        )
+        print(
+            f"[Step 5] EXPORT BLOCKED: {report['block_reason']}. "
+            "Refusing to write final_safe_synthetic_data.csv."
+        )
+        sys.exit(2)
+
+    # Post-condition: no retained row may sit under the DCR floor.
+    if len(kept_dcr) and float(kept_dcr.min()) < DCR_MIN_THRESHOLD:
+        report["export_blocked"] = True
+        report["block_reason"] = "Retained set still contains DCR below threshold"
+        MOSAIC_REPORT.write_text(
+            json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+        )
+        print("[Step 5] EXPORT BLOCKED: DCR post-condition failed.")
+        sys.exit(2)
+
+    return kept, report
+
+
 def export_final(synthetic_df: pd.DataFrame) -> Path:
     """
-    Step 5 — Final local export of institution-agnostic synthetic data.
+    Step 6 — Final local export of institution-agnostic synthetic data.
 
     CLOUD-UPLOAD GATE:
     - Only this file is intended as a candidate for later upload, and only
       after institutional policy review. The PoC itself performs no upload.
-    - Raw dummy data and the audit CSV remain local working artifacts.
+    - Raw dummy data, audit CSV, attestation log, and mosaic report remain
+      local working artifacts.
     """
     synthetic_df.to_csv(FINAL_CSV, index=False)
-    print(f"[Step 5] Wrote final safe synthetic data -> {FINAL_CSV.resolve()}")
+    print(f"[Step 6] Wrote final safe synthetic data -> {FINAL_CSV.resolve()}")
     print(
         "         Reminder: this PoC does NOT upload anything. Cloud transfer "
         "requires a separate institutional approval workflow."
@@ -632,18 +860,29 @@ def main() -> int:
     human_in_the_loop_audit(scrubbed)
 
     # Step 3 — Local SDV synthesis from approved scrubbed data.
-    synthetic = synthesize_with_sdv(scrubbed)
+    # Oversample so Step 5 mosaic culls (rare QID bins + low DCR) can still
+    # leave a usable export cohort without relaxing privacy thresholds.
+    synthetic = synthesize_with_sdv(scrubbed, n_rows=N_ROWS * 3)
 
     # Step 4 — Delete any exact 1:1 clones vs scrubbed rows.
     synthetic_clean, _clones = remove_exact_clones(synthetic, scrubbed)
 
-    # Step 5 — Export verified synthetic CSV (still local; no cloud upload).
-    export_final(synthetic_clean)
+    # Step 5 — Mosaic gate: rare QID bins + DCR near-match cull (may hard-stop).
+    synthetic_safe, _mosaic_report = mosaic_attack_gate(synthetic_clean, scrubbed)
+    if len(synthetic_safe) > N_ROWS:
+        synthetic_safe = synthetic_safe.sample(
+            n=N_ROWS, random_state=RANDOM_SEED
+        ).reset_index(drop=True)
+        print(f"[Step 5] Downsampled retained rows to target size n={N_ROWS}.")
+
+    # Step 6 — Export verified synthetic CSV (still local; no cloud upload).
+    export_final(synthetic_safe)
 
     print("=" * 72)
     print("PoC complete. Artifacts (local only):")
     print(f"  - Audit sample : {AUDIT_CSV.resolve()}")
     print(f"  - Attestation  : {ATTESTATION_LOG.resolve()}")
+    print(f"  - Mosaic report: {MOSAIC_REPORT.resolve()}")
     print(f"  - Final export : {FINAL_CSV.resolve()}")
     print("=" * 72)
     return 0
