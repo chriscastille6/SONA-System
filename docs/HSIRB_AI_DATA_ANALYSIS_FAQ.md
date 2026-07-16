@@ -110,11 +110,27 @@ A proportionate statement is enough, for example:
 
 These are control patterns for IT review—not a requirement for every multilevel analysis request. Daily work should remain **local-first**.
 
-### 11. Does NIST CAISI change our local-first data rules?
+### 11. Can Cursor block PII in screenshots before the image reaches a server?
+
+**Not with rules alone.** Cursor project rules and hooks **cannot OCR or block pasted vision attachments before upload**. Image bytes in chat can reach Cursor infrastructure first.
+
+What we *can* enforce in this repo:
+
+| Control | When it runs | Covers |
+|--------|----------------|--------|
+| `scripts/ferpa_scan_image_before_upload.py` | **On your machine, before you attach** | True pre-server gate (OCR when tesseract is installed) |
+| `.cursor/rules/ferpa-image-pii.mdc` | After/alongside chat | Agent must not ask for PII screenshots; must not transcribe PII if an image already arrived |
+| `.cursor/hooks.json` → `beforeSubmitPrompt` | Before backend request for **text** / **file-path** attachments | Blocks email/SSN-like prompt text; scans on-disk image paths via the local scanner |
+| `beforeReadFile` hook | Before agent reads a file | Denies identifiable drop paths and PII-looking file contents |
+| `.cursorignore` | Indexing / @-file context | Keeps identifiable screenshot folders out of default context |
+
+**Required habit:** redact locally → run the pre-upload scanner → only then attach. Prefer typed error text over screenshots of rosters or gradebooks.
+
+### 12. Does NIST CAISI change our local-first data rules?
 
 **Not directly.** NIST’s [Center for AI Standards and Innovation (CAISI)](https://www.nist.gov/caisi) focuses on measuring and securing **commercial AI systems**, voluntary standards, and evaluations of AI capabilities that may pose national-security-relevant risks. It is not a FERPA handbook and does not replace campus IT rules for education records.
 
-What *is* useful to borrow for PRAMS / HSIRB AI use:
+What *is* useful to borrow for PRAMS / HSIRB AI use (FAQ §12 continues from CAISI):
 
 1. **Pre-deployment testing is not enough.** CAISI’s NIST AI 800-4 work on [post-deployment monitoring of AI systems](https://www.nist.gov/news-events/news/2026/03/new-report-challenges-monitoring-deployed-ai-systems) stresses that AI behavior in real use can differ from lab checks. For us, that means AI IRB helpers and coding assistants need ongoing review after they are turned on—not a one-time demo.
 2. **Monitor more than “did the model answer?”** Useful monitoring buckets from that CAISI/NIST framing include: functionality, operations, **human factors** (over-trust, unclear AI advice), **security/misuse**, **compliance** (FERPA / protocol scope), and broader impacts. Human-factors and compliance are the gaps most likely to matter in an IRB setting.

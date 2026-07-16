@@ -41,3 +41,7 @@ data/raw/
 data/identifiable/
 data/local_only/
 exports/identifiable/
+screenshots/identifiable/
+screenshots/raw/
+**/screenshots/identifiable/**
+**/screenshots/raw/**
