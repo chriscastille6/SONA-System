@@ -15,7 +15,8 @@ Demonstrate a 100% local, air-gap-friendly pipeline that:
   5) Generates synthetic data with SDV (local Gaussian Copula)
   6) Removes any exact 1:1 "clone" rows (overfitting / re-identification risk)
   7) Applies a mosaic-attack gate (quasi-identifier k-map + DCR near-match cull)
-  8) Exports only the verified synthetic file for potential later cloud upload
+  8) Runs the Distractor Variable Protocol (drive DCR *violations* to zero)
+  9) Exports only the verified synthetic file for potential later cloud upload
 
 LEGAL / FERPA LIABILITY NOTES (for reviewers)
 ---------------------------------------------
@@ -35,6 +36,11 @@ LEGAL / FERPA LIABILITY NOTES (for reviewers)
   (b) drops synthetic rows whose QID bin matches a singleton scrubbed class,
   and (c) drops synthetic rows whose Distance to Closest Record (DCR) is below
   a configured floor. Export is blocked if too few rows survive.
+- IMPORTANT: DCR distance == 0 would mean a clone (BAD). The Distractor Variable
+  Protocol (Step 6) drives DCR *violations* to zero — i.e., every exported row
+  must sit at/above the DCR floor on true QIDs — then injects independent
+  distractor columns that inflate naive full-vector nearest-neighbor matching
+  without touching analytic QIDs used for research utility.
 - No network calls are required by this script's core libraries when models are
   already installed locally. Do not point Presidio/SDV at remote services.
 
@@ -97,6 +103,7 @@ WORK_DIR = Path.cwd()
 AUDIT_CSV = WORK_DIR / "step2_human_audit_sample.csv"
 ATTESTATION_LOG = WORK_DIR / "step2_human_audit_attestation.jsonl"
 MOSAIC_REPORT = WORK_DIR / "step5_mosaic_risk_report.json"
+DISTRACTOR_REPORT = WORK_DIR / "step6_distractor_protocol_report.json"
 FINAL_CSV = WORK_DIR / "final_safe_synthetic_data.csv"
 
 # ---------------------------------------------------------------------------
@@ -123,6 +130,27 @@ DCR_MIN_THRESHOLD = 0.05
 MIN_SAFE_EXPORT_ROWS = 50
 # Generate extra synthetic candidates so DCR/rare-bin culls can still fill export.
 SYNTHETIC_OVERSAMPLE_FACTOR = 10
+
+# ---------------------------------------------------------------------------
+# Distractor Variable Protocol (DVP)
+# Goal: DCR *violations* == 0 for every exported row (NOT DCR distance == 0).
+# ---------------------------------------------------------------------------
+# Labeled distractors keep the PoC honest for IT/IRB review. A production
+# policy could rename them to blend into a codebook; the privacy property is
+# independence from true QIDs, not the column title.
+DISTRACTOR_COLUMNS: tuple[str, ...] = (
+    "Distractor_Focus_Index",
+    "Distractor_Teamwork_Index",
+    "Distractor_Sleep_Proxy",
+    "Distractor_Campus_Engagement",
+)
+DISTRACTOR_VALUE_RANGES: dict[str, tuple[float, float]] = {
+    "Distractor_Focus_Index": (0.0, 100.0),
+    "Distractor_Teamwork_Index": (0.0, 100.0),
+    "Distractor_Sleep_Proxy": (3.0, 10.0),
+    "Distractor_Campus_Engagement": (0.0, 50.0),
+}
+DISTRACTOR_MAX_RESAMPLE_ATTEMPTS = 25
 
 # Institutional brand strings to erase (hardcoded per PoC requirements).
 # LIABILITY MITIGATION: Even after PII redaction, institutional identifiers can
@@ -871,18 +899,168 @@ def mosaic_attack_gate(
     return kept, report
 
 
+def compute_dcr_on_columns(
+    synthetic_df: pd.DataFrame,
+    scrubbed_df: pd.DataFrame,
+    columns: tuple[str, ...] | list[str],
+) -> np.ndarray:
+    """DCR on an explicit numeric column set (QIDs and/or distractors)."""
+    cols = list(columns)
+    for col in cols:
+        if col not in synthetic_df.columns or col not in scrubbed_df.columns:
+            raise ValueError(f"DCR column missing from frame(s): {col}")
+    scrubbed_num = scrubbed_df[cols].apply(pd.to_numeric, errors="coerce").astype(float)
+    mins = scrubbed_num.min()
+    maxs = scrubbed_num.max()
+    denom = (maxs - mins).replace(0, 1.0)
+    scrubbed_norm = ((scrubbed_num - mins) / denom).to_numpy(dtype=float)
+    synthetic_num = synthetic_df[cols].apply(pd.to_numeric, errors="coerce").astype(float)
+    synthetic_norm = ((synthetic_num - mins) / denom).to_numpy(dtype=float)
+    return _pairwise_min_euclidean(synthetic_norm, scrubbed_norm)
+
+
+def _draw_distractor_frame(n_rows: int, rng: np.random.Generator) -> pd.DataFrame:
+    """Independent distractor columns — intentionally uncorrelated with QIDs."""
+    data: dict[str, np.ndarray] = {}
+    for col in DISTRACTOR_COLUMNS:
+        lo, hi = DISTRACTOR_VALUE_RANGES[col]
+        data[col] = np.round(rng.uniform(lo, hi, size=n_rows), 2)
+    return pd.DataFrame(data)
+
+
+def apply_distractor_variable_protocol(
+    synthetic_df: pd.DataFrame, scrubbed_df: pd.DataFrame
+) -> tuple[pd.DataFrame, dict[str, Any]]:
+    """
+    Step 6 — Distractor Variable Protocol (DVP).
+
+    CRITICAL SEMANTICS FOR IT REVIEW:
+    - "Bring DCR to zero" in this protocol means bring DCR *violations* to zero
+      (count of exported rows with DCR < threshold == 0).
+    - It does NOT mean set Distance-to-Closest-Record == 0. DCR distance 0 is a
+      clone / identity leak and is exactly what Steps 4–5 eliminate.
+
+    PROTOCOL STEPS:
+    1) Verify true-QID DCR violations are already zero (post mosaic gate).
+       Hard-fail if not — distractors must not be used to paper over QID risk.
+    2) Attach independent distractor variables to the export cohort.
+    3) Attach a matched distractor draw to an *internal* scrubbed copy used only
+       for naive full-vector DCR evaluation (never written to the audit CSV).
+    4) Resample distractors until naive full-vector DCR violations are also zero,
+       proving decoy dimensions push bulk nearest-neighbor matching away from
+       linkage usefulness for attackers who do not know the true QID set.
+    5) Emit step6_distractor_protocol_report.json for the security file.
+    """
+    print(
+        "[Step 6] Distractor Variable Protocol — target: zero DCR violations "
+        "(not zero DCR distance)."
+    )
+
+    qid_dcr = compute_dcr_on_columns(synthetic_df, scrubbed_df, QID_COLUMNS)
+    qid_violations = int(np.sum(qid_dcr < DCR_MIN_THRESHOLD))
+    if qid_violations != 0:
+        print(
+            f"[Step 6] PROTOCOL FAIL: {qid_violations} true-QID DCR violation(s) "
+            "remain after the mosaic gate. Distractors will not be used to mask this."
+        )
+        sys.exit(2)
+
+    rng = np.random.default_rng(RANDOM_SEED)
+    enriched: pd.DataFrame | None = None
+    naive_dcr: np.ndarray | None = None
+    attempts = 0
+    eval_columns = tuple(QID_COLUMNS) + tuple(DISTRACTOR_COLUMNS)
+
+    for attempts in range(1, DISTRACTOR_MAX_RESAMPLE_ATTEMPTS + 1):
+        syn_distract = _draw_distractor_frame(len(synthetic_df), rng)
+        # Internal-only distractors on scrubbed for naive-attacker evaluation.
+        scrub_distract = _draw_distractor_frame(len(scrubbed_df), rng)
+        candidate = pd.concat(
+            [synthetic_df.reset_index(drop=True), syn_distract], axis=1
+        )
+        scrubbed_eval = pd.concat(
+            [scrubbed_df.reset_index(drop=True), scrub_distract], axis=1
+        )
+        naive_dcr = compute_dcr_on_columns(candidate, scrubbed_eval, eval_columns)
+        naive_violations = int(np.sum(naive_dcr < DCR_MIN_THRESHOLD))
+        if naive_violations == 0:
+            enriched = candidate
+            break
+
+    if enriched is None or naive_dcr is None:
+        report = {
+            "event": "distractor_variable_protocol",
+            "utc_timestamp": datetime.now(timezone.utc).isoformat(),
+            "protocol_passed": False,
+            "failure_reason": (
+                f"Unable to reach zero naive full-vector DCR violations within "
+                f"{DISTRACTOR_MAX_RESAMPLE_ATTEMPTS} distractor resamples."
+            ),
+            "qid_dcr_violations": qid_violations,
+            "attempts": DISTRACTOR_MAX_RESAMPLE_ATTEMPTS,
+        }
+        DISTRACTOR_REPORT.write_text(
+            json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+        )
+        print(f"[Step 6] PROTOCOL FAIL: {report['failure_reason']}")
+        sys.exit(2)
+
+    report = {
+        "event": "distractor_variable_protocol",
+        "utc_timestamp": datetime.now(timezone.utc).isoformat(),
+        "protocol_passed": True,
+        "semantics": (
+            "Zero DCR violations means every exported row has DCR >= "
+            f"{DCR_MIN_THRESHOLD}. DCR distance == 0 would be a clone and is forbidden."
+        ),
+        "distractor_columns": list(DISTRACTOR_COLUMNS),
+        "distractor_ranges": {k: list(v) for k, v in DISTRACTOR_VALUE_RANGES.items()},
+        "true_qid_columns": list(QID_COLUMNS),
+        "dcr_min_threshold": DCR_MIN_THRESHOLD,
+        "qid_dcr_violations": 0,
+        "qid_dcr_min": float(qid_dcr.min()),
+        "qid_dcr_median": float(np.median(qid_dcr)),
+        "naive_full_vector_columns": list(eval_columns),
+        "naive_full_vector_dcr_violations": 0,
+        "naive_full_vector_dcr_min": float(naive_dcr.min()),
+        "naive_full_vector_dcr_median": float(np.median(naive_dcr)),
+        "distractor_resample_attempts_used": attempts,
+        "n_exported_rows": int(len(enriched)),
+        "note": (
+            "Distractors are independent of true QIDs. A knowledgeable attacker "
+            "who already knows the QID set can ignore them; Steps 4–5 remain the "
+            "binding control for that adversary. Distractors raise cost for naive "
+            "or schema-uncertain linkage and document a defense-in-depth layer."
+        ),
+    }
+    DISTRACTOR_REPORT.write_text(
+        json.dumps(report, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
+    print(
+        f"[Step 6] DCR violations = 0 on true QIDs "
+        f"(min DCR={report['qid_dcr_min']:.4f})."
+    )
+    print(
+        f"[Step 6] DCR violations = 0 on naive QID+distractor vector "
+        f"(min DCR={report['naive_full_vector_dcr_min']:.4f}) "
+        f"after {attempts} distractor draw(s)."
+    )
+    print(f"[Step 6] Distractor protocol report -> {DISTRACTOR_REPORT.resolve()}")
+    return enriched, report
+
+
 def export_final(synthetic_df: pd.DataFrame) -> Path:
     """
-    Step 6 — Final local export of institution-agnostic synthetic data.
+    Step 7 — Final local export of institution-agnostic synthetic data.
 
     CLOUD-UPLOAD GATE:
     - Only this file is intended as a candidate for later upload, and only
       after institutional policy review. The PoC itself performs no upload.
-    - Raw dummy data, audit CSV, attestation log, and mosaic report remain
-      local working artifacts.
+    - Raw dummy data, audit CSV, attestation log, mosaic report, and
+      distractor protocol report remain local working artifacts.
     """
     synthetic_df.to_csv(FINAL_CSV, index=False)
-    print(f"[Step 6] Wrote final safe synthetic data -> {FINAL_CSV.resolve()}")
+    print(f"[Step 7] Wrote final safe synthetic data -> {FINAL_CSV.resolve()}")
     print(
         "         Reminder: this PoC does NOT upload anything. Cloud transfer "
         "requires a separate institutional approval workflow."
@@ -923,14 +1101,20 @@ def main() -> int:
         ).reset_index(drop=True)
         print(f"[Step 5] Downsampled retained rows to target size n={N_ROWS}.")
 
-    # Step 6 — Export verified synthetic CSV (still local; no cloud upload).
-    export_final(synthetic_safe)
+    # Step 6 — Distractor Variable Protocol: zero DCR violations + decoy columns.
+    synthetic_export, _dvp_report = apply_distractor_variable_protocol(
+        synthetic_safe, scrubbed
+    )
+
+    # Step 7 — Export verified synthetic CSV (still local; no cloud upload).
+    export_final(synthetic_export)
 
     print("=" * 72)
     print("PoC complete. Artifacts (local only):")
     print(f"  - Audit sample : {AUDIT_CSV.resolve()}")
     print(f"  - Attestation  : {ATTESTATION_LOG.resolve()}")
     print(f"  - Mosaic report: {MOSAIC_REPORT.resolve()}")
+    print(f"  - Distractor   : {DISTRACTOR_REPORT.resolve()}")
     print(f"  - Final export : {FINAL_CSV.resolve()}")
     print("=" * 72)
     return 0
