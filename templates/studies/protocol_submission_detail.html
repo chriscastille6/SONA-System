@@ -51,7 +51,17 @@
                 <h5 class="mb-0"><i class="bi bi-file-earmark-pdf"></i> HSIRB application packet (PDF)</h5>
             </div>
             <div class="card-body">
-                {% if study.slug == 'goal-setting' or study.slug == 'decision-making' or study.slug == 'hr-sjt' %}
+                {% if study.slug == 'goal-setting' or study.slug == 'decision-making' %}
+                <p class="mb-2">Official <em>Request for HSIRB Exemption</em> (rev9 2019) with study answers overlaid, Attachment A narrative, and CITI certificate.</p>
+                <a href="{% url 'studies:protocol_study_documentation' slug=study.slug %}" target="_blank" rel="noopener" class="btn btn-outline-primary">
+                    <i class="bi bi-file-earmark-pdf"></i> View HSIRB exempt request (rev9)
+                </a>
+                {% if submission.full_protocol_pdf %}
+                <a href="{{ submission.full_protocol_pdf.url }}" target="_blank" rel="noopener" class="btn btn-outline-secondary ms-2">
+                    <i class="bi bi-download"></i> Uploaded copy
+                </a>
+                {% endif %}
+                {% elif study.slug == 'hr-sjt' %}
                 <p class="mb-2">Nicholls-branded exempt HSIRB packet (cover, project information form, narrative, and appendices) — the familiar reviewer format.</p>
                 <a href="{% url 'studies:protocol_study_documentation' slug=study.slug %}" target="_blank" rel="noopener" class="btn btn-outline-primary">
                     <i class="bi bi-file-earmark-pdf"></i> View HSIRB application packet
