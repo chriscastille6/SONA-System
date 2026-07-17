@@ -34,3 +34,13 @@ These authorities are cited by `apps/compliance` guardrails alongside CITI, FERP
 | FERPA credit export | FERPA; PPM §5.7; La. R.S. 17:3914; JML 25-109 §6 (no paste into AI) |
 
 This document is an operational map for explainability—not legal advice and not a substitute for official PPM text or the signed Executive Order.
+
+## Cursor agent enforcement
+
+The same authorities are mirrored for local/cloud agent work via:
+
+- `.cursor/rules/nicholls-research-compliance.mdc` (always apply)
+- `.cursor/rules/ferpa-image-pii.mdc` (always apply)
+- `.cursor/hooks.json` → `beforeSubmitPrompt` + `beforeReadFile`
+
+See `docs/COMPLIANCE_GUARDRAILS.md` § Cursor rules & hooks.

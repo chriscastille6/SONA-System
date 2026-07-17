@@ -1,0 +1,30 @@
+---
+description: FERPA / PII rules for screenshots and image attachments in Cursor
+alwaysApply: true
+---
+
+# Images and education-record PII
+
+## Hard limit (product reality)
+
+Cursor **cannot** reliably OCR or block pasted/attached images **before** bytes reach Cursor servers. Project rules steer behavior; they are not a network gate. True pre-upload scanning must happen **on-device** with `scripts/ferpa_scan_image_before_upload.py` (or campus DLP) **before** you attach anything.
+
+## Required workflow before attaching any image
+
+1. Run the local scanner on the file and get `PASS`.
+2. Prefer typed error text / redacted UI descriptions over screenshots.
+3. Never attach rosters, gradebooks, SONA/PRAMS exports, Canvas screenshots, or ID documents.
+
+## If an image is already in the chat
+
+- Do **not** transcribe, quote, log, or repeat names, emails, student IDs, SSNs, grades, or other education-record fields.
+- Tell the user the image may already have left the device; ask them to redact locally and re-send a clean image or text-only description.
+- Continue only with scrubbed / synthetic content.
+
+## Never ask the user to upload
+
+Do not request screenshots that are likely to contain student or participant PII. Ask for redacted text, dummy data, or synthetic stand-ins instead.
+
+## Authority
+
+FERPA; La. R.S. 17:3914; Nicholls PPM §5.3.5 / IT Policies; Louisiana EO JML 25-109 §6.

@@ -45,6 +45,19 @@ Prefer `IRB_AI_PROVIDER=ollama` on university-managed hardware when materials ma
 - `apps/compliance/explainability.py` — `AuditLog` decision traces
 - Templates: `templates/compliance/_warnings_panel.html`, `templates/reporting/export_compliance_gate.html`
 
+## Cursor rules & hooks (agent-time)
+
+Runtime guardrails protect PRAMS users. Cursor project config protects **agent chat / file reads**:
+
+| Mechanism | Path | Role |
+|-----------|------|------|
+| Always-on rules | `.cursor/rules/nicholls-research-compliance.mdc`, `.cursor/rules/ferpa-image-pii.mdc` | Steer agent behavior (synthetic data, no public AI + IPI, cite PPM/JML) |
+| `beforeSubmitPrompt` | `.cursor/hooks/block_pii_prompt.py` via `.cursor/hooks.json` | Block prompts with email/SSN/student IDs, DeepSeek, or public-AI + education-record language |
+| `beforeReadFile` | `.cursor/hooks/block_sensitive_file_read.py` | Deny reads under identifiable/raw local paths |
+| On-device image pre-scan | `scripts/ferpa_scan_image_before_upload.py` | Run **before** attaching screenshots (hooks cannot OCR pasted vision reliably) |
+
+Rules are not a network DLP gate. Hooks scan prompt text / attachment paths available in the hook payload.
+
 ## Tests
 
 ```bash
