@@ -10,16 +10,22 @@ Generates:
     Recruitment_main_study_20260312.pdf  — main study; Waterloo-style cash compensation
 
 Informed consent (Appendix B) — edit Word, not .txt:
-    1. Edit apps/studies/assets/irb/goal-setting/materials/consent_form.docx
-    2. ./scripts/build_consent_from_docx.sh
+    1. Edit apps/studies/assets/irb/goal-setting/materials/consent_form_pilot.txt or consent_form.txt
+    2. python scripts/build_goal_setting_consent_docx.py
+    3. ./scripts/build_consent_from_docx.sh
 
 Debriefing / appreciation letter (Appendix E):
-    1. Edit apps/studies/assets/irb/goal-setting/materials/debriefing_protocol.txt
-    2. python scripts/build_goal_setting_debriefing_docx.py   # optional .docx
-    3. python scripts/generate_goal_setting_flyer.py --debriefing
+    1. Edit debriefing_protocol_main.txt (or debriefing_protocol_pilot.txt)
+    2. python scripts/generate_goal_setting_flyer.py --debriefing
 
-Workbook and Productivity Report (Appendices C–D):
-    High-fidelity PDFs in materials/pdf/ — copy from Desktop source; do not regenerate from .txt.
+Workbook (Appendix C) and print masters:
+    materials/admin/workbooks_cash_no_computers_v2.docx
+    Export: LibreOffice to pdf/Workbook_version2_20260312.pdf
+
+Productivity Report (Appendix D):
+    materials/admin/productivity_reports_cash_no_computers_master.docx
+    Export first 5 pages (one sample form) to pdf/ProductivityReport_version2_20260312.pdf via LibreOffice.
+    Do not regenerate from .txt or ReportLab.
 
 Legacy build_pdf_from_text() remains for one-off .txt conversions but is not the consent workflow.
 """
@@ -166,7 +172,8 @@ def _details_grid(styles, include_payment):
             ],
             [
                 Paragraph(
-                    "In appreciation of your time, you will receive at least <b>$7.00 cash</b>.",
+                    "In appreciation of your time, you will receive a small cash reward of at least <b>$7.00</b>, "
+                    "with an opportunity to receive up to <b>$14.00</b> total.",
                     styles["bullet_text"],
                 ),
                 Paragraph(confidentiality_text, styles["bullet_text"]),
@@ -502,7 +509,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--debriefing",
         action="store_true",
-        help="Build Appendix E debriefing PDF from debriefing_protocol.txt",
+        help="Build Appendix E debriefing PDFs from debriefing_protocol*.txt",
     )
     parser.add_argument(
         "--flyers-only",

@@ -53,26 +53,45 @@ class Command(BaseCommand):
         )
 
         submission.research_procedures = (
-            "1. Consent: Participants enter the lab in groups of up to 20, review and sign the informed "
-            "consent form, which is collected separately to preserve anonymity.\n\n"
-            "2. Practice: Participants complete two 1-minute practice rounds to learn the rules of the "
-            "anagram task.\n\n"
+            "Data collection occurs in two phases: (1) a pilot session to calibrate materials and "
+            "administration procedures, and (2) a main study session for hypothesis testing. Both pilot "
+            "and main materials are supplied for HSIRB review; participants receive only the materials "
+            "appropriate to their session.\n\n"
+            "Pilot session procedures:\n"
+            "1. Consent: Participants enter the lab in groups of up to 20, review and sign the pilot "
+            "informed consent form (Appendix B), which is collected separately to preserve anonymity.\n"
+            "2. Practice: Participants complete two 1-minute practice rounds to learn the anagram task.\n"
+            "3. Performance: Participants complete several timed anagram rounds under do-your-best "
+            "instructions to establish site-calibrated performance benchmarks.\n"
+            "4. Productivity report: Participants complete an anonymous productivity report; there is "
+            "no cash self-payment step in the pilot session. Participants may use a phone to access "
+            "an online Scrabble dictionary via a QR code on the report.\n"
+            "5. Demographics and traits: Participants complete brief questionnaires.\n"
+            "6. Debriefing: The researcher hands each participant the pilot appreciation letter.\n\n"
+            "Main study procedures:\n"
+            "1. Consent: Participants review and sign the main study informed consent form (Appendix B2), "
+            "collected separately to preserve anonymity.\n"
+            "2. Practice: Participants complete two 1-minute practice rounds.\n"
             "3. Condition assignment: Participants are randomly assigned to one of four conditions: "
-            "'do your best', 'mere goal', 'personal goal', or 'reward goal'. Goal conditions receive the "
-            "site-calibrated target.\n\n"
-            "4. Performance rounds: Participants complete seven 1-minute anagram rounds, solving word "
-            "puzzles in their paper workbooks.\n\n"
-            "5. Anonymized linking: In an eighth round, participants solve a unique anagram. This unique "
-            "word serves as a double-blind identifier to match actual workbook scores with their self-reported "
-            "productivity report without collecting names.\n\n"
-            "6. Private self-payment: The researcher leaves the room. Participants grade their own work, "
-            "fill out an anonymous productivity report, pay themselves from a cash envelope ($14 total starting "
-            "balance), and deposit the report and any unearned cash into a secure box.\n\n"
-            "7. Demographics and traits: Participants complete a brief questionnaire covering demographics, "
-            "manipulation checks, and individual difference scales (including trait loss aversion, "
-            "HEXACO-60, and moral identity).\n\n"
-            "8. Debriefing: The researcher returns and hands each participant a written debriefing sheet "
-            "explaining the study's scientific purpose and replication goals."
+            "'do your best', 'mere goal', 'personal goal', or 'reward goal'. Goal conditions receive "
+            "the site-calibrated target from the pilot phase.\n"
+            "4. Performance rounds: Participants complete seven 1-minute anagram rounds in paper workbooks.\n"
+            "5. Anonymized linking: In an eighth round, participants solve a unique anagram that serves "
+            "as a double-blind identifier to match workbook scores with self-reported productivity.\n"
+            "6. Demographics and traits: While the researcher is present, participants complete "
+            "questionnaires covering demographics, manipulation checks, and individual difference scales "
+            "(trait loss aversion, HEXACO-60, moral identity).\n"
+            "7. Private self-payment: The researcher leaves the room. Participants use a phone only "
+            "to access an online Scrabble dictionary via a QR code on the productivity report, check "
+            "their work, complete an anonymous productivity report for rounds 1–7 (round 8 does not "
+            "count toward payment), take cash from a $14 envelope per the report instructions, seal "
+            "the productivity report and cash envelope in a large envelope, and deposit the large "
+            "envelope and workbook folder in separate designated boxes.\n"
+            "8. Debriefing: The researcher hands each participant the main study debriefing "
+            "sheet explaining the study's scientific purpose and replication goals.\n\n"
+            "Students who participated in the pilot may also participate in the main study. Because all "
+            "data are anonymous, the research team cannot monitor repeat participation without "
+            "compromising anonymity."
         )
 
         submission.research_objectives = (
@@ -114,7 +133,8 @@ class Command(BaseCommand):
             "Two flyer versions are included in the HSIRB packet (Appendix A for pilot sessions, "
             "Appendix A2 for main study); only the version matching the session is shown to "
             "participants. Instructors may offer course credit or bonus points for participation. "
-            "The main-study flyer mentions a cash reward of up to $14.00; the pilot flyer does not."
+            "The main-study flyer mentions a small cash reward of at least $7.00 with opportunity for "
+            "up to $14.00; the pilot flyer does not."
         )
 
         submission.inclusion_criteria = (
@@ -127,18 +147,28 @@ class Command(BaseCommand):
         )
 
         submission.recruitment_script = (
-            "You are invited to participate in a research study examining how individuals make decisions "
-            "during cognitive tasks. This study takes approximately one hour and has received ethics "
-            "clearance from the Institutional Review Board. Depending on your instructor's policy, you "
-            "may receive course credit, bonus points, or earn up to $14.00 in cash. Participation is "
-            "completely voluntary, and all data collected are anonymous."
+            "Pilot session script: You are invited to participate in a pilot session for a research study "
+            "examining how individuals make decisions during cognitive tasks. This session takes approximately "
+            "one hour, has received ethics clearance from the Institutional Review Board, and helps the team "
+            "refine procedures before main data collection. There is no cash compensation for the pilot "
+            "session. Depending on your instructor's policy, you may receive course credit or bonus points. "
+            "Participation is completely voluntary, and all data collected are anonymous.\n\n"
+            "Main study script: You are invited to participate in a research study examining how individuals "
+            "make decisions during cognitive tasks. This study takes approximately one hour and has received "
+            "ethics clearance from the Institutional Review Board. Depending on your instructor's policy, you "
+            "may receive course credit, bonus points, or a small cash reward of at least $7.00 with an "
+            "opportunity to receive up to $14.00 total. Participation is completely voluntary, and all data collected are "
+            "anonymous."
         )
 
         submission.benefits_to_subjects = (
-            "Participants receive direct financial compensation through the self-payment procedure, "
-            "keeping at least $7.00 and up to $14.00 (averaging about $10.00) depending on their experimental "
-            "condition. They also receive a detailed debriefing sheet explaining the logic and value of "
-            "open-science replication research."
+            "Pilot session participants receive no cash compensation. They may receive course credit or "
+            "bonus points at their instructor's discretion and receive a written appreciation letter "
+            "explaining how pilot data support calibration for the main study.\n\n"
+            "Main study participants receive direct financial compensation through the self-payment "
+            "procedure, keeping at least $7.00 and up to $14.00 depending on their assigned "
+            "instructions and performance (averaging about $10.00). They also receive a detailed debriefing sheet explaining the "
+            "logic and value of open-science replication research."
         )
 
         submission.benefits_to_others = (
@@ -154,13 +184,16 @@ class Command(BaseCommand):
         )
 
         submission.payment_compensation = (
-            "All participants receive an envelope containing $14.00 at the start of the session. "
-            "Those in the 'do your best', 'mere goal', and 'personal goal' conditions are instructed to "
-            "keep $10.00. Those in the 'reward goal' condition are instructed to keep $7.00 plus an "
-            "additional $1.00 for each round they met their goal (on average, they receive approximately $10.00). "
-            "All participants return any unearned cash in a sealed envelope placed in a secure collection "
-            "box while the researcher is out of the room. This process ensures complete privacy and guarantees "
-            "every participant receives at least $7.00."
+            "Pilot session: No cash compensation is provided.\n\n"
+            "Main study only: Participants receive an envelope containing $14.00 at the start of the "
+            "session. Payment amounts are stated on each participant's productivity report during the "
+            "private self-payment step. Those in the 'do your best', 'mere goal', and 'personal goal' "
+            "conditions are instructed to keep $10.00. Those in the 'reward goal' condition are "
+            "instructed to keep $7.00 plus an additional $1.00 for each scored round (rounds 1–7) in "
+            "which they met the site-calibrated goal (on average, they receive approximately $10.00). "
+            "Unearned cash is returned in the cash envelope, sealed with the productivity report in a "
+            "large envelope, and deposited while the researcher is out of the room. Participant-facing "
+            "materials describe a small cash reward of at least $7.00 with opportunity for up to $14.00."
         )
 
         submission.costs_to_subjects = (
@@ -200,8 +233,10 @@ class Command(BaseCommand):
         submission.data_collection_methods = (
             "Data collection uses paper-and-pencil materials, including a task workbook (practice and "
             "performance anagram rounds, goal commitment, trait loss aversion, and demographics), "
-            "a separate productivity report for self-reported performance, and a follow-up survey for "
-            "manipulation and data quality checks. Hard copies are collected in a secure box."
+            "a separate productivity report for self-reported performance (rounds 1–7), and a follow-up "
+            "survey for manipulation and data quality checks. Participants may use a phone only to "
+            "access an online Scrabble dictionary via a QR code during the private checking step. Hard "
+            "copies are deposited in separate designated boxes (workbook folder and sealed large envelope)."
         )
 
         submission.data_storage = (
@@ -232,11 +267,15 @@ class Command(BaseCommand):
         )
 
         submission.consent_procedures = (
-            "Participants provide written informed consent by signing the consent form before beginning "
-            "the session. The consent form details the study's purpose, procedures, risks, and benefits, "
-            "emphasizing that participation is entirely voluntary and that they may withdraw at any time "
-            "without penalty. Students who choose not to participate are offered an equivalent alternative "
-            "assignment for equal course credit."
+            "Two written informed consent forms are included for HSIRB review: Appendix B (pilot session) "
+            "and Appendix B2 (main study). Only the form matching the session is shown to participants. "
+            "Each form details the study's purpose, procedures, risks, and benefits, emphasizing that "
+            "participation is entirely voluntary and that participants may withdraw at any time without "
+            "penalty. The main-study form describes cash compensation; the pilot form states that no cash "
+            "compensation is provided. Students who choose not to participate are offered an equivalent "
+            "alternative assignment for equal course credit. Students who participated in the pilot may "
+            "also participate in the main study; because all data are anonymous, repeat participation "
+            "cannot be monitored without compromising anonymity."
         )
 
         submission.estimated_start_date = "Fall 2024"
@@ -316,13 +355,22 @@ class Command(BaseCommand):
 
         submission.appendices_notes = (
             "Appendix A: Pilot Recruitment Flyer (no cash compensation language; used for pilot sessions only)\n"
-            "Appendix A2: Main Study Recruitment Flyer (includes cash compensation up to $14.00; used for main data collection)\n"
-            "Internal IRB note: Both flyers are submitted for HSIRB review. Participants see only the flyer "
-            "that matches their session (pilot or main study).\n"
-            "Appendix B: Informed Consent Statement\n"
+            "Appendix A2: Main Study Recruitment Flyer (small cash reward of at least $7.00 with "
+            "opportunity for up to $14.00; used for main data collection)\n"
+            "Internal IRB note: Both pilot and main study recruitment materials are submitted for HSIRB "
+            "review. Participants see only the flyer that matches their session (pilot or main study).\n"
+            "Appendix B: Pilot Informed Consent Statement (no cash compensation)\n"
+            "Appendix B2: Main Study Informed Consent Statement (describes self-payment compensation)\n"
+            "Internal IRB note: Both consent forms are submitted for HSIRB review. Only the form matching "
+            "the session is shown to participants.\n"
+            "Repeat participation: Students who participated in the pilot may also participate in the main "
+            "study. Because all data are anonymous, the research team cannot monitor repeat participation "
+            "without compromising anonymity.\n"
             "Appendix C: Anagram Task Workbook (Study Instrument)\n"
-            "Appendix D: Participant Productivity Report\n"
-            "Appendix E: Debriefing & Appreciation Letter (to be distributed at study conclusion)\n"
+            "Appendix D: Participant Productivity Report (main study; condition-specific pay instructions "
+            "on form; reward-condition variant uses $7 base plus $1 per scored round at goal)\n"
+            "Appendix E: Pilot Study Appreciation Letter\n"
+            "Appendix E2: Main Study Debriefing & Appreciation Letter\n"
             "Appendix F: Approved UWaterloo Master Protocol\n"
             "Appendix G: Psychological Science Registered Report Manuscript\n"
             "Appendix H: Psychological Science Stage 1 In-Principle Acceptance Letter\n"

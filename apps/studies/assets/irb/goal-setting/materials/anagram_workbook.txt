@@ -1,5 +1,6 @@
-
-
+# Source of truth: materials/admin/workbooks_cash_no_computers_v2.docx
+# (export pages 1-17 of first do-your-best block via LibreOffice to pdf/Workbook_version2_20260312.pdf)
+# This .txt file is not used for HSIRB PDF generation.
 
 
 A Study in Decision Making

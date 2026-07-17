@@ -1,3 +1,6 @@
+# Source of truth: materials/admin/productivity_reports_cash_no_computers_master.docx
+# (export first 5 pages via LibreOffice to pdf/ProductivityReport_version2_20260312.pdf)
+# This .txt file is not used for HSIRB PDF generation.
 
 PRODUCTIVITY REPORT
 

@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
-"""Rebuild goal-setting consent_form.docx from consent_form.txt with Nicholls branding."""
+"""Rebuild goal-setting consent .docx files from .txt sources with Nicholls branding."""
 
+from __future__ import annotations
+
+import argparse
 from pathlib import Path
 
 from docx import Document
@@ -9,8 +12,16 @@ from docx.shared import Inches, Pt
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 MATERIALS = REPO_ROOT / "apps/studies/assets/irb/goal-setting/materials"
-TXT_PATH = MATERIALS / "consent_form.txt"
-DOCX_PATH = MATERIALS / "consent_form.docx"
+VARIANTS = {
+    "pilot": {
+        "txt": MATERIALS / "consent_form_pilot.txt",
+        "docx": MATERIALS / "consent_form_pilot.docx",
+    },
+    "main": {
+        "txt": MATERIALS / "consent_form.txt",
+        "docx": MATERIALS / "consent_form.docx",
+    },
+}
 LOGO_CANDIDATES = [
     MATERIALS / "nicholls_state_university_logo.png",
     Path(
@@ -35,6 +46,8 @@ HEADINGS = {
 TITLES = {
     "INFORMED CONSENT STATEMENT/INFORMATION LETTER",
     "A Study in Decision Making",
+    "A Study in Decision Making — Pilot Session",
+    "A Study in Decision Making — Main Study",
 }
 
 
@@ -69,9 +82,15 @@ def add_paragraph(doc: Document, text: str, *, heading: bool = False, title: boo
         para.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
 
 
-def build_docx() -> Path:
+def build_docx(variant: str) -> Path:
+    paths = VARIANTS[variant]
+    txt_path = paths["txt"]
+    docx_path = paths["docx"]
+    if not txt_path.is_file():
+        raise FileNotFoundError(f"Consent source not found: {txt_path}")
+
     logo_path = resolve_logo()
-    content = TXT_PATH.read_text(encoding="utf-8")
+    content = txt_path.read_text(encoding="utf-8")
     blocks = [b.strip() for b in content.split("\n\n") if b.strip()]
 
     doc = Document()
@@ -122,11 +141,24 @@ def build_docx() -> Path:
 
         add_paragraph(doc, block)
 
-    doc.save(DOCX_PATH)
-    print(f"Wrote {DOCX_PATH}")
+    doc.save(docx_path)
+    print(f"Wrote {docx_path}")
     print(f"Logo: {logo_path}")
-    return logo_path
+    return docx_path
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Build goal-setting consent .docx from .txt")
+    parser.add_argument(
+        "--variant",
+        choices=sorted(VARIANTS),
+        help="Consent variant to build (default: both pilot and main)",
+    )
+    args = parser.parse_args()
+    variants = [args.variant] if args.variant else sorted(VARIANTS)
+    for variant in variants:
+        build_docx(variant)
 
 
 if __name__ == "__main__":
-    build_docx()
+    main()
