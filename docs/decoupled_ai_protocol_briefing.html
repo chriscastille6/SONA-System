@@ -284,6 +284,54 @@ img.viz { width: 100%; height: auto; display: block; border: 1px solid var(--lin
     font-family: var(--font-mono); font-size: 12px; padding: 8px 12px; cursor: pointer;
 }
 .edit-toggle.show, .edit-toggle.active { opacity: 1; pointer-events: auto; }
+
+.plain-box {
+    position: absolute;
+    left: 48px;
+    right: 48px;
+    bottom: 48px;
+    border: 1px solid rgba(61,155,122,0.45);
+    background: rgba(10, 24, 20, 0.96);
+    padding: 14px 20px 14px 20px;
+    z-index: 5;
+}
+.plain-box .plain-label {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent-bright);
+    margin-bottom: 6px;
+}
+
+.slide-frame.has-plain .lede { font-size: 18px; margin-bottom: 12px; }
+.slide-frame.has-plain h2 { font-size: 42px; margin-bottom: 10px; }
+.slide-frame.has-plain .viz-grid-3 { gap: 10px; }
+.slide-frame.has-plain .viz-card .cap { font-size: 10px; }
+.slide-frame.has-plain table.data { font-size: 14px; }
+.slide-frame.has-plain table.data th, .slide-frame.has-plain table.data td { padding: 6px 8px; }
+.slide-frame.has-plain .panel { padding: 12px 14px; }
+.slide-frame.has-plain .panel li, .slide-frame.has-plain .panel p { font-size: 14px; }
+.slide-frame.has-plain .callout { font-size: 14px; margin-top: 10px; padding: 10px 12px; }
+.slide-frame.has-plain .grid-2, .slide-frame.has-plain .grid-3 { gap: 12px; }
+.title-slide .slide-frame.has-plain h1 { font-size: 78px; }
+.title-slide .slide-frame.has-plain .lede { font-size: 20px; max-width: 760px; }
+.title-slide .slide-frame.has-plain .title-rail { top: 180px; }
+
+.plain-box p {
+    font-family: var(--font-body);
+    font-size: 18px;
+    line-height: 1.4;
+    color: var(--ink);
+    margin: 0;
+}
+.slide-frame.has-plain {
+    padding-bottom: 110px;
+}
+.title-slide .plain-box { bottom: 48px; }
+.title-slide .slide-frame.has-plain { padding-bottom: 120px; }
+.title-slide .footer-meta { bottom: 150px; }
+
 body.edit-mode [contenteditable="true"] { outline: 1px dashed rgba(61,155,122,0.55); outline-offset: 4px; }
 </style>
 </head>
@@ -294,7 +342,7 @@ body.edit-mode [contenteditable="true"] { outline: 1px dashed rgba(61,155,122,0.
 <main class="deck-stage" id="deckStage">
 
 <section class="slide title-slide active" data-slide="1">
-  <div class="slide-frame">
+  <div class="slide-frame has-plain">
     <div class="chip reveal">Campus Data Plane · Sealed</div>
     <h1 class="reveal">Decoupled AI<br>Protocol for<br><em>AOL analytics</em></h1>
     <p class="lede reveal">Internal compliance briefing: what visuals and packages IT would approve vs refuse when AI assists Assurance of Learning analysis.</p>
@@ -310,11 +358,16 @@ body.edit-mode [contenteditable="true"] { outline: 1px dashed rgba(61,155,122,0.
       <div>Nicholls State University<br>IT Security · Office of the CIO</div>
       <div style="text-align:right">Chris Usey · Sam Cagle<br>Synthetic PoC · 2026</div>
     </div>
+  
+    <div class="plain-box reveal">
+      <div class="plain-label">In plain English</div>
+      <p>We can use AI to help write analysis code without sending student records to the cloud. The campus computer does the real work. Student data stays here.</p>
+    </div>
   </div>
 </section>
 
 <section class="slide" data-slide="2">
-  <div class="slide-frame">
+  <div class="slide-frame has-plain">
     <div class="chip reveal">01 · Purpose</div>
     <h2 class="reveal">What leadership is asked to <em>recognize</em></h2>
     <p class="lede reveal">Not a request for a new cloud data processor. A pattern where AI drafts code from structure, campus hardware alone produces charts from synthetic stand-ins, and demographic×outcome work is blocked unless break-glass is logged.</p>
@@ -335,11 +388,16 @@ body.edit-mode [contenteditable="true"] { outline: 1px dashed rgba(61,155,122,0.
         <li>What stays forbidden without break-glass</li>
       </ul></div>
     </div>
+  
+    <div class="plain-box reveal">
+      <div class="plain-label">In plain English</div>
+      <p>This note is for IT leaders. It explains a safer way to use AI for school learning reports. We are not asking you to buy or trust a new cloud company with student data.</p>
+    </div>
   </div>
 </section>
 
 <section class="slide" data-slide="3">
-  <div class="slide-frame">
+  <div class="slide-frame has-plain">
     <div class="chip reveal">02 · Acceptability rubric</div>
     <h2 class="reveal">Approve vs refuse — at a glance</h2>
     <table class="data reveal d1">
@@ -354,11 +412,16 @@ body.edit-mode [contenteditable="true"] { outline: 1px dashed rgba(61,155,122,0.
       </tbody>
     </table>
     <div class="callout reveal d2">Rule of thumb: if the cloud model could reconstruct a person or a protected education record from what you sent, it is refused. Structure and code are fine; observations are not.</div>
+  
+    <div class="plain-box reveal">
+      <div class="plain-label">In plain English</div>
+      <p>Say yes when AI only sees blank column names and the charts are made on campus. Say no when anyone uploads student rows, names, or private details to an AI chatbot.</p>
+    </div>
   </div>
 </section>
 
 <section class="slide" data-slide="4">
-  <div class="slide-frame">
+  <div class="slide-frame has-plain">
     <div class="chip reveal">03 · Architecture</div>
     <h2 class="reveal">Where packages and plots may run</h2>
     <div class="grid-2">
@@ -389,11 +452,16 @@ body.edit-mode [contenteditable="true"] { outline: 1px dashed rgba(61,155,122,0.
         <div class="callout" style="margin-top:12px">PoC script: <code>scripts/decoupled_ai_protocol_poc.py</code></div>
       </div>
     </div>
+  
+    <div class="plain-box reveal">
+      <div class="plain-label">In plain English</div>
+      <p>Think of two rooms. In the cloud room, AI only sees the empty outline of a spreadsheet. In the campus room, our own tools make the charts. Student files never leave the campus room.</p>
+    </div>
   </div>
 </section>
 
 <section class="slide" data-slide="5">
-  <div class="slide-frame">
+  <div class="slide-frame has-plain">
     <div class="chip reveal">04 · Synthetic tables</div>
     <h2 class="reveal">N = 100 · split before any plot</h2>
     <div class="grid-4" style="margin-bottom:16px">
@@ -407,11 +475,16 @@ body.edit-mode [contenteditable="true"] { outline: 1px dashed rgba(61,155,122,0.
       <div class="panel reveal d3"><div class="mono-label">demographics</div><h3>Demographics</h3><p>age_band, gender, race/ethnicity, residency. Unlinked IDs. No default join to outcomes.</p></div>
       <div class="panel reveal d4"><div class="mono-label">key_academic</div><h3>AOL keys</h3><p>GPA, ETS, program — source for all <span class="tag-ok">acceptable</span> charts in this briefing.</p></div>
     </div>
+  
+    <div class="plain-box reveal">
+      <div class="plain-label">In plain English</div>
+      <p>For this demo we made up 100 fake students (Disney names). We split names, background facts, and grades into separate files so they are hard to put back together.</p>
+    </div>
   </div>
 </section>
 
 <section class="slide" data-slide="6">
-  <div class="slide-frame">
+  <div class="slide-frame has-plain">
     <div class="chip reveal">05 · Acceptable visuals</div>
     <h2 class="reveal">Approved local figures <em>(key table only)</em></h2>
     <p class="lede reveal">Generated on campus with <strong>matplotlib + seaborn + pandas + numpy + scipy</strong>. Cloud AI could draft the code from an empty schema; it never saw these pixels or rows.</p>
@@ -426,11 +499,16 @@ body.edit-mode [contenteditable="true"] { outline: 1px dashed rgba(61,155,122,0.
         <div class="cap">Scatter — GPA ↔ ETS + local fit<br>Packages: numpy, scipy/polyfit, matplotlib</div>
       </div>
     </div>
+  
+    <div class="plain-box reveal">
+      <div class="plain-label">In plain English</div>
+      <p>These charts are OK. They only use grades and test scores—not gender, race, or other personal background. The AI never saw the actual numbers; our campus computer drew the pictures.</p>
+    </div>
   </div>
 </section>
 
 <section class="slide" data-slide="7">
-  <div class="slide-frame">
+  <div class="slide-frame has-plain">
     <div class="chip danger reveal">06 · Not acceptable by default</div>
     <h2 class="reveal">Demo × outcome visuals — <em>refuse</em> unless break-glass</h2>
     <p class="lede reveal">These figures require linking demographics to academic outcomes. Without a logged break-glass authorization, IT should treat them as <strong>not approved</strong> — and Control Plane must not receive the joint schema.</p>
@@ -442,12 +520,15 @@ body.edit-mode [contenteditable="true"] { outline: 1px dashed rgba(61,155,122,0.
         <div class="cap">Heatmap — demographics × GPA/ETS<br>Status: <span class="tag-block">NOT ACCEPTABLE</span> by default</div>
       </div>
     </div>
-    <div class="callout danger reveal d3">Even after break-glass: PII vault stays sealed; AI still gets empty schema only — never the chart data or names/emails.</div>
+    <div class="plain-box reveal">
+      <div class="plain-label">In plain English</div>
+      <p>These charts are not OK by default. They mix personal background with grades. That needs a special written “break-glass” OK first. Even then, do not upload the data to an AI.</p>
+    </div>
   </div>
 </section>
 
 <section class="slide" data-slide="8">
-  <div class="slide-frame">
+  <div class="slide-frame has-plain">
     <div class="chip reveal">07 · Package approval matrix</div>
     <h2 class="reveal">What stacks IT would see</h2>
     <table class="data reveal d1">
@@ -464,11 +545,16 @@ body.edit-mode [contenteditable="true"] { outline: 1px dashed rgba(61,155,122,0.
       </tbody>
     </table>
     <div class="callout reveal d2">Approval question for IT: “Does this library open a network path that could carry education records?” If yes → refuse for Data Plane. Local viz stack above: no.</div>
+  
+    <div class="plain-box reveal">
+      <div class="plain-label">In plain English</div>
+      <p>Campus tools like pandas and matplotlib are fine. Cloud AI is fine only for writing code from blank column names. Tools that send data over the internet during analysis are not fine.</p>
+    </div>
   </div>
 </section>
 
 <section class="slide" data-slide="9">
-  <div class="slide-frame">
+  <div class="slide-frame has-plain">
     <div class="chip reveal">08 · Control Plane exposure</div>
     <h2 class="reveal">Schema the AI may see for each figure</h2>
     <table class="data reveal d1">
@@ -482,11 +568,16 @@ body.edit-mode [contenteditable="true"] { outline: 1px dashed rgba(61,155,122,0.
       </tbody>
     </table>
     <div class="callout reveal d2">Simulated in PoC — this briefing does not call cloud APIs. Production Control Plane use stays schema-only by policy.</div>
+  
+    <div class="plain-box reveal">
+      <div class="plain-label">In plain English</div>
+      <p>For OK charts, the AI may see only empty field names (like “gpa”). It must not see the numbers. For background-plus-grades charts, do not even share the field list until break-glass is logged.</p>
+    </div>
   </div>
 </section>
 
 <section class="slide" data-slide="10">
-  <div class="slide-frame">
+  <div class="slide-frame has-plain">
     <div class="chip reveal">09 · Break-glass</div>
     <h2 class="reveal">Only path to demo × outcome charts</h2>
     <div class="grid-2">
@@ -512,11 +603,16 @@ body.edit-mode [contenteditable="true"] { outline: 1px dashed rgba(61,155,122,0.
       </div>
     </div>
     <div class="callout reveal d3">Break-glass unlocks <em>local</em> linkage. It does not authorize cloud ingestion.</div>
+  
+    <div class="plain-box reveal">
+      <div class="plain-label">In plain English</div>
+      <p>Break-glass is a paper trail: who said yes, why, and when. It unlocks local joining of files. It does not mean you can send student data to the cloud.</p>
+    </div>
   </div>
 </section>
 
 <section class="slide" data-slide="11">
-  <div class="slide-frame">
+  <div class="slide-frame has-plain">
     <div class="chip reveal">10 · Ask of IT</div>
     <h2 class="reveal">Clarity for approval conversations</h2>
     <div class="grid-2" style="margin-bottom:14px">
@@ -546,6 +642,11 @@ body.edit-mode [contenteditable="true"] { outline: 1px dashed rgba(61,155,122,0.
     <div class="footer-meta reveal" style="position:static;margin-top:20px">
       <div>Nicholls State University · Decoupled AI Protocol v1.1.0-AOL-PoC</div>
       <div style="text-align:right">Arrow keys / Space · E to edit</div>
+    </div>
+  
+    <div class="plain-box reveal">
+      <div class="plain-label">In plain English</div>
+      <p>Please file this as an FYI for Chris Usey and Sam Cagle. No new vendor review is needed for the “empty outline only” use. Do not approve uploads of student data to AI.</p>
     </div>
   </div>
 </section>
@@ -647,7 +748,7 @@ class InlineEditor {
       if ((e.metaKey || e.ctrlKey) && e.key === 's') { e.preventDefault(); this.save(); }
     });
   }
-  editableNodes() { return document.querySelectorAll('h1,h2,h3,p,li,td,.lede,.chip,.callout,.footer-meta,.cap,.stat .n,.stat .l'); }
+  editableNodes() { return document.querySelectorAll('h1,h2,h3,p,li,td,.lede,.chip,.callout,.footer-meta,.cap,.stat .n,.stat .l,.plain-box p'); }
   toggleEditMode() {
     this.isActive = !this.isActive;
     document.body.classList.toggle('edit-mode', this.isActive);
