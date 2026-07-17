@@ -1,9 +1,10 @@
 {
   "title": "HR Situational Judgment Test — Full Incident Pool",
-  "description": "All 27 situations and tactics for IRB review. Participants are not forced to rate every tactic or complete every situation: ratings are optional and each situation includes a Skip control.",
+  "description": "All 27 situations and tactics for IRB review. Participants are not forced to rate every tactic or complete every situation: ratings are optional and each situation includes a Skip control. Each situation also includes an optional free-text notes box for students to share how they are thinking through the decision with the instructor.",
   "response_types": {
     "effectiveness_rating": "Optional 1–5 scale (1 = Not effective … 5 = Highly effective). No required fields.",
-    "skip_situation": "Participants may skip any situation without providing ratings."
+    "skip_situation": "Participants may skip any situation without providing ratings.",
+    "decision_notes": "Optional free-text notes at the end of each situation. Students may describe anything they would like the instructor to know about how they are thinking through that decision. Notes are not required; leaving the box blank is fine."
   },
   "version": 1,
   "source": "bayoupal hr-sjt-assessment/incidents-data.js",

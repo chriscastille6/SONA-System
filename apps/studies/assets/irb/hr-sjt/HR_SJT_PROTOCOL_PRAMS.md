@@ -51,6 +51,8 @@ The study involves the following procedures:
 
    **Voluntary / non-forced responding:** Effectiveness ratings are optional. Participants are not forced to select a rating for every tactic or every situation. Each situation includes a **Skip** control so participants may skip any situation without providing ratings. Rating inputs do not use required-field constraints; participants may leave any or all ratings blank and may withdraw at any time. There is no forced-choice ranking.
 
+   **Optional decision notes:** At the end of each situation, students may optionally enter free-text notes describing anything they would like the instructor to know about how they are thinking through that decision. Notes are not required.
+
 4. Feedback: Participants receive a PDF report summarizing their ratings.
 
 5. Debriefing: Participants receive information about the study purpose, HR decision-making concepts (evidence-based HR, situational judgment, legal compliance, cost-benefit analysis), and how their responses contribute to research. Contact information for the PI and IRB is provided.

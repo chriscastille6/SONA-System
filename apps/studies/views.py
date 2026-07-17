@@ -620,7 +620,7 @@ HR_SJT_STUDENT_CONSENT_BODY = """
 You are enrolled in MNGT 425 (HR Analytics). As a course assignment, you are asked to participate in a research study comparing how students and HR professionals evaluate workplace tactics. Research participation is <strong>VOLUNTARY</strong>: you may instead complete the alternative assignment described below. You must be 18 years of age or older to participate in the research study.
 
 <strong>2. Course Assignment Options</strong>
-<strong>Option A — Research study (this consent):</strong> Complete the online HR Situational Judgment Test (27 scenarios). You may rate tactic effectiveness (ratings are optional; you may skip any situation). After you consent, your ratings may be included in the research dataset. Approximate time: 45–60 minutes. You may receive a feedback report and, as a token of appreciation, an aggregated infographic (no individuals identified). {infographic_preview_link}
+<strong>Option A — Research study (this consent):</strong> Complete the online HR Situational Judgment Test (27 scenarios). You may rate tactic effectiveness (ratings are optional; you may skip any situation). At the end of each situation, you may optionally add notes about how you are thinking through the decision for your instructor. After you consent, your ratings may be included in the research dataset. Approximate time: 45–60 minutes. You may receive a feedback report and, as a token of appreciation, an aggregated infographic (no individuals identified). {infographic_preview_link}
 
 <strong>Option B — Alternative assignment (not research):</strong> If you prefer not to participate in this research study, write a qualitative description of how you would respond to each scenario prompt and submit it to the instructor for course credit. Completing Option B earns <strong>equivalent course credit</strong>. Alternative-assignment submissions are used <strong>only for grading</strong> and are <strong>NOT included in the main research study</strong>.
 
@@ -821,7 +821,7 @@ You are invited to participate in a research study comparing how HR professional
 <strong>2. Procedures</strong>
 If you agree to participate, you will:
 • Complete a brief demographic questionnaire (including optional BLS race/ethnicity and HR credentials).
-• Complete the HR Situational Judgment Test (27 scenarios; you may rate the effectiveness of tactics on a 1–5 scale). Ratings are optional; you may skip any situation.
+• Complete the HR Situational Judgment Test (27 scenarios; you may rate the effectiveness of tactics on a 1–5 scale). Ratings are optional; you may skip any situation. Optional notes at the end of each situation may describe how you are thinking through the decision.
 • Receive a feedback report summarizing your ratings.
 
 <strong>3. Potential Benefits</strong>
