@@ -58,3 +58,6 @@ docs/_build/
 # Node (for scripts/generate_irb_briefing_pdf.js)
 node_modules/
 scripts/node_modules/
+
+# Decoupled AI Protocol PoC local artifacts (synthetic tables + vault + logs)
+scripts/decoupled_ai_poc_artifacts/
