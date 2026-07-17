@@ -4,12 +4,13 @@ Development / protocol packaging only. Synthetic and IRB materials; no student P
 
 ## Purpose
 
-Keep the Nicholls goal-setting (public title: **A Study in Decision Making**) exempt HSIRB packet and rebuild tooling available so follow-up agents can regenerate PDFs and so **IRB reviewers see the familiar Nicholls-branded packet** (cover + project information form + narrative + appendices), not ad-hoc form overlays.
+Keep the Nicholls goal-setting (public title: **A Study in Decision Making**) materials available. **HSIRB-requested format** is the official **Request for HSIRB Exemption (rev9 2019)** filled form — not a custom branded layout as the primary submission document.
 
-**Reviewer-facing output (PRAMS):** Protocol Submissions → goal-setting / decision-making → **HSIRB application packet (PDF)**  
-Also: `/studies/<slug>/protocol/documentation/` for `goal-setting` or `decision-making`.
+**Reviewer-facing output (PRAMS):** Protocol Submissions → goal-setting / decision-making → **HSIRB exempt request (rev9 form)**  
+Also: `/studies/<slug>/protocol/documentation/` serves `HSIRB_EXEMPT_REVIEW_REQUEST.pdf`.
 
-Rebuild attaches the packet to `ProtocolSubmission.full_protocol_pdf` via `add_goal_setting_study_online`.
+Rebuild rev9 form: `python3 scripts/fill_decision_making_hsirb_exempt_form.py`  
+Companion branded packet (appendices / instruments) remains available under `materials/pdf/`.
 
 ## Canonical packet files
 

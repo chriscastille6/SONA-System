@@ -1018,15 +1018,14 @@ def protocol_vignettes(request, slug):
 
 
 # Study slug -> path parts (under BASE_DIR) for "full documentation" (HTML or PDF).
-_GOAL_SETTING_HSIRB_PACKET = (
+# Goal-setting / Decision Making: official HSIRB rev9 exempt form (format reviewers requested).
+_GOAL_SETTING_HSIRB_REV9 = (
     'apps',
     'studies',
     'assets',
     'irb',
     'goal-setting',
-    'materials',
-    'pdf',
-    'HSIRB_Application_A_Study_in_Decision_Making_full_packet.pdf',
+    'HSIRB_EXEMPT_REVIEW_REQUEST.pdf',
 )
 _HR_SJT_HSIRB_PACKET = (
     'apps',
@@ -1049,9 +1048,9 @@ STUDY_DOCUMENTATION_FILES = {
         'goals-refs',
         'vignettes_with_predicted_patterns.html',
     ),
-    # Familiar Nicholls-branded exempt HSIRB packet (cover + project info + narrative + appendices)
-    'goal-setting': _GOAL_SETTING_HSIRB_PACKET,
-    'decision-making': _GOAL_SETTING_HSIRB_PACKET,
+    # Official HSIRB-exempt_review_request.rev9_2019.v2 filled form + Attachment A + CITI
+    'goal-setting': _GOAL_SETTING_HSIRB_REV9,
+    'decision-making': _GOAL_SETTING_HSIRB_REV9,
 }
 
 
