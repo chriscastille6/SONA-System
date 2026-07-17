@@ -31,8 +31,8 @@ TITLE = "A Study in Decision Making"
 PI_NAME = "Dr. Christopher Castille"
 PI_PHONE = "985-449-7015"
 FONT = "Times-Roman"
-SIZE = 10
-LEADING = 12
+SIZE = 12
+LEADING = 14
 
 
 def wrap(c, text, x, y, max_w, size=SIZE, leading=LEADING, min_y=None):
