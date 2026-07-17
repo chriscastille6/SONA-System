@@ -137,10 +137,10 @@ This research contributes to:
 - Educational practices related to HR development in business curricula
 
 **Payment/Compensation:**
-Participants may receive 1 course credit through the PRAMS system for their participation. No monetary compensation will be provided. Feedback reports are made available.
+No monetary compensation. MNGT 425 students earn equivalent assignment credit for Option A (research study) or Option B (qualitative alternative submitted to the instructor); Option B data are not part of the main study. HR professionals are uncompensated volunteers. Study participants may receive feedback reports.
 
 **Costs to Subjects:**
-The only cost to participants is their time (approximately 45–60 minutes). There are no financial costs, physical risks, or other burdens associated with participation.
+The only cost to research participants is their time (approximately 45–60 minutes for the online SJT). There are no financial costs. Students who choose Option B submit a qualitative write-up to the instructor instead; that work is not research data.
 
 ---
 
