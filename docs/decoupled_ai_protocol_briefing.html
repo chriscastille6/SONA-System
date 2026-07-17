@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Decoupled AI Protocol — Internal Briefing | Nicholls State University</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ===========================================
+   CSS CUSTOM PROPERTIES (CAMPUS LEDGER)
+   =========================================== */
+:root {
+    --stage-bg: #0a1210;
+    --slide-bg: #0f1a17;
+    --panel: #152420;
+    --ink: #e7f0eb;
+    --muted: #8aa399;
+    --accent: #3d9b7a;
+    --accent-soft: rgba(61, 155, 122, 0.18);
+    --accent-bright: #b7e2d1;
+    --line: rgba(231, 240, 235, 0.12);
+    --danger: #d47878;
+    --ok: #6fcf97;
+    --font-display: 'Instrument Serif', Georgia, serif;
+    --font-body: 'IBM Plex Sans', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --duration-normal: 0.55s;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ===========================================
+   FIXED 16:9 STAGE: MANDATORY BASE STYLES
+   Include this ENTIRE file in every presentation.
+   Slides are authored at 1920×1080 and scaled as a whole.
+   =========================================== */
+
+/* 1. Lock the browser viewport */
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background: var(--stage-bg, #000);
+}
+
+/* 2. Full-window deck viewport */
+.deck-viewport {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    background: var(--stage-bg, #000);
+}
+
+/* 3. Fixed 16:9 design canvas.
+   JavaScript sets transform: translate(...) scale(...). */
+.deck-stage {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    transform-origin: 0 0;
+    background: var(--slide-bg, #fff);
+}
+
+/* 4. Slides stack inside the fixed stage.
+   Content must be laid out at 1920×1080, not reflowed per device. */
+.slide {
+    position: absolute;
+    inset: 0;
+    width: 1920px;
+    height: 1080px;
+    overflow: hidden;
+    display: block;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    background: var(--slide-bg, #fff);
+}
+
+.slide.active,
+.slide.visible {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 1;
+}
+
+/* 5. Keep media inside authored slide bounds */
+img,
+video,
+canvas,
+svg {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+/* 6. Presentation chrome stays outside the slide design system */
+.deck-controls {
+    position: fixed;
+    left: 50%;
+    bottom: 22px;
+    transform: translateX(-50%);
+    z-index: 1000;
+}
+
+/* 7. Print one fixed-size slide per page */
+@media print {
+    html,
+    body {
+        width: 1920px;
+        height: auto;
+        overflow: visible;
+        background: #fff;
+    }
+
+    .deck-viewport {
+        position: static;
+        overflow: visible;
+        background: #fff;
+    }
+
+    .deck-stage {
+        position: static;
+        width: auto;
+        height: auto;
+        transform: none !important;
+        background: none;
+    }
+
+    .slide {
+        position: relative;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        width: 1920px;
+        height: 1080px;
+        break-after: page;
+        page-break-after: always;
+    }
+
+    .slide:last-child {
+        break-after: auto;
+        page-break-after: auto;
+    }
+
+    .deck-controls {
+        display: none !important;
+    }
+}
+
+/* 8. Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.2s !important;
+    }
+}
+
+/* ===========================================
+   CAMPUS LEDGER SLIDE SURFACE
+   =========================================== */
+.slide {
+    background:
+        radial-gradient(900px 520px at 85% 12%, rgba(61, 155, 122, 0.14), transparent 60%),
+        linear-gradient(160deg, #0f1a17 0%, #12241f 48%, #0c1513 100%);
+    color: var(--ink);
+    font-family: var(--font-body);
+}
+
+.slide-frame {
+    position: absolute;
+    left: 56px;
+    right: 56px;
+    top: 48px;
+    bottom: 56px;
+    border: 1px solid var(--line);
+    padding: 48px 56px 40px;
+}
+
+.chip {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 14px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border: 1px solid rgba(61, 155, 122, 0.35);
+    padding: 8px 14px;
+    margin-bottom: 22px;
+}
+
+h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 84px;
+    line-height: 1.02;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+}
+
+h1 em, h1 span {
+    font-style: italic;
+    color: var(--accent-bright);
+}
+
+h2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 54px;
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    margin-bottom: 18px;
+}
+
+h2 em { font-style: italic; color: var(--accent-bright); }
+
+.lede {
+    font-size: 24px;
+    line-height: 1.45;
+    color: var(--muted);
+    max-width: 1180px;
+    margin-bottom: 28px;
+}
+
+.mono-label {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+}
+
+.footer-meta {
+    position: absolute;
+    left: 112px;
+    right: 112px;
+    bottom: 78px;
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+}
+
+/* ===========================================
+   LAYOUT PRIMITIVES
+   =========================================== */
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+.grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+}
+
+.panel {
+    background: rgba(21, 36, 32, 0.72);
+    border: 1px solid var(--line);
+    padding: 22px 24px;
+}
+
+.panel h3 {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 18px;
+    letter-spacing: 0.04em;
+    margin-bottom: 10px;
+    color: var(--ink);
+}
+
+.panel p, .panel li {
+    font-size: 18px;
+    line-height: 1.4;
+    color: var(--muted);
+}
+
+.panel ul { list-style: none; }
+.panel li { padding: 6px 0; border-bottom: 1px solid var(--line); }
+.panel li:last-child { border-bottom: none; }
+.panel strong { color: var(--ink); font-weight: 600; }
+
+.stat {
+    border: 1px solid var(--line);
+    padding: 20px 22px;
+    background: rgba(15, 26, 23, 0.55);
+}
+.stat .n {
+    font-family: var(--font-display);
+    font-size: 48px;
+    color: var(--accent-bright);
+    line-height: 1;
+    margin-bottom: 8px;
+}
+.stat .l {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+table.data {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 18px;
+}
+table.data th {
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(61, 155, 122, 0.35);
+}
+table.data td {
+    padding: 11px 12px;
+    border-bottom: 1px solid var(--line);
+    color: var(--muted);
+}
+table.data td:first-child { color: var(--ink); }
+.tag-ok { color: var(--ok); }
+.tag-block { color: var(--danger); }
+
+.rail-list { list-style: none; }
+.rail-list li {
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 22px;
+    color: var(--ink);
+}
+.rail-list small {
+    display: block;
+    margin-top: 4px;
+    font-size: 16px;
+    color: var(--muted);
+}
+
+.callout {
+    border-left: 3px solid var(--accent);
+    padding: 14px 18px;
+    background: var(--accent-soft);
+    font-size: 18px;
+    line-height: 1.4;
+    color: var(--ink);
+    margin-top: 18px;
+}
+
+/* ===========================================
+   TITLE SLIDE SPECIAL
+   =========================================== */
+.title-slide .slide-frame { padding: 56px 64px 48px; }
+.title-slide h1 { font-size: 92px; margin-top: 8px; max-width: 980px; }
+.title-rail {
+    position: absolute;
+    right: 120px;
+    top: 220px;
+    width: 420px;
+    border-left: 1px solid var(--line);
+    padding-left: 36px;
+}
+.title-rail .mono-label { margin-bottom: 20px; }
+.title-slide .lede { margin-top: 36px; max-width: 820px; font-size: 24px; }
+
+/* ===========================================
+   ANIMATIONS
+   =========================================== */
+.reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity var(--duration-normal) var(--ease-out-expo),
+                transform var(--duration-normal) var(--ease-out-expo);
+}
+.slide.visible .reveal {
+    opacity: 1;
+    transform: translateY(0);
+}
+.slide.visible .reveal:nth-child(1) { transition-delay: 0.05s; }
+.slide.visible .reveal:nth-child(2) { transition-delay: 0.12s; }
+.slide.visible .reveal:nth-child(3) { transition-delay: 0.19s; }
+.slide.visible .reveal:nth-child(4) { transition-delay: 0.26s; }
+.slide.visible .reveal:nth-child(5) { transition-delay: 0.33s; }
+.slide.visible .reveal:nth-child(6) { transition-delay: 0.40s; }
+.slide.visible .d1 { transition-delay: 0.08s; }
+.slide.visible .d2 { transition-delay: 0.16s; }
+.slide.visible .d3 { transition-delay: 0.24s; }
+.slide.visible .d4 { transition-delay: 0.32s; }
+.slide.visible .d5 { transition-delay: 0.40s; }
+
+/* ===========================================
+   DECK CONTROLS + EDIT UI
+   =========================================== */
+.deck-controls {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    background: rgba(10, 18, 16, 0.85);
+    border: 1px solid var(--line);
+    padding: 10px 16px;
+    backdrop-filter: blur(8px);
+}
+.deck-controls button {
+    background: transparent;
+    border: 1px solid var(--line);
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+.deck-controls button:hover { border-color: var(--accent); color: var(--accent-bright); }
+#slideCounter {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--muted);
+    min-width: 64px;
+    text-align: center;
+}
+.progress-track {
+    width: 160px;
+    height: 3px;
+    background: rgba(231, 240, 235, 0.12);
+}
+.progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--accent);
+    transition: width 0.25s ease;
+}
+
+.edit-hotzone {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 80px;
+    height: 80px;
+    z-index: 10000;
+    cursor: pointer;
+}
+.edit-toggle {
+    position: fixed;
+    top: 16px;
+    left: 16px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    z-index: 10001;
+    background: rgba(15, 26, 23, 0.95);
+    border: 1px solid var(--accent);
+    color: var(--accent-bright);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+.edit-toggle.show,
+.edit-toggle.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+body.edit-mode [contenteditable="true"] {
+    outline: 1px dashed rgba(61, 155, 122, 0.55);
+    outline-offset: 4px;
+}
+</style>
+</head>
+<body>
+<div class="edit-hotzone" aria-hidden="true"></div>
+<button class="edit-toggle" id="editToggle" title="Edit mode (E)">Edit</button>
+
+<div class="deck-viewport">
+<main class="deck-stage" id="deckStage">
+
+<!-- ========== SLIDE 1: TITLE ========== -->
+<section class="slide title-slide active" data-slide="1">
+    <div class="slide-frame">
+        <div class="chip reveal">Campus Data Plane · Sealed</div>
+        <h1 class="reveal">Decoupled AI<br>Protocol for<br><em>AOL analytics</em></h1>
+        <p class="lede reveal">Internal compliance briefing: how cloud code assistance can support Assurance of Learning without ingesting student education records.</p>
+        <aside class="title-rail reveal">
+            <div class="mono-label">Control surfaces</div>
+            <ul class="rail-list">
+                <li>Control Plane<small>Empty schemas only</small></li>
+                <li>Data Plane<small>Local sealed execution</small></li>
+                <li>Break-glass<small>Logged authorization</small></li>
+            </ul>
+        </aside>
+        <div class="footer-meta reveal">
+            <div>Nicholls State University<br>IT Security · Office of the CIO</div>
+            <div style="text-align:right">Chris Usey · Sam Cagle<br>Synthetic PoC · 2026</div>
+        </div>
+    </div>
+</section>
+
+<!-- ========== SLIDE 2: PURPOSE ========== -->
+<section class="slide" data-slide="2">
+    <div class="slide-frame">
+        <div class="chip reveal">01 · Purpose</div>
+        <h2 class="reveal">Informational notice for <em>IT leadership</em></h2>
+        <p class="lede reveal">This briefing documents a zero-ingestion operational pattern: third-party AI may draft analysis code from structure alone; university-managed hardware alone may touch synthetic stand-ins for education records.</p>
+        <div class="grid-3">
+            <div class="panel reveal d1">
+                <h3>Distribution</h3>
+                <ul>
+                    <li><strong>Chris Usey</strong> — IT Security Administrator</li>
+                    <li><strong>Sam Cagle</strong> — Chief Information Officer</li>
+                    <li>AOL / Senate awareness as needed</li>
+                </ul>
+            </div>
+            <div class="panel reveal d2">
+                <h3>Classification</h3>
+                <ul>
+                    <li><strong>DEVELOPMENT</strong> — synthetic data only</li>
+                    <li>Disney-character PII stand-ins</li>
+                    <li>No real student records processed</li>
+                </ul>
+            </div>
+            <div class="panel reveal d3">
+                <h3>Ask of IT</h3>
+                <ul>
+                    <li>Awareness filing — no vendor review requested for schema-only Control Plane use</li>
+                    <li>Optional inventory of the PoC script &amp; audit log pattern</li>
+                </ul>
+            </div>
+        </div>
+        <div class="callout reveal d4">Legal anchors: FERPA · La. R.S. 17:3914 · CITI Information Security · 45 C.F.R. Part 46 stewardship.</div>
+    </div>
+</section>
+
+<!-- ========== SLIDE 3: ARCHITECTURE ========== -->
+<section class="slide" data-slide="3">
+    <div class="slide-frame">
+        <div class="chip reveal">02 · Architecture</div>
+        <h2 class="reveal">Strict plane separation</h2>
+        <div class="grid-2" style="margin-top:8px">
+            <div class="panel reveal d1">
+                <div class="mono-label">Control Plane · Cloud (Gemini et al.)</div>
+                <h3>Structural metadata only</h3>
+                <ul>
+                    <li>Empty column names + dtypes</li>
+                    <li>Abstract research task (“groupby GPA by program”)</li>
+                    <li>Returns <strong>code logic</strong> only</li>
+                    <li class="tag-block"><strong>Never:</strong> PII, rows, linkage keys, joint demo×outcome schemas without break-glass</li>
+                </ul>
+            </div>
+            <div class="panel reveal d2">
+                <div class="mono-label">Data Plane · Campus hardware</div>
+                <h3>Sealed local execution</h3>
+                <ul>
+                    <li>Human-in-the-Loop attestation before run</li>
+                    <li>pandas · numpy · scipy (local open source)</li>
+                    <li>No outbound analysis egress in PoC design</li>
+                    <li class="tag-ok"><strong>Outputs:</strong> aggregates under university custody</li>
+                </ul>
+            </div>
+        </div>
+        <div class="callout reveal d3">Assertion: Cloud sees structure. Campus sees subjects. Never the reverse.</div>
+    </div>
+</section>
+
+<!-- ========== SLIDE 4: SYNTHETIC DATA ========== -->
+<section class="slide" data-slide="4">
+    <div class="slide-frame">
+        <div class="chip reveal">03 · Synthetic AOL Dataset</div>
+        <h2 class="reveal">N = 100 cases · three sealed tables</h2>
+        <div class="grid-4" style="margin-bottom:22px">
+            <div class="stat reveal d1"><div class="n">100</div><div class="l">Synthetic cases</div></div>
+            <div class="stat reveal d2"><div class="n">5</div><div class="l">Degree programs</div></div>
+            <div class="stat reveal d3"><div class="n">3</div><div class="l">Table partitions</div></div>
+            <div class="stat reveal d4"><div class="n">0</div><div class="l">Real student records</div></div>
+        </div>
+        <div class="grid-3">
+            <div class="panel reveal d2">
+                <div class="mono-label">identity_pii.csv</div>
+                <h3>PII vault</h3>
+                <p>Disney names + fake emails. Local only. <strong>Never shared with Control Plane.</strong></p>
+            </div>
+            <div class="panel reveal d3">
+                <div class="mono-label">demographics.csv</div>
+                <h3>Demographics</h3>
+                <p>age_band, gender, race/ethnicity, residency. Opaque IDs ≠ academic IDs.</p>
+            </div>
+            <div class="panel reveal d4">
+                <div class="mono-label">key_academic.csv</div>
+                <h3>Key AOL variables</h3>
+                <p>GPA, ETS Major Field Test score, program of study (Accounting, Management, Marketing, Finance, CIS).</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========== SLIDE 5: UNLINKING ========== -->
+<section class="slide" data-slide="5">
+    <div class="slide-frame">
+        <div class="chip reveal">04 · Confidentiality Engineering</div>
+        <h2 class="reveal">Separate · unlink · synthesize</h2>
+        <div class="grid-2">
+            <div class="panel reveal d1">
+                <h3>Ordinary use (no join)</h3>
+                <ul>
+                    <li>Independent opaque ID namespaces (<code>DEM_*</code> vs <code>KEY_*</code>)</li>
+                    <li>Independent row shuffles — destroy alignment</li>
+                    <li>Zero shared columns across demo ↔ key tables</li>
+                    <li>PII vault held apart from both analysis tables</li>
+                </ul>
+            </div>
+            <div class="panel reveal d2">
+                <h3>Synthpop-style copies</h3>
+                <ul>
+                    <li>Marginal-preserving categorical resample</li>
+                    <li>Rank-swap + scaled noise on GPA / ETS</li>
+                    <li>Communicates <strong>trends</strong> for AOL discussion</li>
+                    <li>Defeats casual recombination / exact-row recovery</li>
+                </ul>
+            </div>
+        </div>
+        <div class="callout reveal d3">Sealed <code>linkage_vault.json</code> can reconstruct joins — but only after break-glass authorization is logged. Ordinary analysts never receive the vault.</div>
+    </div>
+</section>
+
+<!-- ========== SLIDE 6: EXPOSURE MAP ========== -->
+<section class="slide" data-slide="6">
+    <div class="slide-frame">
+        <div class="chip reveal">05 · Control Plane Exposure Map</div>
+        <h2 class="reveal">What the AI would see <em>(simulated)</em></h2>
+        <table class="data reveal d1">
+            <thead>
+                <tr>
+                    <th>Research question</th>
+                    <th>Decision</th>
+                    <th>Schema to AI</th>
+                    <th>Rows / PII</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Mean GPA by degree program</td>
+                    <td class="tag-ok">Approved</td>
+                    <td>program_of_study, gpa, ets_score</td>
+                    <td>None</td>
+                </tr>
+                <tr>
+                    <td>Correlate GPA ↔ ETS</td>
+                    <td class="tag-ok">Approved</td>
+                    <td>gpa, ets_score</td>
+                    <td>None</td>
+                </tr>
+                <tr>
+                    <td>Demographics frequencies only</td>
+                    <td class="tag-ok">Approved</td>
+                    <td>age_band, gender, race, residency</td>
+                    <td>None</td>
+                </tr>
+                <tr>
+                    <td>Gender × GPA linkage</td>
+                    <td class="tag-block">Blocked</td>
+                    <td>— (refused before share)</td>
+                    <td>None</td>
+                </tr>
+                <tr>
+                    <td>Post break-glass: GPA by gender</td>
+                    <td class="tag-ok">Approved*</td>
+                    <td>gender, gpa (empty schema)</td>
+                    <td>None · PII still vaulted</td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="callout reveal d2">*Requires prior local break-glass log (approver, reason, timestamp, authorization ID). AI still never receives row data.</div>
+    </div>
+</section>
+
+<!-- ========== SLIDE 7: ALLOWED ANALYSES ========== -->
+<section class="slide" data-slide="7">
+    <div class="slide-frame">
+        <div class="chip reveal">06 · Data Plane Results (Synthetic)</div>
+        <h2 class="reveal">AOL trends without demographics</h2>
+        <div class="grid-2">
+            <div class="panel reveal d1">
+                <div class="mono-label">GPA by program · observed key table</div>
+                <table class="data">
+                    <thead><tr><th>Program</th><th>n</th><th>Mean GPA</th></tr></thead>
+                    <tbody>
+                        <tr><td>Computer Information Systems</td><td>17</td><td>3.12</td></tr>
+                        <tr><td>Management</td><td>27</td><td>3.09</td></tr>
+                        <tr><td>Accounting</td><td>23</td><td>3.09</td></tr>
+                        <tr><td>Finance</td><td>12</td><td>3.02</td></tr>
+                        <tr><td>Marketing</td><td>21</td><td>2.79</td></tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="panel reveal d2">
+                <div class="mono-label">GPA ↔ ETS correlation</div>
+                <ul>
+                    <li><strong>Observed:</strong> r ≈ 0.53 · local OLS slope positive</li>
+                    <li><strong>Synthpop-style:</strong> same direction, attenuated magnitude — suitable for stakeholder communication</li>
+                    <li>No demographic fields required</li>
+                    <li>Cloud assisted only with empty schema + task text</li>
+                </ul>
+                <div class="callout" style="margin-top:16px">Illustrative synthetic signal only — not institutional findings.</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ========== SLIDE 8: BREAK-GLASS ========== -->
+<section class="slide" data-slide="8">
+    <div class="slide-frame">
+        <div class="chip reveal">07 · Break-Glass</div>
+        <h2 class="reveal">Equity linkage is <em>exceptional</em></h2>
+        <div class="grid-2">
+            <div class="panel reveal d1">
+                <h3>Default rule</h3>
+                <ul>
+                    <li>Demographics × key outcomes are <strong>blocked</strong></li>
+                    <li>Ordinary AOL monitoring uses key_academic alone</li>
+                    <li>Control Plane joint schemas are withheld</li>
+                </ul>
+            </div>
+            <div class="panel reveal d2">
+                <h3>Authorization record (local JSONL)</h3>
+                <ul>
+                    <li>timestamp_utc</li>
+                    <li>approver (name/role)</li>
+                    <li>reason</li>
+                    <li>analysis_requested</li>
+                    <li>tables_linked</li>
+                    <li>authorization_id (UUID)</li>
+                </ul>
+            </div>
+        </div>
+        <div class="callout reveal d3">After approval, a linked extract may be built <strong>without PII columns</strong>. Disney-name/email vault remains sealed. AI, if used, still receives empty schema only.</div>
+    </div>
+</section>
+
+<!-- ========== SLIDE 9: COMPLIANCE + CLOSE ========== -->
+<section class="slide" data-slide="9">
+    <div class="slide-frame">
+        <div class="chip reveal">08 · Compliance posture</div>
+        <h2 class="reveal">Zero cloud ingestion of education records</h2>
+        <div class="grid-3" style="margin-bottom:20px">
+            <div class="panel reveal d1">
+                <h3>CITI / FERPA</h3>
+                <p>IPI minimization; least privilege; no unauthorized external transmission of research or education data.</p>
+            </div>
+            <div class="panel reveal d2">
+                <h3>La. R.S. 17:3914</h3>
+                <p>Student information is not disclosed to third-party AI under the Control Plane path described.</p>
+            </div>
+            <div class="panel reveal d3">
+                <h3>PoC artifact</h3>
+                <p><code>scripts/decoupled_ai_protocol_poc.py</code> — runnable locally; artifacts under gitignored output folder.</p>
+            </div>
+        </div>
+        <div class="panel reveal d4">
+            <div class="mono-label">Requested action</div>
+            <p style="font-size:22px;color:var(--ink);line-height:1.45;max-width:1400px">
+                No approval action requested. Please file as an informational notification for IT Security and CIO awareness.
+                Draft memo embedded in the PoC script as <strong>MEMO_TO_IT_LEADERSHIP</strong> (Chris Usey; CC Sam Cagle).
+            </p>
+        </div>
+        <div class="footer-meta reveal" style="position:static;margin-top:28px">
+            <div>Nicholls State University · Decoupled AI Protocol v1.1.0-AOL-PoC</div>
+            <div style="text-align:right">Arrow keys / Space to navigate · E to edit</div>
+        </div>
+    </div>
+</section>
+
+</main>
+</div>
+
+<div class="deck-controls" aria-label="Presentation controls">
+    <button type="button" id="prevBtn">Prev</button>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+    <span id="slideCounter">1 / 9</span>
+    <button type="button" id="nextBtn">Next</button>
+</div>
+
+<script>
+/* ===========================================
+   SLIDE PRESENTATION CONTROLLER
+   =========================================== */
+class SlidePresentation {
+    constructor() {
+        this.slides = Array.from(document.querySelectorAll('.slide'));
+        this.currentSlide = 0;
+        this.stage = document.getElementById('deckStage');
+        this.counter = document.getElementById('slideCounter');
+        this.progress = document.getElementById('progressFill');
+        this.setupStageScale();
+        this.setupKeyboardNav();
+        this.setupTouchNav();
+        this.setupWheelNav();
+        this.setupButtons();
+        this.showSlide(0);
+    }
+
+    setupStageScale() {
+        const scale = () => {
+            const factor = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+            const x = (window.innerWidth - 1920 * factor) / 2;
+            const y = (window.innerHeight - 1080 * factor) / 2;
+            this.stage.style.transform = `translate(${x}px, ${y}px) scale(${factor})`;
+        };
+        scale();
+        window.addEventListener('resize', scale);
+    }
+
+    setupKeyboardNav() {
+        document.addEventListener('keydown', (e) => {
+            if (e.target && e.target.getAttribute('contenteditable') === 'true') return;
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+                e.preventDefault();
+                this.next();
+            } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+                e.preventDefault();
+                this.prev();
+            } else if (e.key === 'Home') {
+                this.showSlide(0);
+            } else if (e.key === 'End') {
+                this.showSlide(this.slides.length - 1);
+            }
+        });
+    }
+
+    setupTouchNav() {
+        let startX = null;
+        this.stage.addEventListener('touchstart', (e) => {
+            startX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        this.stage.addEventListener('touchend', (e) => {
+            if (startX === null) return;
+            const dx = e.changedTouches[0].screenX - startX;
+            if (Math.abs(dx) > 50) {
+                if (dx < 0) this.next();
+                else this.prev();
+            }
+            startX = null;
+        }, { passive: true });
+    }
+
+    setupWheelNav() {
+        let locked = false;
+        window.addEventListener('wheel', (e) => {
+            if (locked) return;
+            if (Math.abs(e.deltaY) < 20) return;
+            locked = true;
+            if (e.deltaY > 0) this.next();
+            else this.prev();
+            setTimeout(() => { locked = false; }, 450);
+        }, { passive: true });
+    }
+
+    setupButtons() {
+        document.getElementById('prevBtn').addEventListener('click', () => this.prev());
+        document.getElementById('nextBtn').addEventListener('click', () => this.next());
+    }
+
+    showSlide(index) {
+        this.currentSlide = Math.max(0, Math.min(index, this.slides.length - 1));
+        this.slides.forEach((slide, i) => {
+            const on = i === this.currentSlide;
+            slide.classList.toggle('active', on);
+            slide.classList.toggle('visible', on);
+        });
+        this.counter.textContent = `${this.currentSlide + 1} / ${this.slides.length}`;
+        this.progress.style.width = `${((this.currentSlide + 1) / this.slides.length) * 100}%`;
+    }
+
+    next() { this.showSlide(this.currentSlide + 1); }
+    prev() { this.showSlide(this.currentSlide - 1); }
+}
+
+/* ===========================================
+   INLINE EDITING
+   =========================================== */
+class InlineEditor {
+    constructor() {
+        this.isActive = false;
+        this.storageKey = 'decoupled-ai-briefing-edits-v1';
+        this.toggleBtn = document.getElementById('editToggle');
+        this.hotzone = document.querySelector('.edit-hotzone');
+        this.hideTimeout = null;
+        this.bindChrome();
+        this.restore();
+    }
+
+    bindChrome() {
+        this.toggleBtn.addEventListener('click', () => this.toggleEditMode());
+        this.hotzone.addEventListener('mouseenter', () => {
+            clearTimeout(this.hideTimeout);
+            this.toggleBtn.classList.add('show');
+        });
+        this.hotzone.addEventListener('mouseleave', () => {
+            this.hideTimeout = setTimeout(() => {
+                if (!this.isActive) this.toggleBtn.classList.remove('show');
+            }, 400);
+        });
+        this.toggleBtn.addEventListener('mouseenter', () => clearTimeout(this.hideTimeout));
+        this.toggleBtn.addEventListener('mouseleave', () => {
+            this.hideTimeout = setTimeout(() => {
+                if (!this.isActive) this.toggleBtn.classList.remove('show');
+            }, 400);
+        });
+        this.hotzone.addEventListener('click', () => this.toggleEditMode());
+        document.addEventListener('keydown', (e) => {
+            if ((e.key === 'e' || e.key === 'E') && !e.target.getAttribute('contenteditable')) {
+                this.toggleEditMode();
+            }
+            if ((e.metaKey || e.ctrlKey) && e.key === 's') {
+                e.preventDefault();
+                this.save();
+            }
+        });
+    }
+
+    editableNodes() {
+        return document.querySelectorAll('h1, h2, h3, p, li, td, .lede, .chip, .callout, .footer-meta, .stat .n, .stat .l');
+    }
+
+    toggleEditMode() {
+        this.isActive = !this.isActive;
+        document.body.classList.toggle('edit-mode', this.isActive);
+        this.toggleBtn.classList.toggle('active', this.isActive);
+        this.toggleBtn.classList.add('show');
+        this.toggleBtn.textContent = this.isActive ? 'Editing…' : 'Edit';
+        this.editableNodes().forEach((el, idx) => {
+            el.setAttribute('contenteditable', this.isActive ? 'true' : 'false');
+            if (!el.dataset.editId) el.dataset.editId = `e${idx}`;
+        });
+        if (!this.isActive) this.save();
+    }
+
+    save() {
+        const data = {};
+        this.editableNodes().forEach((el) => {
+            if (el.dataset.editId) data[el.dataset.editId] = el.innerHTML;
+        });
+        try { localStorage.setItem(this.storageKey, JSON.stringify(data)); } catch (_) {}
+    }
+
+    restore() {
+        try {
+            const raw = localStorage.getItem(this.storageKey);
+            if (!raw) return;
+            const data = JSON.parse(raw);
+            this.editableNodes().forEach((el, idx) => {
+                el.dataset.editId = el.dataset.editId || `e${idx}`;
+                if (data[el.dataset.editId] != null) el.innerHTML = data[el.dataset.editId];
+            });
+        } catch (_) {}
+    }
+}
+
+const deck = new SlidePresentation();
+const editor = new InlineEditor();
+</script>
+</body>
+</html>
