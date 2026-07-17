@@ -97,8 +97,11 @@
                 </p>
                 {% elif study.slug == 'hr-sjt' %}
                 <hr>
+                <p class="mb-2">
+                    <a href="{% url 'studies:protocol_vignettes' slug=study.slug %}">View all 27 situations (skip / optional ratings)</a> — interactive IRB packet: full vignette text, tactic ratings with no required fields, and Skip per situation.
+                </p>
                 <p class="mb-0">
-                    <a href="{% url 'studies:protocol_study_documentation' slug=study.slug %}">View full documentation (all 27 scenarios &amp; protocol)</a> — HTML with cases and protocol summary for IRB review.
+                    <a href="{% url 'studies:protocol_study_documentation' slug=study.slug %}">View full documentation (protocol summary)</a> — HTML protocol summary and application status for IRB review.
                 </p>
                 {% endif %}
             </div>

@@ -48,7 +48,7 @@
 
 ---
 
-### 3. HR Situational Judgment Test *(Pending)*
+### 3. HR Situational Judgment Test *(Pending — application drafted)*
 
 | | |
 |---|---|
@@ -56,6 +56,10 @@
 | **Participants** | MNGT 425 students + HR professionals (recruited via networks) |
 | **Duration** | 45–60 minutes |
 | **Review type** | Exempt (Category D) |
+| **Application** | Drafted: `apps/studies/assets/irb/hr-sjt/protocol.json` + `HR_SJT_PROTOCOL_PRAMS.md` |
+| **Vignette review** | All 27 situations in `incidents.json`; interactive skip/optional-ratings packet at `/studies/hr-sjt/run/` |
+
+**Non-forced responding:** Ratings are optional; each situation has Skip; no required rating fields.
 
 **Suggested reviewers:** Jon Murphy (CBA), Juliann Allen
 

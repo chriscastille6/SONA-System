@@ -523,8 +523,11 @@ def run_protocol(request, slug):
         if not _run_protocol_preapproval_allowed(request, study):
             raise Http404()
         if slug == 'hr-sjt':
+            incidents_payload = _load_hr_sjt_incidents()
             return render(request, 'studies/hr_sjt_irb_full_study.html', {
                 'study': study,
+                'incidents': incidents_payload.get('incidents') or [],
+                'incident_count': incidents_payload.get('incident_count') or 0,
             })
         return render(request, 'projects/goals-refs/protocol/index.html', {
             'study': study,
@@ -882,16 +885,51 @@ def _can_view_study_protocol_materials(request, study):
     return False
 
 
+def _load_hr_sjt_incidents():
+    """Load vendored HR SJT incidents for IRB review (offline-capable)."""
+    path = Path(settings.BASE_DIR) / "apps" / "studies" / "assets" / "irb" / "hr-sjt" / "incidents.json"
+    if not path.exists():
+        return {"incident_count": 0, "incidents": []}
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    except (OSError, json.JSONDecodeError):
+        return {"incident_count": 0, "incidents": []}
+    incidents = data.get("incidents") or []
+    return {
+        "title": data.get("title") or "HR Situational Judgment Test — Full Incident Pool",
+        "description": data.get("description") or "",
+        "response_types": data.get("response_types") or {},
+        "version": data.get("version"),
+        "source": data.get("source"),
+        "incident_count": data.get("incident_count") or len(incidents),
+        "incidents": incidents,
+    }
+
+
 @login_required
 def protocol_vignettes(request, slug):
     """
     Show the full vignette pool for a study. Access: staff, PI, college rep, chair, or reviewer
-    for any submission of this study (so Jon and Juliann can view goals-refs vignettes).
+    for any submission of this study (so Jon and Juliann can view goals-refs / hr-sjt vignettes).
     """
     study = get_object_or_404(Study.objects.all(), slug=slug)
     if not _can_view_study_protocol_materials(request, study):
         messages.error(request, 'You do not have access to view this study’s vignette pool.')
         return redirect('studies:protocol_submission_list')
+    # HR SJT: interactive IRB packet with all 27 situations + skip/optional ratings demo
+    if slug == 'hr-sjt':
+        incidents_payload = _load_hr_sjt_incidents()
+        if request.GET.get("format") == "json":
+            return JsonResponse(incidents_payload, json_dumps_params={"indent": 2})
+        if not incidents_payload.get("incidents"):
+            raise Http404("HR SJT incident pool could not be loaded.")
+        return render(request, 'studies/hr_sjt_irb_full_study.html', {
+            'study': study,
+            'incidents': incidents_payload.get('incidents') or [],
+            'incident_count': incidents_payload.get('incident_count') or 0,
+            'irb_materials_view': True,
+        })
     base = Path(__file__).resolve().parent.parent.parent
     vignettes_path = base / "apps" / "studies" / "assets" / "irb" / slug / "vignettes.json"
     if not vignettes_path.exists():

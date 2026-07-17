@@ -144,7 +144,7 @@
   <main class="page">
     <h1>IRB Reviewer Packet: HR Situational Judgment Test</h1>
     <p class="lede">
-      <strong>No data collection on this page.</strong> This is a review-only copy for IRB. Scenario and tactic text is loaded from the same source file used by the live assessment (<code>incidents-data.js</code>), so content stays aligned with production. Nothing is submitted to any server.
+      <strong>No data collection on this page.</strong> This is a review-only copy for IRB. All {{ incident_count|default:27 }} situations and tactics are vendored in the repo (<code>apps/studies/assets/irb/hr-sjt/incidents.json</code>) so reviewers can inspect wording and skip/optional-rating behavior without the live API. Nothing is submitted to any server.
     </p>
 
     <div class="callout warn">
@@ -153,6 +153,9 @@
 
     <div class="actions">
       <a class="btn" href="https://bayoupal.nicholls.edu/hr-sjt-assessment/index.html?study={{ study.id }}" target="_blank" rel="noopener">Open live assessment (needs API)</a>
+      {% if irb_materials_view %}
+      <a class="btn" href="{% url 'studies:protocol_vignettes' slug=study.slug %}?format=json">Download incidents JSON</a>
+      {% endif %}
     </div>
 
     <section>
@@ -171,17 +174,18 @@
       <div class="box">
         <ol>
           <li>Consent → ID from name (live app) → instructions → 27 situations with 1–5 tactic ratings.</li>
-          <li><strong>Skip:</strong> Each situation below has <em>Skip this situation</em>; ratings are optional (no <code>required</code> attributes).</li>
+          <li><strong>Skip / optional ratings:</strong> Each situation below has <em>Skip this situation</em>. Rating radios have no <code>required</code> attributes — participants may leave any or all ratings blank.</li>
+          <li><strong>Not forced choice:</strong> There is no forced ranking and no requirement to select an effectiveness rating before continuing.</li>
         </ol>
       </div>
       <div class="callout">
-        <strong>IRB check:</strong> Reviewers can confirm participants are not forced to answer every situation by using the skip control and leaving ratings blank.
+        <strong>IRB check:</strong> Reviewers can confirm participants are not forced to answer every situation by (1) leaving ratings blank and (2) using <em>Skip this situation</em> on any card below.
       </div>
     </section>
 
     <section>
-      <h2>All 27 situations (same content as live instrument)</h2>
-      <p class="small">Source: <code>https://bayoupal.nicholls.edu/hr-sjt-assessment/incidents-data.js</code></p>
+      <h2>All {{ incident_count|default:27 }} situations (vendored instrument content)</h2>
+      <p class="small">Repo source: <code>apps/studies/assets/irb/hr-sjt/incidents.json</code> (aligned with live <code>incidents-data.js</code>).</p>
       <div id="incident-list"></div>
     </section>
 
@@ -196,15 +200,21 @@
     <p class="footer">IRB review packet — frontend only; no responses stored.</p>
   </main>
 
-  <script src="https://bayoupal.nicholls.edu/hr-sjt-assessment/incidents-data.js"></script>
+  {{ incidents|json_script:"hr-sjt-incidents-data" }}
   <script>
     (function () {
-      var incidents = typeof INCIDENTS_DATA !== 'undefined' ? INCIDENTS_DATA : [];
+      var incidents = [];
+      try {
+        var el = document.getElementById('hr-sjt-incidents-data');
+        incidents = el ? JSON.parse(el.textContent || '[]') : [];
+      } catch (e) {
+        incidents = [];
+      }
       var host = document.getElementById('incident-list');
       if (!host) return;
 
       if (!Array.isArray(incidents) || incidents.length === 0) {
-        host.innerHTML = '<div class="box"><strong>Could not load incidents.</strong> Check network access to incidents-data.js.</div>';
+        host.innerHTML = '<div class="box"><strong>Could not load incidents.</strong> Ensure <code>apps/studies/assets/irb/hr-sjt/incidents.json</code> is present.</div>';
         return;
       }
 
