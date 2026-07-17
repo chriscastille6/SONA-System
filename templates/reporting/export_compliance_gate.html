@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Export compliance check - {{ export_label }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <h2 class="mb-3">Export requires compliance attestation</h2>
+      <p class="text-muted">{{ export_label }}</p>
+
+      {% include 'compliance/_warnings_panel.html' with compliance_report=compliance_report %}
+
+      <div class="card mb-4">
+        <div class="card-body">
+          <h5 class="card-title">Human-in-the-loop attestation</h5>
+          <p class="small">
+            This download contains FERPA education records / student PII under La.&nbsp;R.S.&nbsp;17:3914.
+            By attesting, you confirm you will keep the file on university-managed systems,
+            will not upload it to public generative AI or unauthorized vendors, and accept
+            accountability for any further disclosure (APA CPTA §3 &amp; §6; CITI HITL).
+          </p>
+          <form method="post" action="">
+            {% csrf_token %}
+            <div class="form-check mb-3">
+              <input class="form-check-input" type="checkbox" name="hitl_attest" id="hitl_attest" value="1" required>
+              <label class="form-check-label" for="hitl_attest">
+                I attest that I have reviewed the warnings and will not disclose this identifiable export outside authorized university custody.
+              </label>
+            </div>
+            <button type="submit" class="btn btn-primary">Attest and download</button>
+            <a href="{% url 'reporting:home' %}" class="btn btn-outline-secondary">Cancel</a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

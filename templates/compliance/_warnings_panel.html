@@ -1,0 +1,47 @@
+{# Reusable compliance warnings panel. Expects: compliance_report #}
+{% if compliance_report and compliance_report.has_warnings %}
+<div class="compliance-warnings mb-4" role="region" aria-label="Compliance warnings">
+  <div class="alert {% if compliance_report.is_blocked %}alert-danger{% else %}alert-warning{% endif %}">
+    <h5 class="alert-heading mb-2">
+      <i class="bi bi-shield-exclamation"></i>
+      Compliance guardrails
+      {% if compliance_report.is_blocked %}
+        <span class="badge bg-danger">Action blocked</span>
+      {% else %}
+        <span class="badge bg-warning text-dark">Review before proceeding</span>
+      {% endif %}
+    </h5>
+    <p class="small mb-3">
+      Automated checks against CITI, FERPA, La.&nbsp;R.S.&nbsp;17:3914, APA CPTA (2026), and SIOP CAPE AI ethics.
+      These warnings document decision-making; they do not replace IRB determination.
+    </p>
+    <ul class="list-unstyled mb-0">
+      {% for w in compliance_report.warnings %}
+      <li class="mb-3 pb-2 border-bottom">
+        <div class="d-flex justify-content-between align-items-start gap-2">
+          <strong>{{ w.title }}</strong>
+          <span class="badge
+            {% if w.severity.value == 'block' %}bg-danger
+            {% elif w.severity.value == 'warning' %}bg-warning text-dark
+            {% else %}bg-secondary{% endif %}">{{ w.severity.value|upper }}</span>
+        </div>
+        <div class="small mt-1">{{ w.message }}</div>
+        <div class="small text-muted mt-1"><strong>Remediation:</strong> {{ w.remediation }}</div>
+        <div class="small text-muted"><strong>Authority:</strong> {{ w.authority }}</div>
+        <code class="small">{{ w.code }} · {{ w.principle_id }}</code>
+      </li>
+      {% endfor %}
+    </ul>
+    {% if compliance_report.decision_rationale %}
+    <details class="mt-2">
+      <summary class="small">Decision explanation (for audit)</summary>
+      <ul class="small mb-0 mt-2">
+        {% for r in compliance_report.decision_rationale %}
+        <li>{{ r }}</li>
+        {% endfor %}
+      </ul>
+    </details>
+    {% endif %}
+  </div>
+</div>
+{% endif %}
