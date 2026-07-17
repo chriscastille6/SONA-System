@@ -3,10 +3,15 @@
   "hooks": {
     "beforeSubmitPrompt": [
       {
-        "command": ".cursor/hooks/ferpa_before_submit_prompt.sh",
-        "matcher": "UserPromptSubmit",
-        "failClosed": true,
-        "timeout": 120
+        "command": ".cursor/hooks/block_pii_prompt.py",
+        "timeout": 8000
+      }
+    ],
+    "beforeReadFile": [
+      {
+        "command": ".cursor/hooks/block_sensitive_file_read.py",
+        "timeout": 5000,
+        "failClosed": true
       }
     ]
   }

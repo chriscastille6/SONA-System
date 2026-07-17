@@ -59,7 +59,8 @@ class NumberedCanvas(pdf_canvas.Canvas):
 GOAL_SETTING_PDF_APPENDICES = [
     ("A", "Pilot Recruitment Flyer", "Recruitment_pilot_20260312.pdf"),
     ("A2", "Main Study Recruitment Flyer", "Recruitment_main_study_20260312.pdf"),
-    ("B", "Informed Consent Statement", "ConsentForm_version2_20260312.pdf"),
+    ("B", "Pilot Informed Consent Statement", "ConsentForm_pilot_20260312.pdf"),
+    ("B2", "Main Study Informed Consent Statement", "ConsentForm_main_20260312.pdf"),
     ("C", "Anagram Task Workbook (Study Instrument)", "Workbook_version2_20260312.pdf"),
     ("D", "Participant Productivity Report", "ProductivityReport_version2_20260312.pdf"),
     ("E", "Pilot Study Appreciation Letter", "Feedback_pilot_20260312.pdf"),

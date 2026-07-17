@@ -1,0 +1,439 @@
+--- Page 1 ---
+CONFIDENTIAL — FOR COMMITTEE USE ONLY 
+Please do not circulate outside the professorship review committee. 
+Exhibits A–C: Technical Supplement for the MNGT 425 HR Analytics Teaching Portfolio
+Christopher Castille
+Department of Management and Marketing
+Nicholls State University
+Author Note
+This supplement documents three classroom studies in MNGT 425 (HR Analytics). Each
+exhibit describes the comparison sample, the statistical test, and the figure used with students. 
+I generated the R and Python code, the figures, and this report inside Cursor.app (an AI-
+assisted coding environment). All statistical choices, item wording, citations, and interpretive
+claims are mine; the AI assistant was used to draft code, refine plotting styles, and copyedit the
+supplement. 
+This supplement is prepared for review by the professorship committee and is not
+intended for circulation beyond that committee. Student data have been de-identified. 
+1
+Confidential — for committee use only
+--- Page 2 ---
+Executive Summary
+The three exhibits in this supplement compare MNGT 425 students to three different
+kinds of real-world samples on questions that matter for hiring decisions and statistical
+reasoning. In each study, the comparison group was chosen because it represents the benchmark
+readers care about: working HR executives (Exhibit A), a large contemporary sample of HR
+practitioners (Exhibit B), and university faculty with formal statistics training (Exhibit C).
+Students held their own in each comparison and, on most practically relevant items,
+outperformed the benchmark. The figures tell the story most efficiently: each exhibit pairs a one-
+page narrative with a full-page landscape figure (Figures A1, B1, and C1), and readers short on
+time can scan the figures first and use the text only for context. 
+What the numbers show
+Exhibit A (selection beliefs). Against the Terpstra (1996) HR executive sample (N =
+201), students correctly rated the unstructured interview as less effective than HR executives did
+(M = 2.33 vs. 3.49, p < .001) and correctly rated performance tests / SJTs and general mental
+ability as more effective (M = 4.38 vs. 3.09 and 3.71 vs. 2.89 respectively, both p < .001).
+Personality ratings matched. In practical terms, students lined up with modern validity evidence
+on three of four high-stakes hiring choices where HR practice has been slow to update. See
+Figure A1. 
+Exhibit B (selection myths). Against Fisher et al. (2021) HR practitioners (N = 453),
+students averaged 75.9 % correct across 10 common myths versus the HR benchmark's 56.7 %.
+The aggregate difference was statistically significant (p ≈ 2.5 × 10−5). Two myths remained
+significant at the item level after Benjamini–Hochberg correction: unstructured interviews as the
+most valid format (s6) and emotional intelligence as a stronger predictor than general mental
+ability (s9). Students were more accurate than working HR professionals on precisely the myths
+that drive costly hiring mistakes. See Figure B1. 
+2
+Confidential — for committee use only
+--- Page 3 ---
+Exhibit C (interpreting p = .01). On the six-statement Haller and Krauss (2002)
+instrument, 33.3 % of students answered all six correctly, compared with 0 % of psychology
+students, 10 % of faculty who do not teach statistics, and 20 % of faculty who do. A one-sided
+exact binomial test against the 10 % non-statistics-faculty benchmark was significant (p = .006).
+Against the stricter 20 % statistics-teaching-faculty benchmark, the test did not reach
+significance (p = .13) in this small class sample, but the raw rate still exceeded that benchmark.
+See Figure C1. 
+Why it matters
+The pattern is consistent across the three exhibits: on questions with real professional
+consequences, MNGT 425 students at least matched, and usually exceeded, the rates reported for
+the working practitioners and instructors used as benchmarks. The course targets these specific
+gaps directly, and the class outcomes track the training content. 
+Appropriate caveats
+Class sample sizes are small (ns of 17–21) and the students are not a random sample of
+any population, so these comparisons should be read as classroom benchmarks rather than
+definitive replications. Response formats and administration differ across studies (for example,
+Fisher et al. allowed an Uncertain response that the class instrument did not), which makes item-
+level comparisons approximate. 
+3
+Confidential — for committee use only
+--- Page 4 ---
+Exhibit A: Employee Selection Beliefs Compared With Terpstra (1996)
+Overview
+Students in MNGT 425 rated four personnel selection procedures for perceived
+effectiveness on a 1 to 5 scale and then, as teams, chose which procedures to include in a hiring
+battery. The student means were compared to the HR executive benchmark reported by Terpstra
+(1996) and reproduced in Highhouse (2008, Figure 1). Before finalizing their team batteries,
+students used Consensus.app deep search to gather validity evidence, which they cited alongside
+Sackett et al. (2016) and Schmidt and Hunter (1998) in their memos. 
+Comparison sample
+The benchmark is a sample of N = 201 practicing HR executives surveyed by Terpstra
+(1996) about the perceived effectiveness of commonly used selection methods. In plain terms,
+this is a snapshot of what experienced HR professionals in the mid-1990s thought worked best.
+Highhouse (2008) used the same numbers as the anchor for his argument that HR practice has
+held onto unstructured interviews longer than validity evidence justifies. 
+Data
+Student ratings came from a de-identified MNGT 425 class survey collected during the
+selection unit. The Terpstra means were digitized from Highhouse (2008, Figure 1, left panel).
+Four procedures were matched across the two studies: unstructured interview, specific aptitude
+(represented in the class survey by a performance test / situational judgment test item),
+personality test, and general mental ability (represented by the cognitive ability item). 
+Analysis
+For each of the four procedures, a one-sample t-test compared student ratings to the
+Terpstra mean. The four tests are treated independently. Significance stars in the figure follow
+4
+Confidential — for committee use only
+--- Page 5 ---
+conventional thresholds (* p < .05, ** p < .01, *** p < .001). Final team selections are reported
+as counts out of six teams. 
+Results
+Student ratings were available for n = 21 respondents per procedure. Three of the four
+comparisons were statistically significant at p < .001. In plain terms, the differences are large
+enough that chance alone is not a credible explanation. Students rated the unstructured interview 
+lower than HR executives did (M = 2.33 vs. 3.49; p < .001), which lines up with modern validity
+evidence. They rated the performance test / SJT higher (M = 4.38 vs. 3.09; p < .001) and general
+mental ability higher (M = 3.71 vs. 2.89; p < .001), again consistent with contemporary meta-
+analytic findings. The personality test comparison was not statistically significant (M = 3.00 vs.
+2.93; p = .74), meaning students and HR executives held essentially the same view of personality
+testing. Table A1 reports the full set of descriptive means and one-sample tests. 
+Table A1
+Student ratings versus Terpstra (1996) benchmark means (n = 21 students)
+Procedure (matched)
+Mstudent
+MTerpstra
+Diff.
+p
+Unstructured interview
+2.33
+3.49
+−1.16
+< .001
+Performance test / SJT
+4.38
+3.09
++1.29
+< .001
+Personality test
+3.00
+2.93
++0.07
+.74
+Cognitive ability (GMA)
+3.71
+2.89
++0.82
+< .001
+Note. Two-sided one-sample t-tests. Terpstra benchmark values are digitized from Highhouse (2008,
+Figure 1).
+5
+Confidential — for committee use only
+--- Page 6 ---
+Figure A1
+Student ratings versus Terpstra (1996) HR executives, with final team selections
+6
+Confidential — for committee use only
+--- Page 7 ---
+Note. Bars show mean perceived effectiveness on a 1 to 5 scale for MNGT 425 students (n = 21) and Terpstra (1996) HR executives (N = 201). Stars
+denote one-sample t-tests against the Terpstra benchmark: * p < .05, ** p < .01, *** p < .001. The side panel shows how many of six MNGT 425 teams
+selected each matched procedure for their final hiring battery. Terpstra values were digitized from Highhouse (2008, Figure 1). Students used
+Consensus.app deep search to gather validity evidence when building their batteries, citing Sackett et al. (2016) and Schmidt and Hunter (1998) among
+other sources in their memos.
+7
+Confidential — for committee use only
+--- Page 8 ---
+Exhibit B: Selection Myths Compared With Fisher et al. (2021)
+Overview
+Students judged 10 common selection myths as True or False. The share of students who
+correctly rejected each statement was compared to HR practitioner data reported by Fisher et al.
+(2021). 
+Comparison sample
+The benchmark is a sample of N = 453 HR practitioners in the United States and Canada
+surveyed by Fisher et al. (2021). In plain terms, this is a large, contemporary sample of working
+HR professionals whose everyday decisions affect hiring. Fisher et al. built their instrument from
+Rynes, Colbert, and Brown's (2002) original set of research and practice gaps, so the items
+represent textbook selection myths rather than obscure trivia. 
+Data
+Class responses were collected through Canvas during the selection unit (n = 17), using a
+forced True/False format for each of the 10 items. HR benchmark percentages were derived from
+Fisher et al. (2021, Table 2), which reports % True, % False, and % Uncertain for each item.
+Because the student instrument forced a binary choice, "% correct" for the HR sample is
+computed as 100 − % True (i.e., % False + % Uncertain). 
+Analysis
+For each myth, an exact one-sided binomial test compared the student True rate to the
+Fisher benchmark True rate, with the alternative hypothesis that students endorse the myth less
+often than HR practitioners. Per-item p-values were adjusted across the 10 myths using the
+Benjamini and Hochberg (1995) false discovery rate procedure. A second, aggregate-level test
+used a one-sided Poisson test on the total count of myths endorsed across students, with the
+expected rate derived from the sum of Fisher True rates. 
+8
+Confidential — for committee use only
+--- Page 9 ---
+Results
+Averaged across the 10 myths, students answered correctly about 75.9 % of the time; the
+HR benchmark averaged 56.7 %. The aggregate Poisson test was statistically significant (p ≈ 2.5
+× 10−5). In plain terms, the gap between students and HR practitioners is too large to be a lucky
+accident of the sample. 
+At the item level, after BH-FDR correction for running 10 tests, two myths stayed
+significant at q < .05 with students rejecting them more often than HR practitioners did: s6
+(unstructured interviews are the most valid format) and s9 (emotional intelligence beats general
+mental ability). In plain terms, students were clearly better on these two headline myths. On the
+other eight myths, students still answered correctly more often numerically, but once we correct
+for the fact that we ran ten tests, those differences are not strong enough to rule out chance.
+Because the original HR survey allowed an Uncertain option and the student survey did not, the
+comparison should be read as approximate rather than an exact head-to-head. Table B1 lists each
+myth and per-item results. 
+Table B1
+Selection myths: item wording and percentage correctly rejecting each myth as false
+Item Myth (keyed False)
+% correct
+MNGT 425
+% correct
+HR
+q
+s1
+The MBTI measures four core personality
+dimensions.
+76.5
+50.3
+.087
+s2
+Conscientiousness predicts overall job
+performance better than general mental
+ability.
+64.7
+45.2
+.142
+s3
+Screening for values predicts job
+performance better than general mental
+ability.
+58.8
+38.7
+.142
+s4
+Integrity tests fail in practice because
+applicants lie on them.
+76.5
+53.7
+.120
+s5
+Integrity tests show substantial racial
+adverse impact.
+76.5
+77.2
+.731
+s6
+94.1
+41.9
+< .001
+9
+Confidential — for committee use only
+--- Page 10 ---
+Item Myth (keyed False)
+% correct
+MNGT 425
+% correct
+HR
+q
+Unstructured or idiosyncratic interviews are
+the most valid hiring format.*
+s7
+Very high intelligence hurts performance in
+low-skill jobs.
+82.4
+69.1
+.258
+s8
+Personality inventories differ little in
+validity from one another.
+58.8
+66.0
+.812
+s9
+Emotional intelligence predicts job
+performance better than general mental
+ability.*
+82.4
+47.3
+.017
+s10
+Graphology (handwriting analysis) predicts
+job performance.
+88.2
+77.7
+.293
+Overall (mean across 10 myths)
+75.9
+56.7
+< .001a
+Note. MNGT 425 (n = 17) vs. Fisher et al. (2021, Table 2; N = 453). "% correct" is the share marking the
+myth False; for the HR sample it equals % False + % Uncertain because that instrument allowed an 
+Uncertain response. Per-item q-values are Benjamini–Hochberg adjusted across the 10 items, one-sided
+(students True rate < HR True rate). * significant at q < .05. a Overall row: one-sided Poisson mean-count
+test on the total number of myths endorsed across students versus the HR expected rate, p ≈ 2.5 × 10−5.
+10
+Confidential — for committee use only
+--- Page 11 ---
+Figure B1
+Percentage correctly rejecting each selection myth: MNGT 425 students versus HR practitioners (Fisher et al., 2021)
+11
+Confidential — for committee use only
+--- Page 12 ---
+Note. MNGT 425 students (n = 17) and HR practitioners in Fisher et al. (2021, Table 2; N = 453). Bars show the percentage correctly rejecting each
+statement as false. HR "correct" equals % False + % Uncertain because the original study allowed an Uncertain response; the student instrument did not.
+Dashed lines mark the group means across the 10 items.
+12
+Confidential — for committee use only
+--- Page 13 ---
+Exhibit C: Interpreting p = .01 Across Reference Samples
+Overview
+Students answered the six-statement Haller and Krauss (2002) instrument on
+interpretations of a statistically significant result. All six statements are incorrect. A respondent is
+scored as fully correct only if all six are marked False. Class results are compared descriptively
+to the Gigerenzer (2004) reference percentages. 
+Comparison samples
+The three reference groups come from Haller and Krauss (2002), a study conducted in
+Germany and reproduced as Figure 1 in Gigerenzer (2004). They are: (a) psychology students (n
+= 44), (b) university faculty in psychology departments who do not teach statistics (n = 39), and
+(c) university faculty who do teach statistics (n = 30). In plain terms, these are three groups with
+progressively more formal statistics training. The published finding that gets attention is that
+even statistics instructors miss the question often. 
+Data
+Class responses came from a Canvas survey administered during the Gigerenzer exercise
+(n = 18), using a True/False format for each of the six statements. Reference percentages of fully
+correct respondents follow Gigerenzer (2004, Figure 1): psychology students 0 %, psychology
+faculty not teaching statistics 10 %, and psychology faculty teaching statistics 20 %. 
+Analysis
+The overall class performance was evaluated with a one-sided exact binomial test. The
+outcome was the share of students fully correct on all six items. The benchmark was the 10 %
+rate reported for psychology faculty who do not teach statistics (Haller & Krauss, 2002). The
+20 % rate for statistics-teaching faculty is reported for reference. Cohort, wording, and
+13
+Confidential — for committee use only
+--- Page 14 ---
+administration differ across the original study and the course survey, so the test is meant as a
+classroom benchmark rather than a formal replication. 
+Results
+Six of 18 students (33.3 %, 95 % CI [13.3 %, 59.0 %]) answered all six items correctly.
+Against the 10 % benchmark for faculty who do not teach statistics, the one-sided exact binomial
+test was statistically significant, p = .006. Against the stricter 20 % benchmark for statistics-
+teaching faculty, the test was not significant, p = .13. In plain terms, the class clearly
+outperformed the non-statistics faculty benchmark but could not be distinguished from the
+statistics-teaching faculty benchmark on this small sample. Table C1 lists each of the six
+statements and the percentage of MNGT 425 students who correctly marked the statement false. 
+Table C1
+Haller and Krauss (2002) statements about p = .01: percentage correctly marking each
+statement false, across MNGT 425 and the three reference samples
+Item Statement (all are false)
+% correct
+MNGT 425
+% correct
+Psych
+students
+% correct
+Faculty
+not stats
+% correct
+Faculty
+stats
+s1
+The null hypothesis has been absolutely
+disproved.
+83.3
+85
+90
+90
+s2
+The probability that the null hypothesis is
+true is .01.
+83.3
+85
+90
+90
+s3
+The research hypothesis has been absolutely
+proved.
+77.8
+85
+90
+90
+s4
+The probability that the research hypothesis
+is true is .99.
+77.8
+40
+67
+67
+s5
+The probability of being wrong if the null is
+rejected is .01.
+66.7
+30
+30
+30
+s6
+There is a 99% chance of getting the same
+result on replication.
+72.2
+40
+50
+63
+Overall (all six correct)
+33.3
+0
+10
+20
+Note. MNGT 425 students (n = 18). Reference percentages are computed as 100 − % True from Haller
+and Krauss (2002) as reproduced in Gigerenzer (2004, Figure 1): psychology students (n = 44),
+14
+Confidential — for committee use only
+--- Page 15 ---
+psychology faculty not teaching statistics (n = 39), psychology faculty teaching statistics (n = 30).
+Students who marked all six statements False are counted as fully correct in Figure C1.
+15
+Confidential — for committee use only
+--- Page 16 ---
+Figure C1
+Percentage fully correct on the Haller and Krauss (2002) six-statement p-value instrument
+16
+Confidential — for committee use only
+--- Page 17 ---
+Note. "Fully correct" means all six statements answered False (the keyed response). MNGT 425 (n = 18, 33.3 % fully correct, 95 % CI [13.3 %, 59.0 %]) is
+plotted alongside reference percentages from Gigerenzer (2004, Figure 1): psychology students, psychology faculty not teaching statistics, and psychology
+faculty teaching statistics. A one-sided exact binomial test against the 10 % non-statistics-faculty benchmark was statistically significant (p = .006); the test
+against the 20 % statistics-faculty benchmark was not (p = .13).
+17
+Confidential — for committee use only
+--- Page 18 ---
+References
+Benjamini, Y., & Hochberg, Y. (1995). Controlling the false discovery rate: A practical and
+powerful approach to multiple testing. Journal of the Royal Statistical Society: Series B
+(Methodological), 57(1), 289–300. https://doi.org/10.1111/j.2517-6161.1995.tb02031.x 
+Fisher, P. A., Risavy, S. D., Robie, C., König, C. J., Christiansen, N. D., Tett, R. P., & Simonet,
+D. V. (2021). Selection myths: A conceptual replication of HR professionals' beliefs about
+effective human resource practices in the United States and Canada. Journal of Personnel
+Psychology, 20(2), 51–60. https://doi.org/10.1027/1866-5888/a000263 
+Gigerenzer, G. (2004). Mindless statistics. The Journal of Socio-Economics, 33(5), 587–606.
+https://doi.org/10.1016/j.socec.2004.09.033 
+Haller, H., & Krauss, S. (2002). Misinterpretations of significance: A problem students share
+with their teachers? Methods of Psychological Research Online, 7(1), 1–20. 
+Highhouse, S. (2008). Stubborn reliance on intuition and subjectivity in employee selection. 
+Industrial and Organizational Psychology, 1(3), 333–342. https://doi.org/10.1111/
+j.1754-9434.2008.00058.x 
+Sackett, P. R., Lievens, F., Van Iddekinge, C. H., & Kuncel, N. R. (2016). Individual differences
+and their measurement: A review of 100 years of research. Journal of Applied
+Psychology, 102(3), 254–273. https://doi.org/10.1037/apl0000151 
+Schmidt, F. L., & Hunter, J. E. (1998). The validity and utility of selection methods in personnel
+psychology: Practical and theoretical implications of 85 years of research findings. 
+Psychological Bulletin, 124(2), 262–274. https://doi.org/10.1037/0033-2909.124.2.262 
+Terpstra, D. E. (1996). The search for effective methods. HR Focus, 73(5), 16–17. 
+18
+Confidential — for committee use only

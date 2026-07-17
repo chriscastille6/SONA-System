@@ -1,0 +1,458 @@
+Abstract
+Specific challenging goals can improve motivation and performance, but they can also risk promoting unethical behavior. While this effect is widely recognized, goal-setting scholars and behavioral ethics scholars have debated to what extent, when, and for whom goals promote unethical behavior. To address these questions, we conducted a pre-registered, multi-site constructive replication of Schweitzer et al. (2004) – the first study to systematically demonstrate that specific challenging goals can increase unethical behavior. Our replication addresses key methodological limitations of the original study (e.g., by disentangling mere goals from social comparisons), tests theoretically important boundary conditions (e.g., trait loss aversion, goal proximity), and enhances generalizability by leveraging research sites from across the globe. In doing so, our replication aims to strengthen the empirical foundation of the dark-side of goal-setting literature, promote a shared understanding between goal-setting and behavioral ethics scholars, and contribute novel theoretical insights that can guide future research.
+
+Registered Report: Revisiting the Effect of Specific Challenging Goals on Unethical Behavior: Insights from a Global, Preregistered, Constructive Replication Study
+Goal Setting Theory (Locke & Latham, 1990) is widely considered one of the most practically useful and scientifically valid theories in the social sciences (Miner, 2003; Mitchell & Daniels, 2003). Countless studies support the theory’s central proposition that goals can increase attention, effort, and persistence, thereby enhancing performance (Locke & Latham, 2019, 2020). However, goals need to be specific and challenging to have these motivating properties. Goals that lack specificity (e.g., “do your best”) or are easy to attain tend to be relatively ineffective (Latham & Locke, 2006; Locke & Latham, 1990, 2015). 
+Despite their beneficial effects on motivation and performance, the use of specific challenging goals has not been without controversy. Behavioral ethics scholars have warned that specific challenging goals can lead people to resort to unethical behavior when they are unable to meet the goal, even if there is no external reward associated with achieving the goal (for a review, see Ordóñez & Welsh, 2015). Some have even concluded that specific challenging goals are like “a prescription-strength medication” that should be used sparingly due to its “powerful and predictable side effects” (Ordóñez et al., 2009, p. 6). 
+Tracing this argument to its roots, Schweitzer et al. (2004) were the first to demonstrate that specific challenging goals can prompt unethical behavior. Participants in their study were asked to solve a series of anagrams under time pressure – a task widely used by goal-setting scholars. Results indicated that participants who had been randomly assigned to receive a specific challenging goal (“create nine or more words”) were more likely to overstate their performance than those who had been instructed to do their best. Importantly, this unethical behavior not only occurred when participants were promised a financial reward for attaining specific challenging goals (“reward goal” condition), but also when they were given a specific challenging goal without a financial reward (“mere goal” condition). This suggests that goals are sufficient to elicit unethical behavior, even in the absence of financial incentives. 
+Schweitzer et al.’s (2004) paper has been highly influential, garnering over 1,100 citations and inspiring a research program on the “dark side” of goal-setting (see Ordóñez & Welsh, 2015; Welsh et al., 2019). However, goal-setting scholars and behavioral ethics scholars have debated the degree to which individuals are likely to engage in unethical behavior in pursuit of specific challenging goals (e.g., Latham & Itzchakov, 2024). While both groups of scholars agree that people sometimes act unethically to achieve goals, critical questions remain regarding the foundational findings reported by Schweitzer et al., including to what extent, when, and for whom these effects are likely to occur. Answering these questions is important for strengthening the empirical foundation of the dark-side of goal-setting literature, generating a shared understanding between goal-setting and behavioral ethics scholars, and developing novel theoretical insights that can guide future research.
+Our first objective is to conduct a global replication of Schweitzer et al.’s (2004) foundational study. We use a “constructive” replication approach that addresses critical limitations of the original study while retaining its key strengths (see Köhler & Cortina, 2021). 
+We identified potential limitations that may have threatened the original study’s internal validity based on the published paper as well as consulted with a proponent of the dark side of goal-setting (Lisa Ordóñez, who was also a co-author of the Schweitzer et al. paper) and with one of the original authors of Goal Setting Theory and critic of the dark side approach (Gary Latham). Table 1 summarizes the identified limitations and our improvements. For example, a key limitation relates to the presence of social comparisons in the original “mere goal” condition, which raises the question of whether social comparisons rather than mere goals were driving the original effects. To address this, the replication adds a “personal goal” condition that disentangles mere goals from social comparisons to enhance precision and eliminate this potential confound (i.e., ensure that “mere goals” are indeed sufficient for prompting unethical behavior). 
+Our second objective is to advance our foundational understanding related to what extent, when, and for whom goals prompt unethical behavior. Drawing on Prospect Theory (Kahneman & Tversky, 1979), scholars have argued that goals can serve as reference points, such that people tend to experience falling short of a goal as a loss (Heath et al., 1999). Furthermore, because people are generally loss averse, they may be motivated to engage in unethical behavior to reach an unmet goal (e.g., by overstating their performance; Ordóñez & Wu, 2013). However, while it follows from Prospect Theory that falling short of a goal is generally aversive, individuals differ in trait loss aversion, such that some experience losses as more aversive than others (Li et al., 2021). Integrating these theoretical insights, we propose that trait loss aversion should be positively associated with unethical behavior. Due to Prospect Theory’s principle of diminishing sensitivity (see Heath et al., 1999), we also hypothesize that the effect of trait loss aversion on unethical behavior is particularly strong when individuals miss their goal by a small (versus large) margin. Table 2 provides an overview of our hypotheses and research plan.
+By examining the effects of trait loss aversion and goal proximity on unethical behavior, we provide a direct empirical test of the previously theorized role of loss aversion in explaining unethical behavior (Ordóñez & Wu, 2013). Additionally, given that trait loss aversion is an individual difference that is sensitive to cultural influences (Wang et al., 2017), examining this trait at each site of our global replication study may also provide insight into whether the hypothesized effects are sensitive to cultural variations. 
+
+Table 1. Methodological Improvements Made in Our Constructive Replication of Schweitzer et al. (2004).
+
+Table 2. Comprehensive Summary of Research Plan.
+
+
+
+
+
+
+
+
+Method
+Participants and Sites
+Data will be collected at 8 independent sites across the globe. All contributors have agreed to sample university students who are enrolled in English-taught programs. Each site has committed to gathering data for 200 participants across the four conditions of the main study (see Analyses section for details). Consistent with Schweitzer et al. (2004), all data will be collected in-person using a traditional pen-and-paper approach. 
+Procedure
+Goal calibration. Consistent with Schweitzer et al.’s (2004) procedure, each site will calibrate a “specific challenging goal” (i.e., 90th percentile performance goal) that will be used in the main study. Participants (approximately N = 70 per site) are given a set of 7 letters and instructed to create as many words as possible within 1 minute. They perform this task 9 times (2 practice trials, 7 main trials) with different combinations of letters. The results from the 7 main trials are used to calculate the 90th percentile of performance on the anagram task at each site, which will be used in the main study.
+Main study conditions. Participants will be randomly assigned to four conditions: “do your best,” “mere goal,” “personal goal,” or “reward goal”. In the “do your best” condition, participants are told to “do your best to create as many words as you can” on the following trials. In the “mere goal” condition, participants are given a specific challenging goal (i.e., the 90th percentile identified in the goal calibration study). The instructions are: 
+It is important that you commit to a specific yet attainable goal. Your goal is to create ___ words during the allotted 1 minute using these 7 letters. This goal is difficult, but realistic. In previous studies, many students were able to create ____ or more words per round using the same groups of letters you are about to see. 
+The “personal goal” condition uses the same instructions as the “mere goal” condition but omits the sentence containing the social comparison information (“In previous studies…”). This condition has been added to examine whether social comparison information may have operated as a potential confound in the original study. In the “reward goal” condition, participants receive the same instructions as the mere goal condition but are also told they will earn $1 for each round in which they meet the goal. 
+In Schweitzer et al.’s (2004) study, all participants were given cash at the start of the study. Participants in the “do your best” and “mere goal” conditions were given $10 and told to keep the full amount. Participants in the “reward goal” condition were given $14 and told to keep $2 for each round in which they met the goal; they returned any unearned money along with their productivity reports in sealed envelopes. We deviate from Schweitzer et al. by giving all participants – regardless of condition – an envelope with $14. Participants in the “do your best,” “mere goal,” and “personal goal” conditions are instructed to keep $10. Participants in the “reward goal” condition are instructed to keep $7 plus $1 for each round in which they met the goal. This deviation has three benefits. First, giving participants more money than is required for payment allows unethical behavior beyond overstating (i.e., theft) to be examined in all conditions, a recommendation made in the literature (Latham & Itzchakov, 2024). Second, giving all participants identical envelopes with money allows for random assignment to conditions and ensures that the experimenters conducting the study remain blind to the conditions. Third, giving participants in the “reward goal” condition a base amount ($7) ensures that all participants are fairly compensated for participating in the study, even if they do not reach the goal. 
+Main study procedure. To provide a sense of anonymity, we aim to schedule participants in groups of 20, with a minimum of 5 participants per session. Participants will also verbally be assured that their data will remain anonymous.
+Each participant will receive a folder containing (a) a “workbook” that includes a measure of trait loss aversion, the anagram task along with condition-specific instructions, manipulation checks, and a demographic survey, and (b) a “productivity report” for self-reporting their performance on the anagram task. The workbook and productivity report for the “do your best condition” can be found in the OSF repository: https://osf.io/f5u39/?view_only=e457ca87096f4de9a5fa7ae16cc839e7. The materials for the other conditions are identical except for the condition-specific instructions described above. 
+Participants first complete two practice rounds of the anagram task, with participants being instructed (via their workbook and verbally by the experimenter) to “create as many words as you can” in one minute. Following these practice rounds, they read their condition-specific instructions, complete our measure of goal commitment, and complete a 7-round anagram task (1 minute per round). They are also given an 8th anagram and told that its purpose is to pilot-test anagrams for future studies. Unbeknownst to participants, this round contains an anagram that is unique to each participant, thus allowing their data to be linked to their productivity report (described below). Next, participants complete a measure of trait loss aversion and provide demographic information. 
+Following the anagram task, participants are instructed to check their own work. The experimenters then leave the room while participants check their work using an online Scrabble dictionary and complete a “productivity report”, which involves checking one of two boxes indicating whether they reached their goal for each round of the anagram task. Participants will be allowed at least 25 minutes to complete this stage. Finally, participants complete a manipulation check and data quality check. To assure participants that their goal attainment claims cannot be verified, they will deposit their anagram workbooks (which contain their created words) and productivity reports (which contain their claims regarding goal attainment) in separate boxes. 
+Measures
+Unethical behavior. We will use Schweitzer et al.’s (2004) method to assess unethical behavior, operationalized as whether or not participants overstated performance on the task. 
+Like Schweitzer et al. (2004), we will also measure theft (i.e., participants taking unearned money from their envelope). However, given that Schweitzer et al. did not formally hypothesize an effect on theft and found theft to be a very low base-rate phenomenon (i.e., only one participant took unearned money), we only include this variable in an exploratory manner. 
+Proximity to goal attainment. For each round, we will calculate the difference between number of correct words and the site-specific 90th percentile goal as a measure of proximity to goal attainment. 
+Trait loss aversion will be measured with Li et al.’s (2021) scale (7 items; e.g., “When making a decision, I think much more about what might be lost than what might be gained”). The response scale ranges from (1) strongly disagree to (5) strongly agree. 
+Consistent with Schweitzer et al. (2004), we will include a measure of goal commitment in an exploratory manner. Goal commitment will be measured with Klein et al.’s (2013) scale (4 items; e.g., “How committed are you to this goal?”). The response scale ranges from (1) strongly disagree to (5) strongly agree. 
+Demographics will include age, gender, level of study, study major, English language proficiency, and ethnicity. 
+Manipulation check. The prompt for the manipulation check will be: “Please read the four options below. Then, select the one option that best describes your approach to the anagram task. In each round of the anagram task…”, followed by 4 items: “My goal was to “do my best,” “My goal was to create a specific number of words. I was told that in previous studies, many students were able to create this number of words,” “My goal was to create a specific number of words. I was told that I would earn money for each round in which I met the goal,” “My goal was to create a specific number of words. I was not told anything about students in previous studies nor about receiving money for each round in which I met the goal.”
+Data quality check. Participants will be asked whether we should use their data (yes/no) and to provide a brief explanation if they believe it should not be used. Participants will be assured they will receive their compensation regardless of how they respond.
+Analyses
+Proposed Statistical Models
+	We have three important differences in our study that necessitate a different analytical strategy than the one employed by Schweitzer et al. (2004). First, we examine trait loss aversion and proximity to goal attainment as potential moderators. Second, we measure overstating behavior at the trial level as opposed to aggregating trials. This approach allows specific predictors (e.g., goal proximity) to be associated with the odds of overstating on a particular trial (as opposed to overstating in general). Third, to account for multiple data collection sites, we have introduced a nesting structure that was not present in the original study. Specifically, we have trial level variables (predictors and outcome) at level 1 and individual/participant level variables at level 2. With nested data, a multilevel model (MLM), also known as a hierarchical linear model or mixed model, is most appropriate. Because our outcome variable is binary (0 = did not overstate performance; 1 = overstated performance), a logistic MLM approach (i.e., generalized linear mixed models; GLMM) is necessary to account for the non-normal distribution of the model residuals. To aid interpretation of the MLMs, results will be reported using odds ratios and their 95% confidence intervals.
+Due to concerns around adequate power for testing moderation effects at any particular site, we decided against a meta-analytic approach, opting instead to pool the data across all sites into a single dataset for analysis. With a relatively small number of sites overall (k = 8) and no specific hypotheses at the site level, we decided to include site as a fixed-effects covariate in our models. This decision is further justified by the reality that cluster specific interpretations and estimation can be difficult with discrete outcomes especially when combined with a small number of clusters overall (see McNeish et al., 2017). By including site as a fixed effects covariate, we are able to control for and quantify differences due to site, despite having no specific hypotheses about these differences. 
+Our analysis will involve a hierarchical approach, where we incrementally add predictors and interaction terms to our regression model. This approach ensures that we estimate coefficients that are a close match to the condition differences in Schweitzer et al. (2004) in earlier models, while also demonstrating how these effects may change as a result of adding in the other theoretically relevant predictors of goal proximity and loss aversion. Our statistical models will be binomial (i.e., logit-link) two-level GLMMs with random intercepts. We will use the glmer() function with the “bobyqa” optimizer from the lme4 package (Bates et al., 2015) in R (R Core Team, 2024) to estimate the statistical models. The first logit-model to be tested is the unconditional model, only including fixed and random intercepts (by participant) to examine the unadjusted intraclass correlation coefficient (ICC), an estimate of the variance accounted for by random intercepts. Small ICCs (closer to 0) suggest that one person’s overstatement in a trial is no more closely associated with their other trials than to those of the other participants. Large ICCs (closer to 1) suggest that nearly all variation in the dependent variable is due to interindividual differences.
+Model 1 will test the group differences in Hypotheses 1, controlling for site effects.
+
+
+
+
+Here, i denotes a particular trial within person, j,  is the intercept, representing the mean log-odds for the “do your best” condition, and mere.goal, reward.goal, and personal.goal are all dummy coded variables, representing the change in log-odds relative to the reference group, “do your best”. Differences between sites are controlled for via sitej variables, and  is the participant-specific random intercept.
+The subsequent statistical models will build on previous equation hierarchically, adjusting the group contrasts from dummy-codes to successive difference contrast codes. 
+
+
+
+
+
+
+As with Model 1, i represents a trial within a person, j,  is the intercept, representing the grand mean log-odds after controlling for the other variables in the model, sitej are site effects, and  is the random intercept.
+The other four models will address Hypotheses 2-5. Model 2 will include DYB.vs.personal, personal.vs.mere, and mere.vs.reward in addition to the intercepts and site effects. These variables use successive difference contrast coding, which progressively compares groups pairs from the weakest (do your best) to strongest (reward) goal condition. Model 3 will add proximity to and achievement of site goals (proximity & goal.met; explained below) as predictors. Model 4 will add lambda: trait loss aversion. Finally, Model 5 will include the interactions between proximity and goal.met with loss aversion.
+The proximity and goal.met variables are unique among the predictors. Though we predict that motivation to overstate performance increases as goal proximity decreases, the effect should be reversed if people meet the goal. Simply, participants should not have reason to overstate if they were successful. This threshold-like effect necessitates the variable being divided in two: proximity, the continuous difference between actual performance and the site-specific goal, and goal.met, a binary indicator of whether the trial’s goal was met. As these variables are measured at the trial level, it is also important to parse the within-subjects and between-subjects variance associated with them. First, our model will include proximity.w, the continuous, within-subjects variable representing proximity from attaining the goal in a given trial. Second, the model will include proximity.b, the individual’s average proximity score across all trials, which will ensure that we separate the between person effects from our proximity variable. To facilitate interpreting the moderation in Hypothesis 5, proximity.b will be grand-mean centered. Third, goal.met.w is the within subjects variable representing when a goal on a trial is met. Fourth, goal.metb represents the grand-mean centered rate of goal attainment for each person. Of these four, proximity.w and goal.met.w are the variables related to our hypotheses, yet person means proximity.b and goal_met.b must be controlled for to partition proximity.w and goal_met.w into the appropriate within subject effects. The significance of the proximity.b and goal_met.b between-subjects effects will be examined in an exploratory manner.
+The sjPlot (Lüdecke, 2025), merDeriv (Wang & Merkle, 2018), and interactions (Long, 2024) packages will be used for model summaries and calculating the cluster robust SEs and probing statistically significant interactions (if applicable). To test for parametric assumptions, we will use the performance (Lüdecke et al., 2021) and/or DHARMa (Hartig, 2024) packages.
+Exploratory Analyses
+	Site level differences are not hypothesized. However, we will examine potential country/site differences in an exploratory manner. This will include exploring (a) whether Schweitzer et al.’s (2004) findings replicate within the United States (where the original study was conducted) and outside of it and (b) whether the findings are affected by the specific 90th percentile goal used at each site.
+	When Schweitzer et al. (2024) discussed the potential for proximity effects in their data, they reported their results descriptively, by condition. Though this interaction was not tested, when participants were 1 word short of the goal, 14.81% of DYB, 34.48% of mere goal, and 48.48% of reward goal trials were overstatements. Though this proximity × group is worthwhile to investigate further, the potential for a three-way interaction with loss aversion could lead to a significant loss of power. Consequently, we plan to test the two- and three-way interactions in an exploratory manner, without a priori hypotheses.
+Sample Size Adequacy and Power
+	Each of the eight main sites has committed to collecting 200 participants across the four conditions, which was determined to be feasible by each site lead. To ensure that the identified feasible sample size will provide sufficient power to detect meaningful effect sizes, we simulated data for a power analysis based on a variety of effect sizes smaller than or equal to the original effects in Schweitzer et al. (2004). Even though our statistical model will include site as a fixed effect predictor, we do not include site differences in the power analysis below because these differences are exploratory and we do not have any supporting information to reliably estimate differences between each site. To ground our power analysis, we focus on the smallest effect size reported by Schweitzer et al. (2004) – the effect of a “mere goal” on unethical behavior compared to a “do your best” goal – to provide a conservative power estimate. Because our statistical approach is different from Schweitzer et al.’s, we converted the Cohen’s d effect sizes from the original study into log odds (beta weights), then calculated power assuming that the true effect was equal to that found in Schweitzer et al. (2004). For more conservative estimates, we also calculated estimated power assuming the true effect is 75% and 50% of the original effect sizes.
+Table 2 shows the estimated power levels across effect sizes for each of the hypotheses. Our power analysis demonstrates that all hypotheses have > 80% power at both 75% and 100% of the smallest effect size reported by Schweitzer et al. (2004). At 50% of the original effect sizes, 2/5 hypotheses have 80% power. In two of these cases, the lower power involves contrasting the personal goal condition to others. Simulated power for this condition is difficult to estimate, due to it being a novel experimental condition with no prior data regarding the relevant incidence of overstatement. Further, if the differences between the groups are miniscule, it is unlikely to hold practical significance. In the third case, the effect of trait loss aversion had low statistical power at 50% effect size. However, as this effect was already estimated as being small (correlation of .15), half this effect would also point to it not being meaningful. Importantly, insufficient power for the effects at 50% size would not affect the replication aspect of this study. In summary, our power analyses suggest that we will have sufficient statistical power to appropriately test our hypotheses at the original effect sizes, with additional room for effect size shrinkage across almost all hypotheses.
+Results
+[As requested by the review team, we are providing the results section using simulated data until the data are collected.] 
+Sample Characteristics
+Data was collected from XXX participants across X sites. Participants were excluded from the analyses if they (a) did not meet the inclusion criteria (i.e., enrollment in an English-taught university program; n = X), (b) did not participate in the task (i.e., skipped all rounds of the anagram task; n = X), and/or (c) indicated that their data should not be used (n = X). Altogether, this resulted in XX participants being excluded from the analyses. The final sample comprised XX participants [description of demographics across and between sites].
+At the trial level, data were excluded based on participant error (e.g., creating words from letters not in the list or not indicating whether goals were met). From the XX possible observations, XX were missing trial-level data (XX%). Due to using GLMMs with maximum likelihood estimation, missing data at the trial level can be treated as MAR and analyses can be conducted on all available data with minimal impact on power. In contrast, missing person-level data (i.e., trait loss aversion) requires listwise deletion for the relevant analyses. In total, XX participants did not answer the trait loss aversion questions. 
+Results from the manipulation check indicated that XX% of participants selected the response option corresponding to their condition. Following recent recommendations in the literature (e.g., Aronow et al., 2019; Mathur, 2025; Varaine, 2023), all participants were included in the analyses (i.e., regardless of their manipulation check results). The rationale for this approach is that unobserved variables could influence both comprehension/attention and our dependent variable (e.g., individual differences in conscientiousness could plausibly affect performance reporting and the likelihood of failing the manipulation check; in such cases, excluding participants based on the manipulation check could introduce selection bias rather than reduce noise). However, following our primary analyses, we also conducted supplementary analyses to explore how the results differ when those who failed the manipulation check are excluded. 
+
+Figure 1. Frequency of Overstatements SIMULATED DATA
+
+Figure 2. Overstatement rate by goal type SIMULATED DATA.
+Descriptive Statistics
+	The mean number of completed words was XX (SD = XX) in the do-your-best condition, XX (SD = XX) in the personal goal condition, XX (SD = XX) in the mere goal condition, and XX (SD = XX) in the reward goal condition. Participants in the do-your-best condition met their goals XX% of the time, whereas personal goal participants met theirs XX% of the time, mere goal XX%, and reward goals XX%. XX% (site range = XX%-XX%) of participants overstated their number of completed words on the anagram task at least one time. The distribution of overstatements (by trial) skewed toward lower numbers (see Figure 1), with a mean of XX (SD = XX) and a median of XX. On average, participants in the do-your-best condition overstated XX times (SD = XX) over the 7 trials, in contrast to those in the personal goal (M = XX, SD = XX), mere goal (M = XX, SD = XX), and reward goal (M = XX, SD = XX) conditions. People who overstated more [were/were not] more likely to have high loss aversion at the zero-order level (t(df) = XX, SE = XX, p = XX).
+Confirmatory Analyses
+	Six statistical models were tested (see Table 3 for a summary). Each model was examined for violations of statistical assumptions, including multivariate normality of random effects and overdispersion. Assumptions were [met/not met] for Models [unconditional/1/2/3/4/5], corresponding to hypotheses [1/2/3/4/5 [but not Models unconditional /1/2/3]]. [To account for the assumption violations… [autoregressive structures were added to the model/additional predictors were added/a beta-binomial distribution was used/AGQ integer was increased]]. The ICCuandj for the unconditional model was XX, suggesting that between-subject effects can account for XX% of the variance in logit-linked overstating.
+Hypothesis 1 examined evidence to support specific challenging goals leading to overstating behavior. Specifically, participants from the personal goal, mere goal, and reward goal conditions were tested for higher overstatement rates than participants in the do-your-best condition. Results indicated that participants in the personal goal condition had a XX times [higher/lower] odds to overstate their performance than participants in the do-your-best condition. Participants in the mere goal condition had a XX times [higher/lower] odds of overstating their scores than participants in the do-your-best condition, and those in the reward goal condition had a XX times [higher/lower] odds of overstating their scores than participants in the do-your-best condition. Because [all/not all] group comparisons were statistically significant, we can conclude that goal-setting [was/was not] associated with significantly more overstating behavior than when people were told to simply do their best. Hypothesis 1 [was/was not] supported.
+Hypothesis 2 stated that reward goals are associated with more overstating than mere goals (H2a), which in turn are associated with more overstating than personal goals (H2b). Results [supported/did not support/partially supported] this hypothesis (Table 3). [For participants with mere goals, the odds of overstatement were XX times higher than those with personal goals. For participants with reward goals, the odds were XX times [greater/lesser] to overstate compared to those with mere goals.] Hypothesis 2 [was/was not/was partially] supported.
+Across groups and proximity levels, loss aversion [was/was not] a significant predictor of overstatement. This effect was [small/medium/large] and [positive/negative] such that greater loss aversion was associated with [more/less] overstating. Hypothesis 3 [was/was not] supported. 
+Hypothesis 4 examined the effect of goal proximity on overstating behavior. A participant who created more words than their average but did not reach their goal was [not/more/less] likely to overstate on that trial than they would otherwise. Hypothesis 4 [was/was not] supported.
+Hypothesis 5 tested the interaction between goal proximity and loss aversion. Note that loss aversion was standardized and proximity was recentered such that the intercept lay at participants being one word away from the goal. A participant with average loss aversion had a [significant/non-significant] effect of goal proximity [such that greater/lower goal proximity was associated with a greater likelihood of overstating]. On the other hand, when participants were one word away from their goal, [higher/lower] loss aversion was associated with [more/less] overstating. A [significant/non-significant] interaction effect suggested [a/no] conditional relationship between the variables. [Goal proximity [amplified/attenuated] the effect of loss aversion, such that when participants were nearer their goal, loss aversion was [more/less] strongly associated with their likelihood to overstate. When participants were [1/2/3/4/5/6/7/8, (depending on simple slopes)] words away from their goal, greater loss aversion [predicted/did not predict] [greater/lesser] overstating. When they were [1/2/3/4/5/6/7/8, (depending on simple slopes)] words from their goal, this effect was [weaker/stronger], and greater loss aversion [predicted/did not predict] [greater/lesser] overstating. Consequently, Hypothesis 5 [was/was not] supported.
+
+
+Table 3. Odds Ratios and 95% CIs for the Unconditional Model and Models 1-2 [using SIMULATED DATA WITH 10% MISSINGNESS COMPLETELY AT RANDOM]
+Notes. DYB = Do-your-best condition. ICCunadj is the proportion of variance accounted for by random effects. R2cond is the proportion of variance accounted for by fixed and random effects. * p < .05, ** p < .01, *** p < .001.
+
+
+
+
+
+
+Table 4. Odds Ratios and 95% CIs for Models 3-5 [using SIMULATED DATA WITH 10% MISSINGNESS COMPLETELY AT RANDOM]
+Notes. ICCunadj is the proportion of variance accounted for by random effects. R2cond is the proportion of variance accounted for by fixed and random effects. * p < .05, ** p < .01, *** p < .001.
+
+[The supplementary analyses will follow the same general procedures as the primary analyses described above. Given that the specific nature of the supplementary data is difficult to anticipate (e.g., we do not know how many participants will fail attention checks), we will provide a Supplementary Results section at Stage 2, following the data collection. These results will include the exploratory analyses previously discussed]  
+Discussion
+[Consistent with Psychological Science’s guidelines for registered reports, we will provide an interpretation and discussion of the findings at Stage 2, following the data collection.] 
+
+References
+Aronow, P. M., Baron, J., & Pinson, L. (2019). A note on dropping experimental subjects who fail a manipulation check. Political Analysis, 27(4), 572-589. https://doi.org/10.1017/pan.2019.5 
+Bates, D, Mächler, M, Bolker, B, and Walker, S. (2015). Fitting linear mixed-effects models using lme4. Journal of Statistical Software, 67(1), 1-48. 
+https://doi.org/10.18637/jss.v067.i01
+Hartig, F. (2024). DHARMa: Residual diagnostics for hierarchical (multi-level/mixed) regression models [R package]. https://CRAN.R-project.org/package=DHARMa
+Heath, C., Larrick, R. P., & Wu, G. (1999). Goals as reference points. Cognitive Psychology, 38(1), 79-109. https://doi.org/10.1006/cogp.1998.0708
+Hollenbeck, J. R., Williams, C. R., & Klein, H. J. (1989). An empirical examination of the antecedents of commitment to difficult goals. Journal of Applied Psychology, 74(1), 18-23. https://doi.org/10.1037/0021-9010.74.1.18
+Kahneman, D., & Tversky, A. (1979). Prospect theory: An analysis of decision under risk.
+Econometrica, 47(2), 263-291. https://doi.org/10.1142/9789814417358_0006 
+Klein, H. J., Cooper, J. T., & Monahan, C. A. (2013). Goal commitment. In E. A. Locke & G. P. Latham (Eds.), New developments in goal setting and task performance (pp. 65-89). New York: Routledge.
+Köhler, T., & Cortina, J. M. (2021). Play it again, Sam! An analysis of constructive replication in the organizational sciences. Journal of Management, 47(2), 488-518. https://doi.org/10.1177/0149206319843985
+Latham, G., & Itzchakov, G. (2024). Minimizing inappropriate behavior following goal setting. In B. Murray, J. Dulebohn, D. Stone, & K. Lukaszews (Eds.), Research in Human Resource Management: The Future of Human Resource Management. Information Age Publishing.
+Latham, G. P., & Locke, E. A. (2006). Enhancing the benefits and overcoming the pitfalls of goal setting. Organizational Dynamics, 35(4), 332-340. https://doi.org/10.1016/j.orgdyn.2006.08.008 
+Li, J., Chai, L., Nordstrom, O., Tangpong, C., & Hung, K. T. (2021). Development of a loss aversion scale. Journal of Managerial Issues, 33(1), 69-89. https://www.jstor.org/stable/48617827 
+Locke, E. A., & Latham, G. P. (1990). A theory of goal setting and task performance. Englewood Cliffs, NJ: Prentice Hall.
+Locke, E. A., & Latham, G. P. (2015). Goal-setting theory. In J. B. Miner (Ed.), Organizational behavior: Essential theories of motivation and leadership (pp. 159-183). New York: M.E. Sharpe, Inc.
+Locke, E. A., & Latham, G. P. (2019). The development of goal setting theory: A half century retrospective. Motivation Science, 5(2), 93-105. https://doi.org/10.1037/mot0000127
+Locke, E. A., & Latham, G. P. (2020). Building a theory by induction: The example of goal setting theory. Organizational Psychology Review, 10(3-4), 223-239. https://doi.org/10.1177/2041386620921931
+Long, J, A. (2024). interactions: Comprehensive, user-friendly toolkit for probing interactions  [R package]. https://doi.org/10.32614/CRAN.package.interactions
+Lüdecke, D. (2025). sjPlot: Data visualization for statistics in social science [R package]. https://CRAN.R-project.org/package=sjPlot
+Lüdecke, D, Mattan, S. B, Patil, I., Waggoner, P., & Makowski, D. (2021). performance: An R package for assessment, comparison and testing of statistical models. Journal of Open Source Software, 6(60), 3139. https://doi.org/10.21105/joss.03139
+Mathur, M. B. (2025). On the statistical analysis of experiments with manipulation checks. Advances in Methods and Practices in Psychological Science, 8(1), 25152459241297537. https://doi.org/10.1177/25152459241297537
+McNeish, D., Stapleton, L. M., & Silverman, R. D. (2017). On the unnecessary ubiquity of hierarchical linear modeling. Psychological Methods, 22(1), 114-140. https://doi.org/10.1037/met0000078
+Miner, J. B. (2003). The rated importance, scientific validity, and practical usefulness of organizational behavior theories: A quantitative review. Academy of Management Learning & Education, 2(3), 250-268. https://doi.org/10.5465/amle.2003.10932132 
+Mitchell, T. R., & Daniels, D. (2003). Motivation. In D. Ilgen & R. Klimosk (Eds.), Handbook of psychology: Industrial/organizational psychology (Vol. 12, pp. 225-254). New York: Wiley. 
+Ordóñez, L. D., Schweitzer, M. E., Galinsky, A. D., & Bazerman, M. H. (2009). Goals gone wild: The systematic side effects of overprescribing goal setting. Academy of Management Perspectives, 23(1), 6-16. https://doi.org/10.5465/amp.2009.37007999  
+Ordóñez, L. D., & Welsh, D. T. (2015). Immoral goals: How goal setting may lead to unethical behavior. Current Opinion in Psychology, 6, 93-96. https://doi.org/10.1016/j.copsyc.2015.06.001
+Ordóñez, L.D., & Wu, G. (2013). Goals and decision making. In S. Highhouse, E. Salas, R.S. Dalal (Eds.), Judgment and decision making at work (pp. 123-139). New York: Routledge.
+R Core Team (2024). R: A language and environment for statistical computing. Vienna, Austria: R Foundation for Statistical Computing. https://www.R-project.org/
+Schweitzer, M. E., Ordóñez, L., & Douma, B. (2004). Goal setting as a motivator of unethical behavior. Academy of Management Journal, 47(3), 422-432. https://doi.org/10.2307/20159591
+Van Yperen, N. W., Hamstra, M. R., & Van der Klauw, M. (2011). To win, or not to lose, at any cost: The impact of achievement goals on cheating. British Journal of Management, 22(s1), S5-S15. https://doi.org/10.1111/j.1467-8551.2010.00702.x
+Varaine, S. (2023). How dropping subjects who failed manipulation checks can bias your results: An illustrative case. Journal of Experimental Political Science, 10(2), 299–305. https://doi.org/10.1017/XPS.2022.28 
+Wang, T. & Merkle, E. C. (2018). Derivative computations and robust standard errors for linear mixed effects models in lme4. Journal of Statistical Software, 87(1), 1-16. https://doi.org/10.18637/jss.v087.c01
+Wang, M., Rieger, M. O., & Hens, T. (2017). The impact of culture on loss aversion. Journal of Behavioral Decision Making, 30(2), 270-281. https://doi.org/10.1002/bdm.1941 
+Welsh, D., Bush, J., Thiel, C., & Bonner, J. (2019). Reconceptualizing goal setting’s dark side: The ethical consequences of learning versus outcome goals. Organizational Behavior and Human Decision Processes, 150, 14-27. https://doi.org/10.1016/j.obhdp.2018.11.001 
+
+Design/analysis choice by Schweitzer et al. 
+Limitation/validity threat
+How we address it
+A student sample (N = 154) from a US university. 
+Generalizability (external validity) and low statistical power (statistical validity) are concerns.
+A large sample of students will be recruited from a number of universities across the globe. 
+Only “reward goal” participants had an opportunity for theft (i.e., were asked to return unearned money whereas those in other conditions were provided with the full payment).
+The original method did not allow theft in the conditions without financial rewards to be measured (Latham & Itzchakov, 2024). Providing envelopes of cash to all participants ensures that the methodology reduces potential demand effects (which can create internal validity concerns) while ensuring that all participants have the opportunity to steal. 
+All participants will receive an envelope of cash. This gives all participants an opportunity to steal, regardless of their condition. We ensure that participants are randomly assigned to conditions with experimenter-blind protocols during data collection to reduce the potential for bias. 
+The instructions used in the “mere goal” condition may have invoked social comparisons. 
+Schweitzer et al. (2004) argued that specific challenging goals are sufficient to prompt unethical behavior. However, student participants in the “mere goal” condition were told that “in previous studies many students were able to [meet the goal]” (p. 425). These instructions may have invoked social comparisons and motivated people to cheat (e.g., to accomplish an interpersonal goal; Van Yperen et al., 2011; Welsh et al., 2019). Thus, specific challenging goals were confounded with social comparison. We consider this an internal validity threat. 
+We include a new condition – the “personal goal” condition – in which no reference is made to other people’s performance. 
+Used a measure of goal commitment with low reliability.		
+Schweitzer et al. explored the relationships between goal commitment and unethical behavior as well as task performance. However, the goal commitment measure they used (adapted from Hollenbeck et al., 1989) has known reliability problems (Klein et al., 2013). This is a concern for construct validity.
+We include a more recent version of the goal commitment measure that was designed to be more reliable (Klein et al., 2013). 
+Research Question
+Hypothesis
+Simulation Parameters (Betas in log-odds)
+Effect Size Justification
+Power: 
+100%
+Effect Size
+Power: 75% Effect Size
+Power: 50% 
+Effect Size
+Effect Tested
+Interpretation of Potential Results
+Are people with specific challenging goals more likely to overstate their performance than people without specific challenging goals?
+H1. People with specific challenging goals (i.e., personal, mere, or reward goals) are more likely to overstate their performance than people without specific challenging goals (i.e., do-your-best condition).
+
+
+Overstatement rates by group:
+dyb = 0.03
+mere = 0.08
+reward = 0.13
+personal = 0.055
+Regression estimates:
+dyb = -3.48
+mere = 1.03
+reward = 1.58
+personal = 0.63
+Incidence reported by Schweitzer et al. (2004).
+Mere:
+~100%
+Reward:
+~100%
+Personal:
+~99.7%
+Mere:
+~100%
+Reward:
+~100%
+Personal:
+~95.4%
+Mere:
+~99.4%
+Reward:
+~100%
+Personal:
+~62.7%
+Model includes:
+mere_goal
+reward_goal personal_goal
+Test mere_goal,
+reward_goal, and personal_goal (dummy-coded, using “Do-Your-Best” as the reference group). Interpret effects individually.
+If H1 is supported, this indicates that people with specific challenging goals are more likely to overstate their performance than those without such goals.
+Are different types of specific challenging goals associated with different degrees of overstating behavior?
+H2. Challenging goal type is related to overstating performance. People with reward goals are more likely to overstate their performance than those with mere goals, who in turn are more likely to overstate their performance than those with personal goals.
+Overstatement rates by group:
+dyb = 0.03
+mere = 0.08
+reward = 0.13
+personal = 0.055
+Regression estimates:
+dyb = -3.48
+mere = 0.53 reward = 0.50 personal = 0.63
+Incidence reported by Schweitzer et al. (2004).
+Mere vs Reward:
+~100%
+Personal vs Mere:
+~97.6%
+
+Mere vs Reward:
+~99.8%
+Personal vs Mere:
+~81.3%
+
+Mere vs Reward:
+~94.6%
+Personal 
+vs Mere:
+~48.6%
+
+Model includes:
+mere,vs,reward
+personal,vs,mere dyb.vs.mere
+
+Test mere,vs,reward & personal,vs,mere (custom, progressive dummy codes: lower triangular 1s, remaining 0s). Interpret effects individually.
+If both contrasts are significant and in the predicted direction, people with reward goals are more likely to overstate their performance than those with mere goals; both are more likely to overstate their performance than those with personal goals.
+Does goal proximity affect overstating behavior?
+H3a. People who fail to reach their goal by a smaller margin are more likely to overstate their performance than if they were to fail to reach their goal by a larger margin.
+proximityw = 1.79
+Extrapolated                                                                          from Schweitzer et al. (2004): overall rate = .379 →
+near goal rate = 
+.337 →
+OR = 6 →
+log-odds = 1.79
+~100%
+~100%
+~100%
+Model adds: proximityw proximityb goal_metw goal_metb
+Test proximityw predictor (continuous)
+A significant, positive effect indicates that the closer a person is to achieving their goal, the more likely they are to overstate their performance.
+Does goal attainment affect overstating behavior?
+H3b. People who reach their goal are less likely to overstate their performance than if they failed to reach the goal. 
+goal_metw = -5.29
+Motivation to overstate should be negligible when the goal is met. A 99.5% decrease in overstatement: pp = 0.005 →
+log-odds = 
+-5.29
+~100%
+~100%
+~100%
+Model adds: proximityw proximityb goal_metw goal_metb
+Test goal_metw predictor (binary)
+A significant, negative effect indicates that when a person meets their goal, they are less likely to overstate their performance than if they did not meet their goal.
+Are differences in overstating between individuals explained by individual differences in loss aversion?
+H4. People with greater trait loss aversion are more likely to overstate their performance.
+lambdaz = 0.55
+Garbarino et al. (2019): 
+r = 0.15 → 
+OR = 1.73 →
+log-odds = 0.55
+~100%
+~99.4%
+~58.3%
+Model adds:
+lambdaz
+Test lambdaz predictor (continuous, grand-mean standardized).
+A significant, positive effect indicates that higher trait loss aversion is associated with a greater likelihood of overstating.
+Is the relationship between trait loss aversion and overstating behavior affected by goal proximity?
+H5. The relationship between trait loss aversion and overstating behavior is amplified in trials where people failed their goal by a smaller margin than when they failed by a larger margin.
+proximityw × lambdaz = 0.30
+35% increase in odds of lambdaz for each point closer to goal than individual’s average, assuming lambdaz = 0.55
+~99.5%
+~98.6%
+~90.4%
+Model adds:
+lambdaz × 
+(proximityw proximityb goal_metw goal_metb) 
+Test lambdaz × proximityw interaction
+
+A significant, positive effect indicates that loss aversion’s effect on overstating is amplified when people are nearer (versus farther) to reaching their goal.
+      Predictor
+Unconditional Model
+Model 1
+Model 2
+Intercept
+0.06***
+[0.05, 0.06]
+0.03***
+[0.02, 0.03]
+0.03***
+[0.02, 0.03]
+DYB vs Personal
+
+1.83***
+[1.35, 2.48] 
+1.83***
+[1.35, 2.48]
+DYB vs Mere
+
+2.59***
+[1.93, 3.46]
+
+DYB vs Reward
+
+4.90***
+[3.72, 6.48]
+
+Personal vs Mere 
+
+
+1.41**
+[1.10, 1.82]
+Mere vs Reward
+
+
+1.90***
+[1.52, 2.36]
+     N
+1600
+1600
+1600
+     Random intercept
+variance τ00
+1.26
+0.51
+0.51
+     ICCunadj
+.201
+.123
+.123
+     R2cond
+.201
+.203
+.203
+      Predictor
+Model 3
+Model 4
+Model 5
+Intercept
+0.57***
+[0.48, 0.67]
+0.58***
+[0.49, 0.68]
+0.57***
+[0.48, 0.67]
+DYB vs Personal
+2.17***
+[1.51, 3.12]
+2.13***
+[1.49, 3.04]
+2.18***
+[1.51, 3.14]
+Personal vs Mere 
+1.64**
+[1.20, 2.25]
+1.72**
+[1.26, 2.34]
+1.73**
+[1.26, 2.37]
+Mere vs Reward
+2.30***
+[1.73, 3.05]
+2.21***
+[1.67, 2.91]
+2.28***
+[1.71, 3.02]
+Proximitywithin
+6.02***
+[5.18, 7.01]
+6.04***
+[5.19, 7.02]
+6.12***
+[5.25, 7.14]
+Proximitybetween
+1.11
+[0.93, 1.33]
+1.09
+[0.91, 1.29]
+1.09
+[0.91, 1.30]
+Goal metwithin
+0.01***
+[0.00, 0.02]
+0.01***
+[0.00, 0.02]
+0.01***
+[0.00, 0.02]
+Goal metbetwen
+0.88
+[0.32, 2.38]
+0.91
+[0.34, 2.41]
+0.90
+[0.33, 2.44]
+Loss Aversion
+(z-scored)
+
+1.40***
+[1.26, 1.55]
+1.82***
+[1.55, 2.13]
+Loss Aversion × Proximitywithin
+
+
+1.44***
+[1.27, 1.64]
+Loss Aversion × Proximitybetween
+
+
+0.98
+[0.82, 1.17]
+Loss Aversion × 
+Goal metwithin
+
+
+0.45**
+[0.25, 0.80]
+Loss Aversion × 
+Goal metbetwen
+
+
+1.44
+[0.54, 3.86]
+     N
+1600
+1600
+1600
+     Random intercept
+     variance τ00
+0.82
+0.68
+0.76
+     ICCunadj
+.054
+.045
+.049
+     R2cond
+.782
+.782
+.789

@@ -1,0 +1,400 @@
+Approval Comment
+This amendment has received ethics clearance. If you have any questions please contact Karen 
+Pieters at karen.pieters@uwaterloo.ca. 
+Review Type
+Status
+Submission
+Number
+Approval Date
+Renewal Date
+Expiration Date
+Initial Approval Date
+Initial Review Type
+
+This study is part of a large multi-site replication initiative. Since our
+preliminary data collection (STUDY 1) last year, this study was submitted to
+Psychological Science in the form of a registered report. As part of the
+review process, we made several changes to the protocol. We have now
+received approval from Psychological Science (in the form of a conditional
+acceptance) to go ahead and collect data for all conditions. We refer to the
+planned data collection as "STUDY 2" below.
+Annika Hillebrandt
+Psychology
+A Study in Decision Making
+
+Standard application
+I understand that the type of applications listed above determine the form I
+am about to complete. If I have chosen the incorrect form I acknowledge
+that I may need to complete a new application.
+Annika Hillebrandt
+Psychology
+ahillebr@uwaterloo.ca
+Principal Investigator
+Full Access
+
+Caitlin Belore
+Psychology
+cbelor@uwaterloo.ca
+Co-Investigator
+Full Access
+
+Megan Herrewynen
+Psychology
+mrvherre@uwaterloo.ca
+Co-Investigator
+Full Access
+
+Yes
+Laurie
+Barclay
+Professor and Lang Chair in Leadership
+University of Guelph - Gordon S. Lang School of Business and Economics
+lbarcl01@uoguelph.ca
+Co-Investigator
+
+Jenny
+Wang
+PhD Candidate
+University of Guelph - Gordon S. Lang School of Business and Economics
+jwang76@uoguelph.ca
+Student investigator
+Christine
+Hwang
+PhD Student
+University of Guelph - Gordon S. Lang School of Business and Economics
+hwangc@uoguelph.ca
+
+Student investigator
+Yes
+No and I am aware that my collaborating investigators may still need to
+obtain an ethics review through their institutional REB.
+No
+October 14, 2024
+September 30, 2026
+Not a department requirement
+
+Faculty, tenured, tenure track
+No
+No
+STUDY 1: This pilot study will help us determine realistic performance
+goals for our main study (which we are planning to conduct in Winter
+2025). Participants will be given a series of anagrams and asked to create
+as many words as possible across multiple rounds. STUDY 2: This study
+uses the same task as Study 1 (which has now been completed) to
+determine to what extent, when, and for whom goals promote unethical
+behavior.
+
+STUDY 1: We are conducting a pilot study to determine realistic
+performance goals for our main study. Participants will be given a series of
+anagrams and asked to create as many words as possible across multiple
+rounds. We will be using these data to determine how many anagrams
+participants can be expected to complete in a given amount of time.
+STUDY 2: Study 2 is an extension of Study 1. The ultimate goal of the study
+is to address key methodological limitations of the original study by
+Schweitzer et al. (2004), test theoretically important boundary conditions
+(e.g., trait loss aversion, goal proximity), and enhance generalizability by
+contributing to a multi-site global project. We hypothesize the following:
+H1. People with specic challenging goals (i.e., personal, mere, or reward
+goals) are more likely to overstate their performance than people without
+specic challenging goals (i.e., do-your-best condition). H2. Challenging
+goal type is related to overstating performance. People with reward goals
+are more likely to overstate their performance than those with mere goals,
+who in turn are more likely to overstate their performance than those with
+personal goals. H3a. People who fail to reach their goal by a smaller
+margin are more likely to overstate their performance than if they were to
+fail to reach their goal by a larger margin. H3b. People who reach their goal
+are less likely to overstate their performance than if they failed to reach the
+goal. H4. People with greater trait loss aversion are more likely to overstate
+their performance. H5. The relationship between trait loss aversion and
+overstating behavior is amplied in trials where people failed their goal by a
+smaller margin than when they failed by a larger margin.
+
+Our ultimate goal is to conduct a replication of Schweitzer, Ordoñez, and
+Douma (2004) – a highly-inuential publication in the management
+discipline. Replication studies are important to ensure the replicability and
+generalizability of scientic ndings. Schweitzer et al. studied the effects
+of goal-setting on students' performance and over-reporting on an
+anagram task. STUDY 1: For the pilot study, we are using the same
+anagram task as Schweitzer et al. We will be using the data from the pilot
+study to determine how many anagrams students can complete (on
+average) and determine realistic performance goals for the main study
+(STUDY 2). STUDY 2: Our rst objective is to conduct a global replication of
+Schweitzer et al.’s (2004) foundational study. We use a “constructive”
+replication approach that addresses limitations of the original study while
+retaining its key strengths (see Köhler & Cortina, 2021). Our second
+objective is to advance our foundational understanding related to what
+extent, when, and for whom goals prompt unethical behavior. By examining
+the effects of trait loss aversion and goal proximity on unethical behavior,
+we provide a direct empirical test of the previously theorized role of loss
+aversion (Ordóñez & Wu, 2013). Answering these questions is important
+for strengthening the empirical foundation of the dark-side of goal-setting
+literature, generating a shared understanding between goal-setting and
+behavioral ethics scholars, and developing novel theoretical insights that
+can guide future research.
+
+STUDY 1: We are conducting a pilot study to determine realistic
+performance goals for our main study. Participants will be given a series of
+anagrams and asked to create as many words as possible across multiple
+rounds. We will be using these data to determine how many anagrams
+participants can be expected to complete in a given amount of time. They
+will also complete a survey measuring their attitudes towards the task and
+basic demographic information. This study will inform the procedures of a
+future study, which will ultimately contribute to the academic literature by
+advancing our understanding of the effects of goal-setting on individuals'
+behavior. STUDY 2: The goal setting literature currently recognizes that
+setting specic, challenging goals can prompt people to overstate their
+performance. We are interested in exploring this effect further by
+examining to what extent, when, and for whom goals promote this effect.
+To do so, we are replicating a highly cited paper along with other sites. In
+the experiment, participants will be assigned different goals. They will be
+asked solve a series of anagrams and report their score, which is designed
+to allow us to determine who has over-reported their performance. This
+research will contribute to the academic literature by advancing our
+understanding of the effects of goal-setting on individuals' behavior.
+STUDY 1: N/A (a pilot study that will inform the procedures of a
+subsequent study; single condition). STUDY 2: An experiment. Participants
+will be randomly assigned to one of the following conditions: 1) "do your
+best," 2) "mere goal," 3) "reward goal," or 4) "personal goal."
+No
+
+STUDY 1: 70-80. STUDY 2: 200.
+No
+STUDY 1: As this is part of a replication project, our goal is to follow
+Schweitzer et al. (2004)'s procedure as closely as possible. Their original
+pilot study included 70 participants. STUDY 2: This data collection is part
+of a large multi-site replication study. All sites have agreed to contribute
+200 participants to the overall dataset.
+On a University of Waterloo campus
+No
+Yes
+
+Ongoing funding
+Tri-agency / Canadian Government sponsor
+SSHRC - Social Sciences and Humanities Research Council
+Insight Grant
+50656-10196 500
+
+April 1, 2023
+March 31, 2027
+No
+No
+This study will contribute to the academic literature by advancing our
+understanding of the effects of goal-setting on individuals' behavior.
+University of Waterloo undergraduate and/or graduate students
+
+No
+Participants must be students registered with the SONA system. No other
+inclusion or exclusion criteria will be used.
+N/A
+No
+Database or Participant Pool
+SONA participant pool at the Unviersity of Waterloo.
+Other
+A recruitment ad on the SONA website.
+
+No
+Surveys/questionnaires
+In-person - Paper and pen/pencil
+No
+
+STUDY 1: 1. Participants enter a computer lab in groups of approximately
+20 students. 2. They are asked to read a consent form and given the
+opportunity to ask questions before signing it. 3. Participants receive a
+package of study materials (hard copies only) containing the anagram
+task. The goal of this task is to create as many words as possible from a
+given series of letters. 4. Participants complete 2 practice rounds of the
+anagram task (1 minute per round). 5. Next, they are instructed to do their
+best on the main task and complete a goal commitment measure. 6.
+Participants complete 8 more anagram trials. 7. Participants check their
+work. They are instructed that they can use an online Scrabble dictionary
+(e.g., https://scrabble.merriam.com/) if they wish. The Scrabble dictionary
+website can be accessed using the lab computer in front of them. No
+online/computer data will be collected/stored. 8. Participants indicate how
+many words they were able to create in each round (i.e., <9 or >9). 9. Finally,
+they complete some demographic measures and measures of their
+perceptions/attitudes of the anagram task. 10. Participants receive a
+feedback/appreciation form. STUDY 2: 1. Participants enter a computer lab
+in groups of approximately 20 students (minimum of 5 students per
+session). 2. They are asked to read a consent form and given the
+opportunity to ask questions before signing it. The consent forms are then
+collected. 3. Participants receive a package of study materials (hard copies
+only) containing the anagram task. The task involves creating words from a
+given series of letters. 4. Participants complete 2 practice rounds of the
+anagram task. 5. Participants receive instructions for the main rounds of
+the anagram task. The specic instructions/"goal" that participants are
+given varies across conditions. There are four conditions to which
+participants are randomly assigned: “do your best,” “mere goal,” “personal
+goal,” or “reward goal”. In the “do your best” condition, participants are told
+to “do your best to create as many words as you can” on the following
+trials. In the “mere goal” condition, participants are given a specic
+challenging goal. The instructions are: "It is important that you commit to a
+specic yet attainable goal. Your goal is to create 8 words during the
+allotted 1 minute using these 7 letters. This goal is dicult, but realistic. In
+
+previous studies, many students were able to create 8 or more words per
+round using the same groups of letters you are about to see." The “personal
+goal” condition uses the same instructions as the “mere goal” condition
+but omits the sentence containing the social comparison information (“In
+previous studies…”). This condition has been added to examine whether
+social comparison information may have operated as a potential confound
+in the original study. In the “reward goal” condition, participants receive the
+same instructions as the mere goal condition but are also told they will
+earn $1 for each round in which they meet the goal. Following these
+instructions, they complete a measure of commitment to the goal. 6.
+Participants complete a measure of trait loss aversion and demographics.
+7. The researcher(s) leave the room while participants check their work.
+They are instructed that they can use an online Scrabble dictionary (e.g.,
+https://scrabble.merriam.com/) if they wish. The Scrabble dictionary
+website can be accessed using the lab computer in front of them. No
+online/computer data will be collected/stored. 8. Participants use their
+"productivity report" to indicate how many words they were able to create in
+each round (i.e., <7 or >6), and complete a manipulation check and data
+quality check. 9. Participants pay themselves by taking money out of an
+envelope on their desk (see Remuneration) and deposit any remaining
+money along with their study materials in a box. 10. Upon existing the
+room, participants receive a feedback/appreciation form from one of the
+researchers.
+No
+
+No
+No
+No
+No
+No
+No
+
+Yes - Partial disclosure
+A Study in Decision Making
+STUDY 1: Study 1 does not involve any partial disclosure or deception.
+STUDY 2: Participants are told that the purpose of the study is to examine
+how people approach word problems. However, the full purpose of the
+study is to examine whether the type of goal that a person receives (i.e., a
+"do your best" goal, personal goal, mere goal, or reward goal; see Methods
+and Procedures) determines the degree to which they overstate their
+performance on these word problems (i.e., report solving more anagrams
+than they actually solved). During the study, participants will complete an
+anagram task in one booklet and report their performance in a separate
+booklet. However, the nal anagram (e.g., "BNMOETR") will be different for
+each participant. This will allow us to match their actual performance on
+the anagram task (completed in one booklet) to their self-reported
+performance (from the other booklet). We will use this to determine
+whether/how much each participant over-reported their performance.
+Consistent with the original study by Schweitzer et al., participants will
+remunerate themselves by taking money out of an envelope placed on their
+desk (see Remuneration). While there is a possibility that participants may
+take more money than they should, Schweitzer et al. found this to be a very
+low base-rate phenomenon (only one participant in their study took
+unearned money). Nonetheless, we will record how much money each
+participant took from the envelope. This information will not be linked to
+the participant's identity.
+
+Participants will receive a feedback/appreciation letter at the end of the
+study session (see Feedback and Appreciation).
+No known or anticipated risks
+None
+Yes
+Age
+Gender
+Ethnicity
+Education
+Other
+whether English is their rst language, years they have spoken English,
+English prociency, study major, level of study
+
+Yes
+STUDY 1: Participants will only put their SONA IDs on the study materials.
+These materials will not be linked to their consent forms (or other
+identifying information). STUDY 2: Participants will not be identied in any
+way. They will NOT be asked to put their name, SONA ID, or any other
+identifying information on any data collection materials. (They do put their
+name on the consent form, but the consent form cannot be linked to the
+other study materials in any way).
+N/A
+No
+Yes
+Yes
+
+We are collaborating with researchers from the University of Guelph (listed
+on this protocol). The raw data collected at UW may be shared with our
+Guelph collaborators, but will not be shared with anyone else. Our study is
+part of a larger, multi-site research project. Anonymous data that cannot in
+any way be linked to individual participants will be shared with the other
+research teams that are part of this multi-site research project to
+contribute to a single, large dataset. The data will also be posted on the
+Open Science Framework (OSF), a secure online platform.
+The raw data (i.e., hard copies) may be shared with our collaborators at
+Guelph (listed on this protocol) for the purpose of data analysis and
+verication. The data will not contain any information that could potentially
+identify a participant. Once they have been entered into electronic format
+(e.g., spreadsheet), the anonymous will be shared with the other teams of
+our multi-site research project. They will also be posted on the Open
+Science Framework (OSF), allowing the researchers to check and compare
+data across sites.
+No identifying information will be collected. Our collaborators at the
+University of Guelph will have access to the raw data. The anonymous data,
+which cannot be linked to the participants in any way, may be shared with
+our collaborators at other sites via university email or the OSF.
+Yes
+No
+
+No
+Yes
+Hard copy / Paper records
+Electronic les
+Hard copies will be stored in a locked oce at the University of Waterloo.
+The researchers on this protocol may also store electronic copies of the
+anonymous data on password-protected computers, secure internal
+databases or encrypted external drives. Electronic les (containing
+anonymized data only) will also be stored on the Open Science Framework
+(OSF) for data storage and management. The OSF is a secure and
+reputable platform widely used for research data storage and sharing,
+ensuring compliance with data protection and privacy standards.
+7 years
+
+No
+Yes
+We will be using the Open Science Framework (OSF) for data storage and
+management. The OSF is a secure and reputable platform widely used for
+research data storage and sharing, ensuring compliance with data
+protection and privacy standards. The data will NEVER contain identiable
+information (i.e., participants' names, SONA IDs, etc. will never be
+associated with any of the materials). Only anonymous data will be
+submitted to the OSF.
+Yes
+Caitlin Belore, Megan Herrewynen, Jenny Wang, Christine Hwang
+No
+
+Written signature on a consent form
+All participants
+No
+No
+No
+If participants withdraw from the study before data collection is complete,
+their data will be destroyed. Participant will still receive remuneration.
+Data will be destroyed.
+
+No
+Yes
+Cash
+Participation credits (*Psychology only)
+STUDY 2: Renumeration will vary depending on condition. All participants
+will receive an envelope containing $14.00. Participants in the “do your
+best,” “mere goal,” and “personal goal” conditions will instructed to keep
+$10.00. Participants in the “reward goal” condition will be instructed to
+keep $7.00 plus an additional $1.00 for each round in which they met their
+goal (on average, we expect they will receive approximately $10.00). Thus,
+all participants in the study will receive at least $7.00.
+STUDY 1: 1 SONA credit for participating in a 1-hour study.
+No, participants will receive maximum remuneration
+No
+
+Participants will receive a written feedback/appreciation letter.
+Immediately after the session.
+All participants
+Participants are invited to visit the PI's website: https://uwaterloo.ca/
+justice-affect-and-morality-lab/
+N/A
+
+By submitting this application I agree to the above attestations and will
+ensure the research is conducted accordingly
+
