@@ -1,0 +1,22 @@
+# Local-only FERPA / IT-security de-identification PoC dependencies.
+# Install in an isolated venv. Do NOT mix with production Django deps.
+#
+#   python3 -m venv .venv-ferpa-poc
+#   source .venv-ferpa-poc/bin/activate
+#   pip install -r scripts/requirements-ferpa-deid-poc.txt
+#
+# All packages below execute entirely on the local machine (no cloud API calls).
+
+pandas>=2.0.0,<3
+numpy>=1.24.0,<3
+Faker>=24.0.0
+presidio-analyzer>=2.2.0
+presidio-anonymizer>=2.2.0
+spacy>=3.7.0
+sdv>=1.9.0,<2
+cryptography>=42.0.0
+
+# Optional: on-device screenshot OCR for pre-upload PII scan
+# Also requires the system package `tesseract-ocr` (apt/brew).
+Pillow>=10.0.0
+pytesseract>=0.3.10

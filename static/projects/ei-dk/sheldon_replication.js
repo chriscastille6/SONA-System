@@ -937,9 +937,15 @@ class SheldonReplicationStudy {
         // Submit to SONA API
         (async () => {
             try {
+                const headers = (typeof csrfHeaders === 'function')
+                    ? csrfHeaders()
+                    : {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': (typeof CSRF_TOKEN !== 'undefined' ? CSRF_TOKEN : '')
+                    };
                 const res = await fetch(`/api/studies/${STUDY_ID}/submit/`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: headers,
                     body: JSON.stringify(this.data)
                 });
                 const out = await res.json();

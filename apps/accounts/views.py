@@ -50,7 +50,12 @@ def register(request):
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         password = request.POST.get('password')
-        role = 'participant'  # Self-registration is participant only; other roles via admin/invite only.
+        # H-1: Never trust client-supplied role. Self-registration is participant only;
+        # researcher/instructor/IRB/admin are admin- or invite-assigned.
+        if request.POST.get('role'):
+            # Discard silently; do not elevate privileges from the form.
+            pass
+        role = 'participant'
         
         if email and first_name and last_name and password:
             try:
@@ -59,7 +64,7 @@ def register(request):
                     password=password,
                     first_name=first_name,
                     last_name=last_name,
-                    role=role
+                    role=role,
                 )
                 
                 # Create email verification token

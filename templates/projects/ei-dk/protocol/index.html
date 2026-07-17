@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <!-- emotional-intelligence-assessment/sheldon_replication.html -->
 <!-- Sheldon et al. (2014) correlational replication study interface -->
@@ -7,11 +8,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token }}">
     <title>Emotional Intelligence Study</title>
     <script>
         const STUDY_ID = "{{ study.id }}";
         const STUDY_SLUG = "{{ study.slug }}";
+        const CSRF_TOKEN = "{{ csrf_token }}";
     </script>
+    <script src="{% static 'js/csrf.js' %}"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>

@@ -1,0 +1,47 @@
+# ---------------------------------------------------------------------------
+# Cursor indexing / cloud-agent path blocks for FERPA-sensitive local artifacts.
+# These patterns reduce the chance that identifiable or cut/keep materials are
+# pulled into AI context. This is defense-in-depth, not a sandbox guarantee.
+# ---------------------------------------------------------------------------
+
+# Local FERPA de-id / release working artifacts
+step2_human_audit_sample.csv
+step2_human_audit_attestation.jsonl
+step5_mosaic_risk_report.json
+step6_distractor_protocol_report.json
+step7_release_enforcement_report.json
+final_safe_synthetic_data.csv
+local_only_linkage_key.json
+local_only_linkage_key.json.enc
+local_only_linkage.key
+**/local_only_linkage_key.json
+**/local_only_linkage_key.json.enc
+**/local_only_linkage.key
+**/final_safe_synthetic_data.csv
+**/step2_human_audit_sample.csv
+
+# Secrets / env
+.env
+.env.*
+*.pem
+*.key
+
+# Local databases and media that may hold education records
+db.sqlite3
+**/db.sqlite3
+media/
+**/media/
+staticfiles/
+
+# PoC venv
+.venv-ferpa-poc/
+
+# Common local data drop folders (create these on workstations; keep out of AI context)
+data/raw/
+data/identifiable/
+data/local_only/
+exports/identifiable/
+screenshots/identifiable/
+screenshots/raw/
+**/screenshots/identifiable/**
+**/screenshots/raw/**

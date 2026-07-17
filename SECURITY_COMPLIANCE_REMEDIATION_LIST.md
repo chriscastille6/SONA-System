@@ -8,99 +8,33 @@
 
 ## HIGH SEVERITY
 
-### H-1. Privilege Escalation via Registration (Authentication/RBAC)
+### H-1. Privilege Escalation via Registration (Authentication/RBAC) — FIXED
 
 **Risk:** A malicious user can self-assign `admin`, `irb_member`, or `researcher` by submitting `role` in the registration form. This violates NIST/FERPA role separation and allows full system compromise.
 
-**Location:** `apps/accounts/views.py` — `register()`  
+**Location:** `apps/accounts/views.py` — `register()`; `templates/accounts/register.html`
 
-**Current code (vulnerable):**
-```python
-role = request.POST.get('role', 'participant')
-# ...
-user = User.objects.create_user(
-    email=email,
-    password=password,
-    first_name=first_name,
-    last_name=last_name,
-    role=role  # ← User-controlled
-)
-```
-
-**Fix:** Ignore client-supplied role; force participant for self-registration. Restrict other roles to admin or invite-only flows.
-
-```python
-# In register(), replace:
-role = request.POST.get('role', 'participant')
-# with:
-role = 'participant'  # Self-registration is participant only; other roles via admin/invite only.
-```
-
-If you need to support closed/invite-only registration for researchers, use a separate admin-created invite token or post-registration role assignment by an admin — never trust `request.POST.get('role')` for privilege roles.
+**Status (2026-07):** Fixed. Self-registration always sets `role='participant'` and ignores any posted `role`. The registration UI no longer offers a role selector; privileged roles remain admin/invite-assigned only.
 
 ---
 
-### H-2. CSRF Exemption on Protocol Response API (OWASP CSRF)
+### H-2. CSRF Exemption on Protocol Response API (OWASP CSRF) — FIXED
 
-**Risk:** `submit_response` is decorated with `@csrf_exempt`. Cross-site requests can submit protocol responses on behalf of users or inject data into any study, enabling data poisoning and compliance violations.
+**Risk:** `submit_response` was CSRF-exempt (or clients omitted tokens), allowing cross-site forged protocol submissions.
 
-**Location:** `apps/studies/views.py` — `submit_response`  
+**Location:** `apps/studies/views.py` — `submit_response`; protocol JS clients
 
-**Current code (vulnerable):**
-```python
-@csrf_exempt
-@require_http_methods(["POST"])
-def submit_response(request, study_id):
-```
-
-**Fix (choose one):**
-
-- **Option A — Same-origin only (recommended if used by your own front-end):** Remove `@csrf_exempt` and ensure the front-end sends the CSRF token (e.g. in header or body) for same-origin requests. Keep `CsrfViewMiddleware` enabled.
-
-- **Option B — External/embedded protocol (e.g. iframe from another domain):** Do not disable CSRF globally. Use a per-study or per-session token (e.g. in URL or one-time link) that is validated in the view instead of the Django CSRF cookie. Example pattern:
-
-```python
-# Remove @csrf_exempt. In submit_response, after loading the study:
-submission_token = request.POST.get('submission_token') or request.headers.get('X-Submission-Token')
-if not submission_token or not validate_protocol_submission_token(study_id, submission_token):
-    return JsonResponse({'error': 'Invalid or missing submission token'}, status=403)
-```
-
-Implement `validate_protocol_submission_token()` using a signed or HMAC token (with a server-side secret from settings) so only your protocol pages can generate valid tokens.
+**Status (2026-07):** Fixed. No `@csrf_exempt` on `submit_response`; `CsrfViewMiddleware` enforces CSRF. Protocol pages set the CSRF cookie (`@ensure_csrf_cookie` on `run_protocol`), expose `<meta name="csrf-token">` / `CSRF_TOKEN`, and JSON `fetch` calls send `X-CSRFToken` via `static/js/csrf.js`.
 
 ---
 
-### H-3. IDOR on Mark-Attendance View (OWASP IDOR)
+### H-3. IDOR on Mark-Attendance View (OWASP IDOR) — FIXED
 
-**Risk:** Any authenticated user can request `GET /studies/researcher/signup/<uuid>/attendance/` for any signup UUID. The view loads the signup then checks permission and redirects — but the response is still rendered first (or the redirect happens after the object is loaded), exposing another participant’s PII (name, email) in the mark-attendance page. This is an Insecure Direct Object Reference and FERPA disclosure.
+**Risk:** Any authenticated user could open another study’s attendance page and see participant PII (name, email).
 
-**Location:** `apps/studies/views.py` — `mark_attendance()`  
+**Location:** `apps/studies/views.py` — `mark_attendance()`
 
-**Current code (vulnerable):**
-```python
-signup = get_object_or_404(Signup, pk=pk)
-# Check permission
-if signup.timeslot.study.researcher != request.user and not request.user.is_admin:
-    messages.error(request, 'Access denied.')
-    return redirect('studies:researcher_dashboard')
-# ... later renders template with signup (participant name, email)
-```
-
-**Fix:** Enforce authorization before rendering. Return 404 for unauthorized users so existence of the signup is not disclosed and no PII is shown.
-
-```python
-@login_required
-def mark_attendance(request, pk):
-    """Mark attendance for signup."""
-    signup = get_object_or_404(Signup, pk=pk)
-    study = signup.timeslot.study
-    if study.researcher != request.user and not getattr(request.user, 'is_admin', False):
-        from django.http import Http404
-        raise Http404()
-    # ... rest unchanged (POST handling, render)
-```
-
-Ensure the template is only rendered for users who passed this check (current flow already does this after the fix, since you 404 instead of redirect).
+**Status (2026-07):** Fixed. Signup is resolved through a queryset scoped to the caller’s studies (or admin). Unauthorized UUIDs return 404; the attendance template is never rendered with another PI’s participant PII.
 
 ---
 
