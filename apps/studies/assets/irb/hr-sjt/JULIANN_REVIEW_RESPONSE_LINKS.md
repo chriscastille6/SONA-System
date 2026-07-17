@@ -52,7 +52,11 @@ Same Nicholls-branded style as *A Study in Decision Making* (cover, project info
 - D Recruitment script (verbatim)  
 - E CITI certificate (PI)
 
-### Legacy rev9 fill-in form (optional / superseded)
-- `apps/studies/assets/irb/hr-sjt/HSIRB_EXEMPT_REVIEW_REQUEST.pdf`
+### Official rev9 exempt form (Juliann request — filled)
+- Blank: `apps/studies/assets/irb/hr-sjt/HSIRB-exempt_review_request.rev9_2019.v2_BLANK.pdf`
+- Filled PDF (pages 1–4 overlay + Attachment A + CITI): `apps/studies/assets/irb/hr-sjt/HSIRB_EXEMPT_REVIEW_REQUEST.pdf`
+- Field map: `apps/studies/assets/irb/hr-sjt/HSIRB_EXEMPT_REVIEW_REQUEST.md`
+- Rebuild: `python3 scripts/fill_hr_sjt_hsirb_exempt_form.py`
+- Exemption: **Category D**, techniques **1** (educational tests) and **3** (survey/interview)
 
 PR: https://github.com/chriscastille6/SONA-System/pull/4
