@@ -38,8 +38,10 @@ Static document:
 
 ## Attached HSIRB exempt review request (completed draft)
 
-- Markdown: `apps/studies/assets/irb/hr-sjt/HSIRB_EXEMPT_REVIEW_REQUEST.md`  
-- PDF: `apps/studies/assets/irb/hr-sjt/HSIRB_EXEMPT_REVIEW_REQUEST.pdf`  
-- CITI certificate: `docs/citiCompletionCertificate_4689946_59381539.pdf`  
+- **Official form filled** (exact `HSIRB-exempt_review_request.rev9_2019.v2` layout + Attachment A): `apps/studies/assets/irb/hr-sjt/HSIRB_EXEMPT_REVIEW_REQUEST.pdf`
+- Blank source used: `apps/studies/assets/irb/hr-sjt/HSIRB-exempt_review_request.rev9_2019.v2_BLANK.pdf`
+- Narrative working copy: `apps/studies/assets/irb/hr-sjt/HSIRB_EXEMPT_REVIEW_REQUEST.md`
+- CITI certificate: `docs/citiCompletionCertificate_4689946_59381539.pdf`
+- GitHub PDF: https://github.com/chriscastille6/SONA-System/blob/cursor/hr-sjt-irb-cloud-packet-7d1c/apps/studies/assets/irb/hr-sjt/HSIRB_EXEMPT_REVIEW_REQUEST.pdf  
 
 PR: https://github.com/chriscastille6/SONA-System/pull/4
