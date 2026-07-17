@@ -1,0 +1,1281 @@
+{
+  "fetched_at": "2026-07-08T12:44:47.729197+00:00",
+  "count": 75,
+  "entries": [
+    {
+      "id": "cl-10018625",
+      "type": "courtlistener_candidate",
+      "citation": "DTH Media Corp. v. Folt",
+      "title": "DTH Media Corp. v. Folt",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/10018625/dth-media-corp-v-folt/",
+      "court": "Supreme Court of North Carolina",
+      "date_filed": "2020-05-01",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-10116769",
+      "type": "courtlistener_candidate",
+      "citation": "St. Andrews Investments Co., LLC v. the Estate of Manuel Tercero Valdez, by and Through Guadalupe Valdez",
+      "title": "St. Andrews Investments Co., LLC v. the Estate of Manuel Tercero Valdez, by and Through Guadalupe Valdez",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/10116769/st-andrews-investments-co-llc-v-the-estate-of-manuel-tercero-valdez-by/",
+      "court": "Texas Court of Appeals, 11th District (Eastland)",
+      "date_filed": "2024-09-12",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Owasso Falvo",
+      "curated": false
+    },
+    {
+      "id": "cl-10121694",
+      "type": "courtlistener_candidate",
+      "citation": "2024 IL App (1st) 221414",
+      "title": "Better Government Ass'n v. City Colleges of Chicago",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/10121694/better-government-assn-v-city-colleges-of-chicago/",
+      "court": "Appellate Court of Illinois",
+      "date_filed": "2024-09-19",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "\"education records\" FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-10292355",
+      "type": "courtlistener_candidate",
+      "citation": "2024 Ohio 5825",
+      "title": "Maleky v. Ohio State Univ., Office of Compliance & Integrity",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/10292355/maleky-v-ohio-state-univ-office-of-compliance-integrity/",
+      "court": "Ohio Court of Appeals",
+      "date_filed": "2024-12-12",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "\"education records\" FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-10351429",
+      "type": "courtlistener_candidate",
+      "citation": "141 Nev. Adv. Op. No. 11",
+      "title": "CLARK CNTY. SCHOOL DIST. v. DIST. CT. (ANGALIA B.)",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/10351429/clark-cnty-school-dist-v-dist-ct-angalia-b/",
+      "court": "Nevada Supreme Court",
+      "date_filed": "2025-03-06",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "\"education records\" FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-10352906",
+      "type": "courtlistener_candidate",
+      "citation": "Tarleton State University v. Foundation for Individual Rights and Expression",
+      "title": "Tarleton State University v. Foundation for Individual Rights and Expression",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/10352906/tarleton-state-university-v-foundation-for-individual-rights-and/",
+      "court": "Texas Court of Appeals, 15th District",
+      "date_filed": "2025-03-04",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-10352907",
+      "type": "courtlistener_candidate",
+      "citation": "Tarleton State University v. Foundation for Individual Rights and Expression",
+      "title": "Tarleton State University v. Foundation for Individual Rights and Expression",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/10352907/tarleton-state-university-v-foundation-for-individual-rights-and/",
+      "court": "Texas Court of Appeals, 15th District",
+      "date_filed": "2025-03-04",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-10352918",
+      "type": "courtlistener_candidate",
+      "citation": "Tarleton State University v. Foundation for Individual Rights and Expression",
+      "title": "Tarleton State University v. Foundation for Individual Rights and Expression",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/10352918/tarleton-state-university-v-foundation-for-individual-rights-and/",
+      "court": "Texas Court of Appeals, 15th District",
+      "date_filed": "2025-03-03",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-10357017",
+      "type": "courtlistener_candidate",
+      "citation": "Tarleton State University v. Foundation for Individual Rights and Expression",
+      "title": "Tarleton State University v. Foundation for Individual Rights and Expression",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/10357017/tarleton-state-university-v-foundation-for-individual-rights-and/",
+      "court": "Texas Court of Appeals, 15th District",
+      "date_filed": "2025-03-13",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-10603677",
+      "type": "courtlistener_candidate",
+      "citation": "The University of Texas at Austin and Jay Hartzell, in His Official Capacity as Interim President of the University of Texas at Austin v. Gatehouse Media Texas Holdings II, Inc., D/B/A Austin American-Statesman",
+      "title": "The University of Texas at Austin and Jay Hartzell, in His Official Capacity as Interim President of the University of Texas at Austin v. Gatehouse Media Texas Holdings II, Inc., D/B/A Austin American-Statesman",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/10603677/the-university-of-texas-at-austin-and-jay-hartzell-in-his-official/",
+      "court": "Texas Supreme Court",
+      "date_filed": "2024-12-31",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "\"education records\" FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-10622878",
+      "type": "courtlistener_candidate",
+      "citation": "2025 Ohio 2374",
+      "title": "Trader v. Ontario Local School Dist.",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/10622878/trader-v-ontario-local-school-dist/",
+      "court": "Ohio Court of Claims",
+      "date_filed": "2025-06-16",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "\"Family Educational Rights and Privacy Act\"",
+      "curated": false
+    },
+    {
+      "id": "cl-10634922",
+      "type": "courtlistener_candidate",
+      "citation": "2025 Ohio 2493",
+      "title": "State ex rel. Ames v. Big Walnut School Dist. Bd. of Edn.",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/10634922/state-ex-rel-ames-v-big-walnut-school-dist-bd-of-edn/",
+      "court": "Ohio Supreme Court",
+      "date_filed": "2025-07-17",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-10642666",
+      "type": "courtlistener_candidate",
+      "citation": "COLMAN M. HERMAN v. CITY OF BOSTON, BOSTON PUBLIC SCHOOLS and MARY SKIPPER, in Her Capacity as Superintendent of Schools",
+      "title": "COLMAN M. HERMAN v. CITY OF BOSTON, BOSTON PUBLIC SCHOOLS and MARY SKIPPER, in Her Capacity as Superintendent of Schools",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/10642666/colman-m-herman-v-city-of-boston-boston-public-schools-and-mary-skipper/",
+      "court": "Massachusetts Superior Court",
+      "date_filed": "2025-02-13",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "\"Family Educational Rights and Privacy Act\"",
+      "curated": false
+    },
+    {
+      "id": "cl-10654073",
+      "type": "courtlistener_candidate",
+      "citation": "2025 Ohio 2879",
+      "title": "Trader v. Ontario Local School Dist.",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/10654073/trader-v-ontario-local-school-dist/",
+      "court": "Ohio Court of Claims",
+      "date_filed": "2025-07-09",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-10677626",
+      "type": "courtlistener_candidate",
+      "citation": "E.R. v. District of Columbia",
+      "title": "E.R. v. District of Columbia",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/10677626/er-v-district-of-columbia/",
+      "court": "District Court, District of Columbia",
+      "date_filed": "2025-09-25",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-10792423",
+      "type": "courtlistener_candidate",
+      "citation": "D\u00edaz Santiago v. Pontificia Universidad Cat\u00f3lica De Puerto Rico",
+      "title": "D\u00edaz Santiago v. Pontificia Universidad Cat\u00f3lica De Puerto Rico",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/10792423/diaz-santiago-v-pontificia-universidad-catolica-de-puerto-rico/",
+      "court": "Supreme Court of Puerto Rico",
+      "date_filed": "2021-06-07",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "\"Family Educational Rights and Privacy Act\"",
+      "curated": false
+    },
+    {
+      "id": "cl-118480",
+      "type": "courtlistener_candidate",
+      "citation": "151 L. Ed. 2d 896",
+      "title": "Owasso Independent School District No. I-011 v. Falvo Ex Rel. Pletan",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/118480/owasso-independent-school-district-no-i-011-v-falvo-ex-rel-pletan/",
+      "court": "Supreme Court of the United States",
+      "date_filed": "2002-02-19",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Owasso Falvo",
+      "curated": false
+    },
+    {
+      "id": "cl-1196990",
+      "type": "courtlistener_candidate",
+      "citation": "992 P.2d 545",
+      "title": "Doe v. Gonzaga University",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/1196990/doe-v-gonzaga-university/",
+      "court": "Court of Appeals of Washington",
+      "date_filed": "2000-01-31",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Gonzaga FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-121157",
+      "type": "courtlistener_candidate",
+      "citation": "153 L. Ed. 2d 309",
+      "title": "Gonzaga University v. Doe",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/121157/gonzaga-university-v-doe/",
+      "court": "Supreme Court of the United States",
+      "date_filed": "2002-06-20",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Gonzaga FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-160227",
+      "type": "courtlistener_candidate",
+      "citation": "Falvo v. Owasso Sch Dist I011",
+      "title": "Falvo v. Owasso Sch Dist I011",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/160227/falvo-v-owasso-sch-dist-i011/",
+      "court": "Court of Appeals for the Tenth Circuit",
+      "date_filed": "2000-10-04",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Owasso Falvo",
+      "curated": false
+    },
+    {
+      "id": "cl-2145632",
+      "type": "courtlistener_candidate",
+      "citation": "781 F. Supp. 2d 672",
+      "title": "Chicago Tribune Co. v. University of Illinois Board of Trustees",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/2145632/chicago-tribune-co-v-university-of-illinois-board-of-trustees/",
+      "court": "District Court, N.D. Illinois",
+      "date_filed": "2011-03-07",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Gonzaga FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-2333489",
+      "type": "courtlistener_candidate",
+      "citation": "146 F. Supp. 2d 1137",
+      "title": "Falvo v. Owasso Independent School District No. I-011",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/2333489/falvo-v-owasso-independent-school-district-no-i-011/",
+      "court": "District Court, N.D. Oklahoma",
+      "date_filed": "1999-04-26",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Owasso Falvo",
+      "curated": false
+    },
+    {
+      "id": "cl-2428863",
+      "type": "courtlistener_candidate",
+      "citation": "626 F.3d 695",
+      "title": "Cenzon-DeCarlo v. Mount Sinai Hospital",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/2428863/cenzon-decarlo-v-mount-sinai-hospital/",
+      "court": "Court of Appeals for the Second Circuit",
+      "date_filed": "2010-11-23",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Gonzaga FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-2442030",
+      "type": "courtlistener_candidate",
+      "citation": "436 F. Supp. 2d 287",
+      "title": "Zona v. Clark University",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/2442030/zona-v-clark-university/",
+      "court": "District Court, D. Massachusetts",
+      "date_filed": "2006-06-26",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Gonzaga FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-2514205",
+      "type": "courtlistener_candidate",
+      "citation": "24 P.3d 390",
+      "title": "Doe v. Gonzaga University",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/2514205/doe-v-gonzaga-university/",
+      "court": "Washington Supreme Court",
+      "date_filed": "2001-05-31",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Gonzaga FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-2791974",
+      "type": "courtlistener_candidate",
+      "citation": "167 So. 3d 451",
+      "title": "School Board of Miami-Dade County v. Martinez-Oller",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/2791974/school-board-of-miami-dade-county-v-martinez-oller/",
+      "court": "District Court of Appeal of Florida",
+      "date_filed": "2015-04-08",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Gonzaga FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-2979833",
+      "type": "courtlistener_candidate",
+      "citation": "465 S.W.3d 745",
+      "title": "William Wade Bartlett v. Lori Lee Bartlett",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/2979833/william-wade-bartlett-v-lori-lee-bartlett/",
+      "court": "Court of Appeals of Texas",
+      "date_filed": "2015-04-30",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Owasso Falvo",
+      "curated": false
+    },
+    {
+      "id": "cl-2996454",
+      "type": "courtlistener_candidate",
+      "citation": "Slovinec, Joseph v. DePaul University",
+      "title": "Slovinec, Joseph v. DePaul University",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/2996454/slovinec-joseph-v-depaul-university/",
+      "court": "Court of Appeals for the Seventh Circuit",
+      "date_filed": "2003-06-18",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Gonzaga FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-3194640",
+      "type": "courtlistener_candidate",
+      "citation": "200 So. 3d 125",
+      "title": "Knight News, Inc. v. University of Central Florida",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/3194640/knight-news-inc-v-university-of-central-florida/",
+      "court": "District Court of Appeal of Florida",
+      "date_filed": "2016-04-08",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "\"education records\" FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-4277359",
+      "type": "courtlistener_candidate",
+      "citation": "in Re David W. Warren, Beneficiary of the David Abraham Weiner 1994 Trust",
+      "title": "in Re David W. Warren, Beneficiary of the David Abraham Weiner 1994 Trust",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/4277359/in-re-david-w-warren-beneficiary-of-the-david-abraham-weiner-1994-trust/",
+      "court": "Texas Court of Appeals, 1st District (Houston)",
+      "date_filed": "2015-04-29",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-4372499",
+      "type": "courtlistener_candidate",
+      "citation": "Karen Fielder v. Hamilton Southeastern Schools (mem. dec.)",
+      "title": "Karen Fielder v. Hamilton Southeastern Schools (mem. dec.)",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/4372499/karen-fielder-v-hamilton-southeastern-schools-mem-dec/",
+      "court": "Indiana Court of Appeals",
+      "date_filed": "2017-03-02",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "\"Family Educational Rights and Privacy Act\"",
+      "curated": false
+    },
+    {
+      "id": "cl-4454784",
+      "type": "courtlistener_candidate",
+      "citation": "Untitled New York Attorney General Opinion",
+      "title": "Untitled New York Attorney General Opinion",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/4454784/untitled-new-york-attorney-general-opinion/",
+      "court": "New York Attorney General Reports",
+      "date_filed": "2017-12-22",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "\"Family Educational Rights and Privacy Act\"",
+      "curated": false
+    },
+    {
+      "id": "cl-4458631",
+      "type": "courtlistener_candidate",
+      "citation": "2017 Ohio 9415",
+      "title": "Patton v. Solon City School Dist.",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/4458631/patton-v-solon-city-school-dist/",
+      "court": "Ohio Court of Claims",
+      "date_filed": "2017-12-27",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-4487288",
+      "type": "courtlistener_candidate",
+      "citation": "816 S.E.2d 518",
+      "title": "DTH Media Corp. v. Folt",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/4487288/dth-media-corp-v-folt/",
+      "court": "Court of Appeals of North Carolina",
+      "date_filed": "2018-04-17",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-4518915",
+      "type": "courtlistener_candidate",
+      "citation": "191 A.3d 75",
+      "title": "Easton Area SD v. R. Miller and The Express Times",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/4518915/easton-area-sd-v-r-miller-and-the-express-times/",
+      "court": "Commonwealth Court of Pennsylvania",
+      "date_filed": "2018-07-20",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Owasso Falvo",
+      "curated": false
+    },
+    {
+      "id": "cl-4573661",
+      "type": "courtlistener_candidate",
+      "citation": "2018 Ohio 5013",
+      "title": "Krouse v. Ohio State Univ.",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/4573661/krouse-v-ohio-state-univ/",
+      "court": "Ohio Court of Claims",
+      "date_filed": "2018-11-30",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-4580974",
+      "type": "courtlistener_candidate",
+      "citation": "2018 Ohio 5445",
+      "title": "Chillicothe Gazette v. Chillicothe City Schools",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/4580974/chillicothe-gazette-v-chillicothe-city-schools/",
+      "court": "Ohio Court of Claims",
+      "date_filed": "2018-12-26",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-4587182",
+      "type": "courtlistener_candidate",
+      "citation": "201 A.3d 721",
+      "title": "Easton Area Sch. Dist. v. Miller",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/4587182/easton-area-sch-dist-v-miller/",
+      "court": "Supreme Court of Pennsylvania",
+      "date_filed": "2019-02-04",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "\"Family Educational Rights and Privacy Act\"",
+      "curated": false
+    },
+    {
+      "id": "cl-4642222",
+      "type": "courtlistener_candidate",
+      "citation": "West Chester Univ. of PA v. A. Rodriguez",
+      "title": "West Chester Univ. of PA v. A. Rodriguez",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/4642222/west-chester-univ-of-pa-v-a-rodriguez/",
+      "court": "Commonwealth Court of Pennsylvania",
+      "date_filed": "2019-07-24",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "\"education records\" FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-4693398",
+      "type": "courtlistener_candidate",
+      "citation": "IDEA Public Schools v. Socorro Independent School District",
+      "title": "IDEA Public Schools v. Socorro Independent School District",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/4693398/idea-public-schools-v-socorro-independent-school-district/",
+      "court": "Texas Court of Appeals, 13th District",
+      "date_filed": "2020-01-09",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Gonzaga FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-4693400",
+      "type": "courtlistener_candidate",
+      "citation": "IDEA Public Schools v. Socorro Independent School District",
+      "title": "IDEA Public Schools v. Socorro Independent School District",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/4693400/idea-public-schools-v-socorro-independent-school-district/",
+      "court": "Texas Court of Appeals, 13th District",
+      "date_filed": "2020-01-09",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-4750577",
+      "type": "courtlistener_candidate",
+      "citation": "DTH Media Corp. v. Folt",
+      "title": "DTH Media Corp. v. Folt",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/4750577/dth-media-corp-v-folt/",
+      "court": "Supreme Court of North Carolina",
+      "date_filed": "2020-05-01",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-4762121",
+      "type": "courtlistener_candidate",
+      "citation": "Easton Area SD, Aplt. v. Miller, R.",
+      "title": "Easton Area SD, Aplt. v. Miller, R.",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/4762121/easton-area-sd-aplt-v-miller-r/",
+      "court": "Supreme Court of Pennsylvania",
+      "date_filed": "2020-06-18",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-4781717",
+      "type": "courtlistener_candidate",
+      "citation": "Central Dauphin SD v. Hawkins, v.",
+      "title": "Central Dauphin SD v. Hawkins, v.",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/4781717/central-dauphin-sd-v-hawkins-v/",
+      "court": "Supreme Court of Pennsylvania",
+      "date_filed": "2020-09-01",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "\"Family Educational Rights and Privacy Act\"",
+      "curated": false
+    },
+    {
+      "id": "cl-4795855",
+      "type": "courtlistener_candidate",
+      "citation": "187 A.D.3d 525",
+      "title": "Matter of Portelos v. New York City Dept. of Educ.",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/4795855/matter-of-portelos-v-new-york-city-dept-of-educ/",
+      "court": "Appellate Division of the Supreme Court of the State of New York",
+      "date_filed": "2020-10-13",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-4846902",
+      "type": "courtlistener_candidate",
+      "citation": "CHRIS DOE VS. RUTGERS, THE STATE UNIVERSITY OF NEW JERSEY (L-1651-18, MIDDLESEX COUNTY AND STATEWIDE)",
+      "title": "CHRIS DOE VS. RUTGERS, THE STATE UNIVERSITY OF NEW JERSEY (L-1651-18, MIDDLESEX COUNTY AND STATEWIDE)",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/4846902/chris-doe-vs-rutgers-the-state-university-of-new-jersey-l-1651-18/",
+      "court": "New Jersey Superior Court Appellate Division",
+      "date_filed": "2021-01-12",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Owasso Falvo",
+      "curated": false
+    },
+    {
+      "id": "cl-4907674",
+      "type": "courtlistener_candidate",
+      "citation": "143 Wash. 2d 687",
+      "title": "Doe v. Gonzaga University",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/4907674/doe-v-gonzaga-university/",
+      "court": "Washington Supreme Court",
+      "date_filed": "2001-05-31",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Gonzaga FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-5301752",
+      "type": "courtlistener_candidate",
+      "citation": "Central Dauphin SD v. Hawkins, V.",
+      "title": "Central Dauphin SD v. Hawkins, V.",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/5301752/central-dauphin-sd-v-hawkins-v/",
+      "court": "Supreme Court of Pennsylvania",
+      "date_filed": "2021-11-30",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-5793900",
+      "type": "courtlistener_candidate",
+      "citation": "Tammy Ferry v. The Board of Education of the Jefferson City Public School District",
+      "title": "Tammy Ferry v. The Board of Education of the Jefferson City Public School District",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/5793900/tammy-ferry-v-the-board-of-education-of-the-jefferson-city-public-school/",
+      "court": "Supreme Court of Missouri",
+      "date_filed": "2022-01-11",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "\"education records\" FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-5841281",
+      "type": "courtlistener_candidate",
+      "citation": "27 A.D.3d 1149",
+      "title": "Goins v. Rome City School District",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/5841281/goins-v-rome-city-school-district/",
+      "court": "Appellate Division of the Supreme Court of the State of New York",
+      "date_filed": "2006-03-17",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Gonzaga FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-6147376",
+      "type": "courtlistener_candidate",
+      "citation": "120 A.D.3d 1587",
+      "title": "Watertown City School District v. Anonymous",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/6147376/watertown-city-school-district-v-anonymous/",
+      "court": "Appellate Division of the Supreme Court of the State of New York",
+      "date_filed": "2014-09-26",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "\"Family Educational Rights and Privacy Act\"",
+      "curated": false
+    },
+    {
+      "id": "cl-6147380",
+      "type": "courtlistener_candidate",
+      "citation": "120 A.D.3d 1587",
+      "title": "Watertown City School District v. Anonymous",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/6147380/watertown-city-school-district-v-anonymous/",
+      "court": "Appellate Division of the Supreme Court of the State of New York",
+      "date_filed": "2014-09-26",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "\"Family Educational Rights and Privacy Act\"",
+      "curated": false
+    },
+    {
+      "id": "cl-6238336",
+      "type": "courtlistener_candidate",
+      "citation": "2022 NY Slip Op 00355",
+      "title": "Matter of Jewish Press, Inc. v. Kingsborough Community Coll.",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/6238336/matter-of-jewish-press-inc-v-kingsborough-community-coll/",
+      "court": "Appellate Division of the Supreme Court of the State of New York",
+      "date_filed": "2022-01-20",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-6245203",
+      "type": "courtlistener_candidate",
+      "citation": "2022 NY Slip Op 00355",
+      "title": "Matter of Jewish Press, Inc. v. Kingsborough Community Coll.",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/6245203/matter-of-jewish-press-inc-v-kingsborough-community-coll/",
+      "court": "Appellate Division of the Supreme Court of the State of New York",
+      "date_filed": "2022-01-20",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-6317480",
+      "type": "courtlistener_candidate",
+      "citation": "53 Misc. 3d 1091",
+      "title": "Jacobson v. Ithaca City School District",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/6317480/jacobson-v-ithaca-city-school-district/",
+      "court": "New York Supreme Court",
+      "date_filed": "2016-09-23",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Owasso Falvo",
+      "curated": false
+    },
+    {
+      "id": "cl-7084650",
+      "type": "courtlistener_candidate",
+      "citation": "233 F.3d 1201",
+      "title": "Falvo v. Owasso Independent School District No. I-011",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/7084650/falvo-v-owasso-independent-school-district-no-i-011/",
+      "court": "Court of Appeals for the Tenth Circuit",
+      "date_filed": "2000-10-04",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Owasso Falvo",
+      "curated": false
+    },
+    {
+      "id": "cl-7084667",
+      "type": "courtlistener_candidate",
+      "citation": "233 F.3d 1203",
+      "title": "Falvo v. Owasso Independent School District No. 1-011",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/7084667/falvo-v-owasso-independent-school-district-no-1-011/",
+      "court": "Court of Appeals for the Tenth Circuit",
+      "date_filed": "2000-10-04",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Owasso Falvo",
+      "curated": false
+    },
+    {
+      "id": "cl-7104913",
+      "type": "courtlistener_candidate",
+      "citation": "288 F.3d 1236",
+      "title": "Falvo ex rel. Pletan v. Owasso Independent School District No. I-011",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/7104913/falvo-ex-rel-pletan-v-owasso-independent-school-district-no-i-011/",
+      "court": "Court of Appeals for the Tenth Circuit",
+      "date_filed": "2002-04-30",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Owasso Falvo",
+      "curated": false
+    },
+    {
+      "id": "cl-7292350",
+      "type": "courtlistener_candidate",
+      "citation": "40 F. App'x 631",
+      "title": "Robertson v. Doe",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/7292350/robertson-v-doe/",
+      "court": "Court of Appeals for the Second Circuit",
+      "date_filed": "2002-07-17",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Gonzaga FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-769727",
+      "type": "courtlistener_candidate",
+      "citation": "220 F.3d 1200",
+      "title": "No. 99-5130",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/769727/no-99-5130/",
+      "court": "Court of Appeals for the Tenth Circuit",
+      "date_filed": "2000-07-31",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Owasso Falvo",
+      "curated": false
+    },
+    {
+      "id": "cl-777525",
+      "type": "courtlistener_candidate",
+      "citation": "288 F.3d 1236",
+      "title": "Falvo v. Owasso Independent School District No. I-011",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/777525/falvo-v-owasso-independent-school-district-no-i-011/",
+      "court": "Court of Appeals for the Tenth Circuit",
+      "date_filed": "2002-04-30",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Owasso Falvo",
+      "curated": false
+    },
+    {
+      "id": "cl-782356",
+      "type": "courtlistener_candidate",
+      "citation": "332 F.3d 1068",
+      "title": "Joseph Slovinec v. Depaul University",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/782356/joseph-slovinec-v-depaul-university/",
+      "court": "Court of Appeals for the Seventh Circuit",
+      "date_filed": "2003-06-18",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Gonzaga FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-8450515",
+      "type": "courtlistener_candidate",
+      "citation": "87 F. App'x 785",
+      "title": "Curto v. Roth",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/8450515/curto-v-roth/",
+      "court": "Court of Appeals for the Second Circuit",
+      "date_filed": "2004-02-12",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Gonzaga FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-8450517",
+      "type": "courtlistener_candidate",
+      "citation": "87 F. App'x 788",
+      "title": "Doe v. Anonymous Unnamed School Employees & Officials of Cornell University College of Veterinary Medicine",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/8450517/doe-v-anonymous-unnamed-school-employees-officials-of-cornell-university/",
+      "court": "Court of Appeals for the Second Circuit",
+      "date_filed": "2004-02-12",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Gonzaga FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-8451982",
+      "type": "courtlistener_candidate",
+      "citation": "93 F. App'x 748",
+      "title": "Bevington v. Ohio University",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/8451982/bevington-v-ohio-university/",
+      "court": "Court of Appeals for the Sixth Circuit",
+      "date_filed": "2004-03-18",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Gonzaga FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-8462353",
+      "type": "courtlistener_candidate",
+      "citation": "135 F. App'x 482",
+      "title": "Dutkiewicz v. Hyjek",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/8462353/dutkiewicz-v-hyjek/",
+      "court": "Court of Appeals for the Second Circuit",
+      "date_filed": "2005-06-22",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Gonzaga FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-8694664",
+      "type": "courtlistener_candidate",
+      "citation": "611 F. App'x 352",
+      "title": "Muhammad v. Moore",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/8694664/muhammad-v-moore/",
+      "court": "Court of Appeals for the Seventh Circuit",
+      "date_filed": "2015-05-11",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "\"Family Educational Rights and Privacy Act\"",
+      "curated": false
+    },
+    {
+      "id": "cl-9194729",
+      "type": "courtlistener_candidate",
+      "citation": "532 U.S. 902",
+      "title": "Owasso Independent School District No. I-011 v. Falvo",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/9194729/owasso-independent-school-district-no-i-011-v-falvo/",
+      "court": "Supreme Court of the United States",
+      "date_filed": "2001-03-05",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Owasso Falvo",
+      "curated": false
+    },
+    {
+      "id": "cl-9194730",
+      "type": "courtlistener_candidate",
+      "citation": "532 U.S. 902",
+      "title": "Owasso Independent School District No. I-011 v. Falvo",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/9194730/owasso-independent-school-district-no-i-011-v-falvo/",
+      "court": "Supreme Court of the United States",
+      "date_filed": "2001-03-05",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Owasso Falvo",
+      "curated": false
+    },
+    {
+      "id": "cl-9199482",
+      "type": "courtlistener_candidate",
+      "citation": "533 U.S. 927",
+      "title": "Owasso Independent School District No. I\u2014011 v. Falvo",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/9199482/owasso-independent-school-district-no-i011-v-falvo/",
+      "court": "Supreme Court of the United States",
+      "date_filed": "2001-06-25",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Owasso Falvo",
+      "curated": false
+    },
+    {
+      "id": "cl-9199483",
+      "type": "courtlistener_candidate",
+      "citation": "533 U.S. 927",
+      "title": "Owasso Independent School District No. I\u2014011 v. Falvo",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/9199483/owasso-independent-school-district-no-i011-v-falvo/",
+      "court": "Supreme Court of the United States",
+      "date_filed": "2001-06-25",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Owasso Falvo",
+      "curated": false
+    },
+    {
+      "id": "cl-9268334",
+      "type": "courtlistener_candidate",
+      "citation": "534 U.S. 1037",
+      "title": "Owasso Independent School District No. I-011 v. Falvo ex rel. Pletan",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/9268334/owasso-independent-school-district-no-i-011-v-falvo-ex-rel-pletan/",
+      "court": "Supreme Court of the United States",
+      "date_filed": "2001-11-21",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Owasso Falvo",
+      "curated": false
+    },
+    {
+      "id": "cl-9302637",
+      "type": "courtlistener_candidate",
+      "citation": "the University of Texas at Austin and Jay Hartzell, in His Official Capacity as Interim President of the University of Texas at Austin/Gatehouse Media Texas Holdings II, Inc., D/B/A Austin American-Statesman v. Gatehouse Media Texas Holdings II, Inc., D/B/A Austin American-Statesman/The University of Texas at Austin and Jay Hartzell, in His Official Capacity as Interim President of the University of Texas at Austin",
+      "title": "the University of Texas at Austin and Jay Hartzell, in His Official Capacity as Interim President of the University of Texas at Austin/Gatehouse Media Texas Holdings II, Inc., D/B/A Austin American-Statesman v. Gatehouse Media Texas Holdings II, Inc., D/B/A Austin American-Statesman/The University of Texas at Austin and Jay Hartzell, in His Official Capacity as Interim President of the University of Texas at Austin",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/9302637/the-university-of-texas-at-austin-and-jay-hartzell-in-his-official/",
+      "court": "Texas Court of Appeals, 8th District (El Paso)",
+      "date_filed": "2022-11-29",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "\"education records\" FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-9353754",
+      "type": "courtlistener_candidate",
+      "citation": "Central Dauphin SD, Aplt. v. Hawkins, V.",
+      "title": "Central Dauphin SD, Aplt. v. Hawkins, V.",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/9353754/central-dauphin-sd-aplt-v-hawkins-v/",
+      "court": "Supreme Court of Pennsylvania",
+      "date_filed": "2022-12-21",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "\"education records\" FERPA",
+      "curated": false
+    },
+    {
+      "id": "cl-9381378",
+      "type": "courtlistener_candidate",
+      "citation": "In Re Gordon Independent School District, Bryson Oliver, Allan Ladd, Holly Campbell, Mike Reed, Shelle Crenshaw, and Katie Elrod v. the State of Texas",
+      "title": "In Re Gordon Independent School District, Bryson Oliver, Allan Ladd, Holly Campbell, Mike Reed, Shelle Crenshaw, and Katie Elrod v. the State of Texas",
+      "holding": "Candidate opinion \u2014 review and curate holding before relying on it.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.courtlistener.com/opinion/9381378/in-re-gordon-independent-school-district-bryson-oliver-allan-ladd-holly/",
+      "court": "Texas Court of Appeals, 11th District (Eastland)",
+      "date_filed": "2023-03-02",
+      "relevance_to_prams": [
+        "courtlistener_auto_discovered"
+      ],
+      "search_query": "Gonzaga FERPA",
+      "curated": false
+    }
+  ]
+}

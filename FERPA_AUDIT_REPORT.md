@@ -5,6 +5,13 @@
 **Auditor:** AI-Assisted Code Audit  
 **Scope:** Full codebase review against FERPA case law design rules  
 
+**Legal corpus (July 2026):** Authoritative sources and PRAMS-specific mapping are maintained in:
+- [docs/ferpa/ferpa_corpus.json](docs/ferpa/ferpa_corpus.json) — curated statute, regulations, cases, SPPO letters, and design rules
+- [docs/ferpa/FERPA_COMPLIANCE_MAPPING.md](docs/ferpa/FERPA_COMPLIANCE_MAPPING.md) — violation tests, dual-mode data classification, control matrix
+- [scripts/build_ferpa_corpus.py](scripts/build_ferpa_corpus.py) — CourtListener/SPPO corpus update script
+
+The "case law design rules" referenced in this audit are now captured explicitly in the corpus (`prams-design-rule-*` entries) and the compliance mapping document.
+
 ---
 
 ## Executive Summary
@@ -379,6 +386,21 @@ if role not in SELF_REGISTERABLE_ROLES:
 8. **Document integrity** — `ReviewDocument.file_hash` provides SHA256 integrity verification.
 9. **Production security** — SSL redirect, HSTS, secure cookies, CSRF protection in production mode.
 10. **Argon2 password hashing** — Best-practice password storage.
+
+---
+
+## Remediation Status Update (July 2026)
+
+The following findings from this audit have been addressed in code since February 2026:
+
+| Finding | Status | Implementation |
+|---------|--------|----------------|
+| C-1 Prompt screening | **REMEDIATED** | `apps/studies/irb_ai/ferpa_screener.py` — blocks high-risk prompts to external providers |
+| C-2 AI API audit logging | **REMEDIATED** | `apps/studies/irb_ai/audit.py` — hash-only `AuditLog` entries for `ai_api_call` |
+| C-6 Registration role escalation | **REMEDIATED** | `apps/accounts/views.py` — self-registration forced to `participant` |
+| C-7 FERPA-aware AI instructions | **REMEDIATED** | `apps/studies/irb_ai/agents/base.py` — FERPA default in system prompt |
+
+Remaining open items: C-3 (response payload validation), C-4 (export acknowledgment), C-5 (retention policy), and moderate/minor findings. See [docs/ferpa/FERPA_COMPLIANCE_MAPPING.md](docs/ferpa/FERPA_COMPLIANCE_MAPPING.md) §8.
 
 ---
 

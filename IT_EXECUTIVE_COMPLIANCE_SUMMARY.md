@@ -74,4 +74,21 @@ The system’s security architecture is designed to meet **Tier-1/Tier-2** expec
 
 ---
 
+### FERPA legal corpus and mapping (July 2026)
+
+For authoritative FERPA sources and PRAMS-specific control mapping, see:
+
+- [docs/ferpa/DEAN_AND_CHAIR_ONE_PAGER.md](docs/ferpa/DEAN_AND_CHAIR_ONE_PAGER.md) — one-page summary for deans and chairs
+- [docs/ferpa/DEAN_AND_CHAIR_GUIDE.md](docs/ferpa/DEAN_AND_CHAIR_GUIDE.md) — full guide for college deans and department heads
+- [docs/ferpa/NICHOLLS_AI_USE_INVENTORY.md](docs/ferpa/NICHOLLS_AI_USE_INVENTORY.md) — one-page AI inventory for bayouops/GitLab review
+- [docs/ferpa/DR_YOUNG_BRIEFING_SCRIPT.md](docs/ferpa/DR_YOUNG_BRIEFING_SCRIPT.md) — 30-second briefing for AVP Academic Affairs
+- [docs/ferpa/PRESIDENT_EXECUTIVE_BRIEF.md](docs/ferpa/PRESIDENT_EXECUTIVE_BRIEF.md) — board-ready brief for executive leadership
+- [docs/ferpa/ferpa_corpus.json](docs/ferpa/ferpa_corpus.json) — curated statute, regulations, leading cases, SPPO letters
+- [docs/ferpa/FERPA_COMPLIANCE_MAPPING.md](docs/ferpa/FERPA_COMPLIANCE_MAPPING.md) — violation tests, dual-mode classification, control matrix
+- [scripts/build_ferpa_corpus.py](scripts/build_ferpa_corpus.py) — update corpus from CourtListener and SPPO archives
+
+AI-related FERPA controls (prompt screening, hash-based API audit logging) are implemented in `apps/studies/irb_ai/ferpa_screener.py` and `apps/studies/irb_ai/audit.py`.
+
+---
+
 *Supporting technical details and prior findings are in `SECURITY_COMPLIANCE_REMEDIATION_LIST.md`.*

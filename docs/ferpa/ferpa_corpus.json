@@ -1,0 +1,460 @@
+{
+  "metadata": {
+    "title": "FERPA Legal Corpus for PRAMS",
+    "version": "1.0.0",
+    "last_updated": "2026-07-08",
+    "description": "Curated authoritative sources on FERPA education records, violations, and enforcement. Court holdings are manually curated; SPPO letters are fact-pattern references, not binding precedent.",
+    "disclaimer": "This corpus supports compliance analysis; it is not legal advice. SPPO finding letters are redacted, non-precedential, and may not reflect current policy. Consult institutional counsel for contested questions.",
+    "sources": [
+      "20 U.S.C. \u00a7 1232g",
+      "34 CFR Part 99",
+      "U.S. Supreme Court and federal circuit opinions",
+      "U.S. Department of Education Student Privacy Policy Office (SPPO) letters",
+      "Congressional Research Service R46799"
+    ],
+    "courtlistener_candidates": "docs/ferpa/courtlistener_candidates.json",
+    "build_script": "scripts/build_ferpa_corpus.py"
+  },
+  "education_record_test": {
+    "statutory_definition": "34 CFR \u00a7 99.3 \u2014 records directly related to a student and maintained by an educational agency or institution",
+    "elements": [
+      {
+        "element": "directly_related",
+        "description": "Information must concern a specific, identifiable student (not merely a name in isolation per Gonzaga context)"
+      },
+      {
+        "element": "maintained",
+        "description": "Information must be kept or preserved by the institution in a centralized or institutional record-keeping system (Owasso)"
+      },
+      {
+        "element": "personally_identifiable",
+        "description": "Includes direct identifiers and indirect identifiers that allow a reasonable person to identify the student (34 CFR \u00a7 99.3)"
+      }
+    ],
+    "exclusions": [
+      "Sole possession records (instructor's own memory aids, not accessible to others)",
+      "Law enforcement unit records (under certain conditions)",
+      "Employment records (when employment is not contingent on student status)",
+      "Treatment records (medical/psychological, with separate rules)",
+      "Peer-graded papers before collection by teacher (Owasso; codified in 2008 regulations)"
+    ]
+  },
+  "violation_framework": {
+    "regulatory_test": "An educational agency or institution has a policy or practice of permitting the improper disclosure of personally identifiable information from education records without an applicable exception or consent (20 U.S.C. \u00a7 1232g(b); 34 CFR \u00a7\u00a7 99.30\u201399.33).",
+    "enforcement": "SPPO complaint investigation; possible withdrawal of federal funding for systemic noncompliance. No private right of action under \u00a7 1983 for nondisclosure (Gonzaga).",
+    "common_violation_categories": [
+      "Unauthorized disclosure to third parties",
+      "Failure to provide eligible student/parent access to education records",
+      "Improper redisclosure by school officials or contractors",
+      "Directory information released without opportunity to opt out",
+      "Disclosure without signed consent where no exception applies"
+    ]
+  },
+  "entries": [
+    {
+      "id": "bauer-1991",
+      "type": "district_court_opinion",
+      "citation": "Bauer v. Kincaid, 759 F. Supp. 575 (W.D. Mo. 1991)",
+      "title": "Campus security incident reports vs. education records",
+      "holding": "Criminal investigation and incident reports prepared by campus security are not 'education records' under FERPA when they do not meet the education-record definition.",
+      "education_record_test": [
+        "directly_related",
+        "maintained"
+      ],
+      "violation_type": null,
+      "source_url": "https://epic.org/student-privacy-case-law/",
+      "relevance_to_prams": [
+        "boundary_analysis",
+        "not_all_campus_data_is_FERPA"
+      ]
+    },
+    {
+      "id": "cfr-99-3",
+      "type": "regulation",
+      "citation": "34 CFR \u00a7 99.3",
+      "title": "What definitions apply to these regulations?",
+      "holding": "Defines 'education record' as records directly related to a student and maintained by the institution; defines personally identifiable information and directory information.",
+      "education_record_test": [
+        "directly_related",
+        "maintained",
+        "personally_identifiable"
+      ],
+      "violation_type": null,
+      "source_url": "https://www.ecfr.gov/current/title-34/subtitle-A/part-99/section-99.3",
+      "relevance_to_prams": [
+        "data_classification",
+        "Enrollment",
+        "CreditTransaction",
+        "Signup",
+        "Profile"
+      ]
+    },
+    {
+      "id": "cfr-99-30",
+      "type": "regulation",
+      "citation": "34 CFR \u00a7 99.30",
+      "title": "Under what conditions is prior consent not required to disclose?",
+      "holding": "Lists exceptions to prior written consent, including disclosures to school officials with legitimate educational interest and to contractors performing institutional services.",
+      "education_record_test": [],
+      "violation_type": "improper_disclosure",
+      "source_url": "https://www.ecfr.gov/current/title-34/subtitle-A/part-99/section-99.30",
+      "relevance_to_prams": [
+        "RBAC",
+        "school_official_exception",
+        "contractor_controls",
+        "AI_third_party_risk"
+      ]
+    },
+    {
+      "id": "cfr-99-31",
+      "type": "regulation",
+      "citation": "34 CFR \u00a7 99.31",
+      "title": "Under what conditions is prior consent not required to disclose?",
+      "holding": "Enumerates permitted disclosures including to other school officials, contractors, and in health/safety emergencies; contractors must be under direct control regarding PII use.",
+      "education_record_test": [],
+      "violation_type": "improper_disclosure",
+      "source_url": "https://www.ecfr.gov/current/title-34/subtitle-A/part-99/section-99.31",
+      "relevance_to_prams": [
+        "RBAC",
+        "Ollama_institutional_control",
+        "external_LLM_disclosure_risk"
+      ]
+    },
+    {
+      "id": "cfr-99-32",
+      "type": "regulation",
+      "citation": "34 CFR \u00a7 99.32",
+      "title": "What recordkeeping requirements exist concerning requests and disclosures?",
+      "holding": "Requires institutions to maintain a record of each request and disclosure of education records, except certain school-official and directory-information disclosures.",
+      "education_record_test": [],
+      "violation_type": "failure_to_maintain_disclosure_log",
+      "source_url": "https://www.ecfr.gov/current/title-34/subtitle-A/part-99/section-99.32",
+      "relevance_to_prams": [
+        "AuditLog",
+        "irb_audit_logs",
+        "CSV_export_logging"
+      ]
+    },
+    {
+      "id": "cfr-99-33",
+      "type": "regulation",
+      "citation": "34 CFR \u00a7 99.33",
+      "title": "What limitations apply to the redisclosure of information?",
+      "holding": "Recipients of education records may redisclose only on conditions specified in the regulations; redisclosure must be for the same purpose.",
+      "education_record_test": [],
+      "violation_type": "improper_redisclosure",
+      "source_url": "https://www.ecfr.gov/current/title-34/subtitle-A/part-99/section-99.33",
+      "relevance_to_prams": [
+        "CSV_export",
+        "external_AI_providers",
+        "data_minimization"
+      ]
+    },
+    {
+      "id": "crs-r46799",
+      "type": "secondary_synthesis",
+      "citation": "CRS Report R46799",
+      "title": "The Family Educational Rights and Privacy Act (FERPA): Legal Issues",
+      "holding": "Comprehensive congressional research summary of FERPA statutory framework, key cases (Owasso, Gonzaga, Miami Univ.), enforcement, and interaction with other laws.",
+      "education_record_test": [
+        "directly_related",
+        "maintained"
+      ],
+      "violation_type": null,
+      "source_url": "https://www.congress.gov/crs_external_products/R/PDF/R46799/R46799.2.pdf",
+      "relevance_to_prams": [
+        "practitioner_reference",
+        "enforcement_overview"
+      ]
+    },
+    {
+      "id": "gonzaga-2002",
+      "type": "supreme_court_opinion",
+      "citation": "Gonzaga Univ. v. Doe, 536 U.S. 273 (2002)",
+      "title": "No private \u00a7 1983 enforcement of FERPA nondisclosure",
+      "holding": "FERPA's nondisclosure provisions do not create individually enforceable rights under 42 U.S.C. \u00a7 1983; students cannot sue for damages for alleged FERPA violations.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://www.law.cornell.edu/supremecourt/text/01-679",
+      "relevance_to_prams": [
+        "enforcement_via_SPPO",
+        "institutional_policy_controls",
+        "audit_documentation"
+      ]
+    },
+    {
+      "id": "hardin-county-2018",
+      "type": "circuit_court_opinion",
+      "citation": "Hardin County Schools v. Foster, 727 F. App'x 230 (6th Cir. 2018)",
+      "title": "Student records in litigation context",
+      "holding": "Student education records remain protected under FERPA in litigation and discovery disputes; courts analyze whether records meet the education-record definition.",
+      "education_record_test": [
+        "directly_related",
+        "maintained"
+      ],
+      "violation_type": "improper_disclosure",
+      "source_url": "https://epic.org/student-privacy-case-law/",
+      "relevance_to_prams": [
+        "voluntary_research_scope",
+        "no_credit_mode",
+        "litigation_risk"
+      ]
+    },
+    {
+      "id": "jensen-2001",
+      "type": "circuit_court_opinion",
+      "citation": "Jensen v. Reeves, 3 Fed. Appx. 905 (10th Cir. 2001)",
+      "title": "Limited disclosure to interested parties",
+      "holding": "Limited disclosure to interested parties about a child's school misbehavior may be legitimate under FERPA in certain contexts.",
+      "education_record_test": [
+        "directly_related",
+        "maintained"
+      ],
+      "violation_type": null,
+      "source_url": "https://epic.org/student-privacy-case-law/",
+      "relevance_to_prams": [
+        "limited_disclosure_exceptions",
+        "researcher_roster_access"
+      ]
+    },
+    {
+      "id": "miami-univ-2002",
+      "type": "circuit_court_opinion",
+      "citation": "United States v. Miami Univ., 294 F.3d 797 (6th Cir. 2002)",
+      "title": "Student disciplinary records are education records",
+      "holding": "Unredacted student disciplinary records maintained by the university are 'education records' under FERPA; newspapers do not have unrestricted access.",
+      "education_record_test": [
+        "directly_related",
+        "maintained",
+        "personally_identifiable"
+      ],
+      "violation_type": "improper_disclosure",
+      "source_url": "https://www.govinfo.gov/content/pkg/USCOURTS-ca6-01-0018/pdf/USCOURTS-ca6-01-0018.pdf",
+      "relevance_to_prams": [
+        "Signup",
+        "Profile_ban_fields",
+        "PrescreenResponse",
+        "enrollment_records"
+      ]
+    },
+    {
+      "id": "owasso-2002",
+      "type": "supreme_court_opinion",
+      "citation": "Owasso Indep. Sch. Dist. No. I-011 v. Falvo, 534 U.S. 426 (2002)",
+      "title": "Peer grading and the 'maintained' requirement",
+      "holding": "Grades on peer-graded papers before the teacher collects and records them are not 'maintained' education records under FERPA because they are not kept in institutional custody.",
+      "education_record_test": [
+        "maintained"
+      ],
+      "violation_type": null,
+      "source_url": "https://www.govinfo.gov/content/pkg/USREPORTS-534/pdf/USREPORTS-534-426.pdf",
+      "relevance_to_prams": [
+        "Response_anonymization",
+        "transient_data",
+        "non_maintained_research_payloads"
+      ]
+    },
+    {
+      "id": "prams-design-rule-anonymize",
+      "type": "design_rule",
+      "citation": "PRAMS FERPA Design Rule",
+      "title": "Anonymous/ungraded student work may be processed without participant linkage",
+      "holding": "Research protocol responses stored with session_id and no participant FK are not maintained as identifiable education records.",
+      "education_record_test": [
+        "maintained",
+        "personally_identifiable"
+      ],
+      "violation_type": null,
+      "source_url": "docs/ferpa/FERPA_COMPLIANCE_MAPPING.md",
+      "relevance_to_prams": [
+        "Response_model",
+        "Owasso_pattern"
+      ]
+    },
+    {
+      "id": "prams-design-rule-default-ferpa",
+      "type": "design_rule",
+      "citation": "PRAMS FERPA Design Rule",
+      "title": "When uncertain, assume FERPA applies",
+      "holding": "Ambiguous data handling defaults to FERPA-protected treatment requiring de-identification or human review.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "docs/ferpa/FERPA_COMPLIANCE_MAPPING.md",
+      "relevance_to_prams": [
+        "AI_agents",
+        "data_minimization",
+        "C-7_finding"
+      ]
+    },
+    {
+      "id": "prams-design-rule-screening",
+      "type": "design_rule",
+      "citation": "PRAMS FERPA Design Rule",
+      "title": "Do not combine student name with academic context in external AI without controls",
+      "holding": "Prompts containing student names plus academic context (grades, enrollment, assessments) must be screened or redacted before transmission to external AI providers.",
+      "education_record_test": [
+        "directly_related",
+        "personally_identifiable"
+      ],
+      "violation_type": "improper_disclosure",
+      "source_url": "docs/ferpa/FERPA_COMPLIANCE_MAPPING.md",
+      "relevance_to_prams": [
+        "irb_ai_agents",
+        "FERPAPromptScreener",
+        "C-1_finding"
+      ]
+    },
+    {
+      "id": "sppo-applicant-records",
+      "type": "sppo_letter",
+      "citation": "Letter on Applicant Records",
+      "title": "FERPA does not apply until student in attendance",
+      "holding": "Information submitted by applicants is not subject to FERPA until the applicant becomes a student in attendance at the postsecondary institution.",
+      "education_record_test": [],
+      "violation_type": null,
+      "source_url": "https://studentprivacy.ed.gov/topic/findings-letters",
+      "relevance_to_prams": [
+        "registration_flow",
+        "pre_enrollment_data"
+      ]
+    },
+    {
+      "id": "sppo-attorney-client-2019",
+      "type": "sppo_letter",
+      "citation": "Letter of Finding Regarding Attorney Client Privilege (June 2019)",
+      "title": "Denial of records subject to attorney-client privilege",
+      "holding": "University did not violate FERPA when it properly denied education records subject to attorney-client privilege after meeting applicable criteria.",
+      "education_record_test": [
+        "directly_related",
+        "maintained"
+      ],
+      "violation_type": null,
+      "source_url": "https://studentprivacy.ed.gov/sites/default/files/resource_document/file/LetterofFindingRegardingAttorneyClientPrivilegeJuly2019.pdf",
+      "relevance_to_prams": [
+        "access_exceptions",
+        "records_denial_criteria"
+      ]
+    },
+    {
+      "id": "sppo-findings-archive",
+      "title": "SPPO Findings Letters Archive",
+      "source_url": "https://studentprivacy.ed.gov/topic/findings-letters",
+      "type": "sppo_archive_index",
+      "holding": "SPPO archive index \u2014 download ZIP/PDF letters for manual curation.",
+      "education_record_test": [],
+      "violation_type": null,
+      "relevance_to_prams": [
+        "enforcement_fact_patterns"
+      ],
+      "curated": true
+    },
+    {
+      "id": "sppo-historical-archive",
+      "title": "SPPO Historical Archive of Issued Letters",
+      "source_url": "https://studentprivacy.ed.gov/historical-archive-issued-letters",
+      "type": "sppo_archive_index",
+      "holding": "SPPO archive index \u2014 download ZIP/PDF letters for manual curation.",
+      "education_record_test": [],
+      "violation_type": null,
+      "relevance_to_prams": [
+        "enforcement_fact_patterns"
+      ],
+      "curated": true
+    },
+    {
+      "id": "sppo-husk-2006",
+      "type": "sppo_letter",
+      "citation": "Letter to Husk (December 2006)",
+      "title": "Email messages as education records",
+      "holding": "Handwritten, typed, or computer-generated notes including email messages that identify a student and are maintained by the school constitute education records under FERPA.",
+      "education_record_test": [
+        "directly_related",
+        "maintained"
+      ],
+      "violation_type": null,
+      "source_url": "https://studentprivacy.ed.gov/",
+      "relevance_to_prams": [
+        "email_notifications",
+        "audit_logs",
+        "unsettled_email_custody"
+      ]
+    },
+    {
+      "id": "sppo-letters-importance",
+      "title": "SPPO Letters of Importance",
+      "source_url": "https://studentprivacy.ed.gov/topic/letters-importance",
+      "type": "sppo_archive_index",
+      "holding": "SPPO archive index \u2014 download ZIP/PDF letters for manual curation.",
+      "education_record_test": [],
+      "violation_type": null,
+      "relevance_to_prams": [
+        "enforcement_fact_patterns"
+      ],
+      "curated": true
+    },
+    {
+      "id": "sppo-middleton-2025",
+      "type": "sppo_letter",
+      "citation": "Letter of Finding to Middleton Cross Plains (April 2025)",
+      "title": "Email access dispute \u2014 insufficient evidence of violation",
+      "holding": "SPPO found insufficient evidence that denying parent access to certain email communications violated \u00a7 99.10; Department has not adopted Tulare holding that all emails are education records.",
+      "education_record_test": [
+        "maintained"
+      ],
+      "violation_type": null,
+      "source_url": "https://studentprivacy.ed.gov/sites/default/files/resource_document/file/Letter%20of%20Finding%20Middleton%20Cross%20Plains%20April%202025_508_0.pdf",
+      "relevance_to_prams": [
+        "unsettled_law_caveat",
+        "email_as_education_record_uncertainty"
+      ]
+    },
+    {
+      "id": "sppo-rhode-island-apra",
+      "type": "sppo_letter",
+      "citation": "Letter to Rhode Island Board of Governors for Higher Education",
+      "title": "FERPA vs. state public records laws",
+      "holding": "Clarifies interaction between FERPA and state access-to-public-records laws; FERPA limits disclosure of education records even when state law might otherwise permit access.",
+      "education_record_test": [],
+      "violation_type": "improper_disclosure",
+      "source_url": "https://studentprivacy.ed.gov/topic/findings-letters",
+      "relevance_to_prams": [
+        "institutional_records_policy",
+        "public_disclosure_risk"
+      ]
+    },
+    {
+      "id": "sppo-school-official-designation",
+      "type": "sppo_guidance",
+      "citation": "SPPO Guidance \u2014 School Official Exception",
+      "title": "Contractors and school officials with legitimate educational interest",
+      "holding": "Outside parties performing institutional services may access education records if they meet school-official criteria and remain under direct control of the institution regarding PII use.",
+      "education_record_test": [],
+      "violation_type": "improper_disclosure",
+      "source_url": "https://studentprivacy.ed.gov/",
+      "relevance_to_prams": [
+        "Ollama_institutional_control",
+        "OpenAI_Anthropic_third_party_risk",
+        "vendor_agreements"
+      ]
+    },
+    {
+      "id": "usc-1232g",
+      "type": "statute",
+      "citation": "20 U.S.C. \u00a7 1232g",
+      "title": "Family Educational Rights and Privacy Act",
+      "holding": "Conditions federal education funding on protecting the privacy of education records; grants parents/eligible students access and amendment rights; restricts disclosure without consent.",
+      "education_record_test": [
+        "directly_related",
+        "maintained",
+        "personally_identifiable"
+      ],
+      "violation_type": "improper_disclosure",
+      "source_url": "https://www.law.cornell.edu/uscode/text/20/1232g",
+      "relevance_to_prams": [
+        "foundational_statute",
+        "access_controls",
+        "consent_requirements"
+      ]
+    }
+  ]
+}
