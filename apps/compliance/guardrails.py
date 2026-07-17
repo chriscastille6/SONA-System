@@ -146,19 +146,39 @@ def evaluate_protocol_submission(submission, *, use_ai_review: bool = False) -> 
             remediation='State university-managed storage (local/campus systems) and encryption controls.',
         ))
 
+    if scan['has_prohibited_foreign_ai_risk']:
+        report.warnings.append(ComplianceWarning(
+            code='PROTOCOL_PROHIBITED_FOREIGN_AI',
+            severity=Severity.BLOCK,
+            principle_id='JML_25_109_AI',
+            title='Prohibited foreign AI platform indicated (e.g., DeepSeek)',
+            message=(
+                'Protocol text appears to reference a foreign AI platform cautioned/banned under '
+                'Louisiana Executive Order JML 25-109 (e.g., DeepSeek). The Order warns that such '
+                'tools have no place in Louisiana universities and may exfiltrate sensitive data.'
+            ),
+            remediation=(
+                'Remove all use of DeepSeek or similar hostile foreign AI. Prefer university-managed '
+                'local inference (e.g., Ollama) consistent with Nicholls PPM §5.3.5 / IT policies.'
+            ),
+        ))
+
     if scan['has_cloud_ai_risk']:
         report.warnings.append(ComplianceWarning(
             code='PROTOCOL_PUBLIC_AI_LANGUAGE',
             severity=Severity.BLOCK if getattr(settings, 'COMPLIANCE_BLOCK_PUBLIC_AI_IN_PROTOCOL', True) else Severity.WARNING,
-            principle_id='NO_PUBLIC_LLM_IPI',
+            principle_id='JML_25_109_AI',
             title='Public / consumer AI processing indicated',
             message=(
                 'Protocol text appears to reference public/consumer generative AI for data handling. '
-                'That creates unauthorized-disclosure risk under La. R.S. 17:3914 and FERPA.'
+                'JML 25-109 §6 prohibits inputting PII, confidential, or restricted data into any AI '
+                'system until required AI policies are implemented. This also creates disclosure risk '
+                'under La. R.S. 17:3914, FERPA, and Nicholls PPM §5.3.5 / IT policies.'
             ),
             remediation=(
                 'Remove public-LLM processing of IPI. Use local/university-managed AI only, '
-                'or confirm materials are fully de-identified with HITL attestation before any AI assist.'
+                'or confirm materials are fully de-identified with HITL attestation before any AI assist. '
+                'Document adherence to Nicholls IT Policies & Procedures.'
             ),
         ))
 
@@ -199,7 +219,8 @@ def evaluate_protocol_submission(submission, *, use_ai_review: bool = False) -> 
         ))
 
     report.decision_rationale.append(
-        'Evaluated protocol draft against CITI IPI/de-id, La. R.S. 17:3914 non-disclosure, '
+        'Evaluated protocol draft against CITI IPI/de-id, La. R.S. 17:3914, '
+        'Nicholls PPM §5.3.5 / IT Policies, JML 25-109 §§2/6/7, '
         'APA CPTA privacy/HITL, and SIOP CAPE public-AI privacy rules.'
     )
     if not report.is_blocked:
@@ -240,7 +261,9 @@ def evaluate_ferpa_export(
             title='Export contains education-record identifiers',
             message=(
                 'This export includes direct identifiers (e.g., name, email, student ID). '
-                'It is an education record under FERPA and student PII under La. R.S. 17:3914.'
+                'It is an education record under FERPA and student PII under La. R.S. 17:3914. '
+                'Nicholls PPM §5.7 assigns Registrar monitoring of FERPA compliance; '
+                'PPM §5.3.5 / Nicholls IT policies govern secure handling on university systems.'
             ),
             remediation=(
                 'Keep the file on university-managed systems. Do not upload to public AI, '
@@ -251,9 +274,13 @@ def evaluate_ferpa_export(
         report.warnings.append(ComplianceWarning(
             code='EXPORT_NO_PUBLIC_AI',
             severity=Severity.WARNING,
-            principle_id='NO_PUBLIC_LLM_IPI',
+            principle_id='JML_25_109_AI',
             title='Do not paste export contents into public AI',
-            message='Pasting identifiable export rows into consumer LLMs is an unauthorized disclosure risk.',
+            message=(
+                'Pasting identifiable export rows into consumer LLMs violates JML 25-109 §6 '
+                '(no PII/confidential/restricted data into AI until required policies are in place) '
+                'and creates unauthorized disclosure risk under FERPA / La. R.S. 17:3914.'
+            ),
             remediation='Use local analysis tools only; strip identifiers or use salted anonymized IDs first.',
         ))
 
@@ -279,8 +306,8 @@ def evaluate_ferpa_export(
         ))
 
     report.decision_rationale.append(
-        'Export evaluated under FERPA education-records rules, La. R.S. 17:3914, '
-        'and APA/SIOP prohibition on public-LLM processing of IPI.'
+        'Export evaluated under FERPA / Nicholls PPM §5.7, La. R.S. 17:3914, '
+        'Nicholls PPM §5.3.5 IT policy, JML 25-109 §6, and APA/SIOP public-LLM rules.'
     )
     return report
 
@@ -314,17 +341,39 @@ def _append_ai_provider_warnings(
     local_providers = {'ollama'}
     cloud_providers = {'openai', 'anthropic', 'gemini'}
 
+    # Explicit block for known prohibited foreign providers if ever configured
+    if 'deepseek' in provider:
+        report.warnings.append(ComplianceWarning(
+            code='AI_PROVIDER_PROHIBITED_FOREIGN',
+            severity=Severity.BLOCK,
+            principle_id='JML_25_109_AI',
+            title='Prohibited foreign AI provider',
+            message=(
+                f'Provider "{provider}" is inconsistent with JML 25-109 warnings against hostile '
+                'foreign AI platforms (e.g., DeepSeek) in Louisiana universities.'
+            ),
+            remediation='Switch to university-managed local inference (Ollama) approved under Nicholls IT policy.',
+        ))
+        return
+
     if provider in local_providers:
         report.warnings.append(ComplianceWarning(
             code='AI_LOCAL_PROVIDER_OK',
             severity=Severity.INFO,
-            principle_id='LOCAL_CUSTODY',
+            principle_id='NICHOLLS_PPM_IT',
             title='Local / university-managed AI provider',
-            message=f'AI provider "{provider}" keeps inference on a local/server endpoint you control.',
-            remediation='Confirm the Ollama host is university-managed and not logging prompts externally.',
+            message=(
+                f'AI provider "{provider}" keeps inference on a local/server endpoint you control, '
+                'supporting Nicholls PPM §5.3.5 / IT Policies and reducing JML 25-109 §6 disclosure risk.'
+            ),
+            remediation=(
+                'Confirm the Ollama host is university-managed, not logging prompts externally, '
+                'and consistent with Nicholls IT Policies & Procedures.'
+            ),
         ))
         report.decision_rationale.append(
-            f'Provider {provider} aligns with local-custody preference (CITI InfoSec; La. R.S. 17:3914).'
+            f'Provider {provider} aligns with local-custody preference '
+            '(PPM §5.3.5; CITI InfoSec; La. R.S. 17:3914; JML 25-109).'
         )
         return
 
@@ -333,20 +382,23 @@ def _append_ai_provider_warnings(
         report.warnings.append(ComplianceWarning(
             code='AI_CLOUD_PROVIDER_IPI_RISK',
             severity=Severity.BLOCK if block else Severity.WARNING,
-            principle_id='NO_PUBLIC_LLM_IPI',
+            principle_id='JML_25_109_AI',
             title='Cloud AI provider with possible IPI in materials',
             message=(
                 f'IRB AI provider is "{provider}". Protocol/consent materials may contain IPI. '
-                'Cloud transmission can create third-party disclosure under FERPA / La. R.S. 17:3914 '
-                'unless materials are confirmed de-identified and vendor terms prohibit training use.'
+                'JML 25-109 §6 prohibits inputting PII/confidential/restricted data into AI systems '
+                'until required policies are implemented. Cloud transmission also risks disclosure under '
+                'FERPA / La. R.S. 17:3914 and must comply with Nicholls PPM §5.3.5 / IT policies. '
+                'Section 2 expects AI source use to be approved as secure and reliable.'
             ),
             remediation=(
                 'Prefer IRB_AI_PROVIDER=ollama on university hardware; or strip IPI from materials '
-                'before cloud AI; document HITL review of what was sent.'
+                'before cloud AI; document HITL review and any institutional AI-source approval.'
             ),
         ))
         report.decision_rationale.append(
-            'Cloud AI + possible IPI triggers APA CPTA §3 / SIOP public-AI privacy warning.'
+            'Cloud AI + possible IPI triggers JML 25-109 §6, Nicholls PPM §5.3.5, '
+            'APA CPTA §3 / SIOP public-AI privacy warning.'
         )
     elif provider in cloud_providers:
         report.warnings.append(ComplianceWarning(

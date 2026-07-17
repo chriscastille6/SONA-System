@@ -1,0 +1,38 @@
+---
+description: Nicholls research compliance for agents (CITI, FERPA, La. 17:3914, PPM, JML 25-109)
+alwaysApply: true
+---
+
+# Nicholls research compliance (agent rules)
+
+Mirror the PRAMS runtime stack in `apps/compliance/` and `docs/AUTHORITIES_PPM_JML25109.md`.
+
+## Authority stack (cite when relevant)
+
+1. CITI — IPI vs de-identified; mosaic risk; HITL before external share
+2. FERPA — education records
+3. La. R.S. 17:3914 — student PII non-disclosure
+4. Nicholls PPM — https://www.nicholls.edu/policy-procedure-manual/
+   - §5.3.5 Information Technology Policy
+   - §5.7 FERPA monitoring (Records & Registration)
+   - §2.7.1 AI Use Policy (syllabi / course credit)
+5. Nicholls IT Policies — https://www.nicholls.edu/information-tech/policyandprocedure/
+6. Louisiana EO JML 25-109 — https://www.doa.la.gov/media/tzqptbak/jml-25-109-amended-state-government-s-use-of-ai.pdf
+   - §2 AI source approval for security/reliability
+   - §6 no PII / confidential / restricted data into any AI until required policies exist
+   - §7 cleanse datasets before AI use
+   - DeepSeek / hostile foreign AI has no place in LA universities
+
+## Hard defaults for agent work
+
+- **Synthetic data only** in examples, fixtures, logs, commits, and chat.
+- **Never** paste real student names, emails, IDs, grades, or rosters into prompts or code.
+- **Never** recommend uploading education records to ChatGPT / Claude.ai / Gemini / similar consumer AI.
+- **Never** use or recommend DeepSeek or similar prohibited foreign AI.
+- Prefer **local / university-managed** processing (e.g., Ollama on campus hardware).
+- Require **human-in-the-loop** before any external data share; document rationale.
+- If real student data appears in chat/logs: ignore it, warn to scrub, continue with placeholders only.
+
+## When changing PRAMS compliance code
+
+Keep Cursor rules/hooks aligned with `apps/compliance/principles.py` and guardrail messages. Do not weaken blocks without an explicit user request and documented risk acceptance.

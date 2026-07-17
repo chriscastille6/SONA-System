@@ -37,6 +37,10 @@ class ScannerTests(SimpleTestCase):
         scan = scan_text_for_ipi_signals('We will analyze open responses with ChatGPT.')
         self.assertTrue(scan['has_cloud_ai_risk'])
 
+    def test_detects_deepseek(self):
+        scan = scan_text_for_ipi_signals('Transcripts will be coded in DeepSeek.')
+        self.assertTrue(scan['has_prohibited_foreign_ai_risk'])
+
 
 @override_settings(COMPLIANCE_WARNINGS_ENABLED=True, COMPLIANCE_BLOCK_PUBLIC_AI_IN_PROTOCOL=True)
 class ProtocolGuardrailTests(SimpleTestCase):
@@ -60,6 +64,18 @@ class ProtocolGuardrailTests(SimpleTestCase):
         report = evaluate_protocol_submission(sub)
         self.assertTrue(report.is_blocked)
         self.assertTrue(any(w.code == 'PROTOCOL_PUBLIC_AI_LANGUAGE' for w in report.blocks))
+        self.assertTrue(any(w.principle_id == 'JML_25_109_AI' for w in report.blocks))
+
+    def test_deepseek_in_protocol_blocks(self):
+        sub = FakeSubmission(
+            confidentiality_procedures='Data stored locally.',
+            data_storage='University laptop.',
+            consent_procedures='Consent form used.',
+            methodology='We will use DeepSeek for qualitative coding of debrief notes.',
+        )
+        report = evaluate_protocol_submission(sub)
+        self.assertTrue(report.is_blocked)
+        self.assertTrue(any(w.code == 'PROTOCOL_PROHIBITED_FOREIGN_AI' for w in report.blocks))
 
     def test_clean_local_protocol_minimal_warnings(self):
         sub = FakeSubmission(
@@ -83,6 +99,12 @@ class AIProviderGuardrailTests(SimpleTestCase):
     def test_openai_warns_when_ipi_possible(self):
         report = evaluate_ai_provider_use(provider='openai', materials_may_contain_ipi=True)
         self.assertTrue(any(w.code == 'AI_CLOUD_PROVIDER_IPI_RISK' for w in report.warnings))
+        self.assertTrue(any(w.principle_id == 'JML_25_109_AI' for w in report.warnings))
+
+    def test_deepseek_provider_blocked(self):
+        report = evaluate_ai_provider_use(provider='deepseek', materials_may_contain_ipi=False)
+        self.assertTrue(report.is_blocked)
+        self.assertTrue(any(w.code == 'AI_PROVIDER_PROHIBITED_FOREIGN' for w in report.blocks))
 
 
 @override_settings(COMPLIANCE_WARNINGS_ENABLED=True, COMPLIANCE_REQUIRE_HITL_FOR_EXPORT=True)

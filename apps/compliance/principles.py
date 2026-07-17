@@ -8,8 +8,16 @@ Each principle has:
 
 Sources layered into this registry:
   CITI (HSR / InfoSec / Data Privacy), FERPA, La. R.S. 17:3914,
+  Nicholls State University Policy & Procedure Manual (esp. §5.3.5 IT Policy),
+  Nicholls IT Policies & Procedures,
+  Louisiana Executive Order JML 25-109 (Amended State Government's Use of AI),
   APA CPTA (2026), SIOP CAPE AI Ethics Brief (2025),
   Landers & Nakamoto (2025) + APA Ethical Principles.
+
+Primary URLs:
+  https://www.nicholls.edu/policy-procedure-manual/
+  https://www.nicholls.edu/information-tech/policyandprocedure/
+  https://www.doa.la.gov/media/tzqptbak/jml-25-109-amended-state-government-s-use-of-ai.pdf
 """
 
 from __future__ import annotations
@@ -61,9 +69,14 @@ PRINCIPLES: Dict[str, Principle] = {
     'NO_PUBLIC_LLM_IPI': {
         'id': 'NO_PUBLIC_LLM_IPI',
         'title': 'No IPI in Public / Consumer Generative AI',
-        'authority': 'APA CPTA §3; SIOP CAPE Privacy; La. R.S. 17:3914; FERPA',
+        'authority': (
+            'APA CPTA §3; SIOP CAPE Privacy; La. R.S. 17:3914; FERPA; '
+            'JML 25-109 §6; Nicholls PPM §5.3.5 / Nicholls IT Policies'
+        ),
         'summary': (
             'Client/student data must not be processed on public consumer-grade LLMs. '
+            'JML 25-109 §6 prohibits inputting PII, confidential, and restricted data into any AI '
+            'system until required state/agency AI policies are in place. '
             'Prefer local/university-managed models (e.g., Ollama) when AI assists review.'
         ),
         'category': 'ai_privacy',
@@ -71,12 +84,67 @@ PRINCIPLES: Dict[str, Principle] = {
     'LOCAL_CUSTODY': {
         'id': 'LOCAL_CUSTODY',
         'title': 'University-Managed Local Custody',
-        'authority': 'CITI Information Security; La. R.S. 17:3914; FERPA school-official framework',
+        'authority': (
+            'CITI Information Security; La. R.S. 17:3914; FERPA school-official framework; '
+            'Nicholls PPM §5.3.5 Information Technology Policy; '
+            'Nicholls IT Policies & Procedures (https://www.nicholls.edu/information-tech/policyandprocedure/)'
+        ),
         'summary': (
             'Keep identifiable education/research records on university-managed systems '
-            'with institutional endpoint controls. Avoid creating new external recipients.'
+            'with institutional endpoint controls. Avoid creating new external recipients. '
+            'All users of Nicholls IT resources must adhere to campus IT security and privacy policies.'
         ),
         'category': 'security',
+    },
+    'NICHOLLS_PPM_IT': {
+        'id': 'NICHOLLS_PPM_IT',
+        'title': 'Nicholls PPM Information Technology Policy',
+        'authority': (
+            'Nicholls State University Policy & Procedure Manual §5.3.5 '
+            '(https://www.nicholls.edu/policy-procedure-manual/); '
+            'Nicholls IT Policies & Procedures '
+            '(https://www.nicholls.edu/information-tech/policyandprocedure/)'
+        ),
+        'summary': (
+            'PPM §5.3.5 requires familiarization with and adherence to Nicholls IT policies '
+            'governing use and security of computer systems and networks. Security and privacy '
+            'policies protect data and intellectual property for faculty, staff, and students. '
+            'Violations may result in university-prescribed consequences/penalties.'
+        ),
+        'category': 'institutional',
+    },
+    'NICHOLLS_PPM_AI_SYLLABUS': {
+        'id': 'NICHOLLS_PPM_AI_SYLLABUS',
+        'title': 'Nicholls PPM Generative AI Use (Faculty Syllabus Requirements)',
+        'authority': (
+            'Nicholls PPM §2.7.1 Performance of Faculty Activities — Artificial Intelligence (AI) Use Policy '
+            '(https://www.nicholls.edu/policy-procedure-manual/)'
+        ),
+        'summary': (
+            'Course syllabi must address generative AI (e.g., ChatGPT). Student use without instructor '
+            'permission/attribution is treated as plagiarism. Research/admin AI use remains subject to '
+            'IT policy, FERPA, La. R.S. 17:3914, and JML 25-109 data-input prohibitions.'
+        ),
+        'category': 'institutional',
+    },
+    'JML_25_109_AI': {
+        'id': 'JML_25_109_AI',
+        'title': "Louisiana EO JML 25-109 — Amended State Government's Use of AI",
+        'authority': (
+            'Louisiana Executive Order JML 25-109 (Amended State Government\'s Use of AI) '
+            '(https://www.doa.la.gov/media/tzqptbak/jml-25-109-amended-state-government-s-use-of-ai.pdf); '
+            'see also gov.louisiana.gov Executive Orders'
+        ),
+        'summary': (
+            'Until agency AI acquisition/information-management policies are implemented: do not input '
+            'personal identifying information of the public, confidential data, restricted data, '
+            'proprietary information, property-specific information, or cybersecurity-sensitive information '
+            'into any AI system (Section 6). AI source use requires CIO/agency-head approval for security '
+            'and reliability (Section 2). Datasets must be reviewed/cleansed before AI use (Section 7). '
+            'Order warns universities against hostile foreign AI (e.g., DeepSeek). Section 8 directs '
+            'cooperation by state entities and political subdivisions.'
+        ),
+        'category': 'legal',
     },
     'DATA_MINIMIZATION': {
         'id': 'DATA_MINIMIZATION',
@@ -132,10 +200,15 @@ PRINCIPLES: Dict[str, Principle] = {
     'FERPA_EDUCATION_RECORDS': {
         'id': 'FERPA_EDUCATION_RECORDS',
         'title': 'FERPA Education Records Protection',
-        'authority': 'FERPA 20 U.S.C. §1232g; 34 CFR Part 99',
+        'authority': (
+            'FERPA 20 U.S.C. §1232g; 34 CFR Part 99; '
+            'Nicholls PPM §5.7 (Office of Records and Registration — FERPA compliance monitoring); '
+            'La. R.S. 17:3914'
+        ),
         'summary': (
             'Course credits, student IDs, names, and emails in PRAMS are education records. '
-            'Access, export, and retention require legitimate educational interest and auditability.'
+            'Access, export, and retention require legitimate educational interest and auditability. '
+            'Nicholls PPM assigns Registrar responsibility for monitoring FERPA compliance.'
         ),
         'category': 'legal',
     },
