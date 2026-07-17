@@ -1051,14 +1051,22 @@ def print_citi_compliance_report(paths: Dict[str, Path], results: Dict[str, Any]
 # COMPONENT 4 — FORMAL MEMO TO CHIEF IT SECURITY ADMINISTRATOR
 # =============================================================================
 
-MEMO_TO_CHIEF_IT_SECURITY = """
+MEMO_TO_IT_LEADERSHIP = """
 --------------------------------------------------------------------------------
 MEMORANDUM (INFORMATIONAL NOTIFICATION)
 --------------------------------------------------------------------------------
 
 TO:      Chris Usey
-         Chief IT Security Administrator
+         IT Security Administrator
          Nicholls State University
+
+CC:      Sam Cagle
+         Chief Information Officer (CIO)
+         Nicholls State University
+
+         University Senate (Information Item, as appropriate)
+         Human Subjects Institutional Review Board (HSIRB), for awareness
+         Assurance of Learning (AOL) leadership (optional routing)
 
 FROM:    [Faculty Researcher / University Senator]
          Nicholls State University
@@ -1070,13 +1078,9 @@ RE:      Informational Notice — Decoupled AI Protocol for AOL Analytics
          Logging for Demographic Linkage; Zero University Data Asset Ingestion
          by Third-Party AI)
 
-CC:      University Senate (Information Item, as appropriate)
-         Human Subjects Institutional Review Board (HSIRB), for awareness
-         Assurance of Learning (AOL) leadership (optional routing)
-
 --------------------------------------------------------------------------------
 
-Mr. Usey:
+Mr. Usey and Mr. Cagle:
 
 I write to provide formal informational notice that faculty / AOL analytic
 workflows under my supervision have adopted the Decoupled AI Protocol. The
@@ -1112,7 +1116,7 @@ metadata about structure, not data about persons.
 IV.  REQUESTED ACTION
 
 No approval action is requested at this time. Please file this notification for
-IT Security awareness. The proof-of-concept script
+IT Security and CIO awareness. The proof-of-concept script
 `scripts/decoupled_ai_protocol_poc.py` demonstrates the architecture, AOL
 synthetic walkthrough, Human-in-the-Loop gate, and break-glass audit log.
 
@@ -1241,9 +1245,9 @@ print(linked.groupby("gender")["gpa"].agg(["count", "mean"]))
     print(" FORMAL MEMO ON FILE")
     print("─" * 78)
     print(
-        "  Draft informational memorandum to Chris Usey, Chief IT Security\n"
-        "  Administrator, is embedded as MEMO_TO_CHIEF_IT_SECURITY.\n"
-        "  It is not transmitted by this program."
+        "  Draft informational memorandum to Chris Usey (IT Security\n"
+        "  Administrator) and Sam Cagle (CIO) is embedded as\n"
+        "  MEMO_TO_CHIEF_IT_SECURITY. It is not transmitted by this program."
     )
     print()
     return 0
