@@ -124,6 +124,12 @@ SPECIFIC DATA SECURITY FOCUS AREAS:
 
 Flag any unencrypted sensitive data, weak access controls, undefined retention policies,
 or use of unsecured third-party services.
+
+ADDITIONAL AUTHORITY (cite in findings when relevant):
+- CITI Information Security: least privilege, university-managed custody, encryption at rest/in transit.
+- La. R.S. 17:3914: prefer 100% local / campus-managed processing; avoid creating new external recipients.
+- SIOP CAPE / APA CPTA: supplier vetting; transparency of where prompts and study materials are sent for AI review.
+- Prefer local LLM endpoints (e.g., Ollama on university hardware) over cloud providers when materials may contain IPI.
 """
         
         return base_prompt + security_specific

@@ -1677,6 +1677,8 @@ def protocol_submit(request, study_id):
     from .forms import ProtocolSubmissionForm
     from django.conf import settings
     from apps.accounts.citi_utils import researcher_can_submit_protocol
+    from apps.compliance.guardrails import evaluate_protocol_submission
+    from apps.compliance.explainability import log_compliance_decision, outcome_from_report
 
     study = get_object_or_404(Study, id=study_id)
 
@@ -1711,8 +1713,64 @@ def protocol_submit(request, study_id):
             f'No protocol information found. Please enter protocol information first: {enter_url}'
         )
         return redirect('studies:protocol_enter', study_id=study.id)
-    
+
+    if request.method != 'POST':
+        compliance_report = evaluate_protocol_submission(draft_submission, use_ai_review=False)
+        if getattr(settings, 'AI_REVIEW_ENABLED', False):
+            from apps.compliance.guardrails import evaluate_ai_provider_use
+            ai_report = evaluate_ai_provider_use(materials_may_contain_ipi=True)
+            compliance_report.warnings.extend(ai_report.warnings)
+            compliance_report.decision_rationale.extend(ai_report.decision_rationale)
+        return render(request, 'studies/protocol_submit_confirm.html', {
+            'study': study,
+            'draft_submission': draft_submission,
+            'ai_review_enabled': getattr(settings, 'AI_REVIEW_ENABLED', False),
+            'compliance_report': compliance_report,
+        })
+
     if request.method == 'POST':
+        use_ai_review = bool(request.POST.get('use_ai_review', False))
+        compliance_report = evaluate_protocol_submission(
+            draft_submission,
+            use_ai_review=use_ai_review,
+        )
+        acknowledged = bool(request.POST.get('acknowledge_compliance_warnings'))
+        if compliance_report.is_blocked:
+            try:
+                log_compliance_decision(
+                    actor=request.user,
+                    action='protocol_submit_blocked',
+                    entity='protocol_submission',
+                    entity_id=draft_submission.id,
+                    report=compliance_report,
+                    outcome='block',
+                    request=request,
+                )
+            except Exception:
+                pass
+            messages.error(
+                request,
+                'Protocol submission blocked by compliance guardrails. '
+                'Resolve the issues listed below (e.g., public AI processing of identifiable data) and try again.'
+            )
+            return render(request, 'studies/protocol_submit_confirm.html', {
+                'study': study,
+                'draft_submission': draft_submission,
+                'ai_review_enabled': getattr(settings, 'AI_REVIEW_ENABLED', False),
+                'compliance_report': compliance_report,
+            })
+        if compliance_report.soft_warnings and not acknowledged:
+            messages.warning(
+                request,
+                'Please review compliance warnings and check the acknowledgment box before submitting.'
+            )
+            return render(request, 'studies/protocol_submit_confirm.html', {
+                'study': study,
+                'draft_submission': draft_submission,
+                'ai_review_enabled': getattr(settings, 'AI_REVIEW_ENABLED', False),
+                'compliance_report': compliance_report,
+            })
+
         try:
             with transaction.atomic():
                 # Save full protocol PDF if uploaded
@@ -1751,7 +1809,6 @@ def protocol_submit(request, study_id):
                     pass
 
                 # Check if AI review was requested (from form if present)
-                use_ai_review = request.POST.get('use_ai_review', False)
                 if use_ai_review:
                     if getattr(settings, 'AI_REVIEW_ENABLED', False):
                         ai_review = IRBReview.objects.create(
@@ -1764,6 +1821,25 @@ def protocol_submit(request, study_id):
                         messages.info(request, 'AI review initiated. You will be notified when complete.')
                     else:
                         messages.warning(request, 'AI review is not currently enabled. Protocol submitted without AI review.')
+
+                try:
+                    log_compliance_decision(
+                        actor=request.user,
+                        action='protocol_submit',
+                        entity='protocol_submission',
+                        entity_id=draft_submission.id,
+                        report=compliance_report,
+                        outcome=outcome_from_report(compliance_report, proceeded=True),
+                        request=request,
+                        actor_note='Researcher submitted protocol after compliance evaluation.',
+                        extra={
+                            'study_id': str(study.id),
+                            'use_ai_review': bool(use_ai_review),
+                            'acknowledged_warnings': acknowledged,
+                        },
+                    )
+                except Exception:
+                    pass
 
                 submission_detail_url = request.build_absolute_uri(
                     reverse('studies:protocol_submission_detail', args=[draft_submission.id])
@@ -1786,13 +1862,8 @@ def protocol_submit(request, study_id):
                 'Please try again or contact support if the problem persists.'
             )
             return redirect('studies:protocol_submit', study_id=study.id)
-    else:
-        # Show confirmation page before submitting
-        return render(request, 'studies/protocol_submit_confirm.html', {
-            'study': study,
-            'draft_submission': draft_submission,
-            'ai_review_enabled': getattr(settings, 'AI_REVIEW_ENABLED', False),
-        })
+
+    return redirect('studies:protocol_submit', study_id=study.id)
 
 
 def _get_informed_consent_display(submission, study):
@@ -1893,6 +1964,29 @@ def protocol_college_rep_review(request, submission_id):
     if determination not in ['exempt', 'expedited', 'full']:
         messages.error(request, 'Invalid determination.')
         return redirect('studies:protocol_submission_detail', submission_id=submission.id)
+
+    from apps.compliance.guardrails import evaluate_decision_rationale
+    from apps.compliance.explainability import log_compliance_decision, outcome_from_report
+    rationale_report = evaluate_decision_rationale(notes, decision=f'determination:{determination}')
+    if rationale_report.is_blocked:
+        try:
+            log_compliance_decision(
+                actor=request.user,
+                action='college_rep_determination_blocked',
+                entity='protocol_submission',
+                entity_id=submission.id,
+                report=rationale_report,
+                outcome='block',
+                request=request,
+            )
+        except Exception:
+            pass
+        messages.error(
+            request,
+            'Determination blocked: enter a substantive written rationale '
+            '(transparency/accountability). Brief notes like "ok" are not sufficient.'
+        )
+        return redirect('studies:protocol_submission_detail', submission_id=submission.id)
     
     submission.college_rep_determination = determination
     submission.college_rep_notes = notes
@@ -1918,6 +2012,21 @@ def protocol_college_rep_review(request, submission_id):
             messages.warning(request, 'IRB Chair not found. Please assign manually.')
     
     submission.save()
+
+    try:
+        log_compliance_decision(
+            actor=request.user,
+            action='college_rep_determination',
+            entity='protocol_submission',
+            entity_id=submission.id,
+            report=rationale_report,
+            outcome=outcome_from_report(rationale_report, proceeded=True),
+            request=request,
+            actor_note=f'Determination: {determination}',
+            extra={'determination': determination},
+        )
+    except Exception:
+        pass
     
     messages.success(request, f'Determination recorded: {determination.title()}.')
     return redirect('studies:protocol_submission_detail', submission_id=submission.id)
@@ -2004,6 +2113,29 @@ def protocol_make_decision(request, submission_id):
     if decision not in ['approved', 'revise_resubmit', 'rejected']:
         messages.error(request, 'Invalid decision.')
         return redirect('studies:protocol_submission_detail', submission_id=submission.id)
+
+    from apps.compliance.guardrails import evaluate_decision_rationale
+    from apps.compliance.explainability import log_compliance_decision, outcome_from_report
+    rationale_report = evaluate_decision_rationale(notes, decision=decision)
+    if rationale_report.is_blocked:
+        try:
+            log_compliance_decision(
+                actor=request.user,
+                action='protocol_decision_blocked',
+                entity='protocol_submission',
+                entity_id=submission.id,
+                report=rationale_report,
+                outcome='block',
+                request=request,
+            )
+        except Exception:
+            pass
+        messages.error(
+            request,
+            'Decision blocked: a substantive written rationale is required '
+            '(APA CPTA transparency/accountability; institutional audit trail).'
+        )
+        return redirect('studies:protocol_submission_detail', submission_id=submission.id)
     
     submission.decision = decision
     submission.decided_by = request.user
@@ -2046,6 +2178,21 @@ def protocol_make_decision(request, submission_id):
         messages.warning(request, 'Protocol rejected.')
     
     submission.save()
+
+    try:
+        log_compliance_decision(
+            actor=request.user,
+            action='protocol_decision',
+            entity='protocol_submission',
+            entity_id=submission.id,
+            report=rationale_report,
+            outcome=outcome_from_report(rationale_report, proceeded=True),
+            request=request,
+            actor_note=f'IRB decision: {decision}',
+            extra={'decision': decision},
+        )
+    except Exception:
+        pass
     
     # Send email notification to PI about decision
     from .tasks import notify_pi_about_decision

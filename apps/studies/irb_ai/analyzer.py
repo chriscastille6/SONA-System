@@ -58,6 +58,9 @@ class IRBAnalyzer:
             study_slug = await sync_to_async(lambda: self.review.study.slug)()
             print(f"[{study_slug}] Gathering materials...")
             self.materials = await self.gather_materials()
+
+            # Step 1b: Compliance preflight (AI provider + IPI signals) — explainability trail
+            await sync_to_async(self._run_compliance_preflight)()
             
             # Step 2: Run all agents in parallel
             print(f"[{study_slug}] Running {len(self.agents)} AI agents...")
@@ -325,13 +328,83 @@ class IRBAnalyzer:
         elif 'moderate' in risk_levels and self.review.overall_risk_level == 'low':
             self.review.overall_risk_level = 'moderate'
     
+    def _run_compliance_preflight(self):
+        """
+        Evaluate AI provider + material IPI signals before sending to agents.
+
+        Persists an explainable preflight report on the review. If settings
+        block cloud AI with possible IPI, raise to fail the review safely.
+        """
+        from django.conf import settings
+        from apps.compliance.guardrails import evaluate_ai_provider_use
+        from apps.compliance.scanners import join_fields, scan_text_for_ipi_signals
+        from apps.compliance.explainability import build_decision_trace, outcome_from_report
+
+        parts = []
+        for v in (self.materials or {}).values():
+            if isinstance(v, dict):
+                parts.extend(str(x) for x in v.values() if x is not None)
+            elif v is not None:
+                parts.append(str(v))
+        material_text = join_fields(parts)
+
+        scan = scan_text_for_ipi_signals(material_text)
+        # Conservative: treat non-empty IRB packets as possibly containing IPI
+        may_contain_ipi = bool(scan.get('has_ipi_like_signals')) or bool(material_text.strip())
+        report = evaluate_ai_provider_use(materials_may_contain_ipi=may_contain_ipi)
+
+        versions = dict(self.review.ai_model_versions or {})
+        versions['compliance_preflight'] = build_decision_trace(
+            report,
+            outcome=outcome_from_report(report, proceeded=not report.is_blocked),
+            extra={
+                'ipi_signal_categories': scan.get('signal_categories', []),
+                'ipi_counts': scan.get('counts', {}),
+            },
+        )
+        self.review.ai_model_versions = versions
+        self.review.save(update_fields=['ai_model_versions'])
+
+        # Surface as review issues for human HITL
+        for w in report.warnings:
+            if w.severity.value == 'info':
+                continue
+            issue = {
+                'agent': 'compliance_preflight',
+                'issue_id': w.code,
+                'category': w.principle_id,
+                'description': w.message,
+                'recommendation': w.remediation,
+                'affected_section': 'AI provider / materials preflight',
+                'authority': w.authority,
+            }
+            if w.severity.value == 'block' or w.severity.value == 'warning':
+                # Warnings become moderate; blocks become critical
+                if w.severity.value == 'block':
+                    crit = list(self.review.critical_issues or [])
+                    crit.append(issue)
+                    self.review.critical_issues = crit
+                else:
+                    mod = list(self.review.moderate_issues or [])
+                    mod.append(issue)
+                    self.review.moderate_issues = mod
+
+        self.review.save(update_fields=['critical_issues', 'moderate_issues', 'ai_model_versions'])
+
+        if report.is_blocked and getattr(settings, 'COMPLIANCE_BLOCK_CLOUD_AI_WITH_IPI', False):
+            raise RuntimeError(
+                'AI IRB review blocked by compliance guardrails: cloud provider with possible IPI. '
+                'Set IRB_AI_PROVIDER=ollama or strip IPI from materials. '
+                + report.explain()
+            )
+
     def _save_results(self):
         """Save all analysis results and metadata."""
-        # Record AI model versions
-        self.review.ai_model_versions = {
-            agent_name: agent.model
-            for agent_name, agent in self.agents.items()
-        }
+        # Record AI model versions (preserve compliance_preflight if present)
+        versions = dict(self.review.ai_model_versions or {})
+        for agent_name, agent in self.agents.items():
+            versions[agent_name] = agent.model
+        self.review.ai_model_versions = versions
         
         # Save all fields
         self.review.save()

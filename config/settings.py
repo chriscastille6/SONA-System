@@ -44,6 +44,18 @@ AI_REVIEW_ENABLED = _config('AI_REVIEW_ENABLED', default='True', cast=bool)
 # CITI Certificate: block protocol submission if PI's CITI is expired or missing
 CITI_REQUIRED_FOR_SUBMISSION = _config('CITI_REQUIRED_FOR_SUBMISSION', default='False', cast=bool)
 
+# Compliance guardrails (CITI / FERPA / La. R.S. 17:3914 / APA–SIOP)
+# Soft warnings + hard blocks with principle citations and AuditLog explainability.
+COMPLIANCE_WARNINGS_ENABLED = _config('COMPLIANCE_WARNINGS_ENABLED', default='True', cast=bool)
+# Block protocol submit when text indicates public/consumer LLM processing of data
+COMPLIANCE_BLOCK_PUBLIC_AI_IN_PROTOCOL = _config('COMPLIANCE_BLOCK_PUBLIC_AI_IN_PROTOCOL', default='True', cast=bool)
+# If True, block cloud AI IRB review when materials may contain IPI (prefer ollama)
+COMPLIANCE_BLOCK_CLOUD_AI_WITH_IPI = _config('COMPLIANCE_BLOCK_CLOUD_AI_WITH_IPI', default='False', cast=bool)
+# Require checkbox attestation before identifiable FERPA CSV exports
+COMPLIANCE_REQUIRE_HITL_FOR_EXPORT = _config('COMPLIANCE_REQUIRE_HITL_FOR_EXPORT', default='True', cast=bool)
+# Require substantive written rationale on IRB approve/R&R/reject
+COMPLIANCE_REQUIRE_DECISION_RATIONALE = _config('COMPLIANCE_REQUIRE_DECISION_RATIONALE', default='True', cast=bool)
+
 # Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -68,6 +80,7 @@ INSTALLED_APPS = [
     'apps.studies',
     'apps.credits',
     'apps.reporting',
+    'apps.compliance',
 ]
 
 MIDDLEWARE = [

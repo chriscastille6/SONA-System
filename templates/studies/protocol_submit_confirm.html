@@ -25,6 +25,8 @@
                         <strong><i class="bi bi-exclamation-triangle"></i> Important:</strong> Once submitted, your protocol will be sent to your college representative for review. 
                         You will not be able to edit it after submission (you can create a new version if revisions are needed).
                     </div>
+
+                    {% include 'compliance/_warnings_panel.html' with compliance_report=compliance_report %}
                     
                     <div class="mb-4">
                         <h5 class="mb-3"><i class="bi bi-file-earmark-text"></i> Protocol Summary</h5>
@@ -56,13 +58,31 @@
                             <input class="form-check-input" type="checkbox" name="use_ai_review" id="use_ai_review" value="1">
                             <label class="form-check-label" for="use_ai_review">
                                 <strong>Request AI-Assisted Review</strong>
-                                <small class="d-block text-muted">An AI review will be generated to help identify potential issues before IRB review.</small>
+                                <small class="d-block text-muted">
+                                    An AI review will be generated to help identify potential issues before IRB review.
+                                    Prefer local/university-managed models (Ollama). Do not send identifiable student data to public consumer LLMs
+                                    (APA CPTA §3; La.&nbsp;R.S.&nbsp;17:3914).
+                                </small>
+                            </label>
+                        </div>
+                        {% endif %}
+
+                        {% if compliance_report and compliance_report.soft_warnings and not compliance_report.is_blocked %}
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" name="acknowledge_compliance_warnings" id="acknowledge_compliance_warnings" value="1" required>
+                            <label class="form-check-label" for="acknowledge_compliance_warnings">
+                                <strong>I have reviewed the compliance warnings</strong>
+                                <small class="d-block text-muted">
+                                    I understand the cited principles (CITI / FERPA / La.&nbsp;R.S.&nbsp;17:3914 / APA–SIOP)
+                                    and will not submit identifiable student data to unauthorized third parties or public AI tools.
+                                </small>
                             </label>
                         </div>
                         {% endif %}
                         
                         <div class="d-flex gap-2 flex-wrap">
-                            <button type="submit" class="btn btn-primary btn-lg" style="background-color: #A6192E; border-color: #A6192E;">
+                            <button type="submit" class="btn btn-primary btn-lg" style="background-color: #A6192E; border-color: #A6192E;"
+                                {% if compliance_report and compliance_report.is_blocked %}disabled title="Resolve compliance blocks before submitting"{% endif %}>
                                 <i class="bi bi-send"></i> Submit for IRB Review
                             </button>
                             <a href="{% url 'studies:protocol_enter' study.id %}" class="btn btn-outline-secondary btn-lg">
