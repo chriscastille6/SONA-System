@@ -7,7 +7,8 @@
  Institution : Nicholls State University
  Classification: DEVELOPMENT / SYNTHETIC DATA ONLY
  Audience     : AOL Chair, Faculty, University Senate, IT Security, IRB
- Dependencies: pandas, numpy, scipy  (standard open-source; local execution)
+ Dependencies: pandas, numpy, scipy; matplotlib & seaborn for local AOL figures
+               (all open-source; local execution only)
  Network      : NONE. This script performs zero outbound API or cloud calls.
 
  PURPOSE
