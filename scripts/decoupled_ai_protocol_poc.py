@@ -31,8 +31,15 @@
    • CITI Program — Information Security / Data Security modules
    • 45 C.F.R. Part 46 (Common Rule) — human subjects research principles
 
- Run:
+ Run (from the repository root — not from ~):
+   cd /path/to/SONA-System
+   git fetch origin cursor/decoupled-ai-protocol-poc-6005
+   git checkout cursor/decoupled-ai-protocol-poc-6005
+   python3 -m pip install pandas numpy scipy
    python3 scripts/decoupled_ai_protocol_poc.py
+   # At the gate, type: YES
+
+ macOS note: use "python3 -m pip" (Homebrew often has no bare "pip" command).
 
  Non-interactive confirmation (automation / CI only):
    DECOUPLED_AI_HITL_CONFIRM=YES python3 scripts/decoupled_ai_protocol_poc.py
