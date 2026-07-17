@@ -45,14 +45,14 @@
         </div>
         
         <!-- Full protocol PDF (for review) -->
-        {% if submission.full_protocol_pdf or study.slug == 'goal-setting' or study.slug == 'decision-making' %}
+        {% if submission.full_protocol_pdf or study.slug == 'goal-setting' or study.slug == 'decision-making' or study.slug == 'hr-sjt' %}
         <div class="card mb-3">
             <div class="card-header" style="background-color: #A6192E; color: white;">
                 <h5 class="mb-0"><i class="bi bi-file-earmark-pdf"></i> HSIRB application packet (PDF)</h5>
             </div>
             <div class="card-body">
-                {% if study.slug == 'goal-setting' or study.slug == 'decision-making' %}
-                <p class="mb-2">Nicholls-branded exempt HSIRB packet (cover, project information form, narrative, and appendices A–H) — the familiar reviewer format.</p>
+                {% if study.slug == 'goal-setting' or study.slug == 'decision-making' or study.slug == 'hr-sjt' %}
+                <p class="mb-2">Nicholls-branded exempt HSIRB packet (cover, project information form, narrative, and appendices) — the familiar reviewer format.</p>
                 <a href="{% url 'studies:protocol_study_documentation' slug=study.slug %}" target="_blank" rel="noopener" class="btn btn-outline-primary">
                     <i class="bi bi-file-earmark-pdf"></i> View HSIRB application packet
                 </a>
@@ -123,14 +123,15 @@
                     <a href="{% url 'studies:hr_sjt_student_data_consent' %}" target="_blank" rel="noopener">Class / student consent (live)</a>
                 </p>
                 <p class="mb-2">
-                    <a href="{% url 'studies:protocol_study_documentation' slug=study.slug %}">View full documentation (protocol summary)</a>
-                    ·
+                    <a href="{% url 'studies:protocol_study_documentation' slug=study.slug %}" target="_blank" rel="noopener">View HSIRB application packet</a> — familiar Nicholls-branded exempt form + appendices A–E.
+                </p>
+                <p class="mb-2">
                     <a href="{% url 'studies:hr_sjt_static_consent_doc' kind='professional' %}">Professional consent (static HTML)</a>
                     ·
                     <a href="{% url 'studies:hr_sjt_static_consent_doc' kind='student' %}">Class consent (static HTML)</a>
                 </p>
                 <p class="mb-0">
-                    <a href="{% url 'studies:hr_sjt_exempt_request_doc' %}">HSIRB exempt review request (filled draft)</a>
+                    <a href="{% url 'studies:hr_sjt_exempt_request_doc' %}">Legacy rev9 fill-in form (optional)</a>
                 </p>
                 {% endif %}
             </div>

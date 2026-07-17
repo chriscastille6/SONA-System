@@ -8,7 +8,8 @@ Use this packet when asking a cloud agent to address IRB review concerns for the
 |------|----------|--------|
 | IRB application (structured) | `apps/studies/assets/irb/hr-sjt/protocol.json` | Drafted for PRAMS submission |
 | IRB application (narrative) | `apps/studies/assets/irb/hr-sjt/HR_SJT_PROTOCOL_PRAMS.md` | Drafted for PRAMS submission |
-| HSIRB exempt request (filled) | `HSIRB_EXEMPT_REVIEW_REQUEST.md` / `.pdf` | Drafted for PI signature |
+| HSIRB application packet (familiar format) | `materials/pdf/HSIRB_Application_HR_SJT_Rating_Effectiveness_full_packet.pdf` | Primary reviewer document — rebuild: `python3 scripts/build_hr_sjt_hsirb_packet.py` |
+| Legacy rev9 fill-in form | `HSIRB_EXEMPT_REVIEW_REQUEST.pdf` | Optional / superseded by branded packet |
 | Study config | `apps/studies/assets/irb/hr-sjt/study_config.json` | `irb_status: pending` |
 | All 27 situations + tactics | `apps/studies/assets/irb/hr-sjt/incidents.json` | Vendored for offline IRB review |
 | Interactive IRB packet | `/studies/hr-sjt/run/` and `/studies/hr-sjt/protocol/vignettes/` | Skip + optional ratings demo |

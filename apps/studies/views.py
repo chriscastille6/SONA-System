@@ -778,22 +778,30 @@ def hr_sjt_static_consent_doc(request, kind):
 
 @require_http_methods(['GET', 'HEAD'])
 def hr_sjt_exempt_request_doc(request):
-    """Serve the filled HSIRB exempt review request (PDF preferred, markdown fallback)."""
+    """
+    Serve HSIRB application materials for hr-sjt.
+    Default: familiar Nicholls-branded full packet.
+    ?format=legacy|md → older rev9 fill-in form / markdown.
+    """
     base = Path(settings.BASE_DIR) / 'apps' / 'studies' / 'assets' / 'irb' / 'hr-sjt'
+    branded = base / 'materials' / 'pdf' / 'HSIRB_Application_HR_SJT_Rating_Effectiveness_full_packet.pdf'
     pdf_path = base / 'HSIRB_EXEMPT_REVIEW_REQUEST.pdf'
     md_path = base / 'HSIRB_EXEMPT_REVIEW_REQUEST.md'
     fmt = (request.GET.get('format') or '').lower()
-    if fmt == 'md' or not pdf_path.exists():
-        if not md_path.exists():
-            raise Http404("Exempt request document not found.")
-        try:
-            return HttpResponse(md_path.read_text(encoding='utf-8'), content_type='text/markdown; charset=utf-8')
-        except OSError:
-            raise Http404("Exempt request document could not be read.")
-    try:
+    if fmt in ('legacy', 'rev9'):
+        if not pdf_path.exists():
+            raise Http404("Legacy exempt request PDF not found.")
         return HttpResponse(pdf_path.read_bytes(), content_type='application/pdf')
-    except OSError:
-        raise Http404("Exempt request PDF could not be read.")
+    if fmt == 'md':
+        if not md_path.exists():
+            raise Http404("Exempt request markdown not found.")
+        return HttpResponse(md_path.read_text(encoding='utf-8'), content_type='text/markdown; charset=utf-8')
+    # Prefer branded packet (Decision Making–style)
+    if branded.exists():
+        return HttpResponse(branded.read_bytes(), content_type='application/pdf')
+    if pdf_path.exists():
+        return HttpResponse(pdf_path.read_bytes(), content_type='application/pdf')
+    raise Http404("HSIRB application packet not found. Run: python3 scripts/build_hr_sjt_hsirb_packet.py")
 
 
 # Consent form for HR professionals (working professionals) taking the HR SJT.
@@ -1033,8 +1041,19 @@ _GOAL_SETTING_HSIRB_PACKET = (
     'pdf',
     'HSIRB_Application_A_Study_in_Decision_Making_full_packet.pdf',
 )
+_HR_SJT_HSIRB_PACKET = (
+    'apps',
+    'studies',
+    'assets',
+    'irb',
+    'hr-sjt',
+    'materials',
+    'pdf',
+    'HSIRB_Application_HR_SJT_Rating_Effectiveness_full_packet.pdf',
+)
 STUDY_DOCUMENTATION_FILES = {
-    'hr-sjt': ('docs', 'HR_SJT_DOCUMENTATION.html'),
+    # Familiar Nicholls-branded exempt HSIRB packet (primary reviewer document)
+    'hr-sjt': _HR_SJT_HSIRB_PACKET,
     'goals-refs': (
         'apps',
         'studies',

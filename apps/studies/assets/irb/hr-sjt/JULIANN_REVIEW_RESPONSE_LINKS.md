@@ -36,12 +36,23 @@ Static document:
 - Repo: `docs/HR_SJT_STUDENT_CONSENT.html`  
 - On GitHub: https://github.com/chriscastille6/SONA-System/blob/cursor/hr-sjt-irb-cloud-packet-7d1c/docs/HR_SJT_STUDENT_CONSENT.html  
 
-## Attached HSIRB exempt review request (completed draft)
+## HSIRB application packet (familiar reviewer format — primary)
 
-- **Official form filled** (exact `HSIRB-exempt_review_request.rev9_2019.v2` layout + Attachment A): `apps/studies/assets/irb/hr-sjt/HSIRB_EXEMPT_REVIEW_REQUEST.pdf`
-- Blank source used: `apps/studies/assets/irb/hr-sjt/HSIRB-exempt_review_request.rev9_2019.v2_BLANK.pdf`
-- Narrative working copy: `apps/studies/assets/irb/hr-sjt/HSIRB_EXEMPT_REVIEW_REQUEST.md`
-- CITI certificate: `docs/citiCompletionCertificate_4689946_59381539.pdf`
-- GitHub PDF: https://github.com/chriscastille6/SONA-System/blob/cursor/hr-sjt-irb-cloud-packet-7d1c/apps/studies/assets/irb/hr-sjt/HSIRB_EXEMPT_REVIEW_REQUEST.pdf  
+Same Nicholls-branded style as *A Study in Decision Making* (cover, project information form, narrative, appendices A–E):
+
+- **PDF:** `apps/studies/assets/irb/hr-sjt/materials/pdf/HSIRB_Application_HR_SJT_Rating_Effectiveness_full_packet.pdf`
+- **GitHub:** https://github.com/chriscastille6/SONA-System/blob/cursor/hr-sjt-irb-cloud-packet-7d1c/apps/studies/assets/irb/hr-sjt/materials/pdf/HSIRB_Application_HR_SJT_Rating_Effectiveness_full_packet.pdf
+- **Rebuild:** `python3 scripts/build_hr_sjt_hsirb_packet.py`
+- **PRAMS:** Protocol Submissions → HR SJT → “View HSIRB application packet”
+
+### Appendices in the packet
+- A Professional consent  
+- B Class/student consent  
+- C Instrument (all 27 situations)  
+- D Recruitment script (verbatim)  
+- E CITI certificate (PI)
+
+### Legacy rev9 fill-in form (optional / superseded)
+- `apps/studies/assets/irb/hr-sjt/HSIRB_EXEMPT_REVIEW_REQUEST.pdf`
 
 PR: https://github.com/chriscastille6/SONA-System/pull/4
