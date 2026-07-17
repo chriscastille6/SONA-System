@@ -33,6 +33,16 @@ CLOUD_AI_PHRASES = re.compile(
     re.IGNORECASE,
 )
 
+# Hostile / prohibited foreign AI platforms called out in JML 25-109 (e.g., DeepSeek)
+PROHIBITED_FOREIGN_AI_PHRASES = re.compile(
+    r'\b('
+    r'deepseek|deep\s*seek|'
+    r'ccp[- ]?(?:linked\s+)?ai|'
+    r'chinese\s+communist\s+party.*ai'
+    r')\b',
+    re.IGNORECASE,
+)
+
 THIRD_PARTY_SHARE_PHRASES = re.compile(
     r'\b('
     r'third[- ]party\s+(?:vendor|cloud|processor)|'
@@ -71,6 +81,7 @@ def scan_text_for_ipi_signals(text: str) -> Dict[str, Any]:
         'student_id_shaped': _count_matches(STUDENT_ID_RE, text),
         'institutional_brand': _count_matches(INSTITUTION_RE, text),
         'cloud_ai_phrase': _count_matches(CLOUD_AI_PHRASES, text),
+        'prohibited_foreign_ai_phrase': _count_matches(PROHIBITED_FOREIGN_AI_PHRASES, text),
         'third_party_share_phrase': _count_matches(THIRD_PARTY_SHARE_PHRASES, text),
         'mosaic_cue': _count_matches(MOSAIC_CUES, text),
     }
@@ -80,6 +91,7 @@ def scan_text_for_ipi_signals(text: str) -> Dict[str, Any]:
             counts[k] > 0 for k in ('email', 'ssn_shaped', 'phone', 'student_id_shaped')
         ),
         'has_cloud_ai_risk': counts['cloud_ai_phrase'] > 0,
+        'has_prohibited_foreign_ai_risk': counts['prohibited_foreign_ai_phrase'] > 0,
         'has_third_party_share_risk': counts['third_party_share_phrase'] > 0,
         'has_mosaic_cue': counts['mosaic_cue'] > 0,
         'counts': counts,

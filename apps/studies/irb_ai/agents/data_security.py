@@ -128,6 +128,8 @@ or use of unsecured third-party services.
 ADDITIONAL AUTHORITY (cite in findings when relevant):
 - CITI Information Security: least privilege, university-managed custody, encryption at rest/in transit.
 - La. R.S. 17:3914: prefer 100% local / campus-managed processing; avoid creating new external recipients.
+- Nicholls PPM §5.3.5 and https://www.nicholls.edu/information-tech/policyandprocedure/: IT security/privacy adherence for faculty/staff/students.
+- Louisiana EO JML 25-109: §2 AI source approval for security/reliability; §6 no PII/confidential/restricted inputs to AI until policies exist; ban/avoid DeepSeek and similar foreign AI.
 - SIOP CAPE / APA CPTA: supplier vetting; transparency of where prompts and study materials are sent for AI review.
 - Prefer local LLM endpoints (e.g., Ollama on university hardware) over cloud providers when materials may contain IPI.
 """

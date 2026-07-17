@@ -97,6 +97,8 @@ measures, or privacy disclosures that are unclear or incomplete.
 ADDITIONAL AUTHORITY (cite in findings when relevant):
 - CITI: distinguish Identifiable Private Information (IPI) from de-identified data; mosaic re-identification risk.
 - La. R.S. 17:3914 / FERPA: no unauthorized disclosure of student PII to third parties or public AI tools.
+- Nicholls PPM §5.3.5 / IT Policies: all users must adhere to campus IT security and privacy policies.
+- Louisiana EO JML 25-109 §6: until required AI policies are implemented, do not input PII, confidential, or restricted data into any AI system; §7 requires data cleansing before AI use; DeepSeek/hostile foreign AI has no place in LA universities.
 - APA CPTA (2026) §3: no processing of client/student data on public consumer-grade LLMs; encrypt/anonymize; retention/deletion.
 - APA CPTA §6 / SIOP CAPE: human-in-the-loop before external sharing or high-stakes use of AI outputs.
 """
