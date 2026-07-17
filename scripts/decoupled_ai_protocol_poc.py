@@ -1247,10 +1247,14 @@ print(linked.groupby("gender")["gpa"].agg(["count", "mean"]))
     print(
         "  Draft informational memorandum to Chris Usey (IT Security\n"
         "  Administrator) and Sam Cagle (CIO) is embedded as\n"
-        "  MEMO_TO_CHIEF_IT_SECURITY. It is not transmitted by this program."
+        "  MEMO_TO_IT_LEADERSHIP. It is not transmitted by this program."
     )
     print()
     return 0
+
+
+# Backward-compatible alias for earlier PoC references
+MEMO_TO_CHIEF_IT_SECURITY = MEMO_TO_IT_LEADERSHIP
 
 
 if __name__ == "__main__":
