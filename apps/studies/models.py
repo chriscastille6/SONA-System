@@ -588,6 +588,36 @@ class StudyEmailContact(models.Model):
         return f"{self.email} ({self.study.title})"
 
 
+class LabCommunityContact(models.Model):
+    """
+    Optional email signup to stay informed about HSIRB-approved lab studies
+    and to receive aggregate findings. Collected on a form separate from
+    study surveys; not part of formal research data collection.
+    """
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    email = models.EmailField(unique=True)
+    stay_informed = models.BooleanField(
+        default=True,
+        help_text="Receive updates about open lab studies and aggregate findings.",
+    )
+    source = models.CharField(
+        max_length=100,
+        blank=True,
+        default='lab-studies-page',
+        help_text="Where the signup originated (e.g. lab-studies-page).",
+    )
+    created_at = models.DateTimeField(auto_now_add=True, db_index=True)
+
+    class Meta:
+        db_table = 'lab_community_contacts'
+        verbose_name = 'Lab community contact'
+        verbose_name_plural = 'Lab community contacts'
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return self.email
+
+
 class StudentDataConsent(models.Model):
     """
     Records consent for secondary use of student course data (e.g. MNGT 425

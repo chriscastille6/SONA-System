@@ -14,6 +14,8 @@ urlpatterns = [
     path('irb-standards/diagram-2/', views.social_science_irb_diagram_2, name='social_science_irb_diagram_2'),
     # Browse studies
     path('', views.study_list, name='list'),
+    # Lab directory: HSIRB-approved studies + optional stay-informed email (not formal data)
+    path('lab/', views.lab_studies_directory, name='lab_studies_directory'),
     path('<uuid:pk>/', views.study_detail, name='detail'),
     
     # Timeslot booking

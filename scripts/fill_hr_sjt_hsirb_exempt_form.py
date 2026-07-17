@@ -40,62 +40,59 @@ DEPT = "Management and Marketing"
 COLLEGE_PHONE = "985-449-7015"
 
 POPULATION = (
-    "Two groups, all 18+: (1) MNGT 425 students who choose the research-study assignment "
-    "(Option A). An equivalent alternative assignment (qualitative responses to each prompt, "
-    "submitted to the instructor for credit) is available; alt-assignment data are NOT in the "
-    "main study. No flyer. (2) HR professionals via professional networks; VOLUNTARY. "
-    "Under-18 excluded. See Attachment A."
+    "VOLUNTARY; ages 18+. Adults interested in management topics: (1) Business students "
+    "(primarily MNGT 425 & MNGT 502) completing this as an in-class assignment (Option A), "
+    "with qualitative Option B for equivalent credit (grading only; not analyzed as research); "
+    "(2) working employees (professionals/managers/executives welcome). No flyer. See Attachment A."
 )
 
 PROCEDURES = (
-    "Electronic informed consent (professional + student forms). Online HR Situational Judgment "
-    "Test: 27 HR scenarios; optional 1–5 effectiveness ratings per tactic; Skip allowed (no "
-    "forced responding). Feedback PDF/debrief. ~45–60 min. MNGT 425 Option B qualitative "
-    "submissions go to the instructor only (not research). Instrument + links: "
-    "https://bayoupal.nicholls.edu/hsirb/studies/hr-sjt/run/ ; consents under /hsirb/studies/hr-sjt/. "
-    "See Attachment A."
+    "e-consent → opaque session ID (no PRAMS ID) → optional role category → online SJT "
+    "(27 scenarios; optional 1–5 ratings; Skip; optional decision notes) → optional feedback "
+    "report. No deception; no formal debriefing. Emails for updates only on a separate lab form "
+    "(not formal data). ~45–60 min. IRB instrument: "
+    "https://bayoupal.nicholls.edu/hsirb/studies/hr-sjt/run/ . See Attachment A."
 )
 
 OBJECTIVES = (
-    "(1) Measure how students rate HR tactic effectiveness in SJT scenarios; (2) measure HR "
-    "professionals’ ratings as an expert benchmark; (3) compare student vs professional ratings; "
-    "(4) identify most/least effective tactics across HR domains; (5) examine whether evidence-based "
-    "HR training shifts student ratings toward professional norms (if pre/post used). See Attachment A."
+    "Exploratory: describe tactic-effectiveness ratings; explore (without assuming) differences "
+    "across role groups (students, professionals, executives, etc.); support MNGT 425/502 "
+    "teaching; share aggregate findings for community learning/networking. See Attachment A."
 )
 
 RECRUITMENT = (
-    "No flyer. MNGT 425: classroom/LMS announcement of assignment Options A (research SJT) and "
-    "B (qualitative alt for instructor credit; not research). Professionals: LinkedIn/SHRM/HR "
-    "networks + consent link. Verbatim announcement in Attachment A / Appendix D."
+    "No flyer. MNGT 425/502: classroom/LMS assignment Options A (research) / B (qualitative "
+    "alt; grading only). Community: outreach to working employees interested in management. "
+    "Separate lab page lists HSIRB-approved studies + optional stay-informed email. See Att. A."
 )
 
 INCLUSION = (
-    "Age 18+; MNGT 425 students choosing Option A (research assignment); professionals with "
-    "current/recent HR experience; internet-capable device. See Attachment A."
+    "Age 18+; interested in management topics (preferred); MNGT 425/502 students choosing "
+    "Option A, or working employees / community adults; internet-capable device. See Attachment A."
 )
 
 EXCLUSION = (
-    "Under 18; unable to complete online assessment; prior participation; students not in MNGT 425 "
-    "or who chose Option B (alt data not research); no current/recent HR experience (pros)."
+    "Under 18; unable to complete online assessment; prior participation; Option B choosers "
+    "(alt not research / not analyzed)."
 )
 
 BENEFIT_SUBJECTS = (
-    "Feedback reports; learning about evidence-based HR / SJT; contribution to research; optional "
-    "aggregated infographic (individuals not identified)."
+    "Course assignment credit (425/502); optional feedback report; contribute to exploratory "
+    "research; optional aggregate findings via separate email form (not formal data)."
 )
 BENEFIT_OTHERS = (
-    "Educators and HR trainers may use findings to improve HR education and assessment."
+    "Students/community may learn from aggregate insights supporting networking around management topics."
 )
 BENEFIT_SOCIETY = (
-    "Improved understanding of HR situational judgment and evidence-based HR education."
+    "Exploratory evidence on management/HR tactic ratings; university–community engagement."
 )
 PAYMENT = (
-    "No monetary payment. MNGT 425: Option A (research) or Option B (qualitative alt) earn "
-    "equivalent assignment credit; Option B data are not in the main study. Pros unpaid. Feedback reports."
+    "No monetary payment. MNGT 425/502: Option A or B earn equivalent assignment credit; "
+    "Option B not analyzed as research. Community volunteers unpaid."
 )
-COST_TIME = "Approx. 45–60 minutes for Option A / professional SJT; Option B is a written alt for the instructor."
+COST_TIME = "Approx. 45–60 minutes for SJT; Option B is written alt for instructor only."
 COST_MONEY = "None."
-REPEATED = "Not required. Optional pre/post training comparison only if later used under this protocol."
+REPEATED = "Not required."
 
 
 def load_protocol() -> dict:

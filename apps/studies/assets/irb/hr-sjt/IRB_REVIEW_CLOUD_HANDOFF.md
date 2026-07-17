@@ -62,5 +62,6 @@ Paste IRB comments into a cloud agent session on this branch/PR and point to thi
 2. Update `protocol.json` and keep `HR_SJT_PROTOCOL_PRAMS.md` in sync.
 3. If wording/skip UX is questioned, update `templates/studies/hr_sjt_irb_full_study.html` and/or `incidents.json` as needed.
 4. **Optional per-scenario decision notes** are in the IRB interactive packet (`hr_sjt_irb_full_study.html`) and instrument docs. The live `hr-sjt-assessment` app is hosted separately and still needs the same optional notes textarea + API persistence when that codebase is updated.
+5. **Lab studies directory** (HSIRB-approved list + optional stay-informed email, not formal data): `/studies/lab/` — model `LabCommunityContact`, migration `0036_add_lab_community_contact`.
 4. Refresh `docs/HR_SJT_DOCUMENTATION.html` if the summary changed.
 5. Commit, push, and update the PR description with what changed for the reviewers.

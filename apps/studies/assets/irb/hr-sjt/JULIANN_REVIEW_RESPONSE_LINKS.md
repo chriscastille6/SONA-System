@@ -52,11 +52,17 @@ Same Nicholls-branded style as *A Study in Decision Making* (cover, project info
 - D Classroom assignment announcement (**no flyer**; alt assignment not in main study)  
 - E CITI certificate (PI)
 
-### MNGT 425 assignment structure (updated)
-- Students are asked to participate in the study **as a course assignment** (Option A).  
-- **Alternative assignment (Option B):** qualitative description of how one would respond to each prompt, submitted to the instructor for equivalent credit.  
-- Option B data are **not** part of the main study.  
+### Course assignment structure (MNGT 425 & MNGT 502)
+- In-class assignment for course credit (Option A = research SJT).  
+- **Alternative (Option B):** qualitative write-up to instructor for equivalent credit — **not researched/analyzed** (no qualitative pipeline yet).  
+- Populations: business students + working employees interested in management topics (exploratory; no assumed group differences).  
+- **No PRAMS IDs** (opaque session identifiers only). No deception; **no formal debriefing**.  
+- Optional emails only on the **separate lab form** (not formal data collection).  
 - **No recruitment flyer.**
+
+### Lab studies directory (separate from SJT survey)
+- Lists HSIRB-approved/exempt studies + optional “stay informed” email  
+- Path: `/hsirb/studies/lab/` (route name `studies:lab_studies_directory`)
 
 ### Official rev9 exempt form (Juliann request — filled)
 - Blank: `apps/studies/assets/irb/hr-sjt/HSIRB-exempt_review_request.rev9_2019.v2_BLANK.pdf`

@@ -29,6 +29,7 @@ from .models import (
     Signup,
     Response,
     StudyEmailContact,
+    LabCommunityContact,
     StudentDataConsent,
     IRBReview,
     ReviewDocument,
@@ -608,7 +609,7 @@ def protocol_consent_done(request, slug):
     })
 
 
-# Consent form text for HR SJT MNGT 425 students (study assignment option).
+# Consent form text for HR SJT MNGT 425 / MNGT 502 students (study assignment option).
 # Placeholders: pi_name, pi_department, withdraw_contact_name, withdraw_contact_email, infographic_preview_link.
 HR_SJT_STUDENT_CONSENT_BODY = """
 <strong>Informed Consent for Participation in Research</strong>
@@ -617,41 +618,32 @@ HR_SJT_STUDENT_CONSENT_BODY = """
 <strong>Principal Investigator:</strong> {pi_name}, {pi_department}
 
 <strong>1. Introduction and Purpose</strong>
-You are enrolled in MNGT 425 (HR Analytics). As a course assignment, you are asked to participate in a research study comparing how students and HR professionals evaluate workplace tactics. Research participation is <strong>VOLUNTARY</strong>: you may instead complete the alternative assignment described below. You must be 18 years of age or older to participate in the research study.
+You are enrolled in MNGT 425 and/or MNGT 502. As an in-class course assignment, you are asked to participate in an <strong>exploratory</strong> research study on how people interested in management topics (students and working employees) rate workplace tactics. We do not assume group differences in advance. Research participation is <strong>VOLUNTARY</strong>: you may instead complete the alternative assignment described below. You must be 18 years of age or older to participate in the research study.
 
 <strong>2. Course Assignment Options</strong>
-<strong>Option A — Research study (this consent):</strong> Complete the online HR Situational Judgment Test (27 scenarios). You may rate tactic effectiveness (ratings are optional; you may skip any situation). At the end of each situation, you may optionally add notes about how you are thinking through the decision for your instructor. After you consent, your ratings may be included in the research dataset. Approximate time: 45–60 minutes. You may receive a feedback report and, as a token of appreciation, an aggregated infographic (no individuals identified). {infographic_preview_link}
+<strong>Option A — Research study (this consent):</strong> Complete the online HR Situational Judgment Test (27 scenarios). You may rate tactic effectiveness (ratings are optional; you may skip any situation). At the end of each situation, you may optionally add notes about how you are thinking through the decision for your instructor. After you consent, your ratings may be included in the research dataset (opaque session identifier only; no PRAMS ID). Approximate time: 45–60 minutes. You may receive a feedback report. Aggregate findings (no individuals identified) may later be shared to support learning and community engagement. {infographic_preview_link}
 
-<strong>Option B — Alternative assignment (not research):</strong> If you prefer not to participate in this research study, write a qualitative description of how you would respond to each scenario prompt and submit it to the instructor for course credit. Completing Option B earns <strong>equivalent course credit</strong>. Alternative-assignment submissions are used <strong>only for grading</strong> and are <strong>NOT included in the main research study</strong>.
+<strong>Option B — Alternative assignment (not research):</strong> If you prefer not to participate in this research study, write a qualitative description of how you would respond to each scenario prompt and submit it to the instructor for course credit. Completing Option B earns <strong>equivalent course credit</strong>. Alternative-assignment submissions are used <strong>only for grading</strong>, are <strong>NOT included in the research dataset</strong>, and are <strong>not analyzed as study data</strong> at this time.
 
-No recruitment flyer is used; this assignment is announced through normal classroom / course communication.
+No recruitment flyer is used; this assignment is announced through normal classroom / course communication. There is <strong>no deception</strong> and <strong>no formal debriefing</strong>.
 
 <strong>3. Procedures if you choose Option A</strong>
-If you agree to participate, you will provide electronic consent and complete the online HR SJT. Only research ratings (and related session metadata) enter the study dataset. Personal identifiers are not stored with research ratings.
+If you agree to participate, you will provide electronic consent and complete the online HR SJT. Research ratings use an opaque session identifier only. Optional emails to receive aggregate updates are collected only on a <strong>separate lab form</strong> and are not part of formal survey data collection.
 
 <strong>4. Potential Benefits</strong>
-• Contributing to research on HR education and how student ratings compare with professional ratings.
-• Feedback report / optional aggregated infographic (no individuals identified).
-• There is no monetary payment. Completing Option A or Option B satisfies the course assignment for credit.
+• Completing the course assignment for credit (Option A or Option B).
+• Optional feedback report; optional aggregate findings via a separate email form.
+• Contributing to exploratory research on management/HR tactic ratings.
+• There is no monetary payment.
 
 <strong>5. Potential Risks</strong>
-This study involves minimal risk. Possible risks include:
-• Mild boredom or fatigue from the online task.
-• Minimal privacy risk; the research dataset is coded and de-identified.
-
-Risks are no greater than those of ordinary coursework. You may withdraw or request deletion at any time without penalty.
+This study involves minimal risk (mild boredom/fatigue; minimal privacy risk). Risks are no greater than ordinary coursework. You may withdraw or request deletion at any time without penalty.
 
 <strong>6. Confidentiality</strong>
-<strong>Your privacy is our priority.</strong>
-
-The research dataset will be coded. Your name and student ID will be replaced with a <strong>candidate ID</strong> (a unique code linking only to you for withdrawal and deletion requests).
-
-<strong>No identifiable information will be included in any publications or presentations.</strong>
+<strong>Your privacy is our priority.</strong> Research ratings are stored with an opaque session identifier — <strong>not a PRAMS ID</strong>. Names and emails are not stored with research ratings. Publications and community reports use aggregate summaries only.
 
 <strong>7. Voluntary Participation and Equivalent Credit</strong>
-<strong>Choosing Option A (research) or Option B (alternative) is your decision.</strong>
-
-<strong>No Penalty:</strong> Choosing the alternative assignment instead of the research study will <strong>not reduce your grade</strong> relative to choosing the study; both options satisfy the assignment. Your relationship with the instructor is not harmed by declining research participation.
+<strong>Choosing Option A (research) or Option B (alternative) is your decision.</strong> Choosing the alternative will <strong>not reduce your grade</strong> relative to choosing the study; both options satisfy the assignment.
 
 <strong>8. Right to Withdraw</strong>
 If you choose Option A, you may <strong>withdraw your consent at any time without penalty</strong> by contacting {withdraw_contact_name} at {withdraw_contact_email}.
@@ -805,7 +797,7 @@ def hr_sjt_exempt_request_doc(request):
     raise Http404("HSIRB application packet not found. Run: python3 scripts/build_hr_sjt_hsirb_packet.py")
 
 
-# Consent form for HR professionals (working professionals) taking the HR SJT.
+# Consent form for community / working employees taking the HR SJT.
 # Placeholders: pi_name, pi_department, withdraw_contact_name, withdraw_contact_email, infographic_preview_link.
 HR_SJT_PROFESSIONAL_CONSENT_BODY = """
 <strong>Informed Consent for Participation in Research</strong>
@@ -814,40 +806,34 @@ HR_SJT_PROFESSIONAL_CONSENT_BODY = """
 <strong>Principal Investigator:</strong> {pi_name}, {pi_department}
 
 <strong>1. Introduction and Purpose</strong>
-Working professionals, such as HR professionals.
-
-You are invited to participate in a research study comparing how HR professionals and students evaluate workplace tactics in situational judgment scenarios. Your responses will help researchers understand how practitioners apply evidence-based HR practices. Participation is <strong>VOLUNTARY</strong>. You must be 18 years of age or older.
+You are invited to participate in an <strong>exploratory</strong> research study on how people interested in management topics — including business students and working employees (e.g., professionals, managers, executives) — rate workplace tactics in situational judgment scenarios. We do not assume differences across groups in advance. Participation is <strong>VOLUNTARY</strong>. You must be 18 years of age or older.
 
 <strong>2. Procedures</strong>
 If you agree to participate, you will:
-• Complete a brief demographic questionnaire (including optional BLS race/ethnicity and HR credentials).
-• Complete the HR Situational Judgment Test (27 scenarios; you may rate the effectiveness of tactics on a 1–5 scale). Ratings are optional; you may skip any situation. Optional notes at the end of each situation may describe how you are thinking through the decision.
-• Receive a feedback report summarizing your ratings.
+• Optionally indicate a role category (e.g., student, working professional, executive) for exploratory comparisons.
+• Complete the HR Situational Judgment Test (27 scenarios; optional 1–5 tactic ratings; Skip allowed). Optional notes may describe how you are thinking through each decision.
+• Optionally receive a feedback report summarizing your ratings.
+
+There is <strong>no deception</strong> and <strong>no formal debriefing</strong>. Optional emails to stay informed or receive aggregate findings are collected only on a <strong>separate lab form</strong> and are not part of formal survey data collection.
 
 <strong>3. Potential Benefits</strong>
-• Insight into your own HR decision-making through an immediate feedback report.
-• Learning about evidence-based HR management and situational judgment via the debriefing materials.
-• Contributing to research on HR education and how professional ratings compare with student ratings.
-• As a token of appreciation, you may receive an aggregated infographic comparing perspectives (no individuals identified). {infographic_preview_link}
+• Optional feedback report on your ratings.
+• Contributing to exploratory research on management/HR tactic ratings.
+• Optionally receiving aggregate findings (no individuals identified) via a separate email form, which may support community learning and networking around management topics. {infographic_preview_link}
 
 There is no monetary compensation.
 
 <strong>4. Potential Risks</strong>
-This study involves minimal risk. Possible risks include:
-• Mild psychological discomfort if feedback differs from your expectations (feedback is educational and supportive).
-• Time commitment of approximately 45–60 minutes.
-• Minimal privacy risk associated with any online data collection; responses are de-identified and stored with a unique code.
-
-Risks are no greater than those encountered in ordinary professional or educational activities. You may skip situations, leave ratings blank, or withdraw at any time without penalty.
+Minimal risk (mild boredom/fatigue; minimal privacy risk). Responses use an opaque session identifier — <strong>not a PRAMS ID</strong>. You may skip situations, leave ratings blank, or withdraw at any time without penalty.
 
 <strong>5. Your Report and Data Ownership</strong>
-At the conclusion of the study, you will receive a <strong>PDF report of your data</strong>, which you may keep. The report will contain a <strong>unique identifying code</strong> that gives you ownership over your data. If you would prefer to have your data removed from the study, we will honor that request.
+You may receive a <strong>PDF report of your data</strong>. If you prefer to have your research data removed, contact the research team and we will honor that request.
 
 <strong>6. Time and Compensation</strong>
-The study takes approximately 45–60 minutes. <strong>There is no monetary compensation.</strong> Your participation is voluntary and appreciated.
+Approximately 45–60 minutes. <strong>No monetary compensation.</strong>
 
 <strong>7. Confidentiality</strong>
-<strong>Your privacy is our priority.</strong> Your responses will be de-identified and stored with a unique code. No identifiable information will be included in any publications or shared with others.
+<strong>Your privacy is our priority.</strong> Research ratings are stored with an opaque session identifier. Names and emails are not stored with research ratings. Publications and shared community reports use aggregate summaries only.
 
 <strong>8. Right to Withdraw</strong>
 You may <strong>withdraw your consent at any time without penalty</strong> by closing the browser or contacting {withdraw_contact_name} at {withdraw_contact_email}.
@@ -1201,6 +1187,52 @@ def _validate_infographic_email(email):
     if '@' not in email or '.' not in email.split('@')[-1]:
         return ('Please enter a valid email address.', 400)
     return None
+
+
+def _hsirb_approved_studies_queryset():
+    """Studies marked approved/exempt on the HSIRB workflow (public listing)."""
+    return Study.objects.filter(
+        is_active=True,
+        irb_status__in=['approved', 'exempt'],
+    ).filter(
+        Q(irb_expiration__isnull=True) | Q(irb_expiration__gte=timezone.now().date())
+    ).order_by('title')
+
+
+@require_http_methods(['GET', 'POST'])
+def lab_studies_directory(request):
+    """
+    Public directory of HSIRB-approved studies plus optional email signup to
+    stay informed / receive aggregate findings. Emails are NOT formal study data.
+    """
+    studies = _hsirb_approved_studies_queryset()
+    submitted = request.GET.get('submitted') == '1'
+    error = None
+    if request.method == 'POST':
+        email = request.POST.get('email', '').strip()
+        err = _validate_infographic_email(email)
+        if err:
+            error = err[0] if isinstance(err, tuple) else err
+        else:
+            try:
+                LabCommunityContact.objects.update_or_create(
+                    email=email.strip().lower(),
+                    defaults={
+                        'stay_informed': True,
+                        'source': 'lab-studies-page',
+                    },
+                )
+            except Exception:
+                logger.exception('lab_studies_directory: failed to save LabCommunityContact')
+                error = 'Unable to save. Please try again later.'
+            else:
+                return redirect(request.path + '?submitted=1')
+    return render(request, 'studies/lab_studies_directory.html', {
+        'studies': studies,
+        'submitted': submitted,
+        'error': error,
+        'lab_name': 'People Analytics Lab of the Bayou',
+    })
 
 
 @require_http_methods(["GET", "POST"])

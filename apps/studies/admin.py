@@ -12,6 +12,7 @@ from .models import (
     Signup,
     Response,
     StudyEmailContact,
+    LabCommunityContact,
     StudentDataConsent,
     IRBReview,
     ReviewDocument,
@@ -223,6 +224,14 @@ class StudyEmailContactAdmin(admin.ModelAdmin):
     list_filter = ['study', 'created_at']
     search_fields = ['email', 'study__title']
     raw_id_fields = ['study']
+    readonly_fields = ['id', 'created_at']
+
+
+@admin.register(LabCommunityContact)
+class LabCommunityContactAdmin(admin.ModelAdmin):
+    list_display = ['email', 'stay_informed', 'source', 'created_at']
+    list_filter = ['stay_informed', 'created_at']
+    search_fields = ['email', 'source']
     readonly_fields = ['id', 'created_at']
 
 

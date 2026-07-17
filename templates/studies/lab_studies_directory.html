@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+{% block title %}Lab studies — {{ lab_name }}{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="col-lg-8 offset-lg-2">
+    <p class="text-muted small mb-1">{{ lab_name }}</p>
+    <h1 class="h3 mb-3">HSIRB-approved studies</h1>
+    <p class="text-secondary">
+      Below are studies currently marked <strong>approved</strong> or <strong>exempt</strong> in the
+      HSIRB workflow. You can open a study to learn more or participate when a link is available.
+    </p>
+    <p class="text-secondary small">
+      Optional email signup (bottom of this page) is <strong>separate from research surveys</strong>
+      and is not part of formal study data collection. We use it only to share aggregate findings
+      and updates about lab studies.
+    </p>
+
+    {% if studies %}
+      <div class="list-group mb-4">
+        {% for study in studies %}
+          <div class="list-group-item">
+            <div class="d-flex w-100 justify-content-between align-items-start gap-2">
+              <div>
+                <h2 class="h5 mb-1">{{ study.title }}</h2>
+                <p class="mb-2 text-secondary small">
+                  {{ study.description|truncatewords:40 }}
+                </p>
+                <span class="badge text-bg-light border">{{ study.get_irb_status_display }}</span>
+                {% if study.mode %}<span class="badge text-bg-light border">{{ study.get_mode_display }}</span>{% endif %}
+              </div>
+              <div class="text-nowrap">
+                {% if study.external_link %}
+                  <a class="btn btn-sm btn-primary" href="{{ study.external_link }}" target="_blank" rel="noopener">Participate</a>
+                {% elif study.slug %}
+                  <a class="btn btn-sm btn-outline-primary" href="{% url 'studies:detail' study.id %}">View</a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="alert alert-secondary">
+        No HSIRB-approved studies are listed right now. Check back soon, or use the form below to stay informed.
+      </div>
+    {% endif %}
+
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h2 class="h5">Stay informed about lab studies</h2>
+        <p class="text-secondary small">
+          Optionally share your email to receive updates about open studies and aggregate findings
+          (no individuals identified). This form is <strong>not</strong> linked to survey responses.
+        </p>
+        {% if submitted %}
+          <div class="alert alert-success mb-0">Thank you — you are on the lab updates list.</div>
+        {% else %}
+          {% if error %}<div class="alert alert-danger">{{ error }}</div>{% endif %}
+          <form method="post" action="">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="id_email" class="form-label">Email address (optional signup)</label>
+              <input type="email" name="email" id="id_email" class="form-control"
+                     placeholder="you@example.com" required maxlength="254"
+                     value="{{ request.POST.email|default:'' }}">
+            </div>
+            <button type="submit" class="btn btn-primary">Keep me informed</button>
+          </form>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -37,59 +37,58 @@ HR Situational Judgment Test: Evidence-Based HR Decision-Making
 
 ### 4a. Population of human subjects
 
-Two groups, all 18+: (1) MNGT 425 students who choose the research-study assignment (Option A). An equivalent alternative assignment (qualitative responses to each prompt, submitted to the instructor for credit) is available; alt-assignment data are NOT in the main study. No flyer. (2) HR professionals via professional networks; VOLUNTARY. Under-18 excluded. See Attachment A.
+VOLUNTARY; ages 18+. Adults interested in management topics: (1) Business students (primarily MNGT 425 & MNGT 502) completing this as an in-class assignment (Option A), with qualitative Option B for equivalent credit (grading only; not analyzed as research); (2) working employees (professionals/managers/executives welcome). No flyer. See Attachment A.
 
 ### 4b. Research procedures and data collection
 
-Electronic informed consent (professional + student forms). Online HR Situational Judgment Test: 27 HR scenarios; optional 1–5 effectiveness ratings per tactic; Skip allowed (no forced responding). Feedback PDF/debrief. ~45–60 min. MNGT 425 Option B qualitative submissions go to the instructor only (not research). Instrument + links: https://bayoupal.nicholls.edu/hsirb/studies/hr-sjt/run/ ; consents under /hsirb/studies/hr-sjt/. See Attachment A.
+e-consent → opaque session ID (no PRAMS ID) → optional role category → online SJT (27 scenarios; optional 1–5 ratings; Skip; optional decision notes) → optional feedback report. No deception; no formal debriefing. Emails for updates only on a separate lab form (not formal data). ~45–60 min. IRB instrument: https://bayoupal.nicholls.edu/hsirb/studies/hr-sjt/run/ . See Attachment A.
 
 ### 4c. Objectives of the research
 
-(1) Measure how students rate HR tactic effectiveness in SJT scenarios; (2) measure HR professionals’ ratings as an expert benchmark; (3) compare student vs professional ratings; (4) identify most/least effective tactics across HR domains; (5) examine whether evidence-based HR training shifts student ratings toward professional norms (if pre/post used). See Attachment A.
+Exploratory: describe tactic-effectiveness ratings; explore (without assuming) differences across role groups (students, professionals, executives, etc.); support MNGT 425/502 teaching; share aggregate findings for community learning/networking. See Attachment A.
 
 ## 5. Recruitment
 
 ### 5a. How will you recruit subjects? (verbatim materials)
 
-No flyer. MNGT 425: classroom/LMS announcement of assignment Options A (research SJT) and B (qualitative alt for instructor credit; not research). Professionals: LinkedIn/SHRM/HR networks + consent link. Verbatim announcement in Attachment A / Appendix D.
+No flyer. MNGT 425/502: classroom/LMS assignment Options A (research) / B (qualitative alt; grading only). Community: outreach to working employees interested in management. Separate lab page lists HSIRB-approved studies + optional stay-informed email. See Att. A.
 
 **Recruitment script (verbatim):**
 
-> MNGT 425 — Classroom Assignment Announcement (verbatim; no flyer)    Study Title: HR Situational Judgment Test: Evidence-Based HR Decision-Making    As an assignment in MNGT 425, you are asked to participate in a research study on how students and HR professionals rate the effectiveness of workplace tactics.    Option A — Research study assignment:  Complete the online HR Situational Judgment Test (27 scenarios). You may rate tactic effectiveness (ratings are optional; you may skip any situation). You will receive a feedback report. After informed consent, your ratings may be used in the research dataset comparing students and HR professionals. Duration: approximately 45–60 minutes. Online; complete at your own pace. You must be 18 or older.    Option B — Alternative assignment (not research):  If you prefer not to participate in the research study, write a qualitative description of how you would respond to each scenario prompt and submit it to the instructor for course credit. This alternative earns equivalent credit. Your alternative-assignment submission will be used only for grading and will NOT be included in the main research study.    Both Option A and Option B satisfy the course assignment. Choosing the alternative does not penalize your grade relative to choosing the study.    ---    HR professionals — outreach description (verbatim; no flyer):    Study Title: HR Situational Judgment Test: Evidence-Based HR Decision-Making    Description: You are invited to complete an online HR Situational Judgment Test with 27 HR management scenarios. For each scenario, you may rate the effectiveness of different HR tactics. You will receive a feedback report. Your responses will be used for research on HR education and decision-making. Participation is voluntary.    Duration: Approximately 45–60 minutes  Mode: Online (complete at your own pace)  Requirements: Must be 18 years of age or older; current or recent HR professional experience
+> MNGT 425 / MNGT 502 — Classroom Assignment Announcement (verbatim; no flyer)    Study Title: HR Situational Judgment Test: Evidence-Based HR Decision-Making    As an in-class assignment, you are asked to participate in an exploratory research study on how people interested in management topics rate the effectiveness of workplace tactics.    Option A — Research study assignment:  Complete the online HR Situational Judgment Test (27 scenarios). You may rate tactic effectiveness (optional; you may skip any situation) and optionally add notes about how you are thinking through each decision. After informed consent, your ratings may be included in the research dataset. Duration: approximately 45–60 minutes. Must be 18 or older.    Option B — Alternative assignment (not research / not analyzed as study data):  Write a qualitative description of how you would respond to each scenario prompt and submit it to the instructor for equivalent course credit. This is used only for grading.    Both options satisfy the course assignment.    ---    Community / working employees — outreach description (verbatim):    Study Title: HR Situational Judgment Test: Evidence-Based HR Decision-Making    You are invited to complete an online situational judgment exercise with 27 workplace scenarios. We welcome working employees and others interested in management topics. Participation is voluntary, takes about 45–60 minutes, and is for adults 18+. Aggregate findings may later be shared with participants who optionally join a separate lab mailing list.
 
 ### 5b. Inclusion criteria
 
 - Must be at least 18 years of age
-- For students: Must be currently enrolled in MNGT 425 (HR Analytics) at Nicholls State University and choose the research-study assignment option (Option A)
-- For HR professionals: Must have current or recent professional experience in human resources (e.g., HR manager, recruiter, compensation specialist, HR generalist)
-- Must have access to a computer or device with internet connection
-- Must be able to complete web-based assessments and download PDF reports
+- Interested in management topics (preferred)
+- For course-credit path: currently enrolled in MNGT 425 or MNGT 502 at Nicholls and choose Option A (research assignment)
+- For community path: working employee or other adult interested in management topics
+- Access to a computer/device with internet; able to complete a web-based assessment
 
 ### 5c. Exclusion criteria
 
 - Under 18 years of age
-- Unable to complete online assessments due to technical limitations
-- Previously participated in this study (to avoid duplicate responses)
-- For students: Not currently enrolled in MNGT 425; or chose the qualitative alternative assignment (Option B) — alternative submissions are not research data
-- For HR professionals: No current or recent professional experience in human resources
+- Unable to complete the online assessment due to technical limitations
+- Previously participated in this study (duplicate responses)
+- Chose the qualitative alternative assignment (Option B) — those submissions are not research data and are not analyzed as part of this study
 
 ## 6. Subject benefits and costs
 
 ### 6a. Benefits
 
-1. **Human subjects:** Feedback reports; learning about evidence-based HR / SJT; contribution to research; optional aggregated infographic (individuals not identified).
-2. **Others with similar problems / roles:** Educators and HR trainers may use findings to improve HR education and assessment.
-3. **Society:** Improved understanding of HR situational judgment and evidence-based HR education.
+1. **Human subjects:** Course assignment credit (425/502); optional feedback report; contribute to exploratory research; optional aggregate findings via separate email form (not formal data).
+2. **Others with similar problems / roles:** Students/community may learn from aggregate insights supporting networking around management topics.
+3. **Society:** Exploratory evidence on management/HR tactic ratings; university–community engagement.
 
 ### 6b. Payment
 
-No monetary payment. MNGT 425: Option A (research) or Option B (qualitative alt) earn equivalent assignment credit; Option B data are not in the main study. Pros unpaid. Feedback reports.
+No monetary payment. MNGT 425/502: Option A or B earn equivalent assignment credit; Option B not analyzed as research. Community volunteers unpaid.
 
 ### 6c. Estimated costs to each subject
 
-1. **Time:** Approx. 45–60 minutes for Option A / professional SJT; Option B is a written alt for the instructor.
+1. **Time:** Approx. 45–60 minutes for SJT; Option B is written alt for instructor only.
 2. **Money:** None.
-3. **Repeated testing:** Not required. Optional pre/post training comparison only if later used under this protocol.
+3. **Repeated testing:** Not required.
 
 ## 7. Basis of request for exemption
 

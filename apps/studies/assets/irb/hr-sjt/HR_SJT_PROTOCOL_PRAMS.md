@@ -16,14 +16,14 @@
 This study qualifies for exempt status under Category D (Educational settings, anonymous surveys/interviews) because:
 
 1. The study involves minimal risk to participants (online situational judgment assessment)
-2. All data collection is anonymous – participants are identified only by PRAMS ID numbers
+2. All data collection is anonymous – participants are identified only by opaque session identifiers
 3. The study involves standard educational and business assessment procedures
 4. No sensitive topics or vulnerable populations are involved
 5. Participants are adults (18+) who can provide informed consent
 6. The study does not involve deception, physical procedures, or collection of sensitive information
 7. All procedures are standard in educational research settings
 
-The study involves only anonymous data collection through online assessments, with no collection of identifying information beyond PRAMS ID numbers (which are already anonymized in the system).
+The study involves only anonymous data collection through online assessments, with no collection of identifying information beyond opaque session identifiers (which are already anonymized in the system).
 
 **Basic Info:**
 - Funding Source: No external funding. Internal research project.
@@ -35,10 +35,14 @@ The study involves only anonymous data collection through online assessments, wi
 ## 2. Protocol Description
 
 **Protocol Description:**
-This study examines how students in HR analytics courses evaluate the effectiveness of HR management tactics in situational judgment scenarios, and how training in evidence-based HR practices affects their decision-making. We are testing whether students demonstrate variability in tactic ratings across scenarios and whether training shifts ratings toward evidence-aligned options.
+This exploratory study examines how people interested in management topics — including business students and working employees (e.g., professionals, managers, executives) — rate the effectiveness of common workplace / HR tactics in situational judgment scenarios. We do not assume group differences in advance; analyses explore whether and how ratings vary across self-described roles (e.g., student, working professional, executive). Primary data collection occurs as an in-class course assignment in MNGT 425 and MNGT 502; community participants interested in management topics are also welcome. Aggregate findings may be shared to support student–community engagement (e.g., helping students learn from and connect with working professionals around management topics). There is no deception and no formal debriefing.
 
 **Population Description:**
-Participants include (1) undergraduate students enrolled in MNGT 425 (HR Analytics) at Nicholls State University who choose to complete this research study as their course assignment (Option A), and (2) HR professionals recruited through professional networks. All must be at least 18 years of age. MNGT 425 students may instead complete an equivalent alternative assignment (Option B: qualitative description of how one would respond to each scenario prompt, submitted to the instructor for credit); Option B submissions are not part of the main research study. No recruitment flyer is used.
+Adults 18 years of age or older who are interested in management topics, including:
+(1) Business students at Nicholls State University, primarily those enrolled in MNGT 425 (HR Analytics) and MNGT 502, for whom participation is offered as an in-class course assignment for credit; and
+(2) Working employees (any employed adults, preferably those interested in management topics — e.g., professionals, managers, executives), recruited through community / professional outreach.
+
+Classroom structure (MNGT 425 / MNGT 502): Students are asked to participate in this study as a course assignment. An equivalent alternative assignment is available: write a qualitative description of how one would respond to each scenario prompt and submit it to the instructor for course credit. Alternative-assignment submissions are used only for grading; they are not included in the main research dataset and are not analyzed as study data at this time (no qualitative analysis pipeline yet). No recruitment flyer is used for students. Participation in research (Option A) versus the alternative (Option B) is the student's choice; both satisfy the assignment for credit.
 
 **Research Procedures:**
 The study involves the following procedures:
@@ -87,7 +91,13 @@ This research serves educational purposes by:
 ## 3. Recruitment
 
 **Recruitment Method:**
-No recruitment flyer is used. (1) MNGT 425 students: The instructor announces the study as a course assignment via normal classroom / LMS communication. Students may (Option A) participate in the research study by completing the online HR SJT after informed consent, or (Option B) complete an equivalent alternative assignment—a qualitative written description of how they would respond to each scenario prompt—submitted to the instructor for course credit. Option B data are not part of the main study. Both options satisfy the assignment. (2) HR professionals: Recruited through professional networks (LinkedIn, SHRM chapters, HR associations, direct outreach) using a brief study description and consent link.
+No recruitment flyer is used for the course assignment.
+
+(1) MNGT 425 and MNGT 502 students: The instructor announces the study as an in-class course assignment via normal classroom / LMS communication. Students may (a) participate in the research study by completing the online HR SJT after informed consent, or (b) complete an equivalent qualitative alternative assignment submitted to the instructor for credit. Alternative submissions are grading-only and not analyzed as research data.
+
+(2) Working employees / community participants interested in management topics: Invited through professional and community outreach (e.g., networks, email) using a brief study description and consent link. No flyer required.
+
+(3) Lab studies list (separate form): A public page lists HSIRB-approved studies available for participation and offers an optional email signup to stay informed about lab studies. That form is not part of formal SJT data collection.
 
 **Recruitment Script (classroom announcement; verbatim):**
 Study Title: HR Situational Judgment Test: Evidence-Based HR Decision-Making
@@ -139,7 +149,7 @@ This research contributes to:
 - Educational practices related to HR development in business curricula
 
 **Payment/Compensation:**
-No monetary compensation. MNGT 425 students earn equivalent assignment credit for Option A (research study) or Option B (qualitative alternative submitted to the instructor); Option B data are not part of the main study. HR professionals are uncompensated volunteers. Study participants may receive feedback reports.
+No monetary compensation. MNGT 425 and MNGT 502 students earn equivalent assignment credit for Option A (research) or Option B (qualitative alternative to the instructor). Option B is not research data and is not analyzed as study data. Community participants are uncompensated volunteers. Optional feedback reports may be provided.
 
 **Costs to Subjects:**
 The only cost to research participants is their time (approximately 45–60 minutes for the online SJT). There are no financial costs. Students who choose Option B submit a qualitative write-up to the instructor instead; that work is not research data.
@@ -155,22 +165,14 @@ The only cost to research participants is their time (approximately 45–60 minu
 ## 6. Statement of Risk
 
 **Risk Statement:**
-This study involves minimal risk to participants. The primary potential risks are:
-
-1. Psychological discomfort: Feedback may differ from expectations. However, all feedback is provided in a supportive, educational context with emphasis on learning and growth.
-
-2. Time commitment: Research participants invest approximately 45–60 minutes. MNGT 425 students may instead complete the qualitative alternative assignment for equivalent credit.
-
-3. Privacy concerns: While all data is anonymized, there is a minimal risk of data breach. However, no personally identifying information is collected beyond PRAMS ID numbers.
-
-The risks in this study are no greater than those encountered in normal daily activities or routine educational assessments.
+Minimal risk. Possible mild boredom or fatigue; optional feedback may differ from expectations. Privacy risk is minimal because research ratings use opaque session identifiers (no opaque session identifiers; no names/emails with ratings). Risks are no greater than ordinary coursework or online surveys.
 
 **Risk Mitigation:**
 Risks are mitigated through:
 
 1. Comprehensive debriefing: All participants receive detailed debriefing explaining the study purpose, their performance, and evidence-based HR concepts in a supportive, educational context via the feedback reports.
 
-2. Anonymization: All data is collected with PRAMS ID numbers only – no names, email addresses, or other identifying information is collected.
+2. Anonymization: All data is collected with opaque session identifiers only – no names, email addresses, or other identifying information is collected.
 
 3. Voluntary participation: Participants can withdraw at any time without penalty. Effectiveness ratings are optional; participants may skip any situation and leave ratings blank (no forced responding).
 
@@ -189,15 +191,15 @@ Data will be collected through the PRAMS online platform and the HR SJT web appl
 2. HR Situational Judgment Test: Collected through web-based rating interface; responses stored in database (hr_sjt_sessions, hr_sjt_responses)
 3. Session metadata: Start/end times, duration, incident-level and tactic-level ratings
 
-All data collection occurs through secure, encrypted online forms. Data is automatically stored with PRAMS ID numbers as the only identifier.
+All data collection occurs through secure, encrypted online forms. Data is automatically stored with opaque session identifiers as the only identifier.
 
 **Data Storage:**
-All data will be stored securely on password-protected servers maintained by Nicholls State University. Data will be stored in the PRAMS system database and associated HR SJT tables, which use industry-standard encryption and security measures. Access to data is restricted to the principal investigator and authorized research team members. Data will be stored with PRAMS ID numbers only – no personally identifying information (names, email addresses, etc.) will be stored with the research data.
+All data will be stored securely on password-protected servers maintained by Nicholls State University. Data will be stored in the PRAMS system database and associated HR SJT tables, which use industry-standard encryption and security measures. Access to data is restricted to the principal investigator and authorized research team members. Data will be stored with opaque session identifiers only – no personally identifying information (names, email addresses, etc.) will be stored with the research data.
 
 **Confidentiality Procedures:**
 Confidentiality is maintained through:
 
-1. Anonymization: Participants are identified only by PRAMS ID numbers, which are already anonymized in the PRAMS system. No names, email addresses, or other identifying information is collected or stored with research data.
+1. Anonymization: Participants are identified only by opaque session identifiers, which are already anonymized in the PRAMS system. No names, email addresses, or other identifying information is collected or stored with research data.
 
 2. Secure access: Only the principal investigator and authorized research team members have access to the data, and all access is logged and monitored.
 
