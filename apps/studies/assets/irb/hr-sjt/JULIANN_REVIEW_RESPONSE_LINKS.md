@@ -47,10 +47,16 @@ Same Nicholls-branded style as *A Study in Decision Making* (cover, project info
 
 ### Appendices in the packet
 - A Professional consent  
-- B Class/student consent  
+- B Class/student consent (Option A research vs Option B qualitative alt)  
 - C Instrument (all 27 situations)  
-- D Recruitment script (verbatim)  
+- D Classroom assignment announcement (**no flyer**; alt assignment not in main study)  
 - E CITI certificate (PI)
+
+### MNGT 425 assignment structure (updated)
+- Students are asked to participate in the study **as a course assignment** (Option A).  
+- **Alternative assignment (Option B):** qualitative description of how one would respond to each prompt, submitted to the instructor for equivalent credit.  
+- Option B data are **not** part of the main study.  
+- **No recruitment flyer.**
 
 ### Official rev9 exempt form (Juliann request — filled)
 - Blank: `apps/studies/assets/irb/hr-sjt/HSIRB-exempt_review_request.rev9_2019.v2_BLANK.pdf`

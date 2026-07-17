@@ -43,7 +43,7 @@ urlpatterns = [
     path('<slug:slug>/protocol/documentation/', views.protocol_study_documentation, name='protocol_study_documentation'),
     path('<slug:slug>/protocol/consent/', views.protocol_consent, name='protocol_consent'),
     path('<slug:slug>/protocol/consent/done/', views.protocol_consent_done, name='protocol_consent_done'),
-    # HR SJT student secondary-data consent (MNGT 425)
+    # HR SJT student consent — MNGT 425 research assignment option (Option A)
     path('hr-sjt/student-data-consent/', views.hr_sjt_student_data_consent, name='hr_sjt_student_data_consent'),
     path('hr-sjt/student-data-consent/done/', views.hr_sjt_student_data_consent_done, name='hr_sjt_student_data_consent_done'),
     path('hr-sjt/professional-consent/', views.hr_sjt_professional_consent, name='hr_sjt_professional_consent'),

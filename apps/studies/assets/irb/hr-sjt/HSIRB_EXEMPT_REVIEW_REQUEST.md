@@ -37,11 +37,11 @@ HR Situational Judgment Test: Evidence-Based HR Decision-Making
 
 ### 4a. Population of human subjects
 
-Two groups, all 18+: (1) Undergraduates in MNGT 425 (HR Analytics) and related Management & Marketing courses at Nicholls. Course exercise may be required for class; research use of ratings (secondary-data consent) is VOLUNTARY with no grade effect (grade shield). (2) HR professionals recruited via professional networks; participation is VOLUNTARY. Under-18 excluded (required for HSIRB exemption). See Attachment A.
+Two groups, all 18+: (1) MNGT 425 students who choose the research-study assignment (Option A). An equivalent alternative assignment (qualitative responses to each prompt, submitted to the instructor for credit) is available; alt-assignment data are NOT in the main study. No flyer. (2) HR professionals via professional networks; VOLUNTARY. Under-18 excluded. See Attachment A.
 
 ### 4b. Research procedures and data collection
 
-Electronic informed consent (professional + class forms). Online HR Situational Judgment Test: 27 HR scenarios; optional 1–5 effectiveness ratings per tactic; Skip allowed (no forced responding). Feedback PDF/debrief. ~45–60 min. Instrument + active links: https://bayoupal.nicholls.edu/hsirb/studies/hr-sjt/run/ ; consents under /hsirb/studies/hr-sjt/; incidents.json in IRB packet. Printed instrument = Attachment C / full packet. See Attachment A.
+Electronic informed consent (professional + student forms). Online HR Situational Judgment Test: 27 HR scenarios; optional 1–5 effectiveness ratings per tactic; Skip allowed (no forced responding). Feedback PDF/debrief. ~45–60 min. MNGT 425 Option B qualitative submissions go to the instructor only (not research). Instrument + links: https://bayoupal.nicholls.edu/hsirb/studies/hr-sjt/run/ ; consents under /hsirb/studies/hr-sjt/. See Attachment A.
 
 ### 4c. Objectives of the research
 
@@ -51,16 +51,16 @@ Electronic informed consent (professional + class forms). Online HR Situational 
 
 ### 5a. How will you recruit subjects? (verbatim materials)
 
-Students: course/PRAMS announcement for MNGT 425 (+ related courses); secondary-data consent for research use. Professionals: LinkedIn/SHRM/HR networks + professional consent page. Verbatim recruitment script in Attachment A / Appendix D of full packet.
+No flyer. MNGT 425: classroom/LMS announcement of assignment Options A (research SJT) and B (qualitative alt for instructor credit; not research). Professionals: LinkedIn/SHRM/HR networks + consent link. Verbatim announcement in Attachment A / Appendix D.
 
 **Recruitment script (verbatim):**
 
-> Study Title: HR Situational Judgment Test: Evidence-Based HR Decision-Making    Description: You will complete an online HR Situational Judgment Test with 27 HR management scenarios. For each scenario, you will rate the effectiveness of different HR tactics. You will receive a feedback report. Your responses will be used for research on HR education and decision-making.    Duration: Approximately 45–60 minutes  Mode: Online (complete at your own pace)  Required for MNGT 425; supplements class time. All participants receive feedback reports.    Requirements: Must be 18 years of age or older
+> MNGT 425 — Classroom Assignment Announcement (verbatim; no flyer)    Study Title: HR Situational Judgment Test: Evidence-Based HR Decision-Making    As an assignment in MNGT 425, you are asked to participate in a research study on how students and HR professionals rate the effectiveness of workplace tactics.    Option A — Research study assignment:  Complete the online HR Situational Judgment Test (27 scenarios). You may rate tactic effectiveness (ratings are optional; you may skip any situation). You will receive a feedback report. After informed consent, your ratings may be used in the research dataset comparing students and HR professionals. Duration: approximately 45–60 minutes. Online; complete at your own pace. You must be 18 or older.    Option B — Alternative assignment (not research):  If you prefer not to participate in the research study, write a qualitative description of how you would respond to each scenario prompt and submit it to the instructor for course credit. This alternative earns equivalent credit. Your alternative-assignment submission will be used only for grading and will NOT be included in the main research study.    Both Option A and Option B satisfy the course assignment. Choosing the alternative does not penalize your grade relative to choosing the study.    ---    HR professionals — outreach description (verbatim; no flyer):    Study Title: HR Situational Judgment Test: Evidence-Based HR Decision-Making    Description: You are invited to complete an online HR Situational Judgment Test with 27 HR management scenarios. For each scenario, you may rate the effectiveness of different HR tactics. You will receive a feedback report. Your responses will be used for research on HR education and decision-making. Participation is voluntary.    Duration: Approximately 45–60 minutes  Mode: Online (complete at your own pace)  Requirements: Must be 18 years of age or older; current or recent HR professional experience
 
 ### 5b. Inclusion criteria
 
 - Must be at least 18 years of age
-- For students: Must be currently enrolled in MNGT 425 (HR Analytics) or related Management and Marketing courses at Nicholls State University
+- For students: Must be currently enrolled in MNGT 425 (HR Analytics) at Nicholls State University and choose the research-study assignment option (Option A)
 - For HR professionals: Must have current or recent professional experience in human resources (e.g., HR manager, recruiter, compensation specialist, HR generalist)
 - Must have access to a computer or device with internet connection
 - Must be able to complete web-based assessments and download PDF reports
@@ -70,7 +70,7 @@ Students: course/PRAMS announcement for MNGT 425 (+ related courses); secondary-
 - Under 18 years of age
 - Unable to complete online assessments due to technical limitations
 - Previously participated in this study (to avoid duplicate responses)
-- For students: Not currently enrolled at Nicholls State University
+- For students: Not currently enrolled in MNGT 425; or chose the qualitative alternative assignment (Option B) — alternative submissions are not research data
 - For HR professionals: No current or recent professional experience in human resources
 
 ## 6. Subject benefits and costs
@@ -83,11 +83,11 @@ Students: course/PRAMS announcement for MNGT 425 (+ related courses); secondary-
 
 ### 6b. Payment
 
-No monetary payment. MNGT 425 exercise supplements class time; research secondary-data consent is voluntary with no grade impact. All may receive feedback reports.
+No monetary payment. MNGT 425: Option A (research) or Option B (qualitative alt) earn equivalent assignment credit; Option B data are not in the main study. Pros unpaid. Feedback reports.
 
 ### 6c. Estimated costs to each subject
 
-1. **Time:** Approx. 45–60 minutes (live assessment); class secondary-data consent is read/sign only.
+1. **Time:** Approx. 45–60 minutes for Option A / professional SJT; Option B is a written alt for the instructor.
 2. **Money:** None.
 3. **Repeated testing:** Not required. Optional pre/post training comparison only if later used under this protocol.
 
@@ -139,7 +139,7 @@ I recommend that the above described research project be exempt from review.
 - [x] Professional consent form  
 - [x] Class/student consent form  
 - [x] Data collection instrument (27 situations — interactive packet + `incidents.json`)  
-- [x] Recruitment script (verbatim, Section 5a)  
+- [x] Classroom assignment announcement (verbatim, Section 5a; no flyer)  
 - [x] Protocol narrative (`HR_SJT_PROTOCOL_PRAMS.md` / `protocol.json`)  
 - [x] Full branded packet (`materials/pdf/HSIRB_Application_HR_SJT_Rating_Effectiveness_full_packet.pdf`)
 

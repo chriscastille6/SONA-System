@@ -608,7 +608,7 @@ def protocol_consent_done(request, slug):
     })
 
 
-# Consent form text for HR SJT student secondary-data consent (MNGT 425).
+# Consent form text for HR SJT MNGT 425 students (study assignment option).
 # Placeholders: pi_name, pi_department, withdraw_contact_name, withdraw_contact_email, infographic_preview_link.
 HR_SJT_STUDENT_CONSENT_BODY = """
 <strong>Informed Consent for Participation in Research</strong>
@@ -617,59 +617,60 @@ HR_SJT_STUDENT_CONSENT_BODY = """
 <strong>Principal Investigator:</strong> {pi_name}, {pi_department}
 
 <strong>1. Introduction and Purpose</strong>
-You are being asked to participate in a research study comparing how students and HR professionals evaluate specific workplace tactics. You were selected because you completed the case study exercises in MNGT 425 HR Analytics. Research participation (allowing your course data to be used for this study) is <strong>VOLUNTARY</strong>. You must be 18 years of age or older.
+You are enrolled in MNGT 425 (HR Analytics). As a course assignment, you are asked to participate in a research study comparing how students and HR professionals evaluate workplace tactics. Research participation is <strong>VOLUNTARY</strong>: you may instead complete the alternative assignment described below. You must be 18 years of age or older to participate in the research study.
 
-<strong>2. Procedures</strong>
-If you agree to participate, you grant the researcher permission to include your previously submitted case study ratings in a research dataset.
+<strong>2. Course Assignment Options</strong>
+<strong>Option A — Research study (this consent):</strong> Complete the online HR Situational Judgment Test (27 scenarios). You may rate tactic effectiveness (ratings are optional; you may skip any situation). After you consent, your ratings may be included in the research dataset. Approximate time: 45–60 minutes. You may receive a feedback report and, as a token of appreciation, an aggregated infographic (no individuals identified). {infographic_preview_link}
 
-<strong>No New Work:</strong> You do not need to complete any new assignments or surveys.
+<strong>Option B — Alternative assignment (not research):</strong> If you prefer not to participate in this research study, write a qualitative description of how you would respond to each scenario prompt and submit it to the instructor for course credit. Completing Option B earns <strong>equivalent course credit</strong>. Alternative-assignment submissions are used <strong>only for grading</strong> and are <strong>NOT included in the main research study</strong>.
 
-<strong>Data Extraction:</strong> Only the numerical ratings and categorical responses from your LMS submission will be used. Your written reflections or personal identifiers will be removed during the analysis phase.
+No recruitment flyer is used; this assignment is announced through normal classroom / course communication.
 
-<strong>3. Potential Benefits</strong>
+<strong>3. Procedures if you choose Option A</strong>
+If you agree to participate, you will provide electronic consent and complete the online HR SJT. Only research ratings (and related session metadata) enter the study dataset. Personal identifiers are not stored with research ratings.
+
+<strong>4. Potential Benefits</strong>
 • Contributing to research on HR education and how student ratings compare with professional ratings.
-• As a token of appreciation, you may receive an aggregated infographic comparing perspectives (no individuals identified). {infographic_preview_link}
-• There is no monetary payment for this secondary-data consent.
+• Feedback report / optional aggregated infographic (no individuals identified).
+• There is no monetary payment. Completing Option A or Option B satisfies the course assignment for credit.
 
-<strong>4. Potential Risks</strong>
+<strong>5. Potential Risks</strong>
 This study involves minimal risk. Possible risks include:
-• Minimal privacy risk associated with secondary use of course ratings; the research dataset is coded and de-identified.
-• No new tasks are required; there is no additional time burden beyond reading this form.
+• Mild boredom or fatigue from the online task.
+• Minimal privacy risk; the research dataset is coded and de-identified.
 
-Risks are no greater than those of ordinary educational records review. You may withdraw or request deletion at any time without penalty.
+Risks are no greater than those of ordinary coursework. You may withdraw or request deletion at any time without penalty.
 
-<strong>5. Confidentiality</strong>
+<strong>6. Confidentiality</strong>
 <strong>Your privacy is our priority.</strong>
 
-While the researcher (your instructor) has access to your original submission for grading purposes, the research dataset will be coded. Your name and student ID will be replaced with a <strong>candidate ID</strong> (a unique code linking only to you for the purpose of withdrawal and deletion requests). This allows you to request that your records be deleted at any time.
+The research dataset will be coded. Your name and student ID will be replaced with a <strong>candidate ID</strong> (a unique code linking only to you for withdrawal and deletion requests).
 
-<strong>No identifiable information will be included in any publications, presentations, or shared with the participating managers.</strong>
+<strong>No identifiable information will be included in any publications or presentations.</strong>
 
-<strong>6. Voluntary Participation and "Grade Shield"</strong>
-<strong>Your participation is completely voluntary.</strong>
+<strong>7. Voluntary Participation and Equivalent Credit</strong>
+<strong>Choosing Option A (research) or Option B (alternative) is your decision.</strong>
 
-<strong>No Penalty:</strong> Your decision to participate, or not to participate, will have <strong>zero impact on your grade in MNGT 425</strong> or your relationship with the instructor.
+<strong>No Penalty:</strong> Choosing the alternative assignment instead of the research study will <strong>not reduce your grade</strong> relative to choosing the study; both options satisfy the assignment. Your relationship with the instructor is not harmed by declining research participation.
 
-<strong>Blinded Access:</strong> To ensure there is no bias, the instructor will not access the list of consenting students until after the final semester grades have been submitted to the Registrar.
+<strong>8. Right to Withdraw</strong>
+If you choose Option A, you may <strong>withdraw your consent at any time without penalty</strong> by contacting {withdraw_contact_name} at {withdraw_contact_email}.
 
-<strong>7. Right to Withdraw</strong>
-You may <strong>withdraw your consent at any time without penalty</strong> by contacting {withdraw_contact_name} at {withdraw_contact_email}.
+<strong>9. Right to Deletion</strong>
+You may <strong>request that your research data be deleted at any time without penalty</strong>. Contact {withdraw_contact_name} at {withdraw_contact_email} to request deletion.
 
-<strong>8. Right to Deletion</strong>
-You may <strong>request that your data be deleted at any time without penalty</strong>. Because your record is linked to a candidate ID, the researcher can locate and remove your data from the research dataset. There are no penalties or consequences for requesting deletion. Contact {withdraw_contact_name} at {withdraw_contact_email} to request deletion.
-
-<strong>9. Consent</strong>
+<strong>10. Consent</strong>
 I have been informed about the procedures described above and the potential risks and benefits of the research project. I have had the opportunity to ask questions about the research procedures which have been explained to me. I understand that this project and this consent form have been approved by the Nicholls State University, Human Subjects Institutional Review Board which ensures that research projects follow Nicholls State University policies and procedures and comply with federal guidelines. I have been informed that any modifications of the experimental protocol which might affect my consent or willingness to participate will be provided to me. Finally, I have been provided an opportunity to be informed of the results of this study once it has been completed.
 
 By clicking "I Agree" below, you confirm that:
 
 • You are <strong>at least 18 years of age</strong>.
 
-• You have <strong>read this form and understand</strong> the nature of the study.
+• You have <strong>read this form and understand</strong> the nature of the study and the alternative assignment.
 
-• You <strong>voluntarily agree</strong> to let your course assignment data be used for this research.
+• You <strong>voluntarily agree</strong> to participate in the research study (Option A) and allow your SJT ratings to be used for research.
 
-• You understand you may <strong>request deletion of your data at any time without penalty</strong>.
+• You understand you may <strong>request deletion of your research data at any time without penalty</strong>.
 """
 
 
@@ -692,8 +693,8 @@ def _hr_sjt_student_consent_context():
 @require_http_methods(['GET', 'POST'])
 def hr_sjt_student_data_consent(request):
     """
-    Public consent page for MNGT 425 students to consent to secondary use of
-    their course assignment data for the HR SJT study. No login required.
+    Public consent page for MNGT 425 students who choose the research-study
+    assignment option (Option A) for the HR SJT study. No login required.
     On POST with consent=agree and email, records consent and redirects to thank-you.
     """
     study = get_object_or_404(Study.objects.all(), slug='hr-sjt')

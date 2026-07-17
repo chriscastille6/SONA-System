@@ -47,7 +47,7 @@ APPENDICES = [
     ("A", "Professional Informed Consent"),
     ("B", "Class / Student Informed Consent"),
     ("C", "HR SJT Instrument (All 27 Situations)"),
-    ("D", "Recruitment Script (Verbatim)"),
+    ("D", "Classroom Assignment Announcement (No Flyer)"),
     ("E", "CITI Training Certificate (PI)"),
 ]
 
@@ -55,7 +55,7 @@ APPENDIX_PDF_FILES = {
     "A": PDF_DIR / "Appendix_A_Professional_Consent.pdf",
     "B": PDF_DIR / "Appendix_B_Student_Consent.pdf",
     "C": PDF_DIR / "Appendix_C_Instrument_27_Situations.pdf",
-    "D": PDF_DIR / "Appendix_D_Recruitment_Script.pdf",
+    "D": PDF_DIR / "Appendix_D_Classroom_Assignment_Announcement.pdf",
     "E": PDF_DIR / "Appendix_E_CITI_Certificate.pdf",
 }
 

@@ -14,7 +14,7 @@ Use this packet when asking a cloud agent to address IRB review concerns for the
 | All 27 situations + tactics | `apps/studies/assets/irb/hr-sjt/incidents.json` | Vendored for offline IRB review |
 | Interactive IRB packet | `/studies/hr-sjt/run/` and `/studies/hr-sjt/protocol/vignettes/` | Skip + optional ratings demo |
 | Professional consent | live + `docs/HR_SJT_PROFESSIONAL_CONSENT.html` | Benefits, risks, HSIRB § Consent verbiage |
-| Class/student consent | live (`/hsirb/...`) + `docs/HR_SJT_STUDENT_CONSENT.html` | Static fallback if link fails |
+| Class/student consent | live (`/hsirb/...`) + `docs/HR_SJT_STUDENT_CONSENT.html` | Option A research vs Option B qualitative alt (alt not in main study); no flyer |
 | Reviewer link sheet | `JULIANN_REVIEW_RESPONSE_LINKS.md` | Share with Juliann |
 | Documentation summary | `docs/HR_SJT_DOCUMENTATION.html` | Linked from protocol submission detail |
 

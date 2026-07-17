@@ -40,19 +40,20 @@ DEPT = "Management and Marketing"
 COLLEGE_PHONE = "985-449-7015"
 
 POPULATION = (
-    "Two groups, all 18+: (1) Undergraduates in MNGT 425 (HR Analytics) and related "
-    "Management & Marketing courses at Nicholls. Course exercise may be required for class; "
-    "research use of ratings (secondary-data consent) is VOLUNTARY with no grade effect "
-    "(grade shield). (2) HR professionals recruited via professional networks; participation "
-    "is VOLUNTARY. Under-18 excluded (required for HSIRB exemption). See Attachment A."
+    "Two groups, all 18+: (1) MNGT 425 students who choose the research-study assignment "
+    "(Option A). An equivalent alternative assignment (qualitative responses to each prompt, "
+    "submitted to the instructor for credit) is available; alt-assignment data are NOT in the "
+    "main study. No flyer. (2) HR professionals via professional networks; VOLUNTARY. "
+    "Under-18 excluded. See Attachment A."
 )
 
 PROCEDURES = (
-    "Electronic informed consent (professional + class forms). Online HR Situational Judgment "
+    "Electronic informed consent (professional + student forms). Online HR Situational Judgment "
     "Test: 27 HR scenarios; optional 1–5 effectiveness ratings per tactic; Skip allowed (no "
-    "forced responding). Feedback PDF/debrief. ~45–60 min. Instrument + active links: "
-    "https://bayoupal.nicholls.edu/hsirb/studies/hr-sjt/run/ ; consents under /hsirb/studies/hr-sjt/; "
-    "incidents.json in IRB packet. Printed instrument = Attachment C / full packet. See Attachment A."
+    "forced responding). Feedback PDF/debrief. ~45–60 min. MNGT 425 Option B qualitative "
+    "submissions go to the instructor only (not research). Instrument + links: "
+    "https://bayoupal.nicholls.edu/hsirb/studies/hr-sjt/run/ ; consents under /hsirb/studies/hr-sjt/. "
+    "See Attachment A."
 )
 
 OBJECTIVES = (
@@ -63,19 +64,19 @@ OBJECTIVES = (
 )
 
 RECRUITMENT = (
-    "Students: course/PRAMS announcement for MNGT 425 (+ related courses); secondary-data consent "
-    "for research use. Professionals: LinkedIn/SHRM/HR networks + professional consent page. "
-    "Verbatim recruitment script in Attachment A / Appendix D of full packet."
+    "No flyer. MNGT 425: classroom/LMS announcement of assignment Options A (research SJT) and "
+    "B (qualitative alt for instructor credit; not research). Professionals: LinkedIn/SHRM/HR "
+    "networks + consent link. Verbatim announcement in Attachment A / Appendix D."
 )
 
 INCLUSION = (
-    "Age 18+; students enrolled in MNGT 425 or related M&M courses at Nicholls; professionals with "
+    "Age 18+; MNGT 425 students choosing Option A (research assignment); professionals with "
     "current/recent HR experience; internet-capable device. See Attachment A."
 )
 
 EXCLUSION = (
-    "Under 18; unable to complete online assessment; prior participation (duplicates); students not "
-    "at Nicholls (student arm); no current/recent HR experience (professional arm)."
+    "Under 18; unable to complete online assessment; prior participation; students not in MNGT 425 "
+    "or who chose Option B (alt data not research); no current/recent HR experience (pros)."
 )
 
 BENEFIT_SUBJECTS = (
@@ -89,10 +90,10 @@ BENEFIT_SOCIETY = (
     "Improved understanding of HR situational judgment and evidence-based HR education."
 )
 PAYMENT = (
-    "No monetary payment. MNGT 425 exercise supplements class time; research secondary-data consent "
-    "is voluntary with no grade impact. All may receive feedback reports."
+    "No monetary payment. MNGT 425: Option A (research) or Option B (qualitative alt) earn "
+    "equivalent assignment credit; Option B data are not in the main study. Pros unpaid. Feedback reports."
 )
-COST_TIME = "Approx. 45–60 minutes (live assessment); class secondary-data consent is read/sign only."
+COST_TIME = "Approx. 45–60 minutes for Option A / professional SJT; Option B is a written alt for the instructor."
 COST_MONEY = "None."
 REPEATED = "Not required. Optional pre/post training comparison only if later used under this protocol."
 
@@ -509,7 +510,7 @@ I recommend that the above described research project be exempt from review.
 - [x] Professional consent form  
 - [x] Class/student consent form  
 - [x] Data collection instrument (27 situations — interactive packet + `incidents.json`)  
-- [x] Recruitment script (verbatim, Section 5a)  
+- [x] Classroom assignment announcement (verbatim, Section 5a; no flyer)  
 - [x] Protocol narrative (`HR_SJT_PROTOCOL_PRAMS.md` / `protocol.json`)  
 - [x] Full branded packet (`materials/pdf/HSIRB_Application_HR_SJT_Rating_Effectiveness_full_packet.pdf`)
 

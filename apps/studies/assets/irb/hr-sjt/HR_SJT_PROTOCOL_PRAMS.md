@@ -38,7 +38,7 @@ The study involves only anonymous data collection through online assessments, wi
 This study examines how students in HR analytics courses evaluate the effectiveness of HR management tactics in situational judgment scenarios, and how training in evidence-based HR practices affects their decision-making. We are testing whether students demonstrate variability in tactic ratings across scenarios and whether training shifts ratings toward evidence-aligned options.
 
 **Population Description:**
-Participants will be undergraduate students enrolled in MNGT 425 (HR Analytics) and related Management and Marketing courses at Nicholls State University. Participants must be at least 18 years of age. There are no specific exclusion criteria beyond age requirements. Participants will be recruited through the PRAMS system and may receive course credit for participation.
+Participants include (1) undergraduate students enrolled in MNGT 425 (HR Analytics) at Nicholls State University who choose to complete this research study as their course assignment (Option A), and (2) HR professionals recruited through professional networks. All must be at least 18 years of age. MNGT 425 students may instead complete an equivalent alternative assignment (Option B: qualitative description of how one would respond to each scenario prompt, submitted to the instructor for credit); Option B submissions are not part of the main research study. No recruitment flyer is used.
 
 **Research Procedures:**
 The study involves the following procedures:
@@ -85,33 +85,32 @@ This research serves educational purposes by:
 ## 3. Recruitment
 
 **Recruitment Method:**
-Participants will be recruited through the Participant Recruitment and Management System (PRAMS) platform. Students enrolled in Nicholls State University courses (especially MNGT 425 and related management courses) will be able to view and sign up for this study through the PRAMS system. Recruitment materials will be posted on the PRAMS system with a clear description of the study requirements, duration, and credit value (if applicable). Announcements for participating in this study may also be made through word of mouth marketing.
+No recruitment flyer is used. (1) MNGT 425 students: The instructor announces the study as a course assignment via normal classroom / LMS communication. Students may (Option A) participate in the research study by completing the online HR SJT after informed consent, or (Option B) complete an equivalent alternative assignment—a qualitative written description of how they would respond to each scenario prompt—submitted to the instructor for course credit. Option B data are not part of the main study. Both options satisfy the assignment. (2) HR professionals: Recruited through professional networks (LinkedIn, SHRM chapters, HR associations, direct outreach) using a brief study description and consent link.
 
-**Recruitment Script:**
+**Recruitment Script (classroom announcement; verbatim):**
 Study Title: HR Situational Judgment Test: Evidence-Based HR Decision-Making
 
-Description: You will complete an online HR Situational Judgment Test with 27 HR management scenarios. For each scenario, you will rate the effectiveness of different HR tactics. You will receive a feedback report. Your responses will be used for research on HR education and decision-making.
+As an assignment in MNGT 425, you are asked to participate in a research study on how students and HR professionals rate the effectiveness of workplace tactics.
 
-You will rate HR tactics across scenarios and receive feedback on your responses.
+Option A — Research study assignment: Complete the online HR Situational Judgment Test (27 scenarios). Ratings are optional; you may skip any situation. After informed consent, your ratings may be used in the research dataset. Duration: approximately 45–60 minutes. Must be 18 or older.
 
-Duration: Approximately 45–60 minutes  
-Potential Credit Value: 1 credit (to participating courses)  
-Mode: Online (complete at your own pace)
+Option B — Alternative assignment (not research): Write a qualitative description of how you would respond to each scenario prompt and submit it to the instructor for equivalent course credit. This submission is used only for grading and is NOT included in the main research study.
 
-Requirements: Must be 18 years of age or older
+Both options satisfy the course assignment.
 
 **Inclusion Criteria:**
 - Must be at least 18 years of age
-- Must be currently enrolled as a student at Nicholls State University
-- Must be enrolled in a course that offers research participation credit through PRAMS
+- For students: Currently enrolled in MNGT 425 and choosing Option A (research assignment)
+- For HR professionals: Current or recent professional HR experience
 - Must have access to a computer or device with internet connection
 - Must be able to complete web-based assessments and download PDF reports
 
 **Exclusion Criteria:**
 - Under 18 years of age
-- Not currently enrolled at Nicholls State University
 - Unable to complete online assessments due to technical limitations
 - Previously participated in this study (to avoid duplicate responses)
+- For students: Not enrolled in MNGT 425, or chose Option B (alternative assignment data are not research data)
+- For HR professionals: No current or recent professional HR experience
 
 ---
 
@@ -119,8 +118,8 @@ Requirements: Must be 18 years of age or older
 
 **Benefits to Subjects:**
 Participants will benefit from:
-- Potentially receiving course credit for participation (1 credit)
-- Gaining insight into their own HR decision-making through immediate feedback
+- MNGT 425: Option A (research) or Option B (qualitative alternative) earns equivalent assignment credit; Option B is not main-study data
+- Gaining insight into their own HR decision-making through immediate feedback (study participants)
 - Learning about evidence-based HR management and situational judgment through the debriefing
 - Contributing to scientific understanding of HR education and assessment
 
@@ -158,7 +157,7 @@ This study involves minimal risk to participants. The primary potential risks ar
 
 1. Psychological discomfort: Feedback may differ from expectations. However, all feedback is provided in a supportive, educational context with emphasis on learning and growth.
 
-2. Time commitment: Participants invest approximately 45–60 minutes of their time, but this is compensated with course credit.
+2. Time commitment: Research participants invest approximately 45–60 minutes. MNGT 425 students may instead complete the qualitative alternative assignment for equivalent credit.
 
 3. Privacy concerns: While all data is anonymized, there is a minimal risk of data breach. However, no personally identifying information is collected beyond PRAMS ID numbers.
 
