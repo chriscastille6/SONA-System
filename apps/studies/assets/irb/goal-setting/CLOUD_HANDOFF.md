@@ -6,10 +6,10 @@ Development / protocol packaging only. Synthetic and IRB materials; no student P
 
 Keep the Nicholls goal-setting (public title: **A Study in Decision Making**) materials available. **HSIRB-requested format** is the official **Request for HSIRB Exemption (rev9 2019)** filled form — not a custom branded layout as the primary submission document.
 
-**Reviewer-facing output (PRAMS):** Protocol Submissions → goal-setting / decision-making → **HSIRB exempt request (rev9 form)**  
+**Reviewer-facing output (PRAMS):** Protocol Submissions → goal-setting / decision-making → **HSIRB exempt request (rev9 form)** 
 Also: `/studies/<slug>/protocol/documentation/` serves `HSIRB_EXEMPT_REVIEW_REQUEST.pdf`.
 
-Rebuild rev9 form: `python3 scripts/fill_decision_making_hsirb_exempt_form.py`  
+Rebuild rev9 form: `python3 scripts/fill_decision_making_hsirb_exempt_form.py` 
 Companion branded packet (appendices / instruments) remains available under `materials/pdf/`.
 
 ## Canonical packet files
@@ -48,25 +48,25 @@ python scripts/build_goal_setting_consent_docx.py
 ./scripts/build_consent_from_docx.sh
 ```
 
-DB narrative seed (PRAMS protocol fields):  
+DB narrative seed (PRAMS protocol fields): 
 `python manage.py populate_goal_setting_protocol_details`
 
 ## Packet structure (current)
 
-1. Exempt request cover + project information form  
-2. Narrative sections (two-phase pilot → main; payment main-only; repeat-participation disclosure)  
-3. List of appendices  
+1. Exempt request cover + project information form 
+2. Narrative sections (two-phase pilot → main; payment main-only; repeat-participation disclosure) 
+3. List of appendices 
 4. Appendices A / A2 (pilot & main flyers), B / B2 (pilot & main consent), C (workbook sample), D (productivity report), E / E2 (pilot appreciation & main debrief), F (UWaterloo master protocol), G (Psych Science RR manuscript), H (Stage 1 IPA letter)
 
 ## Do not invent
 
-- Do not change exemption category, protocol numbers, approval status, risk language, or Waterloo claims unless the human PI supplies updated source text.  
-- Prefer packaging/rebuild/docs fixes over rewriting consent or protocol substance.  
-- Participant materials already state titles **Assistant Professor of Marketing** for Gravois and Maught; the rebuild script must stay aligned with those sources.
+- Do not change exemption category, protocol numbers, approval status, risk language, or Waterloo claims unless the human PI supplies updated source text. 
+- Prefer packaging/rebuild/docs fixes over rewriting consent or protocol substance. 
+- Participant materials already state the title **Assistant Professor of Marketing** for Maught; the rebuild script must stay aligned with those sources.
 
 ## Human remaining (not agent work)
 
-- Confirm CITI certificates are attached/submitted (packet text still notes certificates pending / upon request).  
-- PI review of rebuilt PDFs before HSIRB submission or amendment filing.  
-- Any formal HSIRB submission / amendment through PRAMS or board channels.  
+- Confirm CITI certificates are attached/submitted (packet text still notes certificates pending / upon request). 
+- PI review of rebuilt PDFs before HSIRB submission or amendment filing. 
+- Any formal HSIRB submission / amendment through PRAMS or board channels. 
 - Production deploy of study/protocol DB fields if needed (separate from this packaging branch).

@@ -102,8 +102,6 @@ PROJECT_INFO = {
         "ann-marie.castille@nicholls.edu, 985-448-4738\n"
         "Dr. Samantha Falgout (Assistant Professor of Accounting), "
         "samantha.falgout@nicholls.edu, 985-448-4193\n"
-        "Dr. Kaitlin Gravois (Assistant Professor of Marketing), "
-        "kaitlin.gravois@nicholls.edu, 985-448-4187\n"
         "Dr. Adrien Maught (Assistant Professor of Marketing), "
         "adrien.maught@nicholls.edu, 985-448-4194"
     ),
@@ -202,7 +200,7 @@ Two written informed consent forms are included for HSIRB review: Appendix B (pi
 """ + REPEAT_PARTICIPATION + """
 
 14. CITI Training Certification
-All investigators have completed CITI Program training. Dr. Christopher Castille (Faculty Researchers), Dr. Ann-Marie R. Castille (Faculty Researchers), Dr. Samantha Falgout (Faculty Researchers), Dr. Kaitlin Gravois (Faculty Researchers), Dr. Adrien Maught (Social/Behavioral RCR). Certificates are pending / to be submitted upon request.
+All investigators have completed CITI Program training. Dr. Christopher Castille (Faculty Researchers), Dr. Ann-Marie R. Castille (Faculty Researchers), Dr. Samantha Falgout (Faculty Researchers), Dr. Adrien Maught (Social/Behavioral RCR). Certificates are pending / to be submitted upon request.
 
 Statement of Compliance & Ethical Assurances:
 By signing below, the Primary Investigator certifies that the described project will be conducted in accordance with university guidelines, the Belmont Report, and 45 CFR 46. Any protocol modifications or adverse events must be reported immediately to the board.

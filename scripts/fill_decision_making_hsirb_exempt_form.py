@@ -70,7 +70,7 @@ def overlay_page1():
     c.drawString(268, 697, PI_NAME)
     c.drawString(512, 697, PI_PHONE)
     c.setFont(FONT, 9)
-    c.drawString(175, 669, "A-M. Castille; S. Falgout; K. Gravois; A. Maught (see Att. A)")
+    c.drawString(175, 669, "A-M. Castille; S. Falgout; A. Maught (see Att. A)")
     c.setFont(FONT, SIZE)
     c.drawString(290, 640, "N/A (faculty PI)")
     c.drawString(115, 612, "CBA")
@@ -156,7 +156,7 @@ def attachment_a():
     c.setFont(FONT, SIZE)
     c.drawString(0.75 * inch, y, f"{TITLE}  |  PI: {PI_NAME}, {PI_PHONE}")
     y -= 14
-    c.drawString(0.75 * inch, y, "Co-Is: Ann-Marie Castille; Samantha Falgout; Kaitlin Gravois; Adrien Maught")
+    c.drawString(0.75 * inch, y, "Co-Is: Ann-Marie Castille; Samantha Falgout; Adrien Maught")
     y -= 20
 
     blocks = [

@@ -87,10 +87,9 @@ class Command(BaseCommand):
         # Co-investigators (for co_investigators field)
         co_i_emails = [
             'adrien.maught@nicholls.edu',
-            'kaitlin.gravois@nicholls.edu',
             'ann-marie.castille@nicholls.edu',
         ]
-        co_i_str = 'Mr. Adrien Maught, Mrs. Kaitlin Gravois, Dr. Ann-Marie R. Castille'
+        co_i_str = 'Mr. Adrien Maught, Dr. Ann-Marie R. Castille'
 
         # Get or create college rep (Business - Jon Murphy)
         jon_murphy = User.objects.filter(

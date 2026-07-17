@@ -278,7 +278,7 @@ def build_nicholls_flyer(variant="main", output_dir=None):
         "(Protocol: IRB 2024-07-30-001 CBA). Investigators: "
         "<b>Dr. Christopher Castille</b> (Primary Investigator), "
         "<b>Dr. Ann-Marie R. Castille</b>, <b>Dr. Samantha Falgout</b>, "
-        "<b>Dr. Kaitlin Gravois</b>, and <b>Dr. Adrien Maught</b> (Co-Investigators), Nicholls State University."
+        "and <b>Dr. Adrien Maught</b> (Co-Investigators), Nicholls State University."
     )
     story.append(Paragraph(invitation_text, styles["body"]))
     story.append(Spacer(1, 0.05 * inch))

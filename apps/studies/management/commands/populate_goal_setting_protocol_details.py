@@ -85,7 +85,7 @@ class Command(BaseCommand):
         submission.educational_justification = (
             "ARIM initiative uses replication-focused research to help doctoral students learn "
             "scientific research skills. Dr. Castille (PI) and Dr. Ann-Marie Castille support "
-            "junior scholars (Adrien Maught, Kaitlin Gravois). Design builds on Schweitzer et al. (2004)."
+            "junior scholars (Adrien Maught). Design builds on Schweitzer et al. (2004)."
         )
 
         submission.recruitment_method = (
@@ -185,7 +185,7 @@ class Command(BaseCommand):
         )
 
         submission.data_access = (
-            "PI (Dr. Christopher Castille), Co-Is (Adrien Maught, Kaitlin Gravois, Dr. Ann-Marie "
+            "PI (Dr. Christopher Castille), Co-Is (Adrien Maught, Dr. Ann-Marie "
             "Castille), and authorized ARIM collaborators. Anonymized data shared publicly via OSF."
         )
 
@@ -207,13 +207,12 @@ class Command(BaseCommand):
         submission.pi_phone = "985-449-7015"
         submission.co_investigators = (
             "Mr. Adrien Maught, adrien.maught@nicholls.edu, 985-448-4194\n"
-            "Mrs. Kaitlin Gravois, kaitlin.gravois@nicholls.edu, 985-448-4187\n"
             "Dr. Ann-Marie R. Castille, ann-marie.castille@nicholls.edu, 985-448-4738"
         )
 
         submission.citi_training_completion = (
             "All investigators have completed CITI Program training. Dr. Christopher Castille "
-            "(Faculty Researchers), Dr. Ann-Marie Castille, Kaitlin Gravois (Faculty Researchers), "
+            "(Faculty Researchers), Dr. Ann-Marie Castille (Faculty Researchers), "
             "Adrien Maught (Social/Behavioral RCR). Certificates on file."
         )
 
@@ -258,7 +257,7 @@ class Command(BaseCommand):
 
         submission.participant_access_to_results = (
             "Debriefing email sent after data collection. Participants may request summary from "
-            "research team (kaitlin.gravois@nicholls.edu)."
+            "research team (christopher.castille@nicholls.edu)."
         )
 
         submission.appendices_notes = (
