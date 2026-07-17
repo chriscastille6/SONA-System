@@ -179,8 +179,35 @@ class Command(BaseCommand):
             )
             self.stdout.write(self.style.SUCCESS('✓ Created new protocol submission'))
 
-        # Copy approval PDF to media directory
+        # Attach the familiar Nicholls-branded HSIRB full packet for reviewers
         base_dir = Path(settings.BASE_DIR)
+        packet_path = (
+            base_dir / 'apps' / 'studies' / 'assets' / 'irb' / 'goal-setting' / 'materials' / 'pdf'
+            / 'HSIRB_Application_A_Study_in_Decision_Making_full_packet.pdf'
+        )
+        if packet_path.exists():
+            try:
+                from django.core.files import File
+                with packet_path.open('rb') as f:
+                    submission.full_protocol_pdf.save(
+                        'HSIRB_Application_A_Study_in_Decision_Making_full_packet.pdf',
+                        File(f),
+                        save=True,
+                    )
+                self.stdout.write(self.style.SUCCESS(
+                    '✓ Attached HSIRB application packet (familiar reviewer format) to protocol submission'
+                ))
+            except (PermissionError, OSError) as e:
+                self.stdout.write(self.style.WARNING(
+                    f'⚠ Could not attach HSIRB packet to submission: {e}'
+                ))
+        else:
+            self.stdout.write(self.style.WARNING(
+                '⚠ HSIRB full packet not found. Rebuild with: '
+                'python3 scripts/rebuild_goal_setting_hsirb_packet.py --no-tmp-copy'
+            ))
+
+        # Copy approval PDF to media directory
         approval_sources = [
             base_dir / 'apps' / 'studies' / 'assets' / 'irb' / 'goal-setting' / 'chris_castille_irb_approval_july_2024.pdf',
             base_dir / 'apps' / 'studies' / 'assets' / 'irb' / 'goal-setting' / 'Chris Castille IRB Approval letter July 2024.pdf',

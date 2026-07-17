@@ -1022,7 +1022,17 @@ def protocol_vignettes(request, slug):
     })
 
 
-# Study slug -> path parts (under BASE_DIR) for "full documentation" HTML.
+# Study slug -> path parts (under BASE_DIR) for "full documentation" (HTML or PDF).
+_GOAL_SETTING_HSIRB_PACKET = (
+    'apps',
+    'studies',
+    'assets',
+    'irb',
+    'goal-setting',
+    'materials',
+    'pdf',
+    'HSIRB_Application_A_Study_in_Decision_Making_full_packet.pdf',
+)
 STUDY_DOCUMENTATION_FILES = {
     'hr-sjt': ('docs', 'HR_SJT_DOCUMENTATION.html'),
     'goals-refs': (
@@ -1033,13 +1043,16 @@ STUDY_DOCUMENTATION_FILES = {
         'goals-refs',
         'vignettes_with_predicted_patterns.html',
     ),
+    # Familiar Nicholls-branded exempt HSIRB packet (cover + project info + narrative + appendices)
+    'goal-setting': _GOAL_SETTING_HSIRB_PACKET,
+    'decision-making': _GOAL_SETTING_HSIRB_PACKET,
 }
 
 
 @login_required
 def protocol_study_documentation(request, slug):
     """
-    Serve the full documentation HTML for a study (e.g. hr-sjt: all 27 scenarios + protocol).
+    Serve full documentation for a study (HTML summary or branded HSIRB PDF packet).
     Access: staff, PI, college rep, chair, or reviewer for any submission of this study.
     """
     study = get_object_or_404(Study.objects.all(), slug=slug)
@@ -1053,8 +1066,9 @@ def protocol_study_documentation(request, slug):
     if not path.exists():
         raise Http404("Documentation file not found.")
     try:
-        with open(path, "r", encoding="utf-8") as f:
-            return HttpResponse(f.read(), content_type="text/html; charset=utf-8")
+        if path.suffix.lower() == '.pdf':
+            return HttpResponse(path.read_bytes(), content_type='application/pdf')
+        return HttpResponse(path.read_text(encoding='utf-8'), content_type='text/html; charset=utf-8')
     except OSError:
         raise Http404("Documentation file could not be read.")
 
