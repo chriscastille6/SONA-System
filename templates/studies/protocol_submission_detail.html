@@ -98,10 +98,22 @@
                 {% elif study.slug == 'hr-sjt' %}
                 <hr>
                 <p class="mb-2">
-                    <a href="{% url 'studies:protocol_vignettes' slug=study.slug %}">View all 27 situations (skip / optional ratings)</a> — interactive IRB packet: full vignette text, tactic ratings with no required fields, and Skip per situation.
+                    <a href="{% url 'studies:protocol_vignettes' slug=study.slug %}">View all 27 situations (skip / optional ratings)</a> — interactive IRB packet: full vignette text, tactic ratings with no required fields, and Skip per situation. Use this for survey review if live “Begin Assessment” errors.
+                </p>
+                <p class="mb-2">
+                    <a href="{% url 'studies:hr_sjt_professional_consent' %}" target="_blank" rel="noopener">Professional consent (live)</a>
+                    ·
+                    <a href="{% url 'studies:hr_sjt_student_data_consent' %}" target="_blank" rel="noopener">Class / student consent (live)</a>
+                </p>
+                <p class="mb-2">
+                    <a href="{% url 'studies:protocol_study_documentation' slug=study.slug %}">View full documentation (protocol summary)</a>
+                    ·
+                    <a href="{% url 'studies:hr_sjt_static_consent_doc' kind='professional' %}">Professional consent (static HTML)</a>
+                    ·
+                    <a href="{% url 'studies:hr_sjt_static_consent_doc' kind='student' %}">Class consent (static HTML)</a>
                 </p>
                 <p class="mb-0">
-                    <a href="{% url 'studies:protocol_study_documentation' slug=study.slug %}">View full documentation (protocol summary)</a> — HTML protocol summary and application status for IRB review.
+                    <a href="{% url 'studies:hr_sjt_exempt_request_doc' %}">HSIRB exempt review request (filled draft)</a>
                 </p>
                 {% endif %}
             </div>

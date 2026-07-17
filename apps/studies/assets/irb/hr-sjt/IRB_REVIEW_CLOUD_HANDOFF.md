@@ -8,10 +8,24 @@ Use this packet when asking a cloud agent to address IRB review concerns for the
 |------|----------|--------|
 | IRB application (structured) | `apps/studies/assets/irb/hr-sjt/protocol.json` | Drafted for PRAMS submission |
 | IRB application (narrative) | `apps/studies/assets/irb/hr-sjt/HR_SJT_PROTOCOL_PRAMS.md` | Drafted for PRAMS submission |
+| HSIRB exempt request (filled) | `HSIRB_EXEMPT_REVIEW_REQUEST.md` / `.pdf` | Drafted for PI signature |
 | Study config | `apps/studies/assets/irb/hr-sjt/study_config.json` | `irb_status: pending` |
 | All 27 situations + tactics | `apps/studies/assets/irb/hr-sjt/incidents.json` | Vendored for offline IRB review |
 | Interactive IRB packet | `/studies/hr-sjt/run/` and `/studies/hr-sjt/protocol/vignettes/` | Skip + optional ratings demo |
+| Professional consent | live + `docs/HR_SJT_PROFESSIONAL_CONSENT.html` | Benefits, risks, HSIRB § Consent verbiage |
+| Class/student consent | live (`/hsirb/...`) + `docs/HR_SJT_STUDENT_CONSENT.html` | Static fallback if link fails |
+| Reviewer link sheet | `JULIANN_REVIEW_RESPONSE_LINKS.md` | Share with Juliann |
 | Documentation summary | `docs/HR_SJT_DOCUMENTATION.html` | Linked from protocol submission detail |
+
+### Juliann Allen (2026-07) feedback status
+
+| Comment | Response |
+|---------|----------|
+| Scenarios good | No change |
+| Begin Assessment error | Documented; IRB survey review via `/hsirb/studies/hr-sjt/run/` (live API/proxy down) |
+| Professional consent needs benefits, risks, HSIRB consent verbiage | Done in live body + static HTML |
+| Class consent link broken | Correct `/hsirb/` URL + static HTML document |
+| Complete attached exempt form | `HSIRB_EXEMPT_REVIEW_REQUEST.md` / `.pdf` |
 
 ## IRB concern already addressed in materials
 
