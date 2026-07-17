@@ -102,10 +102,10 @@ PROJECT_INFO = {
         "ann-marie.castille@nicholls.edu, 985-448-4738\n"
         "Dr. Samantha Falgout (Assistant Professor of Accounting), "
         "samantha.falgout@nicholls.edu, 985-448-4193\n"
-        "Dr. Kaitlin Gravois (Instructor of Management), kaitlin.gravois@nicholls.edu, "
-        "985-448-4187\n"
-        "Dr. Adrien Maught (Instructor of Management), adrien.maught@nicholls.edu, "
-        "985-448-4194"
+        "Dr. Kaitlin Gravois (Assistant Professor of Marketing), "
+        "kaitlin.gravois@nicholls.edu, 985-448-4187\n"
+        "Dr. Adrien Maught (Assistant Professor of Marketing), "
+        "adrien.maught@nicholls.edu, 985-448-4194"
     ),
     "funding_source": "Nicholls State University Research Council",
     "continuation_of_previous": False,
@@ -447,17 +447,8 @@ def _build_front_matter_pages() -> bytes:
 
 
 def _logo_path() -> Path | None:
-    candidates = [
-        MATERIALS / "nicholls_state_university_logo.png",
-        Path(
-            "/Users/ccastille/.cursor/projects/Users-ccastille-Documents-GitHub-SONA-System/"
-            "assets/image-3692823e-13cc-4d71-87c9-875833604dab.png"
-        ),
-    ]
-    for path in candidates:
-        if path.is_file():
-            return path
-    return None
+    logo = MATERIALS / "nicholls_state_university_logo.png"
+    return logo if logo.is_file() else None
 
 
 def _build_appendix_list_page(start_page: int) -> bytes:
