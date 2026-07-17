@@ -13,16 +13,36 @@
     .lead { color: #555; margin-bottom: 1.5rem; }
     ul { margin: 0.5rem 0 1rem 1.25rem; }
     .card { background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 6px; padding: 1rem 1.25rem; margin-bottom: 1rem; }
+    .callout { background: #eef4ff; border-left: 4px solid var(--navy); padding: 0.75rem 1rem; margin: 1rem 0; }
     .footer { font-size: 0.9rem; color: #6c757d; margin-top: 2rem; }
     a { color: var(--navy); }
+    code { font-size: 0.92em; }
   </style>
 </head>
 <body>
   <h1>HR Situational Judgment Test: Evidence-Based HR Decision-Making</h1>
   <p class="lead">Full documentation for IRB review. Study slug: <strong>hr-sjt</strong>. Suggested reviewers: Jon Murphy (CBA), Juliann Allen.</p>
 
+  <h2>IRB application status</h2>
+  <div class="card">
+    <p><strong>Draft ready for submission</strong> (PRAMS / exempt Category D).</p>
+    <ul>
+      <li>Structured protocol fields: <code>apps/studies/assets/irb/hr-sjt/protocol.json</code></li>
+      <li>Narrative PRAMS entry: <code>apps/studies/assets/irb/hr-sjt/HR_SJT_PROTOCOL_PRAMS.md</code></li>
+      <li>Study config: <code>apps/studies/assets/irb/hr-sjt/study_config.json</code> (<code>irb_status: pending</code>)</li>
+      <li>Cloud handoff for review responses: <code>apps/studies/assets/irb/hr-sjt/IRB_REVIEW_CLOUD_HANDOFF.md</code></li>
+      <li>Filled HSIRB exempt request: <code>apps/studies/assets/irb/hr-sjt/HSIRB_EXEMPT_REVIEW_REQUEST.pdf</code></li>
+      <li>Professional consent (static): <code>docs/HR_SJT_PROFESSIONAL_CONSENT.html</code></li>
+      <li>Class/student consent (static): <code>docs/HR_SJT_STUDENT_CONSENT.html</code></li>
+      <li>Reviewer links for Juliann: <code>apps/studies/assets/irb/hr-sjt/JULIANN_REVIEW_RESPONSE_LINKS.md</code></li>
+    </ul>
+  </div>
+
   <h2>27 HR management scenarios (cases)</h2>
-  <p>Participants rate the effectiveness of HR tactics for each of the following scenario domains. For each scenario, participants rate each available tactic on a 1–5 scale (Not effective to Highly effective).</p>
+  <p>Participants may rate the effectiveness of HR tactics for each scenario on a 1–5 scale (Not effective to Highly effective). Ratings are <strong>optional</strong>; participants are not forced to answer every tactic or every situation.</p>
+  <div class="callout">
+    <strong>IRB check — non-forced responding:</strong> Each situation includes a <em>Skip this situation</em> control. Rating inputs have no required-field constraints. Reviewers should open the interactive packet (below) and confirm they can leave ratings blank and skip situations.
+  </div>
   <div class="card">
     <ul>
       <li>Job analysis</li>
@@ -37,21 +57,22 @@
       <li>Bona fide occupational requirements (BFOQ)</li>
       <li>… and 17 additional HR management scenarios across these and related domains</li>
     </ul>
-    <p><strong>Full incident text (all cases):</strong> <a href="https://docs.google.com/document/d/11sw17jjXv2qXPVazXSc6_X0DK0Xf9t6lpTnNUEiXtRQ/edit?tab=t.0" target="_blank" rel="noopener">Incidents for the Simulation (Google Doc)</a></p>
-    <p><em>Total: 27 scenarios. The full scenario text and tactics are in the live assessment (bayoupal.nicholls.edu/hr-sjt-assessment). This document summarizes the protocol and scenario domains for IRB review.</em></p>
+    <p><strong>Full incident text (all 27 cases + tactics):</strong> vendored at <code>apps/studies/assets/irb/hr-sjt/incidents.json</code>.</p>
+    <p><strong>Interactive IRB packet (skip / optional ratings demo):</strong> in PRAMS, open Protocol Submissions → HR SJT → “View all 27 situations (skip / optional ratings)” or Run Protocol at <code>/studies/hr-sjt/run/</code>.</p>
+    <p><em>Total: 27 scenarios. Live assessment also hosted at bayoupal.nicholls.edu/hr-sjt-assessment (API required for session start).</em></p>
   </div>
 
   <h2>Protocol summary</h2>
   <p><strong>Purpose:</strong> Compare student vs. HR professional ratings of HR tactics across 27 scenarios. Measure how students evaluate HR management tactics and how training in evidence-based HR practices affects ratings.</p>
   <p><strong>Participants:</strong> (1) Undergraduate students in MNGT 425 (HR Analytics) and related courses; (2) HR professionals recruited via professional networks.</p>
-  <p><strong>Procedures:</strong> Informed consent → participant ID (no names stored) → HR SJT (27 scenarios; rate effectiveness of tactics 1–5) → feedback PDF → debriefing.</p>
+  <p><strong>Procedures:</strong> Informed consent → participant ID (no names stored) → HR SJT (27 scenarios; optional 1–5 effectiveness ratings; skip allowed) → feedback PDF → debriefing.</p>
   <p><strong>Duration:</strong> Approximately 45–60 minutes.</p>
   <p><strong>Review type:</strong> Exempt (Category D — educational settings, anonymous surveys).</p>
 
   <h2>Supporting protocol document</h2>
   <p>The full tailored protocol for PRAMS entry (all sections: review type, description, recruitment, benefits/costs, risk, data, consent, investigator info) is in the repo at:</p>
   <p><code>apps/studies/assets/irb/hr-sjt/HR_SJT_PROTOCOL_PRAMS.md</code></p>
-  <p>Protocol submission in PRAMS contains the same information entered for IRB review. Reviewers can view the submission and this documentation page from the protocol submission detail (link: “View full documentation (all scenarios &amp; protocol)”).</p>
+  <p>Protocol submission in PRAMS contains the same information entered for IRB review. Reviewers can view the submission, this documentation page, and the interactive situations packet from the protocol submission detail.</p>
 
   <p class="footer">This page is for IRB reviewers and the research team. Access is restricted to staff, PI, college rep, and assigned reviewers for the hr-sjt study.</p>
 </body>

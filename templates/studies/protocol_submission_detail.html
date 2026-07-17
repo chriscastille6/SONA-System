@@ -45,16 +45,28 @@
         </div>
         
         <!-- Full protocol PDF (for review) -->
-        {% if submission.full_protocol_pdf %}
+        {% if submission.full_protocol_pdf or study.slug == 'goal-setting' or study.slug == 'decision-making' %}
         <div class="card mb-3">
             <div class="card-header" style="background-color: #A6192E; color: white;">
-                <h5 class="mb-0"><i class="bi bi-file-earmark-pdf"></i> Full protocol (PDF)</h5>
+                <h5 class="mb-0"><i class="bi bi-file-earmark-pdf"></i> HSIRB application packet (PDF)</h5>
             </div>
             <div class="card-body">
+                {% if study.slug == 'goal-setting' or study.slug == 'decision-making' %}
+                <p class="mb-2">Nicholls-branded exempt HSIRB packet (cover, project information form, narrative, and appendices A–H) — the familiar reviewer format.</p>
+                <a href="{% url 'studies:protocol_study_documentation' slug=study.slug %}" target="_blank" rel="noopener" class="btn btn-outline-primary">
+                    <i class="bi bi-file-earmark-pdf"></i> View HSIRB application packet
+                </a>
+                {% if submission.full_protocol_pdf %}
+                <a href="{{ submission.full_protocol_pdf.url }}" target="_blank" rel="noopener" class="btn btn-outline-secondary ms-2">
+                    <i class="bi bi-download"></i> Uploaded copy
+                </a>
+                {% endif %}
+                {% else %}
                 <p class="mb-2">PI uploaded a single PDF containing the full set of protocols for IRB review.</p>
                 <a href="{{ submission.full_protocol_pdf.url }}" target="_blank" rel="noopener" class="btn btn-outline-primary">
                     <i class="bi bi-download"></i> View / Download full protocol (PDF)
                 </a>
+                {% endif %}
             </div>
         </div>
         {% endif %}
@@ -90,15 +102,35 @@
                         {% endif %}
                     </div>
                 </div>
-                {% if study.slug == 'goals-refs' %}
+                {% if study.slug == 'goal-setting' or study.slug == 'decision-making' %}
+                <hr>
+                <p class="mb-0">
+                    <a href="{% url 'studies:protocol_study_documentation' slug=study.slug %}" target="_blank" rel="noopener">View HSIRB application packet</a> — formatted exempt request, project information form, narrative, and appendices (familiar reviewer document).
+                </p>
+                {% elif study.slug == 'goals-refs' %}
                 <hr>
                 <p class="mb-0">
                     <a href="{% url 'studies:protocol_vignettes' slug=study.slug %}">View full vignette pool</a> — all scenarios in the study pool for IRB review.
                 </p>
                 {% elif study.slug == 'hr-sjt' %}
                 <hr>
+                <p class="mb-2">
+                    <a href="{% url 'studies:protocol_vignettes' slug=study.slug %}">View all 27 situations (skip / optional ratings)</a> — interactive IRB packet: full vignette text, tactic ratings with no required fields, and Skip per situation. Use this for survey review if live “Begin Assessment” errors.
+                </p>
+                <p class="mb-2">
+                    <a href="{% url 'studies:hr_sjt_professional_consent' %}" target="_blank" rel="noopener">Professional consent (live)</a>
+                    ·
+                    <a href="{% url 'studies:hr_sjt_student_data_consent' %}" target="_blank" rel="noopener">Class / student consent (live)</a>
+                </p>
+                <p class="mb-2">
+                    <a href="{% url 'studies:protocol_study_documentation' slug=study.slug %}">View full documentation (protocol summary)</a>
+                    ·
+                    <a href="{% url 'studies:hr_sjt_static_consent_doc' kind='professional' %}">Professional consent (static HTML)</a>
+                    ·
+                    <a href="{% url 'studies:hr_sjt_static_consent_doc' kind='student' %}">Class consent (static HTML)</a>
+                </p>
                 <p class="mb-0">
-                    <a href="{% url 'studies:protocol_study_documentation' slug=study.slug %}">View full documentation (all 27 scenarios &amp; protocol)</a> — HTML with cases and protocol summary for IRB review.
+                    <a href="{% url 'studies:hr_sjt_exempt_request_doc' %}">HSIRB exempt review request (filled draft)</a>
                 </p>
                 {% endif %}
             </div>

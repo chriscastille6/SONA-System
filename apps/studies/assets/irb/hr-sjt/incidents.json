@@ -1,0 +1,681 @@
+{
+  "title": "HR Situational Judgment Test — Full Incident Pool",
+  "description": "All 27 situations and tactics for IRB review. Participants are not forced to rate every tactic or complete every situation: ratings are optional and each situation includes a Skip control.",
+  "response_types": {
+    "effectiveness_rating": "Optional 1–5 scale (1 = Not effective … 5 = Highly effective). No required fields.",
+    "skip_situation": "Participants may skip any situation without providing ratings."
+  },
+  "version": 1,
+  "source": "bayoupal hr-sjt-assessment/incidents-data.js",
+  "incident_count": 27,
+  "incidents": [
+    {
+      "name": "Job Analysis",
+      "scenario": "At the last meeting of managers and supervisors, a major topic of discussion pertained to employee confusion regarding their job duties. Some employees refuse to do any work outside their usual routine, exclaiming, \"That's not my job!\" This is somewhat understandable since the company has no written job descriptions. Job duties have been informal understandings, originating when the company began only a few years ago (when the company had few employees), and no one had the time or inclination to rectify the situation.\n\nAs HR manager, you have investigated the various methods and costs of doing a job analysis for the company. Any job analysis program includes writing a job description for each job in the company. You have discovered that job descriptions have many uses, including: recruitment, interviewing, orientation, training, job evaluation, wage compensation survey, performance appraisal, and outplacement. Although there are no dangerous jobs in your operation, the Occupational Safety and Health Act of 1970 requirements state that a company must specify \"elements of the job that endanger health, or are to be considered unsatisfactory or distasteful to the majority of the population.\" Providing a job description to employees is a good defense against possible legal actions. Since you do not have the personnel or in-house expertise to do the work, you have received bids from various companies to do the work.\n\nProposals below are from the best-qualified and most reasonably priced company you could locate.",
+      "tactics": [
+        {
+          "text": "Analyze all jobs, including managerial.",
+          "cost": "Cost: $20,000"
+        },
+        {
+          "text": "Analyze production/operations jobs.",
+          "cost": "Cost: $15,000"
+        },
+        {
+          "text": "Categorize production/operations jobs, and do a job analysis for each category.",
+          "cost": "Cost: $10,000"
+        },
+        {
+          "text": "Hire a consultant to make a plan for doing job analysis in-house.",
+          "cost": "Cost: $5,000"
+        },
+        {
+          "text": "Put the project on hold.",
+          "cost": "Cost: none"
+        }
+      ]
+    },
+    {
+      "name": "Job Design",
+      "scenario": "You have just returned from a workshop on job design. Many of the ideas concerning this subject were of great interest to you. Some of the notes you made during the workshop follow: Definition: Job design is the arrangement of the content, functions, and relationships of jobs in a manner that accomplishes organizational purposes and at the same time satisfies the needs of employees. Studies have shown that, on average, workers utilize only a portion of their abilities in their jobs. Many HR professionals are seeking more creative methods of capturing the energy and creativity of their workforce. Your company's personnel have complained about repetition, forced pacing of work, not knowing or understanding an identifiable end product, little social interaction, and the lack of a system to suggest improvements in their jobs. A selection of possible solutions in job design is listed below. Because of the small size of your HR staff, you will be unable to do as much as you would like in job design at the present time. However, you want to begin exploratory studies on one of the techniques for possible implementation in your firm.",
+      "tactics": [
+        {
+          "text": "Job rotation, job enlargement, and enrichment"
+        },
+        {
+          "text": "Autonomous work groups"
+        },
+        {
+          "text": "Ergonomics studies"
+        },
+        {
+          "text": "Use of robotics technology"
+        },
+        {
+          "text": "Flexible work schedules"
+        },
+        {
+          "text": "Telecommuting"
+        },
+        {
+          "text": "Job sharing"
+        }
+      ]
+    },
+    {
+      "name": "Recruiting for Temporary Positions",
+      "scenario": "Your company has been instructed by a customer (or client) to augment your product (or service) for the next quarter's production. No additional units are to be produced but you need to do the work to their specific instructions. This will require the addition of 50 part-time employees for only one quarter. The cost will not be charged against your budget but against the operations department budget. Your responsibility is to recommend which method to use to fulfill this temporary need. You do not need to increase your Level 1 workers for this incident.",
+      "tactics": [
+        {
+          "text": "Post the jobs and allow current employees to recruit for these temporary positions."
+        },
+        {
+          "text": "Employ a local social service agency that locates temporary jobs for the homeless."
+        },
+        {
+          "text": "Ask for volunteers from current employees to work overtime."
+        },
+        {
+          "text": "Obtain temporary workers from a Temporary Services company"
+        },
+        {
+          "text": "Lease employees from an employee leasing company"
+        }
+      ]
+    },
+    {
+      "name": "Selection of Employee",
+      "scenario": "You have several applicants for a Level 3 supervisor's job that has become vacant. The position requires someone who can effectively manage a diverse team of technicians while balancing technical expertise with leadership skills. The job description follows:\n\n• Supervise 15 technicians (ages 24–58)\n• Schedule work for the section\n• Attend planning meetings with top-level managers/staff\n• Troubleshoot technical problems that may occur in the section\n\nEach applicant brings different strengths and potential challenges to the role.",
+      "tactics": [
+        {
+          "text": "Female, 30 years old, with a four-year business degree. Work experience as a retail store department head while attending college. Since she paid for all college expenses herself and was working full time, she required eight years to complete degree. No experience in the technical field but described by her professors as \"a fast learner; highly motivated.\""
+        },
+        {
+          "text": "Male, 35 years old, with a two-year technical degree in the area to be supervised. No managerial experience. Has been working as a technician with another organization since graduating. Wants to join this company because he feels he has a greater opportunity for advancement. Current employer HR manager describes him as \"an average worker; no attendance problems; perhaps frustrated by lack of opportunities with our company.\""
+        },
+        {
+          "text": "Minority male, 55 years old, who just retired from the military as an officer. Considerable experience in managing people but no technical background for the job; excellent references. He states, \"I know I don't have the technical expertise right now but I've had many jobs in the military where I did not have the expertise, and I learned what I had to very quickly.\""
+        },
+        {
+          "text": "Male, 30 years old, who has been a technician in this section for one year. No degree; was trained \"on the job.\" First year performance evaluation was \"good\" on quality and quantity of work. The outgoing supervisor stated, \"He will need to work hard to be a good delegator. He tends to do everything himself. It is always difficult to become the boss of people who have been your peers.\" The candidate thinks the section will accept him as their supervisor and that he will work very hard to create a team atmosphere. (No one else in the section applied for the position.)"
+        }
+      ]
+    },
+    {
+      "name": "Performance Appraisal",
+      "scenario": "Your company currently lacks a formal performance appraisal system for supervisors and managers. This has led to several problems: employees are unclear about performance expectations, there is inconsistency in how performance is evaluated across departments, and it is difficult to make fair decisions about promotions, raises, and development opportunities. Some managers have expressed frustration that they don't have a structured way to provide feedback to their direct reports, while employees have complained that they don't receive regular feedback about their performance.\n\nThe CEO has instructed you to recommend a system of performance appraisal for all supervisors and managers. You need to decide both who should conduct the appraisals (the appraiser) and what method should be used to evaluate performance.",
+      "tactics": [
+        {
+          "text": "Supervisor",
+          "cost": "Appraiser option"
+        },
+        {
+          "text": "Supervisor and subordinates",
+          "cost": "Appraiser option"
+        },
+        {
+          "text": "Supervisor and self",
+          "cost": "Appraiser option"
+        },
+        {
+          "text": "Supervisor, subordinates, and self",
+          "cost": "Appraiser option"
+        },
+        {
+          "text": "Critical Incident Appraisals",
+          "cost": "Method: This approach focuses on key behaviors by the employee that led to either good or poor performance on a given task."
+        },
+        {
+          "text": "Management By Objectives (MBO)",
+          "cost": "Method: In this method, the employee and appraiser work together to develop goals in line with the company's objectives and routinely follow up on progress."
+        },
+        {
+          "text": "Behaviorally Anchored Rating Scales (BARS)",
+          "cost": "Method: Rater selects statements that best match the employee's behavior, with different behaviors having different scores."
+        }
+      ],
+      "sections": [
+        {
+          "title": "Appraiser Options",
+          "startIndex": 0,
+          "endIndex": 3
+        },
+        {
+          "title": "Appraisal Methods",
+          "startIndex": 4,
+          "endIndex": 6
+        }
+      ]
+    },
+    {
+      "name": "Sexual Harassment",
+      "scenario": "The company has had a sexual harassment policy in place for several years. The policy has a standard definition of sexual harassment, plus a statement that says, \"Any employee found guilty of sexual harassment will be subject to discipline, up to and including termination.\" Three years ago, the company hired an outside training consultant to present a three-hour program to all employees on the policy. The training included definitions of sexual harassment, the responsibilities of the company to prevent sexual harassment, and information on procedures an employee should follow if anyone feels he or she has been sexually harassed. Since that time, new employees have been given the policy during orientation, and once a year, a video that was purchased for the employee training program is shown as part of a \"bag-lunch learning\" session.\n\nThere have been a few incidents of sexual harassment over the last year. In your opinion, some of them could have been handled better by supervisors and managers, but you don't think there's any major risk to the company right now. At a recent staff meeting, there was significant disagreement among several of your supervisors. One in particular argued that the company needs to do more, that there is a lot more harassment going on than has been reported. Several others argued that \"enough is enough, we're sick of the HR police dictating every rule that has to be followed.\" They argue, \"Most of these incidents are just normal 'boys will be boys' type things.\"",
+      "tactics": [
+        {
+          "text": "Do nothing.",
+          "cost": "Cost: none"
+        },
+        {
+          "text": "Distribute a copy of the current policy to all employees at a special meeting.",
+          "cost": "Cost: $1,000"
+        },
+        {
+          "text": "Develop a \"zero tolerance\" policy, and distribute it.",
+          "cost": "Cost: $2,000"
+        },
+        {
+          "text": "Develop a \"zero tolerance\" policy, and present it in department meetings.",
+          "cost": "Cost: $3,000"
+        },
+        {
+          "text": "Develop \"zero tolerance\" policy, and hire a consultant to develop and present a new training program.",
+          "cost": "Cost: $10,000"
+        }
+      ]
+    },
+    {
+      "name": "Compensation Planning",
+      "scenario": "You have just finished reading an article in a personnel journal about compensation plans. The turnover rate in your company is too high, considering the cost of losing experienced employees. The CEO has indicated there is a 50% chance the budget for a new compensation plan would be available next year. Each study costs $3,000—automatically charged to your budget under the \"Employee Relations / Other\" category.",
+      "tactics": [
+        {
+          "text": "Job Evaluation: A system based on the relative worth of jobs. Many feel that higher-level employees perform sufficiently different work and should be paid at a higher rate. This may be contributing to an unspoken morale problem. This system may help protect the company against discrimination claims, as employees would receive equal pay for equal work."
+        },
+        {
+          "text": "Performance-Based Pay System: Standards would be established for all jobs that could have standards and employees would be paid a base hourly wage plus a bonus if their productivity exceeds the standard."
+        },
+        {
+          "text": "Team Incentive Plan: The workforce would be grouped into as many teams as practicable and standards set for the team. Workers would receive a base hourly wage plus a bonus based on the team's performance."
+        },
+        {
+          "text": "Piece Rate System: Piece rates would be established for all jobs that could have a piece rate determined, and all workers would be paid on each unit produced. If it were a service job, it would be paid on such items as orders taken, calls made, etc."
+        },
+        {
+          "text": "Profit Sharing or Gain Sharing: A goal would be established monthly, quarterly, or annually, and workers would share in profits if goals are exceeded. This would be an organizational-wide plan; that is, all employees of the company would participate."
+        },
+        {
+          "text": "Employee Stock Ownership Plan (ESOP): Similar to profit or gain sharing, employees would be paid their bonus with company stock. Employees would feel like they were part of the company owners of the business and could help prevent hostile takeovers (Employees would be unlikely to vote the sale of \"their\" company). (If non-profit, this option is not available.)"
+        },
+        {
+          "text": "Guaranteed Cost of Living Adjustment (COLA): All employees would have their wages increased each year according to the local cost of living increase, based either on an equal percentage or equal dollars. This is a clause in many union contracts, which helps employees feel the company is doing its best to maintain an acceptable standard of living."
+        },
+        {
+          "text": "Merit Increases: All employees would receive an annual performance appraisal and receive a merit increase if deserved."
+        },
+        {
+          "text": "Pass on this project at this time"
+        }
+      ]
+    },
+    {
+      "name": "Self-Managed Work Teams",
+      "scenario": "The CEO has asked you to make a recommendation concerning the use of self-managed work teams in your company. Work teams consist of 8 to 15 members who are responsible for producing a complete product (or component of a product) or for managing a project or service. As a team progresses, it is given increased authority to operate under its own direction. If the concept works, productivity gains and/or better quality of the product or service may be expected. If the concept does not work, morale can suffer due to the \"failed\" experiment. One member of your HR staff has voiced a strong objection to the program. He claims that the HR department function would be diminished, as would the role of supervisors and managers who would give up power and control. Another member of your staff feels it is the \"wave of the future\" and that the program must be adopted throughout the company immediately. If you establish work teams, you will be charged $10,000 for related expenses of launching the program; this one-time cost will be automatically charged to your budget under the \"Employee Relations / Other\" category.",
+      "tactics": [
+        {
+          "text": "Include aptitude testing for teams."
+        },
+        {
+          "text": "Teams can hire workers."
+        },
+        {
+          "text": "Teams can schedule work."
+        },
+        {
+          "text": "Teams decide how to do the job."
+        },
+        {
+          "text": "Teams self-appraise and make compensation recommendations."
+        },
+        {
+          "text": "Teams are completely self-directing without an assigned leader."
+        },
+        {
+          "text": "Teams can fire non-productive members."
+        }
+      ]
+    },
+    {
+      "name": "Employee Health and Wellness Proposals",
+      "scenario": "Your company is experiencing significant problems with employee absenteeism and an increase in workplace grievances. The operations manager has identified that at least 50% of absences appear to be related to substance abuse issues. Additionally, there are concerns about employee health and wellness that may be affecting productivity and job satisfaction. Several proposals have been submitted to address these issues:\n\n• A professor of health and wellness at the local university could provide a wellness program for your firm. The program would include seminars in smoking cessation, weight loss, exercise, back problem management, and stress management.\n\n• A local hospital could run a mental health program, focusing on events and behaviors related to mental health: substance abuse, compulsive gambling, family and marital issues, legal problems, personal financial difficulties, and job/career problems.\n\n• The operations manager has written a memo requesting that a substance abuse program be initiated. He estimates that at least 50% of the absentees are the result of substance abuse.\n\nAll of these programs are expected to reduce absentees and have a positive impact on grievances. Any costs will be charged to the \"Employee Relations / Other\" budget category next quarter. After that, the cost will be assumed by the company.",
+      "tactics": [
+        {
+          "text": "Wellness Program",
+          "cost": "Cost: 0.08% of payroll"
+        },
+        {
+          "text": "Mental Health Program",
+          "cost": "Cost: 0.11% of payroll"
+        },
+        {
+          "text": "Substance Abuse Program",
+          "cost": "Cost: 0.15% of payroll"
+        }
+      ]
+    },
+    {
+      "name": "Safety Issues",
+      "scenario": "You have just returned from a top-level staff meeting at which safety issues were the prevailing topic. A neighboring company has just received stiff fines because of several safety infractions, even though it had an ongoing safety program. Your CEO is concerned that the company may incur penalties also and has requested the HR staff evaluate the following proposals:",
+      "tactics": [
+        {
+          "text": "Hire a consulting company to thoroughly inspect your work facilities and to prepare a report on any unsafe conditions, unsafe work practices, and health hazards (such as computer display terminal radiation and ergonomic problems). The report could help keep work areas in compliance with safety regulations. Although the company has an informal system for keeping up with such matters, an outside, trained inspection team may be able to spot problems not noticed by company employees. There would be a one time cost.",
+          "cost": "Cost: $8,000"
+        },
+        {
+          "text": "Hire a full-time safety specialist. The CEO suggests that the specialist report to the HR manager instead of the operations manager in order to maintain objectivity. The specialist's job would be to maintain safe working practices in the facility, to prevent occupational disabilities, and to conduct workshops on such topics as safe work practices, safety regulations, ergonomic issues, and preventative safety management. The CEO stated that she would assume the cost of the position if you can budget for the start-up costs.",
+          "cost": "Cost: $15,000"
+        },
+        {
+          "text": "Establish a Participative Safety Management Program. Voluntary teams would be formed in all work areas where safety is, or could be, an issue. The teams would look for safety problems, make suggestions for corrective action, and encourage safe work practices by everyone in their work area. (Although you may already have an employee participation program, its primary responsibility is for quality and productivity.) While there would be some ongoing costs of such a program, you will only be charged for the start-up costs—primarily for lost time of those who would be trained to operate as a safety team.",
+          "cost": "Cost: $8,000"
+        },
+        {
+          "text": "Hire a retired safety engineer that a staff member knows to make an inspection of your facilities and write a report. While this tactic may or may not actually improve safety, the written report could be used as a defense in the event of a problem with safety regulations.",
+          "cost": "Cost: $2,000"
+        },
+        {
+          "text": "Do nothing at this time."
+        }
+      ]
+    },
+    {
+      "name": "Exempt Employees",
+      "scenario": "A review of the various jobs at Level 2 indicates that some of the jobs are classified as non-exempt (eligible for overtime pay), while others are classified as exempt. In the last few months, you've received several complaints from individuals in some of the positions classified as \"exempt\" that they've been working a significant amount of overtime. They've complained that some colleagues in other departments received compensation for the overtime they work. When you check the job descriptions of some of those who are complaining and examine the regulatory guidelines for exempt status, you decide that the jobs should be classified as non- exempt. However, you also calculate that the employees would be owed approximately $10,000 in overtime pay for the last year alone. You see several options for how to proceed:",
+      "tactics": [
+        {
+          "text": "Reclassify the positions retroactively: Pay the employees $10,000 for overtime worked in the past year."
+        },
+        {
+          "text": "Reclassify the positions going forward: Tell the employees they will now start getting overtime pay for hours over 40 per week."
+        },
+        {
+          "text": "Keep the positions \"exempt\": Tell the employees that as Level 2 employees, they are not considered hourly employees. As supervisors, they have greater responsibilities as well as rights and privileges that make their \"salaried\" positions exempt from overtime pay."
+        },
+        {
+          "text": "Ignore the complaints: They'll go away or start complaining about something else next week."
+        }
+      ]
+    },
+    {
+      "name": "References–How much do I say?",
+      "scenario": "When your phone rang right after lunch, the Caller ID showed it was Amy Johns, HR Director for a large manufacturing company in town. She is a professional colleague you have met at several local SHRM (Society for Human Resources Management) meetings. She's calling because Thomas Fischer, a former employee of your company, has applied for a position with her company. When you became HR Director, you instituted a policy on recommendations similar to that in your previous company. Requests for references would be honored by providing position information, dates of employment, and verifying salary information if the caller provided it. But in this case, it would certainly be easy to provide a lot more information. The minute Thomas Fischer's name was mentioned, the memories of a tough six weeks you experienced several months ago came storming back. Thomas Fischer had worked in your company's accounting department for about three years. His performance was best described as \"erratic.\" He was a good employee at times, but at other times his performance was clearly below expectations. The biggest problem was his inability to get along with co-workers; several times, he was given verbal or written warnings over arguments he started with colleagues or managers in other departments. After a final incident a few months ago, Thomas was terminated for cause. He responded with an angry outburst, took a swing at his boss, missed, and stormed out saying, \"You haven't heard the last of me.\" A couple of other employees reported seeing him outside the building a few days later, but nothing else happened.\n\nAfter some professional conversation, Amy asks for information on Thomas Fischer.",
+      "tactics": [
+        {
+          "text": "Verify Thomas's position, dates of employment, and salary."
+        },
+        {
+          "text": "Verify the information, and add a non-specific \"not eligible for rehire.\""
+        },
+        {
+          "text": "Tell Amy that Thomas was \"terminated for poor performance.\""
+        },
+        {
+          "text": "Give Amy the whole story."
+        }
+      ]
+    },
+    {
+      "name": "Harassment vs. Lying Dilemma",
+      "scenario": "Mondays often start with tough situations, but this one looks like it's going to be rough. Just a few minutes after arriving in your office, Chris Daniels appeared at your door asking to speak to you immediately. Chris is a relatively recent hire and, based on your assessment, is a sure fire top performer. But the performance appraisal that was filed by her supervisor last week didn't bear that out—and that's exactly what Chris wants to talk about. After a few minutes of small talk, Chris hesitantly tells you that her supervisor, Ted Andrews, propositioned her. He promised her a favorable review and better work assignments if she would accompany him on a three-day technical conference. When she refused, her work assignments changed dramatically, and a couple weeks later, he gave her a below average performance review. You collect a few more details from Chris and then promise to investigate and get back to her.\n\nIt doesn't take long to collect some solid information that Chris's performance is actually above average and that another employee overheard enough of the supervisor's proposition to support Chris's charges. A quick check of the company policy shows that the standard definitions of \"quid pro quo\" and \"hostile environment\" are provided plus a statement that says: \"Any employee found guilty of sexual harassment will be subject to discipline, up to and including termination.\"\n\nBefore you can schedule a meeting with Chris's supervisor, he appears in your office. You let him say his piece before you confront him with the sexual harassment charges, and he presents another copy of Chris's below average review plus a copy of her application. He tells you that Chris lied on her application when she claimed to have earned her college degree. She, in fact, is six credits short of graduation. He wants you to initiate an immediate termination of Chris for \"lying on her application.\"",
+      "tactics": [
+        {
+          "text": "Terminate Chris."
+        },
+        {
+          "text": "Terminate Ted."
+        },
+        {
+          "text": "Terminate both Chris and Ted."
+        },
+        {
+          "text": "Written warning to Chris."
+        },
+        {
+          "text": "Written warning to Ted."
+        },
+        {
+          "text": "Written warning to both Chris and Ted."
+        },
+        {
+          "text": "Terminate Chris. Written warning to Ted."
+        },
+        {
+          "text": "Terminate Ted. Written warning to Chris."
+        }
+      ]
+    },
+    {
+      "name": "Promotion Decisions",
+      "scenario": "MEMORANDUM TO: Human Resources Director\nFROM: Mark Taylor, Department Head\nSUBJECT: Promotions of Margaret Adams and Beth Taylor\n\nWe are at the point where we must make a decision on the promotions of Margaret Adams and Beth Taylor, members of our administrative staff. They are both very competent employees, and I am convinced that they are capable of handling even more responsibility.\n\nMargaret's file indicates that she has history of chemical dependency but has had treatment and has been OK for a year. She is not currently enrolled in any treatment program. She believes that she should very rarely stay late at the office or participate in weekend meetings. She believes that her first duty is to her health and that she should manage her time accordingly.\n\nIn Beth's case, I am not altogether certain that she is willing to subordinate time with her family to time on the job, to the extent that may be required. I have had the opportunity to explore with her the general problem of family vs. job, and she strongly believes that she should very rarely stay late at the office or participate in weekend meetings. She believes that her first duty is to her family and that she should manage her time accordingly. These viewpoints have not affected their performance in the past, but it could be a problem in a more demanding role.",
+      "tactics": [
+        {
+          "text": "Promote Margaret only."
+        },
+        {
+          "text": "Promote Beth only."
+        },
+        {
+          "text": "Promote both Margaret and Beth."
+        },
+        {
+          "text": "Promote neither Margaret nor Beth."
+        }
+      ]
+    },
+    {
+      "name": "Wage Negotiations",
+      "scenario": "Workers Local 54, the union that represents your Level 1 employees, has approached you about negotiating a contract for the next year. It is demanding a $1.20 increase in the hourly wage rate for Level 1 workers. The union justifies the increase by claiming improved productivity since the last contract was negotiated; it also claims that an increase will allow wages to keep pace with inflation. The negotiator warns that employees are ready to strike if their demands are not met. Any increase in wages would need to be matched by an increase in your Wages decision for Level 1. Promising but not actually delivering on a wage increase will have serious consequences.",
+      "tactics": [
+        {
+          "text": "A $0.20 decrease."
+        },
+        {
+          "text": "No change."
+        },
+        {
+          "text": "A $0.40 increase."
+        },
+        {
+          "text": "A $0.80 increase."
+        },
+        {
+          "text": "A $1.20 increase."
+        },
+        {
+          "text": "A $1.50 increase."
+        }
+      ]
+    },
+    {
+      "name": "Collective Bargaining",
+      "scenario": "Management is preparing to meet with Workers Local 54, the union that represents Level 1 employees at your company. The CEO has asked for you to make recommendations on the most important issues that need to be addressed in the upcoming contract negotiations. While all the choices may be desirable from the workers' perspective, budget limitations and resource constraints prevent the company from doing everything in the list. You need to evaluate your company's situation, and recommend focusing on those issues that will prove most beneficial to both labor and management.",
+      "tactics": [
+        {
+          "text": "Wage increase: While the union is pressing for higher wages, you need to consider current Level 1 pay relative to industry average, worker productivity, and budget constraints. Choosing this option means that you recommend a wage increase for Level 1 workers."
+        },
+        {
+          "text": "Increased benefits: Employees consider their benefits package an important part of their compensation. You must consider current benefits relative to other companies as well as the significant impact an increase would have on the budget and unit costs. Also keep in mind that increasing benefits will affect all workers, not just Level 1 employees. Choosing this option indicates that you recommend increasing benefits for all employees."
+        },
+        {
+          "text": "Job protection: The union is asking for assurance that the company will not layoff Level 1 employees in a downturn or replace them with non-union workers, such as part-timers. Agreeing to this means that reductions to Level 1 workforce would have to come through attrition, not layoffs. If production remains high, there could be no cost to the company, while employees may be more productive without the worry of being laid off."
+        },
+        {
+          "text": "Better training: Workers think management should be putting more effort into training Level 1 employees. The union says spending on employee development and safety training would benefit the company by improving productivity. You will need to consider current levels of training and budget constraints. Choosing this option means you recommend increases in training."
+        },
+        {
+          "text": "Limiting overtime: You must pay overtime to employees who work more than 40 hours a week but cannot require employees to work more than 80 hours in a week. The union wants to reduce the upper limit to 60 hours for Level 1 employees. Agreeing to the new limit means that under some circumstances, you may have to hire more employees instead of requiring your Level 1 workers to work overtime to meet production quotas."
+        }
+      ]
+    },
+    {
+      "name": "Crisis Management",
+      "scenario": "Recently, natural disasters have been in the news, and the CEO is worried that the company may not be prepared to respond to a crisis. Besides the potential of a natural disaster, other problems she is concerned about are technology failure, a strike by workers, and violence in the workplace. The CEO has asked for your evaluation of how to handle a crisis, including short-term emergency response and longer-term recovery.",
+      "tactics": [
+        {
+          "text": "Disaster recovery plan: The plan will identify potential crisis situations and define employee responsibilities in a crisis.",
+          "cost": "Cost: $10,000"
+        },
+        {
+          "text": "Periodic preparedness drills: The drills will allow employees to practice evacuation procedures and to test disaster plans. The quarterly drills may reduce productivity somewhat but would pay off in the event of an emergency.",
+          "cost": "Cost: reduced productivity"
+        },
+        {
+          "text": "Emergency work environment: Research options for a backup site in the event of a disaster, enabling your recovery staff to complete their work.",
+          "cost": "Cost: $5,000"
+        },
+        {
+          "text": "Training for supervisors and managers: Supervisors must be able to identify and respond to any number of crises. They will need special training to prepare them for emergencies.",
+          "cost": "Cost: $15,000"
+        },
+        {
+          "text": "Backup of critical documents: A disaster may destroy important records required for recovery, so having a regular backup procedure for critical documents is essential for a successful recovery.",
+          "cost": "Cost: $20,000"
+        },
+        {
+          "text": "Emergency benefits policy: In the case of a widespread disaster, employees may lose their homes and means of transportation. Emergency benefits can help personnel continue working while they are recovering from their loss.",
+          "cost": "Cost: depends on crisis"
+        }
+      ]
+    },
+    {
+      "name": "Health Care Law Changes",
+      "scenario": "The government has recently changed the law regarding health insurance benefits, and your company will need to comply with the changes. The law requires that all full-time employees have affordable and adequate health insurance coverage. Since there is no employee contribution toward the health care benefits you are already providing, the coverage passes the \"affordable\" test. However, the law also requires that coverage be at least the equivalent of the Tier 3 plan and that a Prescription Drug Plan be included. If you do not provide adequate coverage, your company will be fined. The penalty for inadequate coverage is $3,000 per year for each employee who opts out of the company plan and qualifies for government subsidies to purchase coverage. It is not known what percentage of employees will opt out, but health care consultants have estimated that 65% would do so if the company offered the Tier 1 plan at the wages you started with at the beginning of the simulation. That percentage should be lower at higher wage levels and better health care benefits.\n\nFor this incident, you will need to go to the Benefits decision page, evaluate your health care coverage, and bring it into compliance with the law. If you do not provide benefits of at least the Tier 3 Health Insurance along with the Prescription Drug Plan, you will see a one-time charge against your budget next quarter. The charge will be based on your current benefit and wage decisions. The budget bar accounts for the fine under the \"Employee Relations\" category.",
+      "tactics": [
+        {
+          "text": "Comply with the law."
+        },
+        {
+          "text": "Pay the fine",
+          "cost": "Cost: varies; see the budget bar"
+        }
+      ]
+    },
+    {
+      "name": "Drug Testing",
+      "scenario": "The CEO of your organization is concerned that abuse of alcohol and drugs is affecting employee safety on the job. Research indicates that use of opioids has increased in recent years, while consumption of alcohol continues to be a problem. The trend toward legalization of marijuana may lead to greater use by workers, possibly affecting job performance. In addition to safety issues, abuse of alcohol and drugs has been associated with increased absentee rates, lower productivity, and higher turnover.\n\nTesting most commonly includes checks for alcohol, marijuana, methamphetamine, cocaine, and opioids. The HR department will need to develop a testing policy which reduces abuse without conflicting with employment law. Some policies may constitute gathering medical information about an applicant with disabilities and be in violation of health care privacy laws.\n\nFor this incident, based on your own opinion and judgment, please rate the effectiveness of each testing approach: at the final interview for new hires prior to a background check, with the right to refuse; after an offer of employment has been made; after an accident occurs in the workplace; and/or random testing. The cost for each test is $30, with the total cost dependent on the choices made, quarterly hires, accident rates, etc. If random testing is chosen, 10% of employees will be tested each quarter. The total cost for testing will be charged against the budget next quarter only. In every period, it will add to unit cost of production.",
+      "tactics": [
+        {
+          "text": "Final Interview",
+          "cost": "cost varies with number of hires"
+        },
+        {
+          "text": "Post-offer",
+          "cost": "cost varies with number of hires"
+        },
+        {
+          "text": "Post-accident",
+          "cost": "cost varies with accident rate"
+        },
+        {
+          "text": "Random Testing",
+          "cost": "cost varies with number of employees"
+        }
+      ]
+    },
+    {
+      "name": "Workplace Accommodations",
+      "scenario": "Accommodations for workers with disabilities are required by law, and studies have shown that they can also help attract and retain valuable employees. Your organization made changes to its facilities to comply with legal requirements years ago. But creating a culture of accommodation for employees with disabilities goes well beyond simple changes to the physical workspace and adherence to the law. You now have the opportunity to improve accommodations, increase awareness within the organization about the issue, and educate employees about identifying and accommodating disabilities.\n\nOne of the problems your organization has in accommodating for disabilities is consistency. Developing a written policy would help supervisors identify reasonable accommodations and outline procedures to follow for implementing them. Managers and workers could refer to the policy in case of uncertainty, and its availability would help increase awareness in the workplace. A written policy would also serve to document efforts on the part of management to adhere to legal requirements. Estimated cost for creating the policy and incorporating it into the employee manual is $1,000.\n\nWhile the physical facilities were modified to adhere to the law, an evaluation of the workspace would help to identify areas that have fallen out of compliance and areas in need of improvement. If you do this, a consultant will perform the evaluation and report on needed changes. The cost for the evaluation and updates is expected to be $5,000.\n\nThe employees themselves are key to creating a culture of accommodation for disabilities. While applicants cannot be tested for disabilities before hiring, by identifying disabilities in new hires and making changes to the training of new employees, workers that need accommodations can be identified early on and become more productive quickly. Not all disabilities are physical or apparent, so adding a module on disabilities to the supervisor and manager training will help them respond to requests for accommodation. An update of training materials to include a module on disabilities will cost $3,000.\n\nThe one-time costs will be applied against your budget next quarter.",
+      "tactics": [
+        {
+          "text": "Develop a written policy on disabilities.",
+          "cost": "Cost: $1,000"
+        },
+        {
+          "text": "Improve physical facilities.",
+          "cost": "Cost: $5,000"
+        },
+        {
+          "text": "Modify hiring procedures to identify employees with disabilities.",
+          "cost": "Cost: none"
+        },
+        {
+          "text": "Add a disabilities module to training programs.",
+          "cost": "Cost: $3,000"
+        }
+      ]
+    },
+    {
+      "name": "Diverse Hiring Pipeline",
+      "scenario": "A hiring pipeline encompasses the various stages of the hiring process, from the initial job posting to the eventual extension of an offer or rejection, and all that goes into the decisions made and methods used along the way. Since your company has historically struggled to recruit diverse candidates as well as to keep them (and keep them satisfied) once hired, the CEO has strongly recommended that the HR department reevaluate its hiring pipeline with the goal of further diversifying the company's workforce.\n\nBeyond simple legal compliance, recruiting and maintaining a diverse group of personnel can introduce new ideas, perspectives, and methods to your organization, leading to positive outcomes like increased productivity and morale. Taking steps now to intentionally reassess aspects of the hiring pipeline can also pay dividends in the long run by making your company more appealing to a wide variety of new candidates and helping you maintain a high-quality pool of potential talent. This in turn allows the hiring process to move more quickly and smoothly once new positions become available.",
+      "tactics": [
+        {
+          "text": "Work with an outside Diversity, Equity, and Inclusion (DEI) consultant to write job descriptions with more inclusive language and organize diverse interview panels.",
+          "cost": "Cost: $5,000"
+        },
+        {
+          "text": "Initiate relationships with institutions like historically Black colleges and universities (HBCUs), professional associations for minoritized groups, LGBTQ+ organizations, etc. Provide a stipend for your employees to participate in events with these groups.",
+          "cost": "Cost: $10,000"
+        },
+        {
+          "text": "Offer referral bonuses to current employees, asking specifically for suggestions of candidates from underrepresented groups.",
+          "cost": "Cost: $10,000"
+        },
+        {
+          "text": "Organize an unconscious bias training program to help build a more welcoming company culture for potential and new employees.",
+          "cost": "Cost: $5,000"
+        },
+        {
+          "text": "Implement an AI-driven hiring management system to conduct blind screenings of candidates. This system has been shown to achieve a more objective approach to the early stages of the hiring process.",
+          "cost": "Cost: $12,000"
+        }
+      ]
+    },
+    {
+      "name": "Mental Health Programs",
+      "scenario": "Recently, some conversations among supervisors at your company have come to your attention. A couple of supervisors were speaking dismissively of employees who have had to miss time for mental health reasons. Others joined in the conversation and complained that certain members of their teams are not able to take the pressure of the job. When some employees overheard this, they came to the HR department and expressed concern that mental health is not being taken seriously in the workplace.\n\nYou acknowledge and share their concern about the conversation among the supervisors. You recognize that the psychological health and safety of employees is important and that ignoring mental health issues can have negative personal effects and financial effects on the company. You are determined to change the culture and work toward creating a mentally healthy workplace. The one-time cost will be applied against your budget next quarter.",
+      "tactics": [
+        {
+          "text": "Hold a town hall-style meeting on mental health with a guest speaker. Provide an opportunity to reduce the stigma and get employees comfortable talking about mental health.",
+          "cost": "Cost: $3,000"
+        },
+        {
+          "text": "Hire a part-time on-site counseling psychologist to support employees. Employees can use their breaks to book time with the counselor during the day.",
+          "cost": "Cost: $6,000 – cost will be absorbed by the company after one quarter"
+        },
+        {
+          "text": "Gain staff involvement by encouraging employees to take the lead in creating a more psychologically safe work environment. Level 1 employees are given a budget to come up with a plan and review policies.",
+          "cost": "Cost: $3,000"
+        },
+        {
+          "text": "Provide Mental Health First Aid training for supervisors. Prepare your supervisors with the tools to handle a mental health or substance use challenge or crisis in the workplace.",
+          "cost": "Cost: $6,000"
+        },
+        {
+          "text": "Offer leadership training in basic mental health awareness and make a company-wide announcement that mental health is a priority. Having leadership buy-in is always important; all employees will be made aware of the company's stance on mental health.",
+          "cost": "Cost: $1,000"
+        },
+        {
+          "text": "Do nothing."
+        }
+      ]
+    },
+    {
+      "name": "Remote and Flexible Work",
+      "scenario": "During the COVID-19 pandemic, many of your employees were required to work remotely. As regulations relaxed, employees were gradually required to return to working on site since management felt it was best to have business return to normal. However, the result was not what management anticipated. Several employees quit; additionally, the company has had challenges hiring new employees. A few strong candidates have withdrawn their applications when they learned that your company did not have a remote work policy.\n\nIn hopes to stop more star employees from leaving, build the company's employer brand, and attract additional high performers, you have been asked to implement a work-from-home policy that works best for the company. Management is still concerned about the ability for employees to connect. In the past, some of the best company strategies and innovations have derived from informal water cooler conversations and from teams working together in person. During the pandemic when many employees were working from home, the company noticed significantly less innovation and creativity. It was also harder to schedule meetings when everyone was working on somewhat different schedules.",
+      "tactics": [
+        {
+          "text": "All eligible employees are allowed to work from home. Essentially, any employee who completes most of their duties on a computer can work fully from home."
+        },
+        {
+          "text": "Core days and hours. Eligible employees may work from home on Mondays and Fridays. On the remaining days—Tuesdays, Wednesdays, and Thursdays—employees must be working on site. During the core hours from 10 a.m. to 2 p.m., all employees must be available for meetings and scheduled communication. The remaining hours in an employee's shift are flexible as long as the employee is completing their scheduled tasks."
+        },
+        {
+          "text": "Each eligible employee is allotted three work-from-home days per calendar month. Employees are expected to use discretion when scheduling remote days so that they are not away for important in-office meetings and events."
+        },
+        {
+          "text": "Do nothing."
+        }
+      ]
+    },
+    {
+      "name": "Adverse Effect Discrimination",
+      "scenario": "The warehouse shipping and receiving crew at your company consists of young white men ages 22-30. They get along well and know how to work together effectively. In fact, they all play on the same recreational hockey team and often go out for drinks after work.\n\nWith a recent increase in production, there was an urgent need to hire an additional warehouse shipping and receiving employee. Desperate to quickly fill the vacancy, the warehouse supervisor offered the warehouse crew a $500 referral bonus if they referred friends to come join the team. Within a couple of days, a friend of one of the warehouse employees applied for the job and was hired immediately. The new employee learned his job tasks quickly and fit in very well. Word recently got out that the company hired another white man in his 20s who also plays recreational hockey with the crew. Several possible candidates (women, racially minoritized, and Indigenous people) had been looking for this type of position, but they had no way of knowing that there were even openings. The company has been accused of adverse effect discrimination, and the results of the ongoing human rights tribunal could be expensive.\n\nYou need to hire yet another warehouse employee, and you want to avoid any future adverse effect discrimination claims by implementing strategies and practices that ensure fairness and equity.",
+      "tactics": [
+        {
+          "text": "Update company website and signage. Update your company website and signage to include photos of employees from diverse backgrounds working in various jobs at the company.",
+          "cost": "Cost: $2,000"
+        },
+        {
+          "text": "Diversify recruitment sources. Utilize a wide range of recruitment sources to attract a diverse pool of candidates. This includes partnering with community organizations, attending job fairs, and leveraging online platforms that reach candidates from different backgrounds.",
+          "cost": "Cost: $5,000"
+        },
+        {
+          "text": "Train hiring managers and recruiters. Provide training programs to hiring managers and recruiters to increase their awareness of unconscious bias and its potential impact on decision-making. Training will include strategies for recognizing and mitigating bias in the hiring process.",
+          "cost": "Cost: $5,000"
+        },
+        {
+          "text": "Implement blind screening. Remove identifying information (such as name, gender, age, and race) from job applications and resumes during the initial screening process. This helps to minimize unconscious bias and allows for a more objective evaluation of applicants' qualifications.",
+          "cost": "Cost: $2,000"
+        },
+        {
+          "text": "Foster a culture of diversity and inclusion. Create a plan to recognize and celebrate the diversity within your organization. Highlight employee accomplishments, cultural events, and important diversity-related milestones. Create opportunities for employees to share their cultural backgrounds, traditions, and experiences.",
+          "cost": "Cost: $2,000"
+        }
+      ]
+    },
+    {
+      "name": "Bona Fide Occupational Requirement",
+      "scenario": "Hardeep has been working as a parts and delivery driver for your company for the past three years. During this time, he has performed well in this position and has been able to make several trips a day in the company vehicle to pick up parts or deliver packages.\n\nHowever, just recently, Hardeep has struggled a bit to keep up with the demands of his job. He started noticing difficulties with his vision and made an appointment to have his eyes tested. After testing, Hardeep was diagnosed with a genetic eye condition that is causing him to slowly lose his vision.\n\nWhen Hardeep was hired, the screening requirements for his position included holding a commercial driver's license and passing the required vision test. Being able to pass the vision test is a bona fide occupational requirement (BFOR) for the safety of the employee and others. Since Hardeep no longer meets the BFOR for the position, based on your own opinion and judgment, please rate the effectiveness of each approach for handling this situation.",
+      "tactics": [
+        {
+          "text": "You provide Hardeep with a severance package and lay him off. Since Hardeep is no longer able to fulfill the position that he was hired to do, you provide Hardeep with outplacement services and a severance package with his layoff. The outplacement services will support Hardeep in preparing for new job opportunities.",
+          "cost": "Cost: $5,000"
+        },
+        {
+          "text": "You offer to train Hardeep for another position that he will be able to perform while visually impaired. You work with Hardeep to determine another position in the company that he is qualified for, with duties he would feel comfortable performing. You will provide thorough training to help him familiarize himself with his new role.",
+          "cost": "Cost: $7,000"
+        },
+        {
+          "text": "You train another employee as a driver to work with Hardeep. With the help of the driver, Hardeep can still complete much of his job safely. He can walk in and out of buildings to pick up parts and deliver packages. Hardeep has developed great relationships with the various people he interacts with, and he represents the company in a positive light.",
+          "cost": "Cost: $5,000 to train the new driver"
+        },
+        {
+          "text": "Do nothing."
+        }
+      ]
+    },
+    {
+      "name": "Job Evaluation for Pay Equity",
+      "scenario": "Recently, there have been several complaints about pay equity in your company. In particular, department supervisors are complaining that they are being paid significantly less than the technicians even though they have more responsibility and direct reports.\nTo ensure that employees in your company are being paid fairly and according to their responsibilities, their job requirements, and the value they add to your company, you will need to develop a job evaluation method. A job evaluation is the systematic process of determining the relative worth of jobs to establish which jobs should be paid more than others in an organization. It helps establish internal equity, yet each method of job evaluation requires good judgment. The results of your job evaluation will be used to allocate future wage increases or cuts for each job level.",
+      "tactics": [
+        {
+          "text": "Job Ranking System. All jobs are ranked into a hierarchy by either one individual or by a committee. Rankings are based on some critical factor to job success (e.g., responsibility), or rankings can be based on the total importance of the job to the organization.",
+          "cost": "Cost: $3,000"
+        },
+        {
+          "text": "Job Classification System. Jobs are classified and grouped according to a series of predetermined wage grades. Each grade increase requires more job responsibility, skill, knowledge, ability, etc. Once the grades are defined, a job is slotted into a grade by comparing the individual job description to the grade descriptions.",
+          "cost": "Cost: $7,000"
+        },
+        {
+          "text": "Point System. This quantitative job evaluation procedure determines the relative value of a job by the total points assigned to it. Points are assigned to jobs based on the degree to which jobs possess different compensable factors. The major compensable factors are skill, effort, responsibility, and working conditions. These factors are subdivided into degrees.",
+          "cost": "Cost: $10,000"
+        },
+        {
+          "text": "Market-Based Pay Structures. Wage and salary surveys are used to help set wages in line with the market. The survey data will be collected through an external consultant.",
+          "cost": "Cost: $7,000"
+        },
+        {
+          "text": "Do nothing. Do not enact a new job evaluation system."
+        }
+      ]
+    },
+    {
+      "name": "Employee Selection Process",
+      "scenario": "You have heard some complaints that new hires require considerable training, and they are not always a great fit for your company. You want to ensure that your company is developing an effective selection process that reduces bias. This will be important as you begin screening for a new position at your company.\n\nTo be more prepared and protect the safety of the company, employees, and the public, your company has decided to hire its own security officers. In this position, the security officer will observe and report activities and incidents; make patrols to check for irregularities; maintain order and act to enforce regulations and directives pertaining to personnel, visitors, and premises; check for unsafe conditions, unlocked doors, security violations, mechanical problems, and unauthorized persons; and respond to incidents of fire, medical emergency, threat, flooding, and other incidents.\n\nYou have recruited several candidates who all have the minimum qualifications for the security officer position. From the pool of candidates, you need to screen for those who have the knowledge, skills, and abilities to be successful in the position and who will be a good company fit. It is important that your screening be both reliable, valid, and cost effective.",
+      "tactics": [
+        {
+          "text": "Personality Test. Measure personality or temperament through an online test.",
+          "cost": "Cost: $2,000"
+        },
+        {
+          "text": "Ability Test. Measure candidates' skills, knowledge, and ability pertaining to job requirements with the goal of predicting their ability to do the job.",
+          "cost": "Cost: $3,500"
+        },
+        {
+          "text": "Performance Test. Measure the ability of applicants to perform some parts of the work for which they are applying. Examples: a) Situational Judgment Test, in which applicants are placed into hypothetical job scenarios and asked to select a behavioral response from among a list of alternative courses of action; b) Assessment Center, which combines several methods of assessment (e.g., job simulations, in-basket exercises, interviews, etc.) to identify managerial potential.",
+          "cost": "Cost: $6,000"
+        },
+        {
+          "text": "Integrity Test. Measure an applicant's honesty, trustworthiness, and dependability through overt and non-overt questions about dishonesty and counterproductive behaviors.",
+          "cost": "Cost: $2,000"
+        },
+        {
+          "text": "Cognitive Ability Test. Measure an applicant's cognitive abilities (reasoning, perception, memory, verbal and mathematical ability, and problem solving) using questions designed to estimate applicants' potential to solve work-related problems or to acquire new job knowledge.",
+          "cost": "Cost: $3,000"
+        },
+        {
+          "text": "Polygraph Test. Commonly known as a lie detector test, this test measures physiological indicators such as blood pressure, pulse, respiration, and skin conductivity while a person is asked a series of questions.",
+          "cost": "Cost: $4,000"
+        },
+        {
+          "text": "Physical Ability Test. Assess physical strength, endurance, and quality of movement needed for the job by testing the use of muscle force over varying periods of time, either alone or in conjunction with an ability to maintain balance or body coordination.",
+          "cost": "Cost: $3,000"
+        },
+        {
+          "text": "Unstructured Interview. The interviewer focuses on open discussion to evaluate the candidates; the nature of the conversation guides the development of the questions asked."
+        },
+        {
+          "text": "Structured Interview. The interviewer uses the same set of standardized questions for each candidate with a set of benchmarks or a rubric marking guide."
+        }
+      ]
+    }
+  ]
+}

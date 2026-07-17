@@ -47,13 +47,17 @@ The study involves the following procedures:
 
 2. Participant Identification: Participants enter their first and last name; a participant ID is generated deterministically. No names are stored with research data.
 
-3. HR Situational Judgment Test (HR SJT): Participants complete the online HR SJT, which presents 27 HR management scenarios (e.g., job analysis, job design, recruiting, selection, performance appraisal, sexual harassment, compensation, workplace accommodations, remote work, bona fide occupational requirements). For each scenario, participants rate the effectiveness of each available tactic on a 1–5 scale (Not effective to Highly effective).
+3. HR Situational Judgment Test (HR SJT): Participants complete the online HR SJT, which presents 27 HR management scenarios (e.g., job analysis, job design, recruiting, selection, performance appraisal, sexual harassment, compensation, workplace accommodations, remote work, bona fide occupational requirements). For each scenario, participants may rate the effectiveness of each available tactic on a 1–5 scale (Not effective to Highly effective).
+
+   **Voluntary / non-forced responding:** Effectiveness ratings are optional. Participants are not forced to select a rating for every tactic or every situation. Each situation includes a **Skip** control so participants may skip any situation without providing ratings. Rating inputs do not use required-field constraints; participants may leave any or all ratings blank and may withdraw at any time. There is no forced-choice ranking.
 
 4. Feedback: Participants receive a PDF report summarizing their ratings.
 
 5. Debriefing: Participants receive information about the study purpose, HR decision-making concepts (evidence-based HR, situational judgment, legal compliance, cost-benefit analysis), and how their responses contribute to research. Contact information for the PI and IRB is provided.
 
 All data collection will occur online through the servers hosted by Nicholls State University. The entire procedure takes approximately 45–60 minutes to complete.
+
+**IRB vignette review:** Reviewers can inspect all 27 situations and confirm skip/optional-rating behavior in the in-app IRB packet (`/studies/hr-sjt/run/` or Protocol → View vignette / situations pool) and in `apps/studies/assets/irb/hr-sjt/incidents.json`.
 
 **Research Objectives:**
 The primary objectives of this research are:
@@ -167,7 +171,7 @@ Risks are mitigated through:
 
 2. Anonymization: All data is collected with PRAMS ID numbers only – no names, email addresses, or other identifying information is collected.
 
-3. Voluntary participation: Participants can withdraw at any time without penalty.
+3. Voluntary participation: Participants can withdraw at any time without penalty. Effectiveness ratings are optional; participants may skip any situation and leave ratings blank (no forced responding).
 
 4. Secure data storage: All data is stored securely on password-protected servers with access limited to the research team.
 

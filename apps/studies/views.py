@@ -523,8 +523,11 @@ def run_protocol(request, slug):
         if not _run_protocol_preapproval_allowed(request, study):
             raise Http404()
         if slug == 'hr-sjt':
+            incidents_payload = _load_hr_sjt_incidents()
             return render(request, 'studies/hr_sjt_irb_full_study.html', {
                 'study': study,
+                'incidents': incidents_payload.get('incidents') or [],
+                'incident_count': incidents_payload.get('incident_count') or 0,
             })
         return render(request, 'projects/goals-refs/protocol/index.html', {
             'study': study,
@@ -614,7 +617,7 @@ HR_SJT_STUDENT_CONSENT_BODY = """
 <strong>Principal Investigator:</strong> {pi_name}, {pi_department}
 
 <strong>1. Introduction and Purpose</strong>
-You are being asked to participate in a research study comparing how students and HR professionals evaluate specific workplace tactics. You were selected because you completed the case study exercises in MNGT 425 HR Analytics.
+You are being asked to participate in a research study comparing how students and HR professionals evaluate specific workplace tactics. You were selected because you completed the case study exercises in MNGT 425 HR Analytics. Research participation (allowing your course data to be used for this study) is <strong>VOLUNTARY</strong>. You must be 18 years of age or older.
 
 <strong>2. Procedures</strong>
 If you agree to participate, you grant the researcher permission to include your previously submitted case study ratings in a research dataset.
@@ -623,29 +626,41 @@ If you agree to participate, you grant the researcher permission to include your
 
 <strong>Data Extraction:</strong> Only the numerical ratings and categorical responses from your LMS submission will be used. Your written reflections or personal identifiers will be removed during the analysis phase.
 
-<strong>Appreciation:</strong> As a token of our appreciation for participating, we will share an aggregated report highlighting how individuals from different perspectives (e.g., students, working professionals, MBA students, executives) rated the content in these vignettes. No individuals will be identified. You may sign up to receive the infographic when it is ready. {infographic_preview_link}
+<strong>3. Potential Benefits</strong>
+• Contributing to research on HR education and how student ratings compare with professional ratings.
+• As a token of appreciation, you may receive an aggregated infographic comparing perspectives (no individuals identified). {infographic_preview_link}
+• There is no monetary payment for this secondary-data consent.
 
-<strong>3. Confidentiality</strong>
+<strong>4. Potential Risks</strong>
+This study involves minimal risk. Possible risks include:
+• Minimal privacy risk associated with secondary use of course ratings; the research dataset is coded and de-identified.
+• No new tasks are required; there is no additional time burden beyond reading this form.
+
+Risks are no greater than those of ordinary educational records review. You may withdraw or request deletion at any time without penalty.
+
+<strong>5. Confidentiality</strong>
 <strong>Your privacy is our priority.</strong>
 
 While the researcher (your instructor) has access to your original submission for grading purposes, the research dataset will be coded. Your name and student ID will be replaced with a <strong>candidate ID</strong> (a unique code linking only to you for the purpose of withdrawal and deletion requests). This allows you to request that your records be deleted at any time.
 
 <strong>No identifiable information will be included in any publications, presentations, or shared with the participating managers.</strong>
 
-<strong>4. Voluntary Participation and "Grade Shield"</strong>
+<strong>6. Voluntary Participation and "Grade Shield"</strong>
 <strong>Your participation is completely voluntary.</strong>
 
 <strong>No Penalty:</strong> Your decision to participate, or not to participate, will have <strong>zero impact on your grade in MNGT 425</strong> or your relationship with the instructor.
 
 <strong>Blinded Access:</strong> To ensure there is no bias, the instructor will not access the list of consenting students until after the final semester grades have been submitted to the Registrar.
 
-<strong>5. Right to Withdraw</strong>
+<strong>7. Right to Withdraw</strong>
 You may <strong>withdraw your consent at any time without penalty</strong> by contacting {withdraw_contact_name} at {withdraw_contact_email}.
 
-<strong>6. Right to Deletion</strong>
+<strong>8. Right to Deletion</strong>
 You may <strong>request that your data be deleted at any time without penalty</strong>. Because your record is linked to a candidate ID, the researcher can locate and remove your data from the research dataset. There are no penalties or consequences for requesting deletion. Contact {withdraw_contact_name} at {withdraw_contact_email} to request deletion.
 
-<strong>7. Consent</strong>
+<strong>9. Consent</strong>
+I have been informed about the procedures described above and the potential risks and benefits of the research project. I have had the opportunity to ask questions about the research procedures which have been explained to me. I understand that this project and this consent form have been approved by the Nicholls State University, Human Subjects Institutional Review Board which ensures that research projects follow Nicholls State University policies and procedures and comply with federal guidelines. I have been informed that any modifications of the experimental protocol which might affect my consent or willingness to participate will be provided to me. Finally, I have been provided an opportunity to be informed of the results of this study once it has been completed.
+
 By clicking "I Agree" below, you confirm that:
 
 • You are <strong>at least 18 years of age</strong>.
@@ -736,6 +751,51 @@ def hr_sjt_student_data_consent_done(request):
     })
 
 
+_HR_SJT_STATIC_CONSENT_FILES = {
+    'professional': ('docs', 'HR_SJT_PROFESSIONAL_CONSENT.html'),
+    'student': ('docs', 'HR_SJT_STUDENT_CONSENT.html'),
+    'class': ('docs', 'HR_SJT_STUDENT_CONSENT.html'),
+}
+
+
+@require_http_methods(['GET', 'HEAD'])
+def hr_sjt_static_consent_doc(request, kind):
+    """
+    Serve static HTML consent documents for IRB review / email attachment alternatives.
+    kind: professional | student | class
+    """
+    parts = _HR_SJT_STATIC_CONSENT_FILES.get((kind or '').lower())
+    if not parts:
+        raise Http404("Unknown consent document.")
+    path = Path(settings.BASE_DIR).joinpath(*parts)
+    if not path.exists():
+        raise Http404("Consent document not found.")
+    try:
+        return HttpResponse(path.read_text(encoding='utf-8'), content_type='text/html; charset=utf-8')
+    except OSError:
+        raise Http404("Consent document could not be read.")
+
+
+@require_http_methods(['GET', 'HEAD'])
+def hr_sjt_exempt_request_doc(request):
+    """Serve the filled HSIRB exempt review request (PDF preferred, markdown fallback)."""
+    base = Path(settings.BASE_DIR) / 'apps' / 'studies' / 'assets' / 'irb' / 'hr-sjt'
+    pdf_path = base / 'HSIRB_EXEMPT_REVIEW_REQUEST.pdf'
+    md_path = base / 'HSIRB_EXEMPT_REVIEW_REQUEST.md'
+    fmt = (request.GET.get('format') or '').lower()
+    if fmt == 'md' or not pdf_path.exists():
+        if not md_path.exists():
+            raise Http404("Exempt request document not found.")
+        try:
+            return HttpResponse(md_path.read_text(encoding='utf-8'), content_type='text/markdown; charset=utf-8')
+        except OSError:
+            raise Http404("Exempt request document could not be read.")
+    try:
+        return HttpResponse(pdf_path.read_bytes(), content_type='application/pdf')
+    except OSError:
+        raise Http404("Exempt request PDF could not be read.")
+
+
 # Consent form for HR professionals (working professionals) taking the HR SJT.
 # Placeholders: pi_name, pi_department, withdraw_contact_name, withdraw_contact_email, infographic_preview_link.
 HR_SJT_PROFESSIONAL_CONSENT_BODY = """
@@ -747,27 +807,45 @@ HR_SJT_PROFESSIONAL_CONSENT_BODY = """
 <strong>1. Introduction and Purpose</strong>
 Working professionals, such as HR professionals.
 
-You are invited to participate in a research study comparing how HR professionals and students evaluate workplace tactics in situational judgment scenarios. Your responses will help researchers understand how practitioners apply evidence-based HR practices.
+You are invited to participate in a research study comparing how HR professionals and students evaluate workplace tactics in situational judgment scenarios. Your responses will help researchers understand how practitioners apply evidence-based HR practices. Participation is <strong>VOLUNTARY</strong>. You must be 18 years of age or older.
 
 <strong>2. Procedures</strong>
 If you agree to participate, you will:
 • Complete a brief demographic questionnaire (including optional BLS race/ethnicity and HR credentials).
-• Complete the HR Situational Judgment Test (27 scenarios; rate effectiveness of tactics 1–5).
+• Complete the HR Situational Judgment Test (27 scenarios; you may rate the effectiveness of tactics on a 1–5 scale). Ratings are optional; you may skip any situation.
 • Receive a feedback report summarizing your ratings.
 
-<strong>3. Your Report and Data Ownership</strong>
+<strong>3. Potential Benefits</strong>
+• Insight into your own HR decision-making through an immediate feedback report.
+• Learning about evidence-based HR management and situational judgment via the debriefing materials.
+• Contributing to research on HR education and how professional ratings compare with student ratings.
+• As a token of appreciation, you may receive an aggregated infographic comparing perspectives (no individuals identified). {infographic_preview_link}
+
+There is no monetary compensation.
+
+<strong>4. Potential Risks</strong>
+This study involves minimal risk. Possible risks include:
+• Mild psychological discomfort if feedback differs from your expectations (feedback is educational and supportive).
+• Time commitment of approximately 45–60 minutes.
+• Minimal privacy risk associated with any online data collection; responses are de-identified and stored with a unique code.
+
+Risks are no greater than those encountered in ordinary professional or educational activities. You may skip situations, leave ratings blank, or withdraw at any time without penalty.
+
+<strong>5. Your Report and Data Ownership</strong>
 At the conclusion of the study, you will receive a <strong>PDF report of your data</strong>, which you may keep. The report will contain a <strong>unique identifying code</strong> that gives you ownership over your data. If you would prefer to have your data removed from the study, we will honor that request.
 
-<strong>4. Time and Compensation</strong>
-The study takes approximately 45–60 minutes. <strong>There is no monetary compensation.</strong> As a token of our appreciation, we will share an aggregated report highlighting how individuals from different perspectives (e.g., students, working professionals, MBA students, executives) rated the content in these vignettes. No individuals will be identified. You may sign up to receive the infographic when it is ready. {infographic_preview_link} Your participation is voluntary and appreciated.
+<strong>6. Time and Compensation</strong>
+The study takes approximately 45–60 minutes. <strong>There is no monetary compensation.</strong> Your participation is voluntary and appreciated.
 
-<strong>5. Confidentiality</strong>
+<strong>7. Confidentiality</strong>
 <strong>Your privacy is our priority.</strong> Your responses will be de-identified and stored with a unique code. No identifiable information will be included in any publications or shared with others.
 
-<strong>6. Right to Withdraw</strong>
+<strong>8. Right to Withdraw</strong>
 You may <strong>withdraw your consent at any time without penalty</strong> by closing the browser or contacting {withdraw_contact_name} at {withdraw_contact_email}.
 
-<strong>7. Consent</strong>
+<strong>9. Consent</strong>
+I have been informed about the procedures described above and the potential risks and benefits of the research project. I have had the opportunity to ask questions about the research procedures which have been explained to me. I understand that this project and this consent form have been approved by the Nicholls State University, Human Subjects Institutional Review Board which ensures that research projects follow Nicholls State University policies and procedures and comply with federal guidelines. I have been informed that any modifications of the experimental protocol which might affect my consent or willingness to participate will be provided to me. Finally, I have been provided an opportunity to be informed of the results of this study once it has been completed.
+
 By clicking "I Agree" below, you confirm that you are at least 18 years of age, have read this form, and voluntarily agree to participate.
 """
 
@@ -882,16 +960,51 @@ def _can_view_study_protocol_materials(request, study):
     return False
 
 
+def _load_hr_sjt_incidents():
+    """Load vendored HR SJT incidents for IRB review (offline-capable)."""
+    path = Path(settings.BASE_DIR) / "apps" / "studies" / "assets" / "irb" / "hr-sjt" / "incidents.json"
+    if not path.exists():
+        return {"incident_count": 0, "incidents": []}
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            data = json.load(f)
+    except (OSError, json.JSONDecodeError):
+        return {"incident_count": 0, "incidents": []}
+    incidents = data.get("incidents") or []
+    return {
+        "title": data.get("title") or "HR Situational Judgment Test — Full Incident Pool",
+        "description": data.get("description") or "",
+        "response_types": data.get("response_types") or {},
+        "version": data.get("version"),
+        "source": data.get("source"),
+        "incident_count": data.get("incident_count") or len(incidents),
+        "incidents": incidents,
+    }
+
+
 @login_required
 def protocol_vignettes(request, slug):
     """
     Show the full vignette pool for a study. Access: staff, PI, college rep, chair, or reviewer
-    for any submission of this study (so Jon and Juliann can view goals-refs vignettes).
+    for any submission of this study (so Jon and Juliann can view goals-refs / hr-sjt vignettes).
     """
     study = get_object_or_404(Study.objects.all(), slug=slug)
     if not _can_view_study_protocol_materials(request, study):
         messages.error(request, 'You do not have access to view this study’s vignette pool.')
         return redirect('studies:protocol_submission_list')
+    # HR SJT: interactive IRB packet with all 27 situations + skip/optional ratings demo
+    if slug == 'hr-sjt':
+        incidents_payload = _load_hr_sjt_incidents()
+        if request.GET.get("format") == "json":
+            return JsonResponse(incidents_payload, json_dumps_params={"indent": 2})
+        if not incidents_payload.get("incidents"):
+            raise Http404("HR SJT incident pool could not be loaded.")
+        return render(request, 'studies/hr_sjt_irb_full_study.html', {
+            'study': study,
+            'incidents': incidents_payload.get('incidents') or [],
+            'incident_count': incidents_payload.get('incident_count') or 0,
+            'irb_materials_view': True,
+        })
     base = Path(__file__).resolve().parent.parent.parent
     vignettes_path = base / "apps" / "studies" / "assets" / "irb" / slug / "vignettes.json"
     if not vignettes_path.exists():
@@ -909,7 +1022,17 @@ def protocol_vignettes(request, slug):
     })
 
 
-# Study slug -> path parts (under BASE_DIR) for "full documentation" HTML.
+# Study slug -> path parts (under BASE_DIR) for "full documentation" (HTML or PDF).
+_GOAL_SETTING_HSIRB_PACKET = (
+    'apps',
+    'studies',
+    'assets',
+    'irb',
+    'goal-setting',
+    'materials',
+    'pdf',
+    'HSIRB_Application_A_Study_in_Decision_Making_full_packet.pdf',
+)
 STUDY_DOCUMENTATION_FILES = {
     'hr-sjt': ('docs', 'HR_SJT_DOCUMENTATION.html'),
     'goals-refs': (
@@ -920,13 +1043,16 @@ STUDY_DOCUMENTATION_FILES = {
         'goals-refs',
         'vignettes_with_predicted_patterns.html',
     ),
+    # Familiar Nicholls-branded exempt HSIRB packet (cover + project info + narrative + appendices)
+    'goal-setting': _GOAL_SETTING_HSIRB_PACKET,
+    'decision-making': _GOAL_SETTING_HSIRB_PACKET,
 }
 
 
 @login_required
 def protocol_study_documentation(request, slug):
     """
-    Serve the full documentation HTML for a study (e.g. hr-sjt: all 27 scenarios + protocol).
+    Serve full documentation for a study (HTML summary or branded HSIRB PDF packet).
     Access: staff, PI, college rep, chair, or reviewer for any submission of this study.
     """
     study = get_object_or_404(Study.objects.all(), slug=slug)
@@ -940,8 +1066,9 @@ def protocol_study_documentation(request, slug):
     if not path.exists():
         raise Http404("Documentation file not found.")
     try:
-        with open(path, "r", encoding="utf-8") as f:
-            return HttpResponse(f.read(), content_type="text/html; charset=utf-8")
+        if path.suffix.lower() == '.pdf':
+            return HttpResponse(path.read_bytes(), content_type='application/pdf')
+        return HttpResponse(path.read_text(encoding='utf-8'), content_type='text/html; charset=utf-8')
     except OSError:
         raise Http404("Documentation file could not be read.")
 
