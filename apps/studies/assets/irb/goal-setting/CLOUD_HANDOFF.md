@@ -17,6 +17,9 @@ Rebuild attaches the packet to `ProtocolSubmission.full_protocol_pdf` via `add_g
 |------|------|
 | `apps/studies/assets/irb/goal-setting/materials/pdf/HSIRB_Application_A_Study_in_Decision_Making_full_packet.pdf` | Full exempt application + appendices A–H (current) |
 | `apps/studies/assets/irb/goal-setting/materials/pdf/HSIRB_Application_A_Study_in_Decision_Making_with_signup_qr.pdf` | Same packet variant refreshed from the full packet (main flyer already includes signup QR) |
+| `apps/studies/assets/irb/goal-setting/HSIRB_EXEMPT_REVIEW_REQUEST.pdf` | Official rev9 2019 form overlay (pages 1–4) + Attachment A narrative + CITI |
+| `apps/studies/assets/irb/goal-setting/HSIRB_EXEMPT_REVIEW_REQUEST.md` | Field map for the rev9 draft |
+| `apps/studies/assets/irb/goal-setting/HSIRB-exempt_review_request.rev9_2019.v2_BLANK.pdf` | Official blank used by the filler |
 | `apps/studies/assets/irb/goal-setting/chris_castille_irb_approval_july_2024.pdf` | Prior local approval PDF on file |
 | `apps/studies/assets/irb/goal-setting/addendum_1_procedural_modifications.pdf` | Procedural addendum on file |
 | `apps/studies/assets/irb/goal-setting/materials/` | Editable `.txt` / `.docx` sources + `admin/` print masters |
@@ -27,6 +30,9 @@ Rebuild attaches the packet to `ProtocolSubmission.full_protocol_pdf` via `add_g
 Requires `pymupdf` and `reportlab` (`pip install pymupdf reportlab`).
 
 ```bash
+# Official rev9 exempt form draft (overlay + Attachment A + CITI)
+python3 scripts/fill_decision_making_hsirb_exempt_form.py
+
 # Rebuild full packet narrative + appendices from current materials/pdf sources
 python scripts/rebuild_goal_setting_hsirb_packet.py --no-tmp-copy
 
