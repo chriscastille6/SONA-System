@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Form B — Optional contact (unlinked)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:opsz,wght@8..60,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../wave1/css/survey.css" />
+  <style>
+    .firewall {
+      border: 1px dashed var(--accent);
+      padding: 0.85rem 1rem;
+      margin: 0 0 1.25rem;
+      background: rgba(11, 110, 107, 0.06);
+      font-size: 0.92rem;
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <p class="eyebrow">Form B · Contact only · Not joined to survey data</p>
+    <h1 class="brand">Optional follow-up contact</h1>
+    <p class="lede">
+      This form is hosted separately from Wave 1 / Wave 2 research data.
+      It collects <strong>only an email address</strong> so we can invite you to Wave 2.
+      It does not collect CANDIDATE IDs, SONA codes, or survey answers.
+    </p>
+
+    <div class="firewall" role="note">
+      <strong>Privacy firewall:</strong> Do not paste survey answers or your linking ID here.
+      Researchers must not merge this sheet with Wave 1/2 datasets.
+    </div>
+
+    <!--
+      PRODUCTION: Replace this demo form with university Microsoft Forms or Qualtrics.
+      Field list for MS Forms / Qualtrics (exact):
+        1. Email (required) — Response type: Email / Text
+        2. Consent to Wave 2 reminder emails (required) — Yes / No
+        3. Opt-out acknowledgment (optional display text only)
+      Do NOT add: CANDIDATE ID, survey_code, student ID, name, or any Wave 1 items.
+    -->
+
+    <section class="panel" id="panel-form">
+      <h2>Leave an email for Wave 2</h2>
+      <form id="form-b" novalidate>
+        <label for="email">University or preferred email</label>
+        <input id="email" name="email" type="email" required
+               placeholder="participant@example.edu" autocomplete="email" />
+        <p class="hint">Synthetic example domain shown. Use a real address only in fielded studies.</p>
+
+        <label class="muted" style="font-weight:500; margin-top:1.25rem;">
+          <input type="checkbox" id="consent-reminders" required style="width:auto; margin-right:0.4rem;" />
+          I agree to receive one Wave 2 invitation and at most one friendly nudge (72 hours later).
+        </label>
+
+        <div class="privacy-box">
+          <p style="margin:0 0 0.5rem;"><strong>Reminder disclaimer (include in every automated email):</strong></p>
+          <p style="margin:0;">
+            If you have already completed Wave 2, thank you—you may safely disregard this message.
+          </p>
+          <p style="margin:0.75rem 0 0;">
+            Opt out anytime by replying <code>STOP</code> or using the unsubscribe link in the email.
+          </p>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn btn-primary">Submit email only</button>
+        </div>
+      </form>
+      <p id="status" class="muted" role="status"></p>
+    </section>
+
+    <section class="panel" id="panel-done" hidden>
+      <h2>Received</h2>
+      <p>
+        In production, Microsoft Forms + Power Automate stores this email in an
+        isolated OneDrive/Excel sheet and schedules Wave 2 + nudge messages.
+        This demo page does not transmit data off-device.
+      </p>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      var form = document.getElementById("form-b");
+      var status = document.getElementById("status");
+      form.addEventListener("submit", function (evt) {
+        evt.preventDefault();
+        var email = document.getElementById("email").value.trim();
+        var ok = document.getElementById("consent-reminders").checked;
+        if (!email || !ok) {
+          status.textContent = "Email and reminder consent are required.";
+          status.classList.add("error");
+          return;
+        }
+        // Demo only: do not POST to third parties. Production = MS Forms endpoint.
+        console.info("[Form B demo] email captured locally for UI confirmation only.");
+        document.getElementById("panel-form").hidden = true;
+        document.getElementById("panel-done").hidden = false;
+      });
+    })();
+  </script>
+</body>
+</html>

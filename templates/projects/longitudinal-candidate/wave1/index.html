@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Longitudinal Study — Wave 1</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:opsz,wght@8..60,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/survey.css" />
+</head>
+<body>
+  <main class="wrap">
+    <p class="eyebrow">IRB-XXXX-YYYY · Wave 1</p>
+    <h1 class="brand">Longitudinal Study</h1>
+    <p class="lede">
+      Client-side, anonymized Wave 1 instrument. Your SONA credit code (if present)
+      is used only to grant credit and is never stored with your answers.
+    </p>
+    <p id="sona-badge" class="badge" role="status"></p>
+
+    <!-- CONSENT -->
+    <section id="panel-consent" class="panel" aria-labelledby="consent-title">
+      <h2 id="consent-title">Informed consent</h2>
+      <p>
+        You are invited to participate in an IRB-approved research study. Participation
+        is voluntary. You may withdraw at any time without penalty to course credit
+        already earned through SONA.
+      </p>
+      <ul>
+        <li>Survey answers are linked across waves only by a code you generate from private security questions (CANDIDATE ID).</li>
+        <li>We do not ask for your name, email, or student ID in this survey.</li>
+        <li>SONA credit is awarded via an anonymous redirect using the <code>survey_code</code> SONA provided in the URL.</li>
+        <li>Optional follow-up contact (Form B) is completely separate and never joined to your answers.</li>
+      </ul>
+      <div class="actions">
+        <button type="button" class="btn btn-secondary" id="btn-consent-no">I do not consent</button>
+        <button type="button" class="btn btn-primary" id="btn-consent-yes">I consent — continue</button>
+      </div>
+    </section>
+
+    <!-- DECLINED -->
+    <section id="panel-declined" class="panel" hidden>
+      <h2>Participation declined</h2>
+      <p>No data were stored. You may close this window and return to SONA.</p>
+    </section>
+
+    <!-- CANDIDATE SECURITY QUESTIONS -->
+    <section id="panel-candidate" class="panel" hidden aria-labelledby="cand-title">
+      <h2 id="cand-title">Create your anonymous linking ID</h2>
+      <p class="muted">
+        Answer the same three questions in every wave. We store only a 16-character
+        hash (CANDIDATE ID), never your raw answers. Adapted from Sandnes (2021), PLOS ONE.
+      </p>
+      <form id="candidate-form" autocomplete="off">
+        <label for="q-maiden">Mother’s maiden name — first two initials only</label>
+        <input id="q-maiden" name="maiden" type="text" maxlength="8" required
+               placeholder="e.g., MJ (synthetic example)" autocomplete="off" />
+        <p class="hint">Use the same initials each wave. Letters only after normalization.</p>
+
+        <label for="q-birthday">Day of the month you were born (1–31)</label>
+        <input id="q-birthday" name="birthday" type="number" min="1" max="31" required
+               placeholder="e.g., 14" />
+
+        <label for="q-street">Childhood street name — first two initials only</label>
+        <input id="q-street" name="street" type="text" maxlength="8" required
+               placeholder="e.g., Oak → OA" autocomplete="off" />
+
+        <div class="privacy-box">
+          Raw answers stay in your browser only long enough to compute the hash,
+          then the fields are cleared. They are never written to the research file.
+        </div>
+        <p id="candidate-preview" class="muted" aria-live="polite"></p>
+        <div class="actions">
+          <button type="submit" class="btn btn-primary">Generate ID &amp; continue</button>
+        </div>
+      </form>
+      <p id="status-line-candidate" class="status-line" role="status"></p>
+    </section>
+
+    <!-- SURVEY ITEMS (synthetic example scales) -->
+    <section id="panel-survey" class="panel" hidden>
+      <h2>Wave 1 questions</h2>
+      <p class="muted">1 = Strongly disagree · 5 = Strongly agree. Example items for development only.</p>
+      <form id="survey-form">
+        <fieldset class="item" data-item="focus_1">
+          <legend>I usually set clear goals for the week ahead.</legend>
+          <div class="scale" role="radiogroup">
+            <label><input type="radio" name="focus_1" value="1" /><span>1</span></label>
+            <label><input type="radio" name="focus_1" value="2" /><span>2</span></label>
+            <label><input type="radio" name="focus_1" value="3" /><span>3</span></label>
+            <label><input type="radio" name="focus_1" value="4" /><span>4</span></label>
+            <label><input type="radio" name="focus_1" value="5" /><span>5</span></label>
+          </div>
+        </fieldset>
+        <fieldset class="item" data-item="focus_2">
+          <legend>I can stick with a plan even when progress feels slow.</legend>
+          <div class="scale" role="radiogroup">
+            <label><input type="radio" name="focus_2" value="1" /><span>1</span></label>
+            <label><input type="radio" name="focus_2" value="2" /><span>2</span></label>
+            <label><input type="radio" name="focus_2" value="3" /><span>3</span></label>
+            <label><input type="radio" name="focus_2" value="4" /><span>4</span></label>
+            <label><input type="radio" name="focus_2" value="5" /><span>5</span></label>
+          </div>
+        </fieldset>
+        <fieldset class="item" data-item="focus_3">
+          <legend>I notice when my attention drifts and can redirect it.</legend>
+          <div class="scale" role="radiogroup">
+            <label><input type="radio" name="focus_3" value="1" /><span>1</span></label>
+            <label><input type="radio" name="focus_3" value="2" /><span>2</span></label>
+            <label><input type="radio" name="focus_3" value="3" /><span>3</span></label>
+            <label><input type="radio" name="focus_3" value="4" /><span>4</span></label>
+            <label><input type="radio" name="focus_3" value="5" /><span>5</span></label>
+          </div>
+        </fieldset>
+        <div class="actions">
+          <button type="submit" class="btn btn-primary">Submit Wave 1</button>
+        </div>
+      </form>
+      <p id="status-line-survey" class="status-line" role="status"></p>
+    </section>
+
+    <!-- COMPLETE + REDIRECT NOTICE -->
+    <section id="panel-complete" class="panel" hidden>
+      <h2>Thank you — Wave 1 complete</h2>
+      <p>
+        Your anonymous linking ID
+        (<span class="mono" id="final-candidate"></span>)
+        was attached to your responses. A local JSON copy may download for researcher ingest pipelines.
+      </p>
+      <p class="muted">
+        If you entered from SONA, you will be redirected to the credit completion URL next.
+        After credit, you may optionally open the unlinked contact form (Form B) — it cannot
+        be joined to your survey answers.
+      </p>
+      <div class="actions">
+        <a class="btn btn-secondary" id="btn-form-b" href="../form_b/index.html">Open Form B (optional, unlinked)</a>
+      </div>
+      <p id="status-line-complete" class="status-line muted" role="status"></p>
+    </section>
+  </main>
+
+  <script src="js/candidate.js"></script>
+  <script src="js/sona_passthrough.js"></script>
+  <script src="js/survey.js"></script>
+</body>
+</html>
